@@ -1,6 +1,6 @@
 import type { XrayClientCloud } from "../../client/xray-client-cloud.js";
-import type { QueryResponse } from "../../models/xray/graphql/graphql.js";
-import type { TestExecution } from "../../models/xray/graphql/xray.js";
+import type { TestExecution } from "../../models/graphql/__generated__/graphql.js";
+import type { QueryResponse } from "../../models/graphql/graphql.js";
 
 export class GetTestRuns {
   private readonly client: XrayClientCloud;
@@ -23,7 +23,7 @@ export class GetTestRuns {
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
    */
-  public async query<JiraDataType>(
+  public async query(
     query: {
       /**
        * The maximum amount of Test Runs to be returned. The maximum is 100.
@@ -51,7 +51,7 @@ export class GetTestRuns {
       testRunAssignees?: string[];
     },
     resultShape: string
-  ): Promise<QueryResponse<{ getTestRuns: TestExecution<JiraDataType>["testRuns"] }>> {
+  ): Promise<QueryResponse<{ getTestRuns: TestExecution["testRuns"] }>> {
     const queryString = `
       query($testIssueIds: [String], $testExecIssueIds: [String], $testRunAssignees: [String], $limit: Int!, $start: Int, $modifiedSince: String) {
         getTestRuns(testIssueIds: $testIssueIds, testExecIssueIds: $testExecIssueIds, testRunAssignees: $testRunAssignees, limit: $limit, start: $start, modifiedSince: $modifiedSince) {
@@ -71,7 +71,7 @@ export class GetTestRuns {
       200
     );
     return (await response.json()) as QueryResponse<{
-      getTestRuns: TestExecution<JiraDataType>["testRuns"];
+      getTestRuns: TestExecution["testRuns"];
     }>;
   }
 }
