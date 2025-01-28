@@ -23,7 +23,6 @@ export class ImportExecution {
    * Uploads test results in Xray JSON format to the Xray instance.
    *
    * @param results the test results
-   * @param projectKey the key of the project to use for new test executions
    * @returns the import response
    *
    * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresults
