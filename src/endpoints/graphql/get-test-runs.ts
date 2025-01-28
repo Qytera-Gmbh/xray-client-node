@@ -17,14 +17,14 @@ export class GetTestRuns {
   /**
    * Returns multiple Test Runs testIssueIds and/or testExecIssueIds.
    *
-   * @param query the query arguments
+   * @param variables the query arguments
    * @param resultShape the desired shape of the result
    * @returns the test runs
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
    */
   public async query(
-    query: {
+    variables: {
       /**
        * The maximum amount of Test Runs to be returned. The maximum is 100.
        */
@@ -60,7 +60,7 @@ export class GetTestRuns {
       }
     `;
     const response = await this.client.send("/graphql", {
-      body: JSON.stringify({ query: queryString, variables: query }),
+      body: JSON.stringify({ query: queryString, variables: variables }),
       expectedStatus: 200,
       headers: {
         ["Content-Type"]: "application/json",
