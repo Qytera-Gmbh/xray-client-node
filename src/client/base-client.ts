@@ -1,3 +1,5 @@
+import { toSearchParams } from "../util/search-params.js";
+
 /**
  * The base client of all Xray clients. Contains the authorization handling.
  */
@@ -50,26 +52,55 @@ export class BaseClient {
    *
    * @param path the path to append to the base URL of the Xray instance
    * @param config the request configuration
-   * @param expectedStatus the expected HTTP response status
    * @returns the response
    */
-  public async send(path: string, config: RequestInit, expectedStatus?: number): Promise<Response> {
-    const url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
-    const request = {
-      ...config,
+  public async send(path: string, config: RequestConfig): Promise<Response> {
+    let url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
+    if (config.query && Object.keys(config).length > 0) {
+      url = `${url}?${toSearchParams(config.query).toString()}`;
+    }
+    const request: RequestInit = {
+      body: config.body,
       headers: {
         ["Authorization"]: await this.authorizationValue,
         ...config.headers,
       },
+      method: config.method,
     };
     const response = await fetch(url, request);
-    if (expectedStatus && response.status !== expectedStatus) {
+    if (config.expectedStatus && response.status !== config.expectedStatus) {
       throw new Error(
         `Unexpected response status ${response.status.toString()}: ${await response.text()}`
       );
     }
     return response;
   }
+}
+
+/**
+ * Models an HTTP request configuration.
+ */
+interface RequestConfig {
+  /**
+   * The body of the request.
+   */
+  body?: Exclude<RequestInit["body"], null>;
+  /**
+   * The expected response status of the request.
+   */
+  expectedStatus: number;
+  /**
+   * The headers of the request.
+   */
+  headers?: Record<string, string>;
+  /**
+   * The HTTP request method of the request.
+   */
+  method: "DELETE" | "GET" | "HEAD" | "OPTIONS" | "PATCH" | "POST" | "PUT";
+  /**
+   * The query parameters of the request.
+   */
+  query?: object;
 }
 
 /**

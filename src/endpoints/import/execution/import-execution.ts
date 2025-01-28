@@ -29,18 +29,15 @@ export class ImportExecution {
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresults
    */
   public async xray(results: XrayTestExecutionResults): Promise<ImportResponse> {
-    const response = await this.client.send(
-      `/import/execution`,
-      {
-        body: JSON.stringify(results),
-        headers: {
-          ["Accept"]: "application/json",
-          ["Content-Type"]: "application/json",
-        },
-        method: "POST",
+    const response = await this.client.send(`/import/execution`, {
+      body: JSON.stringify(results),
+      expectedStatus: 200,
+      headers: {
+        ["Accept"]: "application/json",
+        ["Content-Type"]: "application/json",
       },
-      200
-    );
+      method: "POST",
+    });
     return (await response.json()) as ImportResponse;
   }
 }

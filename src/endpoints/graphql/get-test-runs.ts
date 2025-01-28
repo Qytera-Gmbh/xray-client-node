@@ -59,17 +59,14 @@ export class GetTestRuns {
         }
       }
     `;
-    const response = await this.client.send(
-      "/graphql",
-      {
-        body: JSON.stringify({ query: queryString, variables: query }),
-        headers: {
-          ["Content-Type"]: "application/json",
-        },
-        method: "POST",
+    const response = await this.client.send("/graphql", {
+      body: JSON.stringify({ query: queryString, variables: query }),
+      expectedStatus: 200,
+      headers: {
+        ["Content-Type"]: "application/json",
       },
-      200
-    );
+      method: "POST",
+    });
     return (await response.json()) as QueryResponse<{
       getTestRuns: TestExecution["testRuns"];
     }>;

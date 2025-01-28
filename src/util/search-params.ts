@@ -10,9 +10,9 @@
  * ```
  *
  * @param input the input object
- * @returns the URL search params string
+ * @returns the URL search params
  */
-export function toSearchParams(input?: object): string {
+export function toSearchParams(input?: object): URLSearchParams {
   const params: Record<string, string> = {};
   for (const [key, value] of Object.entries(input ?? {})) {
     if (typeof value === "string") {
@@ -30,9 +30,5 @@ export function toSearchParams(input?: object): string {
       );
     }
   }
-  const searchParams = new URLSearchParams(params);
-  if (searchParams.size > 0) {
-    return `?${searchParams.toString()}`;
-  }
-  return "";
+  return new URLSearchParams(params);
 }

@@ -3,7 +3,6 @@ import type {
   DatasetExportQueryCloud,
   DatasetExportQueryServer,
 } from "../../models/dataset/dataset.js";
-import { toSearchParams } from "../../util/search-params.js";
 
 /**
  * Models the execution import endpoints.
@@ -38,14 +37,11 @@ export class Dataset<ExportType extends DatasetExportQueryCloud | DatasetExportQ
    * @see https://docs.getxray.app/display/XRAYCLOUD/Exporting+datasets+-+REST+v2
    */
   public async export(query?: ExportType): Promise<string> {
-    const url = `/dataset/export${toSearchParams(query)}`;
-    const response = await this.client.send(
-      url,
-      {
-        method: "GET",
-      },
-      200
-    );
+    const response = await this.client.send("/dataset/export", {
+      expectedStatus: 200,
+      method: "GET",
+      query: query,
+    });
     return await response.text();
   }
 }
