@@ -4,7 +4,7 @@
   "description": "A typesafe HTTP client for the Xray API.",
   "main": "index.js",
   "scripts": {
-    "generate:graphql": "graphql-codegen --config src/models/graphql/codegen.ts",
+    "generate:graphql": "node --import ./test/loader.js src/models/graphql/codegen.ts",
     "test": "node --import ./test/loader.js ./test/run-unit-tests.ts",
     "build": "tsc --project tsconfig-build.json && shx cp README.md package.json package-lock.json dist/",
     "lint": "npx eslint src/**/*.ts test/**/*.ts"

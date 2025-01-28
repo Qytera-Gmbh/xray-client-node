@@ -1,22 +1,40 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
+import { generate } from "@graphql-codegen/cli";
+import { getEnv } from "../../../test/util.js";
 
-const TOKEN = process.env.XRAY_BEARER_TOKEN;
+import "dotenv/config";
 
-if (!TOKEN) {
-  throw new Error(
-    "Please provide the Xray bearer token through the environment variable XRAY_BEARER_TOKEN"
-  );
-}
+const TOKEN = await fetch("https://xray.cloud.getxray.app/api/v2/authenticate", {
+  body: JSON.stringify({
+    ["client_id"]: getEnv("xray-client-id"),
+    ["client_secret"]: getEnv("xray-client-secret"),
+  }),
+  headers: {
+    ["Accept"]: "application/json",
+    ["Content-Type"]: "application/json",
+  },
+  method: "POST",
+}).then((response) => response.json() as Promise<string>);
 
 const CONFIG: CodegenConfig = {
   ["emitLegacyCommonJSImports"]: false,
   generates: {
     ["./src/models/graphql/__generated__/index.ts"]: {
       plugins: [
-        "typescript",
         {
-          add: { content: "/* eslint-disable */" },
+          add: {
+            content: [
+              "",
+              "// =========================================================",
+              "//  GENERATED USING @graphql-codegen/cli",
+              "//  See: https://www.npmjs.com/package/@graphql-codegen/cli",
+              "// =========================================================",
+              "",
+              "/* eslint-disable */",
+            ].join("\n"),
+          },
         },
+        "typescript",
       ],
     },
   },
@@ -28,4 +46,4 @@ const CONFIG: CodegenConfig = {
   },
 };
 
-export default CONFIG;
+await generate(CONFIG);

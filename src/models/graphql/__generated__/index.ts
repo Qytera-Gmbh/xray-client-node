@@ -1,3 +1,9 @@
+
+// =========================================================
+//  GENERATED USING @graphql-codegen/cli
+//  See: https://www.npmjs.com/package/@graphql-codegen/cli
+// =========================================================
+
 /* eslint-disable */
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
