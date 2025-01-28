@@ -9,9 +9,7 @@
 
 # Node.js Xray Client
 
-This project provides TypeScript clients to users that want to interact with the API of [Xray](https://www.getxray.app/).
-
-Supports Xray server and Xray cloud.
+This project provides TypeScript clients to users that want to interact with the API of [Xray](https://www.getxray.app/). Supports Xray server and Xray cloud.
 
 > [!WARNING]
 > The client is still in a very early stage of development and may change a lot.
