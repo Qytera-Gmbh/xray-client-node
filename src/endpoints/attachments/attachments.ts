@@ -9,9 +9,9 @@ export class Attachments {
   private readonly client: BaseClient;
 
   /**
-   * Creates a new execution import service.
+   * Creates a new attachments service.
    *
-   * @param client the client to use when importing executions
+   * @param client the client to use when dealing with attachments
    */
   constructor(client: BaseClient) {
     this.client = client;
