@@ -5,10 +5,10 @@ import type { ClientConfiguration } from "./base-client.js";
 import { BaseClient } from "./base-client.js";
 
 export class XrayClientServer extends BaseClient {
-  public import = {
+  import = {
     execution: new ImportExecution(this),
   };
-  public dataset = new Dataset<DatasetExportQueryServer>(this);
+  dataset = new Dataset<DatasetExportQueryServer>(this);
 
   /**
    * Constructs a new Xray server client.

@@ -1,4 +1,4 @@
-import type { XrayClientCloud } from "../../client/xray-client-cloud.js";
+import type { BaseClient } from "../../client/base-client.js";
 import type { TestExecution } from "../../models/graphql/__generated__/index.js";
 import type { QueryResponse } from "../../models/graphql/graphql.js";
 
@@ -6,14 +6,14 @@ import type { QueryResponse } from "../../models/graphql/graphql.js";
  * Models the GraphQL test run endpoints.
  */
 export class GetTestRuns {
-  private readonly client: XrayClientCloud;
+  private readonly client: BaseClient;
 
   /**
    * Creates a new GraphQL test run request service.
    *
    * @param client the client to use to perform requests
    */
-  constructor(client: XrayClientCloud) {
+  constructor(client: BaseClient) {
     this.client = client;
   }
 
