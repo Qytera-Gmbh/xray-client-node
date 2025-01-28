@@ -27,7 +27,7 @@ export class BaseClient {
         )
       );
     } else {
-      this.authorizationValue = fetch(`${this.url}/api/v2/authenticate`, {
+      this.authorizationValue = fetch(`${this.url}/authenticate`, {
         body: JSON.stringify({
           ["client_id"]: config.credentials.clientId,
           ["client_secret"]: config.credentials.clientSecret,
@@ -54,14 +54,15 @@ export class BaseClient {
    * @returns the response
    */
   public async send(path: string, config: RequestInit, expectedStatus?: number): Promise<Response> {
-    const strippedPath = path.startsWith("/") ? path.slice(1) : path;
-    const headers: RequestInit["headers"] = {
-      ["Authorization"]: await this.authorizationValue,
-    };
-    const response = await fetch(`${this.url}/${strippedPath}`, {
+    const url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
+    const request = {
       ...config,
-      headers: { ...headers, ...config.headers },
-    });
+      headers: {
+        ["Authorization"]: await this.authorizationValue,
+        ...config.headers,
+      },
+    };
+    const response = await fetch(url, request);
     if (expectedStatus && response.status !== expectedStatus) {
       throw new Error(
         `Unexpected response status ${response.status.toString()}: ${await response.text()}`
@@ -105,13 +106,24 @@ type XrayCredentials =
 /**
  * The configuration for an Xray client.
  */
-interface ClientConfiguration {
+export interface ClientConfiguration {
   /**
    * The credentials to use to authenticate.
    */
   credentials: XrayCredentials;
   /**
-   * The base URL of the Xray instance.
+   * The base URL of the Xray instance. For Xray server, simply provide the Jira base URL:
+   *
+   * ```ts
+   * "https://my-jira-server-instance.com"
+   * ```
+   *
+   * For Xray cloud, please provide the [Xray cloud endpoint](https://docs.getxray.app/display/XRAYCLOUD/REST+API)
+   * you would like to use:
+   *
+   * ```ts
+   * "https://xray.cloud.getxray.app"
+   * ```
    */
   url: string;
 }
