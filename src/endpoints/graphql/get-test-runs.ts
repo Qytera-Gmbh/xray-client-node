@@ -17,9 +17,27 @@ export class GetTestRuns {
   /**
    * Returns multiple Test Runs testIssueIds and/or testExecIssueIds.
    *
+   * @example
+   *
+   * ```ts
+   * query(
+   *   { limit: 100, testExecIssueIds: ["XCN-2"] },
+   *   `
+   *     total
+   *     limit
+   *     start
+   *     results {
+   *       test {
+   *         jira(fields: ["key"])
+   *       }
+   *     }
+   *   `
+   * );
+   * ```
+   *
    * @param variables the query arguments
    * @param resultShape the desired shape of the result
-   * @returns the test runs
+   * @returns the query result
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
    */
