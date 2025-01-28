@@ -5,11 +5,11 @@ export class BaseClient {
   /**
    * The base URL of the Xray instance.
    */
-  protected url: string;
+  private readonly url: string;
   /**
    * The value of the authorization header to use in HTTP requests.
    */
-  protected authorizationValue: Promise<string>;
+  private readonly authorizationValue: Promise<string>;
 
   /**
    * Constructs a new client based on the provided configuration.
@@ -43,6 +43,31 @@ export class BaseClient {
           return `Bearer ${json}`;
         });
     }
+  }
+
+  /**
+   * Sends an HTTP request to the Xray instance and optionally verifies the response status.
+   *
+   * @param path the path to append to the base URL of the Xray instance
+   * @param config the request configuration
+   * @param expectedStatus the expected HTTP response status
+   * @returns the response
+   */
+  public async send(path: string, config: RequestInit, expectedStatus?: number): Promise<Response> {
+    const strippedPath = path.startsWith("/") ? path.slice(1) : path;
+    const headers: RequestInit["headers"] = {
+      ["Authorization"]: await this.authorizationValue,
+    };
+    const response = await fetch(`${this.url}/${strippedPath}`, {
+      ...config,
+      headers: { ...headers, ...config.headers },
+    });
+    if (expectedStatus && response.status !== expectedStatus) {
+      throw new Error(
+        `Unexpected response status ${response.status.toString()}: ${await response.text()}`
+      );
+    }
+    return response;
   }
 }
 
