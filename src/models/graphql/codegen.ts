@@ -9,15 +9,15 @@ if (!TOKEN) {
 }
 
 const CONFIG: CodegenConfig = {
-  documents: ["src/**/*.{ts,tsx}"],
   ["emitLegacyCommonJSImports"]: false,
   generates: {
-    ["./src/models/graphql/__generated__/"]: {
-      plugins: [],
-      preset: "client",
-      presetConfig: {
-        gqlTagName: "gql",
-      },
+    ["./src/models/graphql/__generated__/index.ts"]: {
+      plugins: [
+        "typescript",
+        {
+          add: { content: "/* eslint-disable */" },
+        },
+      ],
     },
   },
   ignoreNoDocuments: true,

@@ -1,5 +1,5 @@
 import type { XrayClientCloud } from "../../client/xray-client-cloud.js";
-import type { TestExecution } from "../../models/graphql/__generated__/graphql.js";
+import type { TestExecution } from "../../models/graphql/__generated__/index.js";
 import type { QueryResponse } from "../../models/graphql/graphql.js";
 
 export class GetTestRuns {
