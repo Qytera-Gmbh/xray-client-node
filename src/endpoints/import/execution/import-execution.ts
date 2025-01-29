@@ -4,7 +4,7 @@ import type {
   ImportExecutionResponseCloud,
   ImportExecutionResponseServer,
   XrayTestExecutionResults,
-} from "../../../models/xray/execution/import-execution.js";
+} from "../../../models/xray/import/execution/import-execution.js";
 
 /**
  * Models the execution import endpoints.

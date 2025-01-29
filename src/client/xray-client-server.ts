@@ -1,7 +1,7 @@
 import { Dataset } from "../endpoints/dataset/dataset.js";
 import { ImportExecution } from "../endpoints/import/execution/import-execution.js";
 import type { DatasetExportQueryServer } from "../models/xray/dataset/dataset.js";
-import type { ImportExecutionResponseServer } from "../models/xray/execution/import-execution.js";
+import type { ImportExecutionResponseServer } from "../models/xray/import/execution/import-execution.js";
 import type { ClientConfiguration } from "./base-client.js";
 import { BaseClient } from "./base-client.js";
 

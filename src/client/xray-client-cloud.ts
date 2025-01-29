@@ -3,7 +3,7 @@ import { Dataset } from "../endpoints/dataset/dataset.js";
 import { GetTestRuns } from "../endpoints/graphql/get-test-runs.js";
 import { ImportExecution } from "../endpoints/import/execution/import-execution.js";
 import type { DatasetExportQueryCloud } from "../models/xray/dataset/dataset.js";
-import type { ImportExecutionResponseCloud } from "../models/xray/execution/import-execution.js";
+import type { ImportExecutionResponseCloud } from "../models/xray/import/execution/import-execution.js";
 import type { ClientConfiguration } from "./base-client.js";
 import { BaseClient } from "./base-client.js";
 

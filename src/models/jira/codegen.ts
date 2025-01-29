@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { OpenAPI3 } from "openapi-typescript";
-import openapi, { astToString, COMMENT_HEADER } from "openapi-typescript";
+import generate, { astToString, COMMENT_HEADER } from "openapi-typescript";
 
 /**
  * Generates TypeScript models based on Jira's publically available OpenAPI documentation.
@@ -16,18 +16,20 @@ async function generateCloudModels(): Promise<void> {
   );
   const spec = (await response.json()) as OpenAPI3;
   // We do not need to generate paths or servers etc. Just the models.
-  const schemaOnlySpec = {
-    components: {
-      schemas: spec.components?.schemas,
+  const output = await generate(
+    {
+      components: {
+        schemas: spec.components?.schemas,
+      },
+      info: spec.info,
+      openapi: spec.openapi || "3.0.0",
     },
-    info: spec.info,
-    openapi: spec.openapi || "3.0.0",
-  };
-  const output = await openapi(schemaOnlySpec, {
-    alphabetize: true,
-    rootTypes: true,
-    rootTypesNoSchemaPrefix: true,
-  });
+    {
+      alphabetize: true,
+      rootTypes: true,
+      rootTypesNoSchemaPrefix: true,
+    }
+  );
   const directory = join(import.meta.dirname, "__generated__");
   if (!existsSync(directory)) {
     mkdirSync(directory, { recursive: true });
