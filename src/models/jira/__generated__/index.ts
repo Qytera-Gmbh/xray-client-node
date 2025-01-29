@@ -99,15 +99,6 @@ export interface components {
             /** @description Visibility of the announcement banner. Can be public or private. */
             visibility?: string;
         };
-        /** @description A workflow transition rule. */
-        AppWorkflowTransitionRule: {
-            configuration: components["schemas"]["RuleConfiguration"];
-            /** @description The ID of the transition rule. */
-            id: string;
-            /** @description The key of the rule, as defined in the Connect or the Forge app descriptor. */
-            readonly key: string;
-            readonly transition?: components["schemas"]["WorkflowTransition"];
-        };
         /** @description The application the linked item is in. */
         Application: {
             /** @description The name of the application. Used in conjunction with the (remote) object icon title to display a tooltip for the link's icon. The tooltip takes the format "\[application name\] icon title". Blank items are excluded from the tooltip title. If both items are blank, the icon tooltop displays as "Web Link". Grouping and sorting of links may place links without an application name last. */
@@ -204,8 +195,14 @@ export interface components {
             /** @description The numeric ID of the transition to be executed if the request is declined. */
             transitionRejected: string;
         } | null;
-        ArchiveIssueAsyncRequest: {
-            jql?: string;
+        /** @description A workflow transition rule. */
+        AppWorkflowTransitionRule: {
+            configuration: components["schemas"]["RuleConfiguration"];
+            /** @description The ID of the transition rule. */
+            id: string;
+            /** @description The key of the rule, as defined in the Connect or the Forge app descriptor. */
+            readonly key: string;
+            readonly transition?: components["schemas"]["WorkflowTransition"];
         };
         /** @description Details of a filter for exporting archived issues. */
         ArchivedIssuesFilterRequest: {
@@ -221,19 +218,8 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
-        /** @description Details of a field configuration to issue type mappings. */
-        AssociateFieldConfigurationsWithIssueTypesRequest: {
-            /** @description Field configuration to issue type mappings. */
-            mappings: components["schemas"]["FieldConfigurationToIssueTypeMapping"][];
-        };
-        /** @description Issue security scheme, project, and remapping details. */
-        AssociateSecuritySchemeWithProjectDetails: {
-            /** @description The list of scheme levels which should be remapped to new levels of the issue security scheme. */
-            oldToNewSecurityLevelMappings?: components["schemas"]["OldToNewSecurityLevelMappingsBean"][];
-            /** @description The ID of the project. */
-            projectId: string;
-            /** @description The ID of the issue security scheme. Providing null will clear the association with the issue security scheme. */
-            schemeId: string;
+        ArchiveIssueAsyncRequest: {
+            jql?: string;
         };
         /** @description Details of an item associated with the changed record. */
         AssociatedItemBean: {
@@ -247,6 +233,20 @@ export interface components {
             readonly parentName?: string;
             /** @description The type of the associated record. */
             readonly typeName?: string;
+        };
+        /** @description Details of a field configuration to issue type mappings. */
+        AssociateFieldConfigurationsWithIssueTypesRequest: {
+            /** @description Field configuration to issue type mappings. */
+            mappings: components["schemas"]["FieldConfigurationToIssueTypeMapping"][];
+        };
+        /** @description Issue security scheme, project, and remapping details. */
+        AssociateSecuritySchemeWithProjectDetails: {
+            /** @description The list of scheme levels which should be remapped to new levels of the issue security scheme. */
+            oldToNewSecurityLevelMappings?: components["schemas"]["OldToNewSecurityLevelMappingsBean"][];
+            /** @description The ID of the project. */
+            projectId: string;
+            /** @description The ID of the issue security scheme. Providing null will clear the association with the issue security scheme. */
+            schemeId: string;
         };
         /** @description Details about an attachment. */
         Attachment: {
@@ -521,6 +521,13 @@ export interface components {
              */
             ruleType: "Condition" | "Validator" | "Function" | "Screen";
         };
+        /** @description The trigger rules available. */
+        AvailableWorkflowTriggers: {
+            /** @description The list of available trigger types. */
+            availableTypes: components["schemas"]["AvailableWorkflowTriggerTypes"][];
+            /** @description The rule key of the rule. */
+            ruleKey: string;
+        };
         /** @description The list of available trigger types. */
         AvailableWorkflowTriggerTypes: {
             /** @description The description of the trigger rule. */
@@ -529,13 +536,6 @@ export interface components {
             name?: string;
             /** @description The type identifier of trigger rule. */
             type?: string;
-        };
-        /** @description The trigger rules available. */
-        AvailableWorkflowTriggers: {
-            /** @description The list of available trigger types. */
-            availableTypes: components["schemas"]["AvailableWorkflowTriggerTypes"][];
-            /** @description The rule key of the rule. */
-            ruleKey: string;
         };
         /** @description Details of an avatar. */
         Avatar: {
@@ -557,6 +557,13 @@ export interface components {
             };
         } & {
             [key: string]: unknown;
+        };
+        /** @description Details about system and custom avatars. */
+        Avatars: {
+            /** @description Custom avatars list. */
+            readonly custom?: components["schemas"]["Avatar"][];
+            /** @description System avatars list. */
+            readonly system?: components["schemas"]["Avatar"][];
         };
         AvatarUrlsBean: {
             /**
@@ -580,20 +587,6 @@ export interface components {
              */
             "48x48"?: string;
         };
-        /** @description Details about system and custom avatars. */
-        Avatars: {
-            /** @description Custom avatars list. */
-            readonly custom?: components["schemas"]["Avatar"][];
-            /** @description System avatars list. */
-            readonly system?: components["schemas"]["Avatar"][];
-        };
-        /** @description Details for changing owners of shareable entities */
-        BulkChangeOwnerDetails: {
-            /** @description Whether the name is fixed automatically if it's duplicated after changing owner. */
-            autofixName: boolean;
-            /** @description The account id of the new owner. */
-            newOwner: string;
-        };
         /** @description Request bean for bulk changelog retrieval */
         BulkChangelogRequestBean: {
             /** @description List of field IDs to filter changelogs */
@@ -615,6 +608,13 @@ export interface components {
             readonly issueChangeLogs?: components["schemas"]["IssueChangeLog"][];
             /** @description Continuation token to fetch the next page. If this result represents the last or the only page, this token will be null. */
             readonly nextPageToken?: string;
+        };
+        /** @description Details for changing owners of shareable entities */
+        BulkChangeOwnerDetails: {
+            /** @description Whether the name is fixed automatically if it's duplicated after changing owner. */
+            autofixName: boolean;
+            /** @description The account id of the new owner. */
+            newOwner: string;
         };
         /** @description Details of the contextual configuration for a custom field. */
         BulkContextualConfiguration: {
@@ -867,11 +867,6 @@ export interface components {
             /** @description The details of the new value as a string. */
             readonly toString?: string;
         };
-        /** @description The account ID of the new owner. */
-        ChangeFilterOwner: {
-            /** @description The account ID of the new owner. */
-            accountId: string;
-        };
         /** @description Details of names changed in the record event. */
         ChangedValueBean: {
             /** @description The value of the field before the change. */
@@ -921,6 +916,11 @@ export interface components {
             readonly until?: number;
             /** @description Changed worklog list. */
             readonly values?: components["schemas"]["ChangedWorklog"][];
+        };
+        /** @description The account ID of the new owner. */
+        ChangeFilterOwner: {
+            /** @description The account ID of the new owner. */
+            accountId: string;
         };
         /** @description A log of changes made to issue fields. Changelogs related to workflow associations are currently being deprecated. */
         Changelog: {
@@ -1329,6 +1329,26 @@ export interface components {
              * @enum {string}
              */
             type: "DueDate" | "TargetStartDate" | "TargetEndDate" | "DateCustomField";
+        };
+        /** @description Details about a created issue or subtask. */
+        CreatedIssue: {
+            /** @description The ID of the created issue or subtask. */
+            readonly id?: string;
+            /** @description The key of the created issue or subtask. */
+            readonly key?: string;
+            /** @description The URL of the created issue or subtask. */
+            readonly self?: string;
+            /** @description The response code and messages related to any requested transition. */
+            readonly transition?: components["schemas"]["NestedResponse"];
+            /** @description The response code and messages related to any requested watchers. */
+            readonly watchers?: components["schemas"]["NestedResponse"];
+        };
+        /** @description Details about the issues created and the errors for requests that failed. */
+        CreatedIssues: {
+            /** @description Error details for failed issue creation requests. */
+            readonly errors?: components["schemas"]["BulkOperationErrorResult"][];
+            /** @description Details of the issues created. */
+            readonly issues?: components["schemas"]["CreatedIssue"][];
         };
         CreateExclusionRulesRequest: {
             /** @description The IDs of the issues to exclude from the plan. */
@@ -1767,26 +1787,6 @@ export interface components {
             /** @description The ID of the screen. */
             id: string;
         };
-        /** @description Details about a created issue or subtask. */
-        CreatedIssue: {
-            /** @description The ID of the created issue or subtask. */
-            readonly id?: string;
-            /** @description The key of the created issue or subtask. */
-            readonly key?: string;
-            /** @description The URL of the created issue or subtask. */
-            readonly self?: string;
-            /** @description The response code and messages related to any requested transition. */
-            readonly transition?: components["schemas"]["NestedResponse"];
-            /** @description The response code and messages related to any requested watchers. */
-            readonly watchers?: components["schemas"]["NestedResponse"];
-        };
-        /** @description Details about the issues created and the errors for requests that failed. */
-        CreatedIssues: {
-            /** @description Error details for failed issue creation requests. */
-            readonly errors?: components["schemas"]["BulkOperationErrorResult"][];
-            /** @description Details of the issues created. */
-            readonly issues?: components["schemas"]["CreatedIssue"][];
-        };
         CustomContextVariable: {
             /** @description Type of custom context variable. */
             type: string;
@@ -1990,18 +1990,6 @@ export interface components {
              */
             type: "labels";
         };
-        /** @description The default value for a User Picker (multiple) custom field. */
-        CustomFieldContextDefaultValueMultiUserPicker: {
-            /** @description The IDs of the default users. */
-            accountIds: string[];
-            /** @description The ID of the context. */
-            contextId: string;
-            /**
-             * @description discriminator enum property added by openapi-typescript
-             * @enum {string}
-             */
-            type: "multi.user.select";
-        };
         /** @description The default value for a multiple group picker custom field. */
         CustomFieldContextDefaultValueMultipleGroupPicker: {
             /** @description The ID of the context. */
@@ -2037,6 +2025,18 @@ export interface components {
             versionIds: string[];
             /** @description The order the pickable versions are displayed in. If not provided, the released-first order is used. Available version orders are `"releasedFirst"` and `"unreleasedFirst"`. */
             versionOrder?: string;
+        };
+        /** @description The default value for a User Picker (multiple) custom field. */
+        CustomFieldContextDefaultValueMultiUserPicker: {
+            /** @description The IDs of the default users. */
+            accountIds: string[];
+            /** @description The ID of the context. */
+            contextId: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            type: "multi.user.select";
         };
         /** @description The default value for a project custom field. */
         CustomFieldContextDefaultValueProject: {
@@ -2116,6 +2116,10 @@ export interface components {
              */
             type: "textfield";
         };
+        /** @description Default values to update. */
+        CustomFieldContextDefaultValueUpdate: {
+            defaultValues?: components["schemas"]["CustomFieldContextDefaultValue"][];
+        };
         /** @description The default value for a URL custom field. */
         CustomFieldContextDefaultValueURL: {
             /** @description The ID of the context. */
@@ -2127,10 +2131,6 @@ export interface components {
             type: "url";
             /** @description The default URL. */
             url: string;
-        };
-        /** @description Default values to update. */
-        CustomFieldContextDefaultValueUpdate: {
-            defaultValues?: components["schemas"]["CustomFieldContextDefaultValue"][];
         };
         /** @description Details of the custom field options for a context. */
         CustomFieldContextOption: {
@@ -2943,6 +2943,34 @@ export interface components {
             /** @description The field identifier. */
             value?: string;
         };
+        /** @description Can contain multiple field values of following types depending on `type` key */
+        fields: {
+            /**
+             * @description If `true`, will try to retain original non-null issue field values on move.
+             * @default true
+             */
+            retain: boolean;
+            /** @enum {string} */
+            type?: "adf" | "raw";
+            value?: Record<string, never>;
+        } | components["schemas"]["MandatoryFieldValue"] | components["schemas"]["MandatoryFieldValueForADF"];
+        /** @description Key fields from the linked issue. */
+        Fields: {
+            /** @description The assignee of the linked issue. */
+            readonly assignee?: components["schemas"]["UserDetails"];
+            /** @description The type of the linked issue. */
+            issuetype?: components["schemas"]["IssueTypeDetails"];
+            /** @description The type of the linked issue. */
+            readonly issueType?: components["schemas"]["IssueTypeDetails"];
+            /** @description The priority of the linked issue. */
+            readonly priority?: components["schemas"]["Priority"];
+            /** @description The status of the linked issue. */
+            readonly status?: components["schemas"]["StatusDetails"];
+            /** @description The summary description of the linked issue. */
+            readonly summary?: string;
+            /** @description The time tracking of the linked issue. */
+            readonly timetracking?: components["schemas"]["TimeTrackingDetails"];
+        };
         /** @description Details of an operation to perform on a field. */
         FieldUpdateOperation: {
             /**
@@ -3004,23 +3032,6 @@ export interface components {
             /** @description The list of time predicates. */
             predicates: components["schemas"]["JqlQueryClauseTimePredicate"][];
         };
-        /** @description Key fields from the linked issue. */
-        Fields: {
-            /** @description The assignee of the linked issue. */
-            readonly assignee?: components["schemas"]["UserDetails"];
-            /** @description The type of the linked issue. */
-            readonly issueType?: components["schemas"]["IssueTypeDetails"];
-            /** @description The type of the linked issue. */
-            issuetype?: components["schemas"]["IssueTypeDetails"];
-            /** @description The priority of the linked issue. */
-            readonly priority?: components["schemas"]["Priority"];
-            /** @description The status of the linked issue. */
-            readonly status?: components["schemas"]["StatusDetails"];
-            /** @description The summary description of the linked issue. */
-            readonly summary?: string;
-            /** @description The time tracking of the linked issue. */
-            readonly timetracking?: components["schemas"]["TimeTrackingDetails"];
-        };
         /** @description Details about a filter. */
         Filter: {
             /**
@@ -3057,10 +3068,10 @@ export interface components {
              * @description The URL of the filter.
              */
             readonly self?: string;
-            /** @description The groups and projects that the filter is shared with. */
-            sharePermissions?: components["schemas"]["SharePermission"][];
             /** @description A paginated list of the users that the filter is shared with. This includes users that are members of the groups or can browse the projects that the filter is shared with. */
             readonly sharedUsers?: components["schemas"]["UserList"];
+            /** @description The groups and projects that the filter is shared with. */
+            sharePermissions?: components["schemas"]["SharePermission"][];
             /** @description A paginated list of the users that are subscribed to the filter. */
             readonly subscriptions?: components["schemas"]["FilterSubscriptionsList"];
             /**
@@ -3735,10 +3746,10 @@ export interface components {
         };
         IssueBulkOperationsFieldOption: Record<string, never>;
         IssueBulkTransitionForWorkflow: {
-            /** @description Indicates whether all the transitions of this workflow are available in the transitions list or not. */
-            readonly isTransitionsFiltered?: boolean;
             /** @description List of issue keys from the request which are associated with this workflow. */
             readonly issues?: string[];
+            /** @description Indicates whether all the transitions of this workflow are available in the transitions list or not. */
+            readonly isTransitionsFiltered?: boolean;
             /** @description List of transitions available for issues from the request which are associated with this workflow.
              *
              *      **This list includes only those transitions that are common across the issues in this workflow and do not involve any additional field updates.**  */
@@ -4002,6 +4013,13 @@ export interface components {
             /** @description If issue suggestions are found, returns a message indicating the number of issues suggestions found and returned. */
             readonly sub?: string;
         };
+        /** @description List of issues and JQL queries. */
+        IssuesAndJQLQueries: {
+            /** @description A list of issue IDs. */
+            issueIds: number[];
+            /** @description A list of JQL queries. */
+            jqls: string[];
+        };
         /** @description Issue security level member. */
         IssueSecurityLevelMember: {
             /** @description The user or group being granted the permission. It consists of a `type` and a type-dependent `parameter`. See [Holder object](../api-group-permission-schemes/#holder-object) in *Get all permission schemes* for more information. */
@@ -4021,6 +4039,40 @@ export interface components {
         IssueSecuritySchemeToProjectMapping: {
             readonly issueSecuritySchemeId?: string;
             readonly projectId?: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** @description The description of the page of issues loaded by the provided JQL query. */
+        IssuesJqlMetaDataBean: {
+            /**
+             * Format: int32
+             * @description The number of issues that were loaded in this evaluation.
+             */
+            count: number;
+            /**
+             * Format: int32
+             * @description The maximum number of issues that could be loaded in this evaluation.
+             */
+            maxResults: number;
+            /**
+             * Format: int64
+             * @description The index of the first issue.
+             */
+            startAt: number;
+            /**
+             * Format: int64
+             * @description The total number of issues the JQL returned.
+             */
+            totalCount: number;
+            /** @description Any warnings related to the JQL query. Present only if the validation mode was set to `warn`. */
+            validationWarnings?: string[];
+        };
+        /** @description Meta data describing the `issues` context variable. */
+        IssuesMetaBean: {
+            jql?: components["schemas"]["IssuesJqlMetaDataBean"];
+        };
+        IssuesUpdateBean: {
+            issueUpdates?: components["schemas"]["IssueUpdateDetails"][];
         } & {
             [key: string]: unknown;
         };
@@ -4289,6 +4341,13 @@ export interface components {
             /** @description The ID of the project. */
             projectId?: string;
         };
+        /** @description Issue type screen scheme with a list of the projects that use it. */
+        IssueTypeScreenSchemesProjects: {
+            /** @description Details of an issue type screen scheme. */
+            issueTypeScreenScheme: components["schemas"]["IssueTypeScreenScheme"];
+            /** @description The IDs of the projects using the issue type screen scheme. */
+            projectIds: string[];
+        };
         /** @description Details of an issue type screen scheme. */
         IssueTypeScreenSchemeUpdateDetails: {
             /** @description The description of the issue type screen scheme. The maximum length is 255 characters. */
@@ -4296,12 +4355,16 @@ export interface components {
             /** @description The name of the issue type screen scheme. The name must be unique. The maximum length is 255 characters. */
             name?: string;
         };
-        /** @description Issue type screen scheme with a list of the projects that use it. */
-        IssueTypeScreenSchemesProjects: {
-            /** @description Details of an issue type screen scheme. */
-            issueTypeScreenScheme: components["schemas"]["IssueTypeScreenScheme"];
-            /** @description The IDs of the projects using the issue type screen scheme. */
-            projectIds: string[];
+        /** @description Details about the mapping between issue types and a workflow. */
+        IssueTypesWorkflowMapping: {
+            /** @description Whether the workflow is the default workflow for the workflow scheme. */
+            defaultMapping?: boolean;
+            /** @description The list of issue type IDs. */
+            issueTypes?: string[];
+            /** @description Whether a draft workflow scheme is created or updated when updating an active workflow scheme. The draft is updated with the new workflow-issue types mapping. Defaults to `false`. */
+            updateDraftIfNeeded?: boolean;
+            /** @description The name of the workflow. Optional if updating the workflow-issue types mapping. */
+            workflow?: string;
         };
         /** @description Mapping of an issue type to a context. */
         IssueTypeToContextMapping: {
@@ -4345,17 +4408,6 @@ export interface components {
             /** @description The name of the workflow. */
             workflow?: string;
         };
-        /** @description Details about the mapping between issue types and a workflow. */
-        IssueTypesWorkflowMapping: {
-            /** @description Whether the workflow is the default workflow for the workflow scheme. */
-            defaultMapping?: boolean;
-            /** @description The list of issue type IDs. */
-            issueTypes?: string[];
-            /** @description Whether a draft workflow scheme is created or updated when updating an active workflow scheme. The draft is updated with the new workflow-issue types mapping. Defaults to `false`. */
-            updateDraftIfNeeded?: boolean;
-            /** @description The name of the workflow. Optional if updating the workflow-issue types mapping. */
-            workflow?: string;
-        };
         /** @description Details of an issue update request. */
         IssueUpdateDetails: {
             /** @description List of issue screen fields to update, specifying the sub-field to update and its value for each field. This field provides a straightforward option when setting a sub-field. When multiple sub-fields or other operations are required, use `update`. Fields included in here cannot be included in `update`. */
@@ -4381,46 +4433,22 @@ export interface components {
                 [key: string]: components["schemas"]["FieldMetadata"];
             };
         };
-        /** @description List of issues and JQL queries. */
-        IssuesAndJQLQueries: {
-            /** @description A list of issue IDs. */
-            issueIds: number[];
-            /** @description A list of JQL queries. */
-            jqls: string[];
+        /** @description The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. This bean will be replacing `JexpIssues` bean as part of new `evaluate` endpoint */
+        JexpEvaluateCtxIssues: {
+            /** @description The JQL query that specifies the set of issues available in the Jira expression. */
+            jql?: components["schemas"]["JexpEvaluateCtxJqlIssues"];
         };
-        /** @description The description of the page of issues loaded by the provided JQL query. */
-        IssuesJqlMetaDataBean: {
+        /** @description The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. Not all issues returned by the JQL query are loaded, only those described by the `nextPageToken` and `maxResults` properties. This bean will be replacing JexpJqlIssues bean as part of new `evaluate` endpoint */
+        JexpEvaluateCtxJqlIssues: {
             /**
              * Format: int32
-             * @description The number of issues that were loaded in this evaluation.
+             * @description The maximum number of issues to return from the JQL query. max results value considered may be lower than the number specific here.
              */
-            count: number;
-            /**
-             * Format: int32
-             * @description The maximum number of issues that could be loaded in this evaluation.
-             */
-            maxResults: number;
-            /**
-             * Format: int64
-             * @description The index of the first issue.
-             */
-            startAt: number;
-            /**
-             * Format: int64
-             * @description The total number of issues the JQL returned.
-             */
-            totalCount: number;
-            /** @description Any warnings related to the JQL query. Present only if the validation mode was set to `warn`. */
-            validationWarnings?: string[];
-        };
-        /** @description Meta data describing the `issues` context variable. */
-        IssuesMetaBean: {
-            jql?: components["schemas"]["IssuesJqlMetaDataBean"];
-        };
-        IssuesUpdateBean: {
-            issueUpdates?: components["schemas"]["IssueUpdateDetails"][];
-        } & {
-            [key: string]: unknown;
+            maxResults?: number;
+            /** @description The token for a page to fetch that is not the first page. The first page has a `nextPageToken` of `null`. Use the `nextPageToken` to fetch the next page of issues. */
+            nextPageToken?: string;
+            /** @description The JQL query, required to be bounded. Additionally, `orderBy` clause can contain a maximum of 7 fields */
+            query?: string;
         };
         /** @description The description of the page of issues loaded by the provided JQL query.This bean will be replacing IssuesJqlMetaDataBean bean as part of new `evaluate` endpoint */
         JExpEvaluateIssuesJqlMetaDataBean: {
@@ -4444,55 +4472,6 @@ export interface components {
             complexity?: components["schemas"]["JiraExpressionsComplexityBean"];
             /** @description Contains information about the `issues` variable in the context. For example, is the issues were loaded with JQL, information about the page will be included here. */
             issues?: components["schemas"]["JExpEvaluateIssuesMetaBean"];
-        };
-        JQLCountRequestBean: {
-            /** @description A [JQL](https://confluence.atlassian.com/x/egORLQ) expression. For performance reasons, this parameter requires a bounded query. A bounded query is a query with a search restriction. */
-            jql?: string;
-        };
-        JQLCountResultsBean: {
-            /**
-             * Format: int64
-             * @description Number of issues matching JQL query.
-             */
-            count?: number;
-        };
-        /** @description The JQL queries to be converted. */
-        JQLPersonalDataMigrationRequest: {
-            /** @description A list of queries with user identifiers. Maximum of 100 queries. */
-            queryStrings?: string[];
-        };
-        /** @description JQL queries that contained users that could not be found */
-        JQLQueryWithUnknownUsers: {
-            /** @description The converted query, with accountIDs instead of user identifiers, or 'unknown' for users that could not be found */
-            convertedQuery?: string;
-            /** @description The original query, for reference */
-            originalQuery?: string;
-        };
-        /** @description Lists of JQL reference data. */
-        JQLReferenceData: {
-            /** @description List of JQL query reserved words. */
-            jqlReservedWords?: string[];
-            /** @description List of fields usable in JQL queries. */
-            visibleFieldNames?: components["schemas"]["FieldReferenceData"][];
-            /** @description List of functions usable in JQL queries. */
-            visibleFunctionNames?: components["schemas"]["FunctionReferenceData"][];
-        };
-        /** @description The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. This bean will be replacing `JexpIssues` bean as part of new `evaluate` endpoint */
-        JexpEvaluateCtxIssues: {
-            /** @description The JQL query that specifies the set of issues available in the Jira expression. */
-            jql?: components["schemas"]["JexpEvaluateCtxJqlIssues"];
-        };
-        /** @description The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. Not all issues returned by the JQL query are loaded, only those described by the `nextPageToken` and `maxResults` properties. This bean will be replacing JexpJqlIssues bean as part of new `evaluate` endpoint */
-        JexpEvaluateCtxJqlIssues: {
-            /**
-             * Format: int32
-             * @description The maximum number of issues to return from the JQL query. max results value considered may be lower than the number specific here.
-             */
-            maxResults?: number;
-            /** @description The token for a page to fetch that is not the first page. The first page has a `nextPageToken` of `null`. Use the `nextPageToken` to fetch the next page of issues. */
-            nextPageToken?: string;
-            /** @description The JQL query, required to be bounded. Additionally, `orderBy` clause can contain a maximum of 7 fields */
-            query?: string;
         };
         /** @description The JQL specifying the issues available in the evaluated Jira expression under the `issues` context variable. */
         JexpIssues: {
@@ -4691,6 +4670,33 @@ export interface components {
             /** @description The value of the evaluated expression. It may be a primitive JSON value or a Jira REST API object. (Some expressions do not produce any meaningful results—for example, an expression that returns a lambda function—if that's the case a simple string representation is returned. These string representations should not be relied upon and may change without notice.) */
             value: unknown;
         };
+        /** @description Details about the analysed Jira expression. */
+        JiraExpressionsAnalysis: {
+            /** @description The results of Jira expressions analysis. */
+            results: components["schemas"]["JiraExpressionAnalysis"][];
+        };
+        JiraExpressionsComplexityBean: {
+            /** @description The number of Jira REST API beans returned in the response. */
+            beans: components["schemas"]["JiraExpressionsComplexityValueBean"];
+            /** @description The number of expensive operations executed while evaluating the expression. Expensive operations are those that load additional data, such as entity properties, comments, or custom fields. */
+            expensiveOperations: components["schemas"]["JiraExpressionsComplexityValueBean"];
+            /** @description The number of primitive values returned in the response. */
+            primitiveValues: components["schemas"]["JiraExpressionsComplexityValueBean"];
+            /** @description The number of steps it took to evaluate the expression, where a step is a high-level operation performed by the expression. A step is an operation such as arithmetic, accessing a property, accessing a context variable, or calling a function. */
+            steps: components["schemas"]["JiraExpressionsComplexityValueBean"];
+        };
+        JiraExpressionsComplexityValueBean: {
+            /**
+             * Format: int32
+             * @description The maximum allowed complexity. The evaluation will fail if this value is exceeded.
+             */
+            limit: number;
+            /**
+             * Format: int32
+             * @description The complexity value of the current expression.
+             */
+            value: number;
+        };
         /** @description Details about syntax and type errors. The error details apply to the entire expression, unless the object includes:
          *
          *      *  `line` and `column`
@@ -4718,33 +4724,6 @@ export interface components {
              * @enum {string}
              */
             type: "syntax" | "type" | "other";
-        };
-        /** @description Details about the analysed Jira expression. */
-        JiraExpressionsAnalysis: {
-            /** @description The results of Jira expressions analysis. */
-            results: components["schemas"]["JiraExpressionAnalysis"][];
-        };
-        JiraExpressionsComplexityBean: {
-            /** @description The number of Jira REST API beans returned in the response. */
-            beans: components["schemas"]["JiraExpressionsComplexityValueBean"];
-            /** @description The number of expensive operations executed while evaluating the expression. Expensive operations are those that load additional data, such as entity properties, comments, or custom fields. */
-            expensiveOperations: components["schemas"]["JiraExpressionsComplexityValueBean"];
-            /** @description The number of primitive values returned in the response. */
-            primitiveValues: components["schemas"]["JiraExpressionsComplexityValueBean"];
-            /** @description The number of steps it took to evaluate the expression, where a step is a high-level operation performed by the expression. A step is an operation such as arithmetic, accessing a property, accessing a context variable, or calling a function. */
-            steps: components["schemas"]["JiraExpressionsComplexityValueBean"];
-        };
-        JiraExpressionsComplexityValueBean: {
-            /**
-             * Format: int32
-             * @description The maximum allowed complexity. The evaluation will fail if this value is exceeded.
-             */
-            limit: number;
-            /**
-             * Format: int32
-             * @description The complexity value of the current expression.
-             */
-            value: number;
         };
         JiraGroupInput: {
             groupName: string;
@@ -4865,12 +4844,6 @@ export interface components {
         JiraLabelsInput: {
             name: string;
         };
-        JiraMultiSelectComponentField: {
-            /** @enum {string} */
-            bulkEditMultiSelectFieldOption: "ADD" | "REMOVE" | "REPLACE" | "REMOVE_ALL";
-            components: components["schemas"]["JiraComponentField"][];
-            fieldId: string;
-        };
         JiraMultipleGroupPickerField: {
             fieldId: string;
             groups: components["schemas"]["JiraGroupInput"][];
@@ -4888,6 +4861,12 @@ export interface components {
             bulkEditMultiSelectFieldOption: "ADD" | "REMOVE" | "REPLACE" | "REMOVE_ALL";
             fieldId: string;
             versions: components["schemas"]["JiraVersionField"][];
+        };
+        JiraMultiSelectComponentField: {
+            /** @enum {string} */
+            bulkEditMultiSelectFieldOption: "ADD" | "REMOVE" | "REPLACE" | "REMOVE_ALL";
+            components: components["schemas"]["JiraComponentField"][];
+            fieldId: string;
         };
         JiraNumberField: {
             fieldId: string;
@@ -5011,6 +4990,17 @@ export interface components {
             /** @description The `statuses.usages` expand is an optional parameter that can be used when reading and updating statuses in Jira. It provides additional information about the projects and issue types associated with the requested statuses. */
             usages?: components["schemas"]["ProjectIssueTypes"][];
         };
+        JQLCountRequestBean: {
+            /** @description A [JQL](https://confluence.atlassian.com/x/egORLQ) expression. For performance reasons, this parameter requires a bounded query. A bounded query is a query with a search restriction. */
+            jql?: string;
+        };
+        JQLCountResultsBean: {
+            /**
+             * Format: int64
+             * @description Number of issues matching JQL query.
+             */
+            count?: number;
+        };
         /** @description Jql function precomputation. */
         JqlFunctionPrecomputationBean: {
             /** @description The list of arguments function was invoked with. */
@@ -5080,6 +5070,11 @@ export interface components {
         JqlFunctionPrecomputationUpdateResponse: {
             /** @description List of precomputations that were not found and skipped. Only returned if the request passed skipNotFoundPrecomputations=true. */
             readonly notFoundPrecomputationIDs?: string[];
+        };
+        /** @description The JQL queries to be converted. */
+        JQLPersonalDataMigrationRequest: {
+            /** @description A list of queries with user identifiers. Maximum of 100 queries. */
+            queryStrings?: string[];
         };
         /** @description A list of JQL queries to parse. */
         JqlQueriesToParse: {
@@ -5165,6 +5160,22 @@ export interface components {
         };
         /** @description An operand that can be part of a list operand. */
         JqlQueryUnitaryOperand: components["schemas"]["ValueOperand"] | components["schemas"]["FunctionOperand"] | components["schemas"]["KeywordOperand"];
+        /** @description JQL queries that contained users that could not be found */
+        JQLQueryWithUnknownUsers: {
+            /** @description The converted query, with accountIDs instead of user identifiers, or 'unknown' for users that could not be found */
+            convertedQuery?: string;
+            /** @description The original query, for reference */
+            originalQuery?: string;
+        };
+        /** @description Lists of JQL reference data. */
+        JQLReferenceData: {
+            /** @description List of JQL query reserved words. */
+            jqlReservedWords?: string[];
+            /** @description List of fields usable in JQL queries. */
+            visibleFieldNames?: components["schemas"]["FieldReferenceData"][];
+            /** @description List of functions usable in JQL queries. */
+            visibleFunctionNames?: components["schemas"]["FunctionReferenceData"][];
+        };
         /** @description A JSON object with custom content. */
         JsonContextVariable: {
             /**
@@ -5194,9 +5205,9 @@ export interface components {
             fields?: Record<string, never>;
             floatingPointNumber?: boolean;
             int?: boolean;
+            integralNumber?: boolean;
             /** Format: int32 */
             intValue?: number;
-            integralNumber?: boolean;
             long?: boolean;
             /** Format: int64 */
             longValue?: number;
@@ -5208,8 +5219,8 @@ export interface components {
             numberValue?: number;
             object?: boolean;
             pojo?: boolean;
-            textValue?: string;
             textual?: boolean;
+            textValue?: string;
             valueAsBoolean?: boolean;
             /** Format: double */
             valueAsDouble?: number;
@@ -5264,13 +5275,6 @@ export interface components {
             /** @description The applications under this license. */
             readonly applications: components["schemas"]["LicensedApplication"][];
         };
-        /** @description A metric that provides insight into the active licence details */
-        LicenseMetric: {
-            /** @description The key of a specific license metric. */
-            key?: string;
-            /** @description The calculated value of a licence metric linked to the key. An example licence metric is the approximate number of user accounts. */
-            value?: string;
-        };
         /** @description Details about a licensed Jira application. */
         LicensedApplication: {
             /** @description The ID of the application. */
@@ -5280,6 +5284,27 @@ export interface components {
              * @enum {string}
              */
             readonly plan: "UNLICENSED" | "FREE" | "PAID";
+        };
+        /** @description A metric that provides insight into the active licence details */
+        LicenseMetric: {
+            /** @description The key of a specific license metric. */
+            key?: string;
+            /** @description The calculated value of a licence metric linked to the key. An example licence metric is the approximate number of user accounts. */
+            value?: string;
+        };
+        /** @description The ID or key of a linked issue. */
+        LinkedIssue: {
+            /** @description The fields associated with the issue. */
+            readonly fields?: components["schemas"]["Fields"];
+            /** @description The ID of an issue. Required if `key` isn't provided. */
+            id?: string;
+            /** @description The key of an issue. Required if `id` isn't provided. */
+            key?: string;
+            /**
+             * Format: uri
+             * @description The URL of the issue.
+             */
+            readonly self?: string;
         };
         /** @description Details a link group, which defines issue operations. */
         LinkGroup: {
@@ -5296,20 +5321,6 @@ export interface components {
             inwardIssue: components["schemas"]["LinkedIssue"];
             outwardIssue: components["schemas"]["LinkedIssue"];
             type: components["schemas"]["IssueLinkType"];
-        };
-        /** @description The ID or key of a linked issue. */
-        LinkedIssue: {
-            /** @description The fields associated with the issue. */
-            readonly fields?: components["schemas"]["Fields"];
-            /** @description The ID of an issue. Required if `key` isn't provided. */
-            id?: string;
-            /** @description The key of an issue. Required if `id` isn't provided. */
-            key?: string;
-            /**
-             * Format: uri
-             * @description The URL of the issue.
-             */
-            readonly self?: string;
         };
         /** @description An operand that is a list of values. */
         ListOperand: {
@@ -7407,6 +7418,31 @@ export interface components {
             /** @description The list of items. */
             readonly values?: components["schemas"]["WorkflowTransitionRules"][];
         };
+        /** @description A paged list. To access additional details append `[start-index:end-index]` to the expand request. For example, `?expand=sharedUsers[10:40]` returns a list starting at item 10 and finishing at item 40. */
+        PagedListUserDetailsApplicationUser: {
+            /**
+             * Format: int32
+             * @description The index of the last item returned on the page.
+             */
+            readonly "end-index"?: number;
+            /** @description The list of items. */
+            readonly items?: components["schemas"]["UserDetails"][];
+            /**
+             * Format: int32
+             * @description The maximum number of results that could be on the page.
+             */
+            readonly "max-results"?: number;
+            /**
+             * Format: int32
+             * @description The number of items on the page.
+             */
+            readonly size?: number;
+            /**
+             * Format: int32
+             * @description The index of the first item returned on the page.
+             */
+            readonly "start-index"?: number;
+        };
         /** @description A page of changelogs. */
         PageOfChangelogs: {
             /** @description The list of changelogs. */
@@ -7449,16 +7485,16 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
-        /** @description A page of CreateMetaIssueType with Field. */
-        PageOfCreateMetaIssueTypeWithField: {
-            /** @description The collection of FieldCreateMetaBeans. */
-            readonly fields?: components["schemas"]["FieldCreateMetadata"][];
+        /** @description A page of CreateMetaIssueTypes. */
+        PageOfCreateMetaIssueTypes: {
+            createMetaIssueType?: components["schemas"]["IssueTypeIssueCreateMetadata"][];
+            /** @description The list of CreateMetaIssueType. */
+            readonly issueTypes?: components["schemas"]["IssueTypeIssueCreateMetadata"][];
             /**
              * Format: int32
              * @description The maximum number of items to return per page.
              */
             readonly maxResults?: number;
-            results?: components["schemas"]["FieldCreateMetadata"][];
             /**
              * Format: int64
              * @description The index of the first item returned.
@@ -7472,16 +7508,16 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
-        /** @description A page of CreateMetaIssueTypes. */
-        PageOfCreateMetaIssueTypes: {
-            createMetaIssueType?: components["schemas"]["IssueTypeIssueCreateMetadata"][];
-            /** @description The list of CreateMetaIssueType. */
-            readonly issueTypes?: components["schemas"]["IssueTypeIssueCreateMetadata"][];
+        /** @description A page of CreateMetaIssueType with Field. */
+        PageOfCreateMetaIssueTypeWithField: {
+            /** @description The collection of FieldCreateMetaBeans. */
+            readonly fields?: components["schemas"]["FieldCreateMetadata"][];
             /**
              * Format: int32
              * @description The maximum number of items to return per page.
              */
             readonly maxResults?: number;
+            results?: components["schemas"]["FieldCreateMetadata"][];
             /**
              * Format: int64
              * @description The index of the first item returned.
@@ -7586,31 +7622,6 @@ export interface components {
             total?: number;
             values?: components["schemas"]["GetTeamResponseForPage"][];
         };
-        /** @description A paged list. To access additional details append `[start-index:end-index]` to the expand request. For example, `?expand=sharedUsers[10:40]` returns a list starting at item 10 and finishing at item 40. */
-        PagedListUserDetailsApplicationUser: {
-            /**
-             * Format: int32
-             * @description The index of the last item returned on the page.
-             */
-            readonly "end-index"?: number;
-            /** @description The list of items. */
-            readonly items?: components["schemas"]["UserDetails"][];
-            /**
-             * Format: int32
-             * @description The maximum number of results that could be on the page.
-             */
-            readonly "max-results"?: number;
-            /**
-             * Format: int32
-             * @description The number of items on the page.
-             */
-            readonly size?: number;
-            /**
-             * Format: int32
-             * @description The index of the first item returned on the page.
-             */
-            readonly "start-index"?: number;
-        };
         PaginatedResponseComment: {
             /** Format: int32 */
             maxResults?: number;
@@ -7696,6 +7707,13 @@ export interface components {
             /** @description The identifier associated with the `type` value that defines the holder of the permission. */
             value?: string;
         };
+        /** @description Details about permissions. */
+        Permissions: {
+            /** @description List of permissions. */
+            readonly permissions?: {
+                [key: string]: components["schemas"]["UserPermission"];
+            };
+        };
         /** @description Details of a permission scheme. */
         PermissionScheme: {
             /** @description A description for the permission scheme. */
@@ -7725,13 +7743,6 @@ export interface components {
         PermissionSchemes: {
             /** @description Permission schemes list. */
             readonly permissionSchemes?: components["schemas"]["PermissionScheme"][];
-        };
-        /** @description Details about permissions. */
-        Permissions: {
-            /** @description List of permissions. */
-            readonly permissions?: {
-                [key: string]: components["schemas"]["UserPermission"];
-            };
         };
         PermissionsKeysBean: {
             /** @description A list of permission keys. */
@@ -8637,6 +8648,23 @@ export interface components {
             /** @description The scope of the screen. */
             scope?: components["schemas"]["Scope"];
         };
+        /** @description A screen tab field. */
+        ScreenableField: {
+            /** @description The ID of the screen tab field. */
+            readonly id?: string;
+            /** @description The name of the screen tab field. Required on create and update. The maximum length is 255 characters. */
+            name?: string;
+        };
+        /** @description A screen tab. */
+        ScreenableTab: {
+            /**
+             * Format: int64
+             * @description The ID of the screen tab.
+             */
+            readonly id?: number;
+            /** @description The name of the screen tab. The maximum length is 255 characters. */
+            name: string;
+        };
         /** @description Details of a screen. */
         ScreenDetails: {
             /** @description The description of the screen. The maximum length is 255 characters. */
@@ -8715,23 +8743,6 @@ export interface components {
             scope?: components["schemas"]["Scope"];
             /** @description The tab for the screen. */
             tab?: components["schemas"]["ScreenableTab"];
-        };
-        /** @description A screen tab field. */
-        ScreenableField: {
-            /** @description The ID of the screen tab field. */
-            readonly id?: string;
-            /** @description The name of the screen tab field. Required on create and update. The maximum length is 255 characters. */
-            name?: string;
-        };
-        /** @description A screen tab. */
-        ScreenableTab: {
-            /**
-             * Format: int64
-             * @description The ID of the screen tab.
-             */
-            readonly id?: number;
-            /** @description The name of the screen tab. The maximum length is 255 characters. */
-            name: string;
         };
         SearchAndReconcileRequestBean: {
             /** @description Use [expand](#expansion) to include additional information about issues in the response. Note that, unlike the majority of instances where `expand` is specified, `expand` is defined as a comma-delimited string of values. The expand options are:
@@ -8984,6 +8995,11 @@ export interface components {
             /** @description The list of level members which should be added to the issue security scheme level. */
             members?: components["schemas"]["SecuritySchemeLevelMemberBean"][];
         };
+        /** @description List of security schemes. */
+        SecuritySchemes: {
+            /** @description List of security schemes. */
+            readonly issueSecuritySchemes?: components["schemas"]["SecurityScheme"][];
+        };
         /** @description Details about an issue security scheme. */
         SecuritySchemeWithProjects: {
             /**
@@ -9006,11 +9022,6 @@ export interface components {
             readonly self: string;
         } & {
             [key: string]: unknown;
-        };
-        /** @description List of security schemes. */
-        SecuritySchemes: {
-            /** @description List of security schemes. */
-            readonly issueSecuritySchemes?: components["schemas"]["SecurityScheme"][];
         };
         /** @description Details about the Jira instance. */
         ServerInformation: {
@@ -9349,6 +9360,15 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** @description The statuses associated with each workflow. */
+        StatusesPerWorkflow: {
+            /** @description The ID of the initial status for the workflow. */
+            initialStatusId?: string;
+            /** @description The status IDs associated with the workflow. */
+            statuses?: string[];
+            /** @description The ID of the workflow. */
+            workflowId?: string;
+        };
         /** @description The statuses associated with this workflow. */
         StatusLayoutUpdate: {
             approvalConfiguration?: components["schemas"]["ApprovalConfiguration"];
@@ -9446,15 +9466,6 @@ export interface components {
             /** @description The list of statuses that will be updated. */
             statuses: components["schemas"]["StatusUpdate"][];
         };
-        /** @description The statuses associated with each workflow. */
-        StatusesPerWorkflow: {
-            /** @description The ID of the initial status for the workflow. */
-            initialStatusId?: string;
-            /** @description The status IDs associated with the workflow. */
-            statuses?: string[];
-            /** @description The ID of the workflow. */
-            workflowId?: string;
-        };
         StreamingResponseBody: Record<string, never>;
         StringList: Record<string, never>;
         SubmittedBulkOperation: {
@@ -9516,6 +9527,81 @@ export interface components {
         SystemAvatars: {
             /** @description A list of avatar details. */
             readonly system?: components["schemas"]["Avatar"][];
+        };
+        /** @description Classification mapping for classifications in source issues to respective target classification. */
+        targetClassification: {
+            /** @description An object with the key as the ID of the target classification and value with the list of the IDs of the current source classifications. */
+            classifications: {
+                [key: string]: string[];
+            };
+            /** @description ID of the source issueType to which issues present in `issueIdOrKeys` belongs. */
+            issueType?: string;
+            /** @description ID or key of the source project to which issues present in `issueIdOrKeys` belongs. */
+            projectKeyOrId?: string;
+        } | null;
+        /** @description Field mapping for mandatory fields in target */
+        targetMandatoryFields: {
+            /** @description Contains the value of mandatory fields */
+            fields: {
+                [key: string]: components["schemas"]["fields"];
+            };
+        } | null;
+        /** @description Status mapping for statuses in source workflow to respective target status in target workflow. */
+        targetStatus: {
+            /** @description An object with the key as the ID of the target status and value with the list of the IDs of the current source statuses. */
+            statuses: {
+                [key: string]: string[];
+            };
+        } | null;
+        /** @description An object representing the mapping of issues and data related to destination entities, like fields and statuses, that are required during a bulk move. */
+        targetToSourcesMapping: {
+            /** @description If `true`, when issues are moved into this target group, they will adopt the target project's default classification, if they don't have a classification already. If they do have a classification, it will be kept the same even after the move. Leave `targetClassification` empty when using this.
+             *
+             *     If `false`, you must provide a `targetClassification` mapping for each classification associated with the selected issues.
+             *
+             *     [Benefit from data classification](https://support.atlassian.com/security-and-access-policies/docs/what-is-data-classification/) */
+            inferClassificationDefaults: boolean;
+            /** @description If `true`, values from the source issues will be retained for the mandatory fields in the field configuration of the destination project. The `targetMandatoryFields` property shouldn't be defined.
+             *
+             *     If `false`, the user is required to set values for mandatory fields present in the field configuration of the destination project. Provide input by defining the `targetMandatoryFields` property */
+            inferFieldDefaults: boolean;
+            /** @description If `true`, the statuses of issues being moved in this target group that are not present in the target workflow will be changed to the default status of the target workflow (see below). Leave `targetStatus` empty when using this.
+             *
+             *     If `false`, you must provide a `targetStatus` for each status not present in the target workflow.
+             *
+             *     The default status in a workflow is referred to as the "initial status". Each workflow has its own unique initial status. When an issue is created, it is automatically assigned to this initial status. Read more about configuring initial statuses: [Configure the initial status | Atlassian Support.](https://support.atlassian.com/jira-cloud-administration/docs/configure-the-initial-status/) */
+            inferStatusDefaults: boolean;
+            /** @description When an issue is moved, its subtasks (if there are any) need to be moved with it. `inferSubtaskTypeDefault` helps with moving the subtasks by picking a random subtask type in the target project.
+             *
+             *     If `true`, subtasks will automatically move to the same project as their parent.
+             *
+             *     When they move:
+             *
+             *      *  Their `issueType` will be set to the default for subtasks in the target project.
+             *      *  Values for mandatory fields will be retained from the source issues
+             *      *  Specifying separate mapping for implicit subtasks won’t be allowed.
+             *
+             *     If `false`, you must manually move the subtasks. They will retain the parent which they had in the current project after being moved. */
+            inferSubtaskTypeDefault: boolean;
+            /** @description List of issue IDs or keys to be moved. These issues must be from the same project, have the same issue type, and be from the same parent (if they’re subtasks). */
+            issueIdsOrKeys?: string[];
+            /** @description List of the objects containing classifications in the source issues and their new values which need to be set during the bulk move operation.
+             *
+             *      *  **You should only define this property when `inferClassificationDefaults` is `false`.**
+             *      *  **In order to provide mapping for issues which don't have a classification, use `"-1"`.** */
+            targetClassification?: components["schemas"]["targetClassification"][] | null;
+            /** @description List of objects containing mandatory fields in the target field configuration and new values that need to be set during the bulk move operation.
+             *
+             *     The new values will only be applied if the field is mandatory in the target project and at least one issue from the source has that field empty, or if the field context is different in the target project (e.g. project-scoped version fields).
+             *
+             *     **You should only define this property when `inferFieldDefaults` is `false`.** */
+            targetMandatoryFields?: components["schemas"]["targetMandatoryFields"][] | null;
+            /** @description List of the objects containing statuses in the source workflow and their new values which need to be set during the bulk move operation.
+             *
+             *     The new values will only be applied if the source status is invalid for the target project and issue type.
+             *
+             *     **You should only define this property when `inferStatusDefaults` is `false`.** */
+            targetStatus?: components["schemas"]["targetStatus"][] | null;
         };
         /** @description Details about a task. */
         TaskProgressBeanJsonNode: {
@@ -9765,6 +9851,13 @@ export interface components {
              */
             type: "global" | "initial" | "directed";
         };
+        /** @description List of issue transitions. */
+        Transitions: {
+            /** @description Expand options that include additional transitions details in the response. */
+            readonly expand?: string;
+            /** @description List of issue transitions. */
+            readonly transitions?: components["schemas"]["IssueTransition"][];
+        };
         /** @description The details of a transition screen. */
         TransitionScreenDetails: {
             /** @description The ID of the screen. */
@@ -9811,13 +9904,6 @@ export interface components {
             validators?: components["schemas"]["WorkflowRuleConfiguration"][];
         } & {
             [key: string]: unknown;
-        };
-        /** @description List of issue transitions. */
-        Transitions: {
-            /** @description Expand options that include additional transitions details in the response. */
-            readonly expand?: string;
-            /** @description List of issue transitions. */
-            readonly transitions?: components["schemas"]["IssueTransition"][];
         };
         /** @description The details of a UI modification's context, which define where to activate the UI modification. */
         UiModificationContextDetails: {
@@ -9908,6 +9994,17 @@ export interface components {
         UpdateDefaultScreenScheme: {
             /** @description The ID of the screen scheme. */
             screenSchemeId: string;
+        };
+        /** @description A project category. */
+        UpdatedProjectCategory: {
+            /** @description The name of the project category. */
+            readonly description?: string;
+            /** @description The ID of the project category. */
+            readonly id?: string;
+            /** @description The description of the project category. */
+            readonly name?: string;
+            /** @description The URL of the project category. */
+            readonly self?: string;
         };
         /** @description The details of the field configuration scheme. */
         UpdateFieldConfigurationSchemeDetails: {
@@ -10123,17 +10220,6 @@ export interface components {
             name?: string;
         } & {
             [key: string]: unknown;
-        };
-        /** @description A project category. */
-        UpdatedProjectCategory: {
-            /** @description The name of the project category. */
-            readonly description?: string;
-            /** @description The ID of the project category. */
-            readonly id?: string;
-            /** @description The description of the project category. */
-            readonly name?: string;
-            /** @description The URL of the project category. */
-            readonly self?: string;
         };
         /** @description A user with details as permitted by the user's Atlassian Account privacy settings. However, be aware of these exceptions:
          *
@@ -10405,13 +10491,13 @@ export interface components {
              * @description The ID of the project to which this version is attached. Required when creating a version. Not applicable when updating a version.
              */
             projectId?: number;
+            /** @description Indicates that the version is released. If the version is released a request to release again is ignored. Not applicable when creating a version. Optional when updating a version. */
+            released?: boolean;
             /**
              * Format: date
              * @description The release date of the version. Expressed in ISO 8601 format (yyyy-mm-dd). Optional when creating or updating a version.
              */
             releaseDate?: string;
-            /** @description Indicates that the version is released. If the version is released a request to release again is ignored. Not applicable when creating a version. Optional when updating a version. */
-            released?: boolean;
             /**
              * Format: uri
              * @description The URL of the version.
@@ -10652,9 +10738,6 @@ export interface components {
              */
             readonly expirationDate: number;
         };
-        WorkManagementNavigationInfo: {
-            boardName?: string;
-        };
         /** @description Details about a workflow. */
         Workflow: {
             /**
@@ -10768,17 +10851,17 @@ export interface components {
             /** @description A transition ID. */
             transitionId?: string;
         };
-        /** @description The classic workflow identifiers. */
-        WorkflowIDs: {
-            /** @description The entity ID of the workflow. */
-            entityId?: string;
-            /** @description The name of the workflow. */
-            name: string;
-        };
         /** @description Properties that identify a workflow. */
         WorkflowId: {
             /** @description Whether the workflow is in the draft state. */
             draft: boolean;
+            /** @description The name of the workflow. */
+            name: string;
+        };
+        /** @description The classic workflow identifiers. */
+        WorkflowIDs: {
+            /** @description The entity ID of the workflow. */
+            entityId?: string;
             /** @description The name of the workflow. */
             name: string;
         };
@@ -11022,14 +11105,14 @@ export interface components {
             workflowsForIssueTypes: components["schemas"]["WorkflowSchemeAssociation"][];
         };
         WorkflowSchemeUpdateRequiredMappingsResponse: {
-            /** @description The list of required status mappings by issue type. */
-            statusMappingsByIssueTypes?: components["schemas"]["RequiredMappingByIssueType"][];
-            /** @description The list of required status mappings by workflow. */
-            statusMappingsByWorkflows?: components["schemas"]["RequiredMappingByWorkflows"][];
             /** @description The details of the statuses in the associated workflows. */
             statuses?: components["schemas"]["StatusMetadata"][];
             /** @description The statuses associated with each workflow. */
             statusesPerWorkflow?: components["schemas"]["StatusesPerWorkflow"][];
+            /** @description The list of required status mappings by issue type. */
+            statusMappingsByIssueTypes?: components["schemas"]["RequiredMappingByIssueType"][];
+            /** @description The list of required status mappings by workflow. */
+            statusMappingsByWorkflows?: components["schemas"]["RequiredMappingByWorkflows"][];
         };
         /** @description The scope of the workflow. */
         WorkflowScope: {
@@ -11134,6 +11217,11 @@ export interface components {
             statusReference: string;
         } & {
             [key: string]: unknown;
+        };
+        /** @description Details of workflows and their transition rules to delete. */
+        WorkflowsWithTransitionRulesDetails: {
+            /** @description The list of workflows with transition rules to delete. */
+            workflows: components["schemas"]["WorkflowTransitionRulesDetails"][];
         };
         /** @description A workflow transition. */
         WorkflowTransition: {
@@ -11272,10 +11360,10 @@ export interface components {
             /** @description The ID of this workflow. */
             id: string;
             startPointLayout?: components["schemas"]["WorkflowLayout"];
-            /** @description The mapping of old to new status ID for a specific project and issue type. */
-            statusMappings?: components["schemas"]["StatusMappingDTO"][];
             /** @description The statuses associated with this workflow. */
             statuses: components["schemas"]["StatusLayoutUpdate"][];
+            /** @description The mapping of old to new status ID for a specific project and issue type. */
+            statusMappings?: components["schemas"]["StatusMappingDTO"][];
             /** @description The transitions of this workflow. */
             transitions: components["schemas"]["TransitionUpdateDTO"][];
             version: components["schemas"]["DocumentVersion"];
@@ -11329,11 +11417,6 @@ export interface components {
         WorkflowValidationErrorList: {
             /** @description The list of validation errors. */
             errors?: components["schemas"]["WorkflowValidationError"][];
-        };
-        /** @description Details of workflows and their transition rules to delete. */
-        WorkflowsWithTransitionRulesDetails: {
-            /** @description The list of workflows with transition rules to delete. */
-            workflows: components["schemas"]["WorkflowTransitionRulesDetails"][];
         };
         /** @description Details of a worklog. */
         Worklog: {
@@ -11391,96 +11474,13 @@ export interface components {
             /** @description The issue id or key of the destination issue */
             issueIdOrKey?: string;
         };
+        WorkManagementNavigationInfo: {
+            boardName?: string;
+        };
         /** @description Details about data policy. */
         WorkspaceDataPolicy: {
             /** @description Whether the workspace contains any content inaccessible to the requesting application. */
             readonly anyContentBlocked?: boolean;
-        };
-        /** @description Can contain multiple field values of following types depending on `type` key */
-        fields: {
-            /**
-             * @description If `true`, will try to retain original non-null issue field values on move.
-             * @default true
-             */
-            retain: boolean;
-            /** @enum {string} */
-            type?: "adf" | "raw";
-            value?: Record<string, never>;
-        } | components["schemas"]["MandatoryFieldValue"] | components["schemas"]["MandatoryFieldValueForADF"];
-        /** @description Classification mapping for classifications in source issues to respective target classification. */
-        targetClassification: {
-            /** @description An object with the key as the ID of the target classification and value with the list of the IDs of the current source classifications. */
-            classifications: {
-                [key: string]: string[];
-            };
-            /** @description ID of the source issueType to which issues present in `issueIdOrKeys` belongs. */
-            issueType?: string;
-            /** @description ID or key of the source project to which issues present in `issueIdOrKeys` belongs. */
-            projectKeyOrId?: string;
-        } | null;
-        /** @description Field mapping for mandatory fields in target */
-        targetMandatoryFields: {
-            /** @description Contains the value of mandatory fields */
-            fields: {
-                [key: string]: components["schemas"]["fields"];
-            };
-        } | null;
-        /** @description Status mapping for statuses in source workflow to respective target status in target workflow. */
-        targetStatus: {
-            /** @description An object with the key as the ID of the target status and value with the list of the IDs of the current source statuses. */
-            statuses: {
-                [key: string]: string[];
-            };
-        } | null;
-        /** @description An object representing the mapping of issues and data related to destination entities, like fields and statuses, that are required during a bulk move. */
-        targetToSourcesMapping: {
-            /** @description If `true`, when issues are moved into this target group, they will adopt the target project's default classification, if they don't have a classification already. If they do have a classification, it will be kept the same even after the move. Leave `targetClassification` empty when using this.
-             *
-             *     If `false`, you must provide a `targetClassification` mapping for each classification associated with the selected issues.
-             *
-             *     [Benefit from data classification](https://support.atlassian.com/security-and-access-policies/docs/what-is-data-classification/) */
-            inferClassificationDefaults: boolean;
-            /** @description If `true`, values from the source issues will be retained for the mandatory fields in the field configuration of the destination project. The `targetMandatoryFields` property shouldn't be defined.
-             *
-             *     If `false`, the user is required to set values for mandatory fields present in the field configuration of the destination project. Provide input by defining the `targetMandatoryFields` property */
-            inferFieldDefaults: boolean;
-            /** @description If `true`, the statuses of issues being moved in this target group that are not present in the target workflow will be changed to the default status of the target workflow (see below). Leave `targetStatus` empty when using this.
-             *
-             *     If `false`, you must provide a `targetStatus` for each status not present in the target workflow.
-             *
-             *     The default status in a workflow is referred to as the "initial status". Each workflow has its own unique initial status. When an issue is created, it is automatically assigned to this initial status. Read more about configuring initial statuses: [Configure the initial status | Atlassian Support.](https://support.atlassian.com/jira-cloud-administration/docs/configure-the-initial-status/) */
-            inferStatusDefaults: boolean;
-            /** @description When an issue is moved, its subtasks (if there are any) need to be moved with it. `inferSubtaskTypeDefault` helps with moving the subtasks by picking a random subtask type in the target project.
-             *
-             *     If `true`, subtasks will automatically move to the same project as their parent.
-             *
-             *     When they move:
-             *
-             *      *  Their `issueType` will be set to the default for subtasks in the target project.
-             *      *  Values for mandatory fields will be retained from the source issues
-             *      *  Specifying separate mapping for implicit subtasks won’t be allowed.
-             *
-             *     If `false`, you must manually move the subtasks. They will retain the parent which they had in the current project after being moved. */
-            inferSubtaskTypeDefault: boolean;
-            /** @description List of issue IDs or keys to be moved. These issues must be from the same project, have the same issue type, and be from the same parent (if they’re subtasks). */
-            issueIdsOrKeys?: string[];
-            /** @description List of the objects containing classifications in the source issues and their new values which need to be set during the bulk move operation.
-             *
-             *      *  **You should only define this property when `inferClassificationDefaults` is `false`.**
-             *      *  **In order to provide mapping for issues which don't have a classification, use `"-1"`.** */
-            targetClassification?: components["schemas"]["targetClassification"][] | null;
-            /** @description List of objects containing mandatory fields in the target field configuration and new values that need to be set during the bulk move operation.
-             *
-             *     The new values will only be applied if the field is mandatory in the target project and at least one issue from the source has that field empty, or if the field context is different in the target project (e.g. project-scoped version fields).
-             *
-             *     **You should only define this property when `inferFieldDefaults` is `false`.** */
-            targetMandatoryFields?: components["schemas"]["targetMandatoryFields"][] | null;
-            /** @description List of the objects containing statuses in the source workflow and their new values which need to be set during the bulk move operation.
-             *
-             *     The new values will only be applied if the source status is invalid for the target project and issue type.
-             *
-             *     **You should only define this property when `inferStatusDefaults` is `false`.** */
-            targetStatus?: components["schemas"]["targetStatus"][] | null;
         };
     };
     responses: never;
@@ -11489,5 +11489,809 @@ export interface components {
     headers: never;
     pathItems: never;
 }
+export type ActorInputBean = components['schemas']['ActorInputBean'];
+export type ActorsMap = components['schemas']['ActorsMap'];
+export type AddAtlassianTeamRequest = components['schemas']['AddAtlassianTeamRequest'];
+export type AddFieldBean = components['schemas']['AddFieldBean'];
+export type AddGroupBean = components['schemas']['AddGroupBean'];
+export type AddNotificationsDetails = components['schemas']['AddNotificationsDetails'];
+export type AddSecuritySchemeLevelsRequestBean = components['schemas']['AddSecuritySchemeLevelsRequestBean'];
+export type AnnouncementBannerConfiguration = components['schemas']['AnnouncementBannerConfiguration'];
+export type AnnouncementBannerConfigurationUpdate = components['schemas']['AnnouncementBannerConfigurationUpdate'];
+export type Application = components['schemas']['Application'];
+export type ApplicationProperty = components['schemas']['ApplicationProperty'];
+export type ApplicationRole = components['schemas']['ApplicationRole'];
+export type ApprovalConfiguration = components['schemas']['ApprovalConfiguration'];
+export type AppWorkflowTransitionRule = components['schemas']['AppWorkflowTransitionRule'];
+export type ArchivedIssuesFilterRequest = components['schemas']['ArchivedIssuesFilterRequest'];
+export type ArchiveIssueAsyncRequest = components['schemas']['ArchiveIssueAsyncRequest'];
+export type AssociatedItemBean = components['schemas']['AssociatedItemBean'];
+export type AssociateFieldConfigurationsWithIssueTypesRequest = components['schemas']['AssociateFieldConfigurationsWithIssueTypesRequest'];
+export type AssociateSecuritySchemeWithProjectDetails = components['schemas']['AssociateSecuritySchemeWithProjectDetails'];
+export type Attachment = components['schemas']['Attachment'];
+export type AttachmentArchive = components['schemas']['AttachmentArchive'];
+export type AttachmentArchiveEntry = components['schemas']['AttachmentArchiveEntry'];
+export type AttachmentArchiveImpl = components['schemas']['AttachmentArchiveImpl'];
+export type AttachmentArchiveItemReadable = components['schemas']['AttachmentArchiveItemReadable'];
+export type AttachmentArchiveMetadataReadable = components['schemas']['AttachmentArchiveMetadataReadable'];
+export type AttachmentMetadata = components['schemas']['AttachmentMetadata'];
+export type AttachmentSettings = components['schemas']['AttachmentSettings'];
+export type AuditRecordBean = components['schemas']['AuditRecordBean'];
+export type AuditRecords = components['schemas']['AuditRecords'];
+export type AutoCompleteSuggestion = components['schemas']['AutoCompleteSuggestion'];
+export type AutoCompleteSuggestions = components['schemas']['AutoCompleteSuggestions'];
+export type AvailableDashboardGadget = components['schemas']['AvailableDashboardGadget'];
+export type AvailableDashboardGadgetsResponse = components['schemas']['AvailableDashboardGadgetsResponse'];
+export type AvailableWorkflowConnectRule = components['schemas']['AvailableWorkflowConnectRule'];
+export type AvailableWorkflowForgeRule = components['schemas']['AvailableWorkflowForgeRule'];
+export type AvailableWorkflowSystemRule = components['schemas']['AvailableWorkflowSystemRule'];
+export type AvailableWorkflowTriggers = components['schemas']['AvailableWorkflowTriggers'];
+export type AvailableWorkflowTriggerTypes = components['schemas']['AvailableWorkflowTriggerTypes'];
+export type Avatar = components['schemas']['Avatar'];
+export type Avatars = components['schemas']['Avatars'];
+export type AvatarUrlsBean = components['schemas']['AvatarUrlsBean'];
+export type BulkChangelogRequestBean = components['schemas']['BulkChangelogRequestBean'];
+export type BulkChangelogResponseBean = components['schemas']['BulkChangelogResponseBean'];
+export type BulkChangeOwnerDetails = components['schemas']['BulkChangeOwnerDetails'];
+export type BulkContextualConfiguration = components['schemas']['BulkContextualConfiguration'];
+export type BulkCustomFieldOptionCreateRequest = components['schemas']['BulkCustomFieldOptionCreateRequest'];
+export type BulkCustomFieldOptionUpdateRequest = components['schemas']['BulkCustomFieldOptionUpdateRequest'];
+export type BulkEditActionError = components['schemas']['BulkEditActionError'];
+export type BulkEditGetFields = components['schemas']['BulkEditGetFields'];
+export type BulkEditShareableEntityRequest = components['schemas']['BulkEditShareableEntityRequest'];
+export type BulkEditShareableEntityResponse = components['schemas']['BulkEditShareableEntityResponse'];
+export type BulkFetchIssueRequestBean = components['schemas']['BulkFetchIssueRequestBean'];
+export type BulkIssueIsWatching = components['schemas']['BulkIssueIsWatching'];
+export type BulkIssuePropertyUpdateRequest = components['schemas']['BulkIssuePropertyUpdateRequest'];
+export type BulkIssueResults = components['schemas']['BulkIssueResults'];
+export type BulkOperationErrorResponse = components['schemas']['BulkOperationErrorResponse'];
+export type BulkOperationErrorResult = components['schemas']['BulkOperationErrorResult'];
+export type BulkOperationProgress = components['schemas']['BulkOperationProgress'];
+export type BulkPermissionGrants = components['schemas']['BulkPermissionGrants'];
+export type BulkPermissionsRequestBean = components['schemas']['BulkPermissionsRequestBean'];
+export type BulkProjectPermissionGrants = components['schemas']['BulkProjectPermissionGrants'];
+export type BulkProjectPermissions = components['schemas']['BulkProjectPermissions'];
+export type BulkTransitionGetAvailableTransitions = components['schemas']['BulkTransitionGetAvailableTransitions'];
+export type BulkTransitionSubmitInput = components['schemas']['BulkTransitionSubmitInput'];
+export type ChangeDetails = components['schemas']['ChangeDetails'];
+export type ChangedValueBean = components['schemas']['ChangedValueBean'];
+export type ChangedWorklog = components['schemas']['ChangedWorklog'];
+export type ChangedWorklogs = components['schemas']['ChangedWorklogs'];
+export type ChangeFilterOwner = components['schemas']['ChangeFilterOwner'];
+export type Changelog = components['schemas']['Changelog'];
+export type ColumnItem = components['schemas']['ColumnItem'];
+export type ColumnRequestBody = components['schemas']['ColumnRequestBody'];
+export type Comment = components['schemas']['Comment'];
+export type ComponentIssuesCount = components['schemas']['ComponentIssuesCount'];
+export type ComponentJsonBean = components['schemas']['ComponentJsonBean'];
+export type ComponentWithIssueCount = components['schemas']['ComponentWithIssueCount'];
+export type CompoundClause = components['schemas']['CompoundClause'];
+export type ConditionGroupConfiguration = components['schemas']['ConditionGroupConfiguration'];
+export type ConditionGroupUpdate = components['schemas']['ConditionGroupUpdate'];
+export type Configuration = components['schemas']['Configuration'];
+export type ConfigurationsListParameters = components['schemas']['ConfigurationsListParameters'];
+export type ConnectCustomFieldValue = components['schemas']['ConnectCustomFieldValue'];
+export type ConnectCustomFieldValues = components['schemas']['ConnectCustomFieldValues'];
+export type ConnectModule = components['schemas']['ConnectModule'];
+export type ConnectModules = components['schemas']['ConnectModules'];
+export type ConnectWorkflowTransitionRule = components['schemas']['ConnectWorkflowTransitionRule'];
+export type ContainerForProjectFeatures = components['schemas']['ContainerForProjectFeatures'];
+export type ContainerForRegisteredWebhooks = components['schemas']['ContainerForRegisteredWebhooks'];
+export type ContainerForWebhookIDs = components['schemas']['ContainerForWebhookIDs'];
+export type ContainerOfWorkflowSchemeAssociations = components['schemas']['ContainerOfWorkflowSchemeAssociations'];
+export type Context = components['schemas']['Context'];
+export type ContextForProjectAndIssueType = components['schemas']['ContextForProjectAndIssueType'];
+export type ContextualConfiguration = components['schemas']['ContextualConfiguration'];
+export type ConvertedJqlQueries = components['schemas']['ConvertedJQLQueries'];
+export type CreateCrossProjectReleaseRequest = components['schemas']['CreateCrossProjectReleaseRequest'];
+export type CreateCustomFieldContext = components['schemas']['CreateCustomFieldContext'];
+export type CreateCustomFieldRequest = components['schemas']['CreateCustomFieldRequest'];
+export type CreateDateFieldRequest = components['schemas']['CreateDateFieldRequest'];
+export type CreatedIssue = components['schemas']['CreatedIssue'];
+export type CreatedIssues = components['schemas']['CreatedIssues'];
+export type CreateExclusionRulesRequest = components['schemas']['CreateExclusionRulesRequest'];
+export type CreateIssueSecuritySchemeDetails = components['schemas']['CreateIssueSecuritySchemeDetails'];
+export type CreateIssueSourceRequest = components['schemas']['CreateIssueSourceRequest'];
+export type CreateNotificationSchemeDetails = components['schemas']['CreateNotificationSchemeDetails'];
+export type CreatePermissionHolderRequest = components['schemas']['CreatePermissionHolderRequest'];
+export type CreatePermissionRequest = components['schemas']['CreatePermissionRequest'];
+export type CreatePlanOnlyTeamRequest = components['schemas']['CreatePlanOnlyTeamRequest'];
+export type CreatePlanRequest = components['schemas']['CreatePlanRequest'];
+export type CreatePriorityDetails = components['schemas']['CreatePriorityDetails'];
+export type CreatePrioritySchemeDetails = components['schemas']['CreatePrioritySchemeDetails'];
+export type CreateProjectDetails = components['schemas']['CreateProjectDetails'];
+export type CreateResolutionDetails = components['schemas']['CreateResolutionDetails'];
+export type CreateSchedulingRequest = components['schemas']['CreateSchedulingRequest'];
+export type CreateUiModificationDetails = components['schemas']['CreateUiModificationDetails'];
+export type CreateUpdateRoleRequestBean = components['schemas']['CreateUpdateRoleRequestBean'];
+export type CreateWorkflowCondition = components['schemas']['CreateWorkflowCondition'];
+export type CreateWorkflowDetails = components['schemas']['CreateWorkflowDetails'];
+export type CreateWorkflowStatusDetails = components['schemas']['CreateWorkflowStatusDetails'];
+export type CreateWorkflowTransitionDetails = components['schemas']['CreateWorkflowTransitionDetails'];
+export type CreateWorkflowTransitionRule = components['schemas']['CreateWorkflowTransitionRule'];
+export type CreateWorkflowTransitionRulesDetails = components['schemas']['CreateWorkflowTransitionRulesDetails'];
+export type CreateWorkflowTransitionScreenDetails = components['schemas']['CreateWorkflowTransitionScreenDetails'];
+export type CustomContextVariable = components['schemas']['CustomContextVariable'];
+export type CustomFieldConfigurations = components['schemas']['CustomFieldConfigurations'];
+export type CustomFieldContext = components['schemas']['CustomFieldContext'];
+export type CustomFieldContextDefaultValue = components['schemas']['CustomFieldContextDefaultValue'];
+export type CustomFieldContextDefaultValueCascadingOption = components['schemas']['CustomFieldContextDefaultValueCascadingOption'];
+export type CustomFieldContextDefaultValueDate = components['schemas']['CustomFieldContextDefaultValueDate'];
+export type CustomFieldContextDefaultValueDateTime = components['schemas']['CustomFieldContextDefaultValueDateTime'];
+export type CustomFieldContextDefaultValueFloat = components['schemas']['CustomFieldContextDefaultValueFloat'];
+export type CustomFieldContextDefaultValueForgeDateTimeField = components['schemas']['CustomFieldContextDefaultValueForgeDateTimeField'];
+export type CustomFieldContextDefaultValueForgeGroupField = components['schemas']['CustomFieldContextDefaultValueForgeGroupField'];
+export type CustomFieldContextDefaultValueForgeMultiGroupField = components['schemas']['CustomFieldContextDefaultValueForgeMultiGroupField'];
+export type CustomFieldContextDefaultValueForgeMultiStringField = components['schemas']['CustomFieldContextDefaultValueForgeMultiStringField'];
+export type CustomFieldContextDefaultValueForgeMultiUserField = components['schemas']['CustomFieldContextDefaultValueForgeMultiUserField'];
+export type CustomFieldContextDefaultValueForgeNumberField = components['schemas']['CustomFieldContextDefaultValueForgeNumberField'];
+export type CustomFieldContextDefaultValueForgeObjectField = components['schemas']['CustomFieldContextDefaultValueForgeObjectField'];
+export type CustomFieldContextDefaultValueForgeStringField = components['schemas']['CustomFieldContextDefaultValueForgeStringField'];
+export type CustomFieldContextDefaultValueForgeUserField = components['schemas']['CustomFieldContextDefaultValueForgeUserField'];
+export type CustomFieldContextDefaultValueLabels = components['schemas']['CustomFieldContextDefaultValueLabels'];
+export type CustomFieldContextDefaultValueMultipleGroupPicker = components['schemas']['CustomFieldContextDefaultValueMultipleGroupPicker'];
+export type CustomFieldContextDefaultValueMultipleOption = components['schemas']['CustomFieldContextDefaultValueMultipleOption'];
+export type CustomFieldContextDefaultValueMultipleVersionPicker = components['schemas']['CustomFieldContextDefaultValueMultipleVersionPicker'];
+export type CustomFieldContextDefaultValueMultiUserPicker = components['schemas']['CustomFieldContextDefaultValueMultiUserPicker'];
+export type CustomFieldContextDefaultValueProject = components['schemas']['CustomFieldContextDefaultValueProject'];
+export type CustomFieldContextDefaultValueReadOnly = components['schemas']['CustomFieldContextDefaultValueReadOnly'];
+export type CustomFieldContextDefaultValueSingleGroupPicker = components['schemas']['CustomFieldContextDefaultValueSingleGroupPicker'];
+export type CustomFieldContextDefaultValueSingleOption = components['schemas']['CustomFieldContextDefaultValueSingleOption'];
+export type CustomFieldContextDefaultValueSingleVersionPicker = components['schemas']['CustomFieldContextDefaultValueSingleVersionPicker'];
+export type CustomFieldContextDefaultValueTextArea = components['schemas']['CustomFieldContextDefaultValueTextArea'];
+export type CustomFieldContextDefaultValueTextField = components['schemas']['CustomFieldContextDefaultValueTextField'];
+export type CustomFieldContextDefaultValueUpdate = components['schemas']['CustomFieldContextDefaultValueUpdate'];
+export type CustomFieldContextDefaultValueUrl = components['schemas']['CustomFieldContextDefaultValueURL'];
+export type CustomFieldContextOption = components['schemas']['CustomFieldContextOption'];
+export type CustomFieldContextProjectMapping = components['schemas']['CustomFieldContextProjectMapping'];
+export type CustomFieldContextSingleUserPickerDefaults = components['schemas']['CustomFieldContextSingleUserPickerDefaults'];
+export type CustomFieldContextUpdateDetails = components['schemas']['CustomFieldContextUpdateDetails'];
+export type CustomFieldCreatedContextOptionsList = components['schemas']['CustomFieldCreatedContextOptionsList'];
+export type CustomFieldDefinitionJsonBean = components['schemas']['CustomFieldDefinitionJsonBean'];
+export type CustomFieldOption = components['schemas']['CustomFieldOption'];
+export type CustomFieldOptionCreate = components['schemas']['CustomFieldOptionCreate'];
+export type CustomFieldOptionUpdate = components['schemas']['CustomFieldOptionUpdate'];
+export type CustomFieldReplacement = components['schemas']['CustomFieldReplacement'];
+export type CustomFieldUpdatedContextOptionsList = components['schemas']['CustomFieldUpdatedContextOptionsList'];
+export type CustomFieldValueUpdate = components['schemas']['CustomFieldValueUpdate'];
+export type CustomFieldValueUpdateDetails = components['schemas']['CustomFieldValueUpdateDetails'];
+export type Dashboard = components['schemas']['Dashboard'];
+export type DashboardDetails = components['schemas']['DashboardDetails'];
+export type DashboardGadget = components['schemas']['DashboardGadget'];
+export type DashboardGadgetPosition = components['schemas']['DashboardGadgetPosition'];
+export type DashboardGadgetResponse = components['schemas']['DashboardGadgetResponse'];
+export type DashboardGadgetSettings = components['schemas']['DashboardGadgetSettings'];
+export type DashboardGadgetUpdateRequest = components['schemas']['DashboardGadgetUpdateRequest'];
+export type DataClassificationLevelsBean = components['schemas']['DataClassificationLevelsBean'];
+export type DataClassificationTagBean = components['schemas']['DataClassificationTagBean'];
+export type DateRangeFilterRequest = components['schemas']['DateRangeFilterRequest'];
+export type DefaultLevelValue = components['schemas']['DefaultLevelValue'];
+export type DefaultShareScope = components['schemas']['DefaultShareScope'];
+export type DefaultWorkflow = components['schemas']['DefaultWorkflow'];
+export type DeleteAndReplaceVersionBean = components['schemas']['DeleteAndReplaceVersionBean'];
+export type DeprecatedWorkflow = components['schemas']['DeprecatedWorkflow'];
+export type DetailedErrorCollection = components['schemas']['DetailedErrorCollection'];
+export type DocumentVersion = components['schemas']['DocumentVersion'];
+export type DuplicatePlanRequest = components['schemas']['DuplicatePlanRequest'];
+export type EntityProperty = components['schemas']['EntityProperty'];
+export type EntityPropertyDetails = components['schemas']['EntityPropertyDetails'];
+export type Error = components['schemas']['Error'];
+export type ErrorCollection = components['schemas']['ErrorCollection'];
+export type ErrorCollections = components['schemas']['ErrorCollections'];
+export type ErrorMessage = components['schemas']['ErrorMessage'];
+export type Errors = components['schemas']['Errors'];
+export type EventNotification = components['schemas']['EventNotification'];
+export type ExpandPrioritySchemeBean = components['schemas']['ExpandPrioritySchemeBean'];
+export type ExpandPrioritySchemePage = components['schemas']['ExpandPrioritySchemePage'];
+export type ExportArchivedIssuesTaskProgressResponse = components['schemas']['ExportArchivedIssuesTaskProgressResponse'];
+export type FailedWebhook = components['schemas']['FailedWebhook'];
+export type FailedWebhooks = components['schemas']['FailedWebhooks'];
+export type Field = components['schemas']['Field'];
+export type FieldChangedClause = components['schemas']['FieldChangedClause'];
+export type FieldConfiguration = components['schemas']['FieldConfiguration'];
+export type FieldConfigurationDetails = components['schemas']['FieldConfigurationDetails'];
+export type FieldConfigurationIssueTypeItem = components['schemas']['FieldConfigurationIssueTypeItem'];
+export type FieldConfigurationItem = components['schemas']['FieldConfigurationItem'];
+export type FieldConfigurationItemsDetails = components['schemas']['FieldConfigurationItemsDetails'];
+export type FieldConfigurationScheme = components['schemas']['FieldConfigurationScheme'];
+export type FieldConfigurationSchemeProjectAssociation = components['schemas']['FieldConfigurationSchemeProjectAssociation'];
+export type FieldConfigurationSchemeProjects = components['schemas']['FieldConfigurationSchemeProjects'];
+export type FieldConfigurationToIssueTypeMapping = components['schemas']['FieldConfigurationToIssueTypeMapping'];
+export type FieldCreateMetadata = components['schemas']['FieldCreateMetadata'];
+export type FieldDetails = components['schemas']['FieldDetails'];
+export type FieldLastUsed = components['schemas']['FieldLastUsed'];
+export type FieldMetadata = components['schemas']['FieldMetadata'];
+export type FieldReferenceData = components['schemas']['FieldReferenceData'];
+export type Fields = components['schemas']['Fields'];
+export type FieldUpdateOperation = components['schemas']['FieldUpdateOperation'];
+export type FieldValueClause = components['schemas']['FieldValueClause'];
+export type FieldWasClause = components['schemas']['FieldWasClause'];
+export type Filter = components['schemas']['Filter'];
+export type FilterDetails = components['schemas']['FilterDetails'];
+export type FilterSubscription = components['schemas']['FilterSubscription'];
+export type FilterSubscriptionsList = components['schemas']['FilterSubscriptionsList'];
+export type FoundGroup = components['schemas']['FoundGroup'];
+export type FoundGroups = components['schemas']['FoundGroups'];
+export type FoundUsers = components['schemas']['FoundUsers'];
+export type FoundUsersAndGroups = components['schemas']['FoundUsersAndGroups'];
+export type FunctionOperand = components['schemas']['FunctionOperand'];
+export type FunctionReferenceData = components['schemas']['FunctionReferenceData'];
+export type GetAtlassianTeamResponse = components['schemas']['GetAtlassianTeamResponse'];
+export type GetCrossProjectReleaseResponse = components['schemas']['GetCrossProjectReleaseResponse'];
+export type GetCustomFieldResponse = components['schemas']['GetCustomFieldResponse'];
+export type GetDateFieldResponse = components['schemas']['GetDateFieldResponse'];
+export type GetExclusionRulesResponse = components['schemas']['GetExclusionRulesResponse'];
+export type GetIssueSourceResponse = components['schemas']['GetIssueSourceResponse'];
+export type GetPermissionHolderResponse = components['schemas']['GetPermissionHolderResponse'];
+export type GetPermissionResponse = components['schemas']['GetPermissionResponse'];
+export type GetPlanOnlyTeamResponse = components['schemas']['GetPlanOnlyTeamResponse'];
+export type GetPlanResponse = components['schemas']['GetPlanResponse'];
+export type GetPlanResponseForPage = components['schemas']['GetPlanResponseForPage'];
+export type GetSchedulingResponse = components['schemas']['GetSchedulingResponse'];
+export type GetTeamResponseForPage = components['schemas']['GetTeamResponseForPage'];
+export type GlobalScopeBean = components['schemas']['GlobalScopeBean'];
+export type Group = components['schemas']['Group'];
+export type GroupDetails = components['schemas']['GroupDetails'];
+export type GroupLabel = components['schemas']['GroupLabel'];
+export type GroupName = components['schemas']['GroupName'];
+export type HealthCheckResult = components['schemas']['HealthCheckResult'];
+export type Hierarchy = components['schemas']['Hierarchy'];
+export type HistoryMetadata = components['schemas']['HistoryMetadata'];
+export type HistoryMetadataParticipant = components['schemas']['HistoryMetadataParticipant'];
+export type Icon = components['schemas']['Icon'];
+export type IconBean = components['schemas']['IconBean'];
+export type IdBean = components['schemas']['IdBean'];
+export type IdOrKeyBean = components['schemas']['IdOrKeyBean'];
+export type IdSearchRequestBean = components['schemas']['IdSearchRequestBean'];
+export type IdSearchResults = components['schemas']['IdSearchResults'];
+export type IncludedFields = components['schemas']['IncludedFields'];
+export type InputStreamSource = components['schemas']['InputStreamSource'];
+export type IssueArchivalSyncRequest = components['schemas']['IssueArchivalSyncRequest'];
+export type IssueArchivalSyncResponse = components['schemas']['IssueArchivalSyncResponse'];
+export type IssueBean = components['schemas']['IssueBean'];
+export type IssueBulkDeletePayload = components['schemas']['IssueBulkDeletePayload'];
+export type IssueBulkEditField = components['schemas']['IssueBulkEditField'];
+export type IssueBulkEditPayload = components['schemas']['IssueBulkEditPayload'];
+export type IssueBulkMovePayload = components['schemas']['IssueBulkMovePayload'];
+export type IssueBulkOperationsFieldOption = components['schemas']['IssueBulkOperationsFieldOption'];
+export type IssueBulkTransitionForWorkflow = components['schemas']['IssueBulkTransitionForWorkflow'];
+export type IssueBulkTransitionPayload = components['schemas']['IssueBulkTransitionPayload'];
+export type IssueChangeLog = components['schemas']['IssueChangeLog'];
+export type IssueChangelogIds = components['schemas']['IssueChangelogIds'];
+export type IssueCommentListRequestBean = components['schemas']['IssueCommentListRequestBean'];
+export type IssueContextVariable = components['schemas']['IssueContextVariable'];
+export type IssueCreateMetadata = components['schemas']['IssueCreateMetadata'];
+export type IssueEntityProperties = components['schemas']['IssueEntityProperties'];
+export type IssueEntityPropertiesForMultiUpdate = components['schemas']['IssueEntityPropertiesForMultiUpdate'];
+export type IssueError = components['schemas']['IssueError'];
+export type IssueEvent = components['schemas']['IssueEvent'];
+export type IssueFieldOption = components['schemas']['IssueFieldOption'];
+export type IssueFieldOptionConfiguration = components['schemas']['IssueFieldOptionConfiguration'];
+export type IssueFieldOptionCreateBean = components['schemas']['IssueFieldOptionCreateBean'];
+export type IssueFieldOptionScopeBean = components['schemas']['IssueFieldOptionScopeBean'];
+export type IssueFilterForBulkPropertyDelete = components['schemas']['IssueFilterForBulkPropertyDelete'];
+export type IssueFilterForBulkPropertySet = components['schemas']['IssueFilterForBulkPropertySet'];
+export type IssueLimitReportRequest = components['schemas']['IssueLimitReportRequest'];
+export type IssueLimitReportResponseBean = components['schemas']['IssueLimitReportResponseBean'];
+export type IssueLink = components['schemas']['IssueLink'];
+export type IssueLinkType = components['schemas']['IssueLinkType'];
+export type IssueLinkTypes = components['schemas']['IssueLinkTypes'];
+export type IssueList = components['schemas']['IssueList'];
+export type IssueMatches = components['schemas']['IssueMatches'];
+export type IssueMatchesForJql = components['schemas']['IssueMatchesForJQL'];
+export type IssuePickerSuggestions = components['schemas']['IssuePickerSuggestions'];
+export type IssuePickerSuggestionsIssueType = components['schemas']['IssuePickerSuggestionsIssueType'];
+export type IssuesAndJqlQueries = components['schemas']['IssuesAndJQLQueries'];
+export type IssueSecurityLevelMember = components['schemas']['IssueSecurityLevelMember'];
+export type IssueSecuritySchemeToProjectMapping = components['schemas']['IssueSecuritySchemeToProjectMapping'];
+export type IssuesJqlMetaDataBean = components['schemas']['IssuesJqlMetaDataBean'];
+export type IssuesMetaBean = components['schemas']['IssuesMetaBean'];
+export type IssuesUpdateBean = components['schemas']['IssuesUpdateBean'];
+export type IssueTransition = components['schemas']['IssueTransition'];
+export type IssueTransitionStatus = components['schemas']['IssueTransitionStatus'];
+export type IssueTypeCreateBean = components['schemas']['IssueTypeCreateBean'];
+export type IssueTypeDetails = components['schemas']['IssueTypeDetails'];
+export type IssueTypeIds = components['schemas']['IssueTypeIds'];
+export type IssueTypeIdsToRemove = components['schemas']['IssueTypeIdsToRemove'];
+export type IssueTypeInfo = components['schemas']['IssueTypeInfo'];
+export type IssueTypeIssueCreateMetadata = components['schemas']['IssueTypeIssueCreateMetadata'];
+export type IssueTypeScheme = components['schemas']['IssueTypeScheme'];
+export type IssueTypeSchemeDetails = components['schemas']['IssueTypeSchemeDetails'];
+export type IssueTypeSchemeId = components['schemas']['IssueTypeSchemeID'];
+export type IssueTypeSchemeMapping = components['schemas']['IssueTypeSchemeMapping'];
+export type IssueTypeSchemeProjectAssociation = components['schemas']['IssueTypeSchemeProjectAssociation'];
+export type IssueTypeSchemeProjects = components['schemas']['IssueTypeSchemeProjects'];
+export type IssueTypeSchemeUpdateDetails = components['schemas']['IssueTypeSchemeUpdateDetails'];
+export type IssueTypeScreenScheme = components['schemas']['IssueTypeScreenScheme'];
+export type IssueTypeScreenSchemeDetails = components['schemas']['IssueTypeScreenSchemeDetails'];
+export type IssueTypeScreenSchemeId = components['schemas']['IssueTypeScreenSchemeId'];
+export type IssueTypeScreenSchemeItem = components['schemas']['IssueTypeScreenSchemeItem'];
+export type IssueTypeScreenSchemeMapping = components['schemas']['IssueTypeScreenSchemeMapping'];
+export type IssueTypeScreenSchemeMappingDetails = components['schemas']['IssueTypeScreenSchemeMappingDetails'];
+export type IssueTypeScreenSchemeProjectAssociation = components['schemas']['IssueTypeScreenSchemeProjectAssociation'];
+export type IssueTypeScreenSchemesProjects = components['schemas']['IssueTypeScreenSchemesProjects'];
+export type IssueTypeScreenSchemeUpdateDetails = components['schemas']['IssueTypeScreenSchemeUpdateDetails'];
+export type IssueTypesWorkflowMapping = components['schemas']['IssueTypesWorkflowMapping'];
+export type IssueTypeToContextMapping = components['schemas']['IssueTypeToContextMapping'];
+export type IssueTypeUpdateBean = components['schemas']['IssueTypeUpdateBean'];
+export type IssueTypeWithStatus = components['schemas']['IssueTypeWithStatus'];
+export type IssueTypeWorkflowMapping = components['schemas']['IssueTypeWorkflowMapping'];
+export type IssueUpdateDetails = components['schemas']['IssueUpdateDetails'];
+export type IssueUpdateMetadata = components['schemas']['IssueUpdateMetadata'];
+export type JexpEvaluateCtxIssues = components['schemas']['JexpEvaluateCtxIssues'];
+export type JexpEvaluateCtxJqlIssues = components['schemas']['JexpEvaluateCtxJqlIssues'];
+export type JExpEvaluateIssuesJqlMetaDataBean = components['schemas']['JExpEvaluateIssuesJqlMetaDataBean'];
+export type JExpEvaluateIssuesMetaBean = components['schemas']['JExpEvaluateIssuesMetaBean'];
+export type JExpEvaluateJiraExpressionResultBean = components['schemas']['JExpEvaluateJiraExpressionResultBean'];
+export type JExpEvaluateMetaDataBean = components['schemas']['JExpEvaluateMetaDataBean'];
+export type JexpIssues = components['schemas']['JexpIssues'];
+export type JexpJqlIssues = components['schemas']['JexpJqlIssues'];
+export type JiraCascadingSelectField = components['schemas']['JiraCascadingSelectField'];
+export type JiraColorField = components['schemas']['JiraColorField'];
+export type JiraColorInput = components['schemas']['JiraColorInput'];
+export type JiraComponentField = components['schemas']['JiraComponentField'];
+export type JiraDateField = components['schemas']['JiraDateField'];
+export type JiraDateInput = components['schemas']['JiraDateInput'];
+export type JiraDateTimeField = components['schemas']['JiraDateTimeField'];
+export type JiraDateTimeInput = components['schemas']['JiraDateTimeInput'];
+export type JiraDurationField = components['schemas']['JiraDurationField'];
+export type JiraExpressionAnalysis = components['schemas']['JiraExpressionAnalysis'];
+export type JiraExpressionComplexity = components['schemas']['JiraExpressionComplexity'];
+export type JiraExpressionEvalContextBean = components['schemas']['JiraExpressionEvalContextBean'];
+export type JiraExpressionEvalRequestBean = components['schemas']['JiraExpressionEvalRequestBean'];
+export type JiraExpressionEvaluateContextBean = components['schemas']['JiraExpressionEvaluateContextBean'];
+export type JiraExpressionEvaluateRequestBean = components['schemas']['JiraExpressionEvaluateRequestBean'];
+export type JiraExpressionEvaluationMetaDataBean = components['schemas']['JiraExpressionEvaluationMetaDataBean'];
+export type JiraExpressionForAnalysis = components['schemas']['JiraExpressionForAnalysis'];
+export type JiraExpressionResult = components['schemas']['JiraExpressionResult'];
+export type JiraExpressionsAnalysis = components['schemas']['JiraExpressionsAnalysis'];
+export type JiraExpressionsComplexityBean = components['schemas']['JiraExpressionsComplexityBean'];
+export type JiraExpressionsComplexityValueBean = components['schemas']['JiraExpressionsComplexityValueBean'];
+export type JiraExpressionValidationError = components['schemas']['JiraExpressionValidationError'];
+export type JiraGroupInput = components['schemas']['JiraGroupInput'];
+export type JiraIssueFields = components['schemas']['JiraIssueFields'];
+export type JiraIssueTypeField = components['schemas']['JiraIssueTypeField'];
+export type JiraLabelsField = components['schemas']['JiraLabelsField'];
+export type JiraLabelsInput = components['schemas']['JiraLabelsInput'];
+export type JiraMultipleGroupPickerField = components['schemas']['JiraMultipleGroupPickerField'];
+export type JiraMultipleSelectField = components['schemas']['JiraMultipleSelectField'];
+export type JiraMultipleSelectUserPickerField = components['schemas']['JiraMultipleSelectUserPickerField'];
+export type JiraMultipleVersionPickerField = components['schemas']['JiraMultipleVersionPickerField'];
+export type JiraMultiSelectComponentField = components['schemas']['JiraMultiSelectComponentField'];
+export type JiraNumberField = components['schemas']['JiraNumberField'];
+export type JiraPriorityField = components['schemas']['JiraPriorityField'];
+export type JiraRichTextField = components['schemas']['JiraRichTextField'];
+export type JiraRichTextInput = components['schemas']['JiraRichTextInput'];
+export type JiraSelectedOptionField = components['schemas']['JiraSelectedOptionField'];
+export type JiraSingleGroupPickerField = components['schemas']['JiraSingleGroupPickerField'];
+export type JiraSingleLineTextField = components['schemas']['JiraSingleLineTextField'];
+export type JiraSingleSelectField = components['schemas']['JiraSingleSelectField'];
+export type JiraSingleSelectUserPickerField = components['schemas']['JiraSingleSelectUserPickerField'];
+export type JiraSingleVersionPickerField = components['schemas']['JiraSingleVersionPickerField'];
+export type JiraStatus = components['schemas']['JiraStatus'];
+export type JiraTimeTrackingField = components['schemas']['JiraTimeTrackingField'];
+export type JiraUrlField = components['schemas']['JiraUrlField'];
+export type JiraUserField = components['schemas']['JiraUserField'];
+export type JiraVersionField = components['schemas']['JiraVersionField'];
+export type JiraWorkflow = components['schemas']['JiraWorkflow'];
+export type JiraWorkflowStatus = components['schemas']['JiraWorkflowStatus'];
+export type JqlCountRequestBean = components['schemas']['JQLCountRequestBean'];
+export type JqlCountResultsBean = components['schemas']['JQLCountResultsBean'];
+export type JqlFunctionPrecomputationBean = components['schemas']['JqlFunctionPrecomputationBean'];
+export type JqlFunctionPrecomputationGetByIdRequest = components['schemas']['JqlFunctionPrecomputationGetByIdRequest'];
+export type JqlFunctionPrecomputationGetByIdResponse = components['schemas']['JqlFunctionPrecomputationGetByIdResponse'];
+export type JqlFunctionPrecomputationUpdateBean = components['schemas']['JqlFunctionPrecomputationUpdateBean'];
+export type JqlFunctionPrecomputationUpdateErrorResponse = components['schemas']['JqlFunctionPrecomputationUpdateErrorResponse'];
+export type JqlFunctionPrecomputationUpdateRequestBean = components['schemas']['JqlFunctionPrecomputationUpdateRequestBean'];
+export type JqlFunctionPrecomputationUpdateResponse = components['schemas']['JqlFunctionPrecomputationUpdateResponse'];
+export type JqlPersonalDataMigrationRequest = components['schemas']['JQLPersonalDataMigrationRequest'];
+export type JqlQueriesToParse = components['schemas']['JqlQueriesToParse'];
+export type JqlQueriesToSanitize = components['schemas']['JqlQueriesToSanitize'];
+export type JqlQuery = components['schemas']['JqlQuery'];
+export type JqlQueryClause = components['schemas']['JqlQueryClause'];
+export type JqlQueryClauseOperand = components['schemas']['JqlQueryClauseOperand'];
+export type JqlQueryClauseTimePredicate = components['schemas']['JqlQueryClauseTimePredicate'];
+export type JqlQueryField = components['schemas']['JqlQueryField'];
+export type JqlQueryFieldEntityProperty = components['schemas']['JqlQueryFieldEntityProperty'];
+export type JqlQueryOrderByClause = components['schemas']['JqlQueryOrderByClause'];
+export type JqlQueryOrderByClauseElement = components['schemas']['JqlQueryOrderByClauseElement'];
+export type JqlQueryToSanitize = components['schemas']['JqlQueryToSanitize'];
+export type JqlQueryUnitaryOperand = components['schemas']['JqlQueryUnitaryOperand'];
+export type JqlQueryWithUnknownUsers = components['schemas']['JQLQueryWithUnknownUsers'];
+export type JqlReferenceData = components['schemas']['JQLReferenceData'];
+export type JsonContextVariable = components['schemas']['JsonContextVariable'];
+export type JsonNode = components['schemas']['JsonNode'];
+export type JsonTypeBean = components['schemas']['JsonTypeBean'];
+export type KeywordOperand = components['schemas']['KeywordOperand'];
+export type LegacyJackson1ListAttachment = components['schemas']['LegacyJackson1ListAttachment'];
+export type LegacyJackson1ListColumnItem = components['schemas']['LegacyJackson1ListColumnItem'];
+export type LegacyJackson1ListIssueEvent = components['schemas']['LegacyJackson1ListIssueEvent'];
+export type LegacyJackson1ListIssueTypeWithStatus = components['schemas']['LegacyJackson1ListIssueTypeWithStatus'];
+export type LegacyJackson1ListProject = components['schemas']['LegacyJackson1ListProject'];
+export type LegacyJackson1ListProjectComponent = components['schemas']['LegacyJackson1ListProjectComponent'];
+export type LegacyJackson1ListProjectRoleDetails = components['schemas']['LegacyJackson1ListProjectRoleDetails'];
+export type LegacyJackson1ListProjectType = components['schemas']['LegacyJackson1ListProjectType'];
+export type LegacyJackson1ListUserMigrationBean = components['schemas']['LegacyJackson1ListUserMigrationBean'];
+export type LegacyJackson1ListVersion = components['schemas']['LegacyJackson1ListVersion'];
+export type LegacyJackson1ListWorklog = components['schemas']['LegacyJackson1ListWorklog'];
+export type License = components['schemas']['License'];
+export type LicensedApplication = components['schemas']['LicensedApplication'];
+export type LicenseMetric = components['schemas']['LicenseMetric'];
+export type LinkedIssue = components['schemas']['LinkedIssue'];
+export type LinkGroup = components['schemas']['LinkGroup'];
+export type LinkIssueRequestJsonBean = components['schemas']['LinkIssueRequestJsonBean'];
+export type ListOperand = components['schemas']['ListOperand'];
+export type ListWrapperCallbackApplicationRole = components['schemas']['ListWrapperCallbackApplicationRole'];
+export type ListWrapperCallbackGroupName = components['schemas']['ListWrapperCallbackGroupName'];
+export type Locale = components['schemas']['Locale'];
+export type MandatoryFieldValue = components['schemas']['MandatoryFieldValue'];
+export type MandatoryFieldValueForAdf = components['schemas']['MandatoryFieldValueForADF'];
+export type MappingsByIssueTypeOverride = components['schemas']['MappingsByIssueTypeOverride'];
+export type MappingsByWorkflow = components['schemas']['MappingsByWorkflow'];
+export type MoveFieldBean = components['schemas']['MoveFieldBean'];
+export type MultiIssueEntityProperties = components['schemas']['MultiIssueEntityProperties'];
+export type MultipartFile = components['schemas']['MultipartFile'];
+export type MultipleCustomFieldValuesUpdate = components['schemas']['MultipleCustomFieldValuesUpdate'];
+export type MultipleCustomFieldValuesUpdateDetails = components['schemas']['MultipleCustomFieldValuesUpdateDetails'];
+export type NestedResponse = components['schemas']['NestedResponse'];
+export type NewUserDetails = components['schemas']['NewUserDetails'];
+export type Notification = components['schemas']['Notification'];
+export type NotificationEvent = components['schemas']['NotificationEvent'];
+export type NotificationRecipients = components['schemas']['NotificationRecipients'];
+export type NotificationRecipientsRestrictions = components['schemas']['NotificationRecipientsRestrictions'];
+export type NotificationScheme = components['schemas']['NotificationScheme'];
+export type NotificationSchemeAndProjectMappingJsonBean = components['schemas']['NotificationSchemeAndProjectMappingJsonBean'];
+export type NotificationSchemeEvent = components['schemas']['NotificationSchemeEvent'];
+export type NotificationSchemeEventDetails = components['schemas']['NotificationSchemeEventDetails'];
+export type NotificationSchemeEventTypeId = components['schemas']['NotificationSchemeEventTypeId'];
+export type NotificationSchemeId = components['schemas']['NotificationSchemeId'];
+export type NotificationSchemeNotificationDetails = components['schemas']['NotificationSchemeNotificationDetails'];
+export type OldToNewSecurityLevelMappingsBean = components['schemas']['OldToNewSecurityLevelMappingsBean'];
+export type OperationMessage = components['schemas']['OperationMessage'];
+export type Operations = components['schemas']['Operations'];
+export type OrderOfCustomFieldOptions = components['schemas']['OrderOfCustomFieldOptions'];
+export type OrderOfIssueTypes = components['schemas']['OrderOfIssueTypes'];
+export type PageBean2ComponentJsonBean = components['schemas']['PageBean2ComponentJsonBean'];
+export type PageBean2JqlFunctionPrecomputationBean = components['schemas']['PageBean2JqlFunctionPrecomputationBean'];
+export type PageBeanBulkContextualConfiguration = components['schemas']['PageBeanBulkContextualConfiguration'];
+export type PageBeanChangelog = components['schemas']['PageBeanChangelog'];
+export type PageBeanComment = components['schemas']['PageBeanComment'];
+export type PageBeanComponentWithIssueCount = components['schemas']['PageBeanComponentWithIssueCount'];
+export type PageBeanContext = components['schemas']['PageBeanContext'];
+export type PageBeanContextForProjectAndIssueType = components['schemas']['PageBeanContextForProjectAndIssueType'];
+export type PageBeanContextualConfiguration = components['schemas']['PageBeanContextualConfiguration'];
+export type PageBeanCustomFieldContext = components['schemas']['PageBeanCustomFieldContext'];
+export type PageBeanCustomFieldContextDefaultValue = components['schemas']['PageBeanCustomFieldContextDefaultValue'];
+export type PageBeanCustomFieldContextOption = components['schemas']['PageBeanCustomFieldContextOption'];
+export type PageBeanCustomFieldContextProjectMapping = components['schemas']['PageBeanCustomFieldContextProjectMapping'];
+export type PageBeanDashboard = components['schemas']['PageBeanDashboard'];
+export type PageBeanField = components['schemas']['PageBeanField'];
+export type PageBeanFieldConfigurationDetails = components['schemas']['PageBeanFieldConfigurationDetails'];
+export type PageBeanFieldConfigurationIssueTypeItem = components['schemas']['PageBeanFieldConfigurationIssueTypeItem'];
+export type PageBeanFieldConfigurationItem = components['schemas']['PageBeanFieldConfigurationItem'];
+export type PageBeanFieldConfigurationScheme = components['schemas']['PageBeanFieldConfigurationScheme'];
+export type PageBeanFieldConfigurationSchemeProjects = components['schemas']['PageBeanFieldConfigurationSchemeProjects'];
+export type PageBeanFilterDetails = components['schemas']['PageBeanFilterDetails'];
+export type PageBeanGroupDetails = components['schemas']['PageBeanGroupDetails'];
+export type PageBeanIssueFieldOption = components['schemas']['PageBeanIssueFieldOption'];
+export type PageBeanIssueSecurityLevelMember = components['schemas']['PageBeanIssueSecurityLevelMember'];
+export type PageBeanIssueSecuritySchemeToProjectMapping = components['schemas']['PageBeanIssueSecuritySchemeToProjectMapping'];
+export type PageBeanIssueTypeScheme = components['schemas']['PageBeanIssueTypeScheme'];
+export type PageBeanIssueTypeSchemeMapping = components['schemas']['PageBeanIssueTypeSchemeMapping'];
+export type PageBeanIssueTypeSchemeProjects = components['schemas']['PageBeanIssueTypeSchemeProjects'];
+export type PageBeanIssueTypeScreenScheme = components['schemas']['PageBeanIssueTypeScreenScheme'];
+export type PageBeanIssueTypeScreenSchemeItem = components['schemas']['PageBeanIssueTypeScreenSchemeItem'];
+export type PageBeanIssueTypeScreenSchemesProjects = components['schemas']['PageBeanIssueTypeScreenSchemesProjects'];
+export type PageBeanIssueTypeToContextMapping = components['schemas']['PageBeanIssueTypeToContextMapping'];
+export type PageBeanNotificationScheme = components['schemas']['PageBeanNotificationScheme'];
+export type PageBeanNotificationSchemeAndProjectMappingJsonBean = components['schemas']['PageBeanNotificationSchemeAndProjectMappingJsonBean'];
+export type PageBeanPriority = components['schemas']['PageBeanPriority'];
+export type PageBeanPrioritySchemeWithPaginatedPrioritiesAndProjects = components['schemas']['PageBeanPrioritySchemeWithPaginatedPrioritiesAndProjects'];
+export type PageBeanPriorityWithSequence = components['schemas']['PageBeanPriorityWithSequence'];
+export type PageBeanProject = components['schemas']['PageBeanProject'];
+export type PageBeanProjectDetails = components['schemas']['PageBeanProjectDetails'];
+export type PageBeanResolutionJsonBean = components['schemas']['PageBeanResolutionJsonBean'];
+export type PageBeanScreen = components['schemas']['PageBeanScreen'];
+export type PageBeanScreenScheme = components['schemas']['PageBeanScreenScheme'];
+export type PageBeanScreenWithTab = components['schemas']['PageBeanScreenWithTab'];
+export type PageBeanSecurityLevel = components['schemas']['PageBeanSecurityLevel'];
+export type PageBeanSecurityLevelMember = components['schemas']['PageBeanSecurityLevelMember'];
+export type PageBeanSecuritySchemeWithProjects = components['schemas']['PageBeanSecuritySchemeWithProjects'];
+export type PageBeanString = components['schemas']['PageBeanString'];
+export type PageBeanUiModificationDetails = components['schemas']['PageBeanUiModificationDetails'];
+export type PageBeanUser = components['schemas']['PageBeanUser'];
+export type PageBeanUserDetails = components['schemas']['PageBeanUserDetails'];
+export type PageBeanUserKey = components['schemas']['PageBeanUserKey'];
+export type PageBeanVersion = components['schemas']['PageBeanVersion'];
+export type PageBeanWebhook = components['schemas']['PageBeanWebhook'];
+export type PageBeanWorkflow = components['schemas']['PageBeanWorkflow'];
+export type PageBeanWorkflowScheme = components['schemas']['PageBeanWorkflowScheme'];
+export type PageBeanWorkflowTransitionRules = components['schemas']['PageBeanWorkflowTransitionRules'];
+export type PagedListUserDetailsApplicationUser = components['schemas']['PagedListUserDetailsApplicationUser'];
+export type PageOfChangelogs = components['schemas']['PageOfChangelogs'];
+export type PageOfComments = components['schemas']['PageOfComments'];
+export type PageOfCreateMetaIssueTypes = components['schemas']['PageOfCreateMetaIssueTypes'];
+export type PageOfCreateMetaIssueTypeWithField = components['schemas']['PageOfCreateMetaIssueTypeWithField'];
+export type PageOfDashboards = components['schemas']['PageOfDashboards'];
+export type PageOfStatuses = components['schemas']['PageOfStatuses'];
+export type PageOfWorklogs = components['schemas']['PageOfWorklogs'];
+export type PageWithCursorGetPlanResponseForPage = components['schemas']['PageWithCursorGetPlanResponseForPage'];
+export type PageWithCursorGetTeamResponseForPage = components['schemas']['PageWithCursorGetTeamResponseForPage'];
+export type PaginatedResponseComment = components['schemas']['PaginatedResponseComment'];
+export type PaginatedResponseFieldCreateMetadata = components['schemas']['PaginatedResponseFieldCreateMetadata'];
+export type PaginatedResponseIssueTypeIssueCreateMetadata = components['schemas']['PaginatedResponseIssueTypeIssueCreateMetadata'];
+export type ParsedJqlQueries = components['schemas']['ParsedJqlQueries'];
+export type ParsedJqlQuery = components['schemas']['ParsedJqlQuery'];
+export type PermissionDetails = components['schemas']['PermissionDetails'];
+export type PermissionGrant = components['schemas']['PermissionGrant'];
+export type PermissionGrants = components['schemas']['PermissionGrants'];
+export type PermissionHolder = components['schemas']['PermissionHolder'];
+export type Permissions = components['schemas']['Permissions'];
+export type PermissionScheme = components['schemas']['PermissionScheme'];
+export type PermissionSchemes = components['schemas']['PermissionSchemes'];
+export type PermissionsKeysBean = components['schemas']['PermissionsKeysBean'];
+export type PermittedProjects = components['schemas']['PermittedProjects'];
+export type Priority = components['schemas']['Priority'];
+export type PriorityId = components['schemas']['PriorityId'];
+export type PriorityMapping = components['schemas']['PriorityMapping'];
+export type PrioritySchemeChangesWithoutMappings = components['schemas']['PrioritySchemeChangesWithoutMappings'];
+export type PrioritySchemeId = components['schemas']['PrioritySchemeId'];
+export type PrioritySchemeWithPaginatedPrioritiesAndProjects = components['schemas']['PrioritySchemeWithPaginatedPrioritiesAndProjects'];
+export type PriorityWithSequence = components['schemas']['PriorityWithSequence'];
+export type Project = components['schemas']['Project'];
+export type ProjectAndIssueTypePair = components['schemas']['ProjectAndIssueTypePair'];
+export type ProjectAvatars = components['schemas']['ProjectAvatars'];
+export type ProjectCategory = components['schemas']['ProjectCategory'];
+export type ProjectComponent = components['schemas']['ProjectComponent'];
+export type ProjectDataPolicies = components['schemas']['ProjectDataPolicies'];
+export type ProjectDataPolicy = components['schemas']['ProjectDataPolicy'];
+export type ProjectDetails = components['schemas']['ProjectDetails'];
+export type ProjectEmailAddress = components['schemas']['ProjectEmailAddress'];
+export type ProjectFeature = components['schemas']['ProjectFeature'];
+export type ProjectFeatureState = components['schemas']['ProjectFeatureState'];
+export type ProjectId = components['schemas']['ProjectId'];
+export type ProjectIdentifierBean = components['schemas']['ProjectIdentifierBean'];
+export type ProjectIdentifiers = components['schemas']['ProjectIdentifiers'];
+export type ProjectIds = components['schemas']['ProjectIds'];
+export type ProjectInsight = components['schemas']['ProjectInsight'];
+export type ProjectIssueCreateMetadata = components['schemas']['ProjectIssueCreateMetadata'];
+export type ProjectIssueSecurityLevels = components['schemas']['ProjectIssueSecurityLevels'];
+export type ProjectIssueTypeHierarchy = components['schemas']['ProjectIssueTypeHierarchy'];
+export type ProjectIssueTypeMapping = components['schemas']['ProjectIssueTypeMapping'];
+export type ProjectIssueTypeMappings = components['schemas']['ProjectIssueTypeMappings'];
+export type ProjectIssueTypes = components['schemas']['ProjectIssueTypes'];
+export type ProjectIssueTypesHierarchyLevel = components['schemas']['ProjectIssueTypesHierarchyLevel'];
+export type ProjectLandingPageInfo = components['schemas']['ProjectLandingPageInfo'];
+export type ProjectPermissions = components['schemas']['ProjectPermissions'];
+export type ProjectRole = components['schemas']['ProjectRole'];
+export type ProjectRoleActorsUpdateBean = components['schemas']['ProjectRoleActorsUpdateBean'];
+export type ProjectRoleDetails = components['schemas']['ProjectRoleDetails'];
+export type ProjectRoleGroup = components['schemas']['ProjectRoleGroup'];
+export type ProjectRoleUser = components['schemas']['ProjectRoleUser'];
+export type ProjectScopeBean = components['schemas']['ProjectScopeBean'];
+export type ProjectType = components['schemas']['ProjectType'];
+export type ProjectWithDataPolicy = components['schemas']['ProjectWithDataPolicy'];
+export type PropertyKey = components['schemas']['PropertyKey'];
+export type PropertyKeys = components['schemas']['PropertyKeys'];
+export type PublishDraftWorkflowScheme = components['schemas']['PublishDraftWorkflowScheme'];
+export type PublishedWorkflowId = components['schemas']['PublishedWorkflowId'];
+export type RegisteredWebhook = components['schemas']['RegisteredWebhook'];
+export type RemoteIssueLink = components['schemas']['RemoteIssueLink'];
+export type RemoteIssueLinkIdentifies = components['schemas']['RemoteIssueLinkIdentifies'];
+export type RemoteIssueLinkRequest = components['schemas']['RemoteIssueLinkRequest'];
+export type RemoteObject = components['schemas']['RemoteObject'];
+export type RemoveOptionFromIssuesResult = components['schemas']['RemoveOptionFromIssuesResult'];
+export type ReorderIssuePriorities = components['schemas']['ReorderIssuePriorities'];
+export type ReorderIssueResolutionsRequest = components['schemas']['ReorderIssueResolutionsRequest'];
+export type RequiredMappingByIssueType = components['schemas']['RequiredMappingByIssueType'];
+export type RequiredMappingByWorkflows = components['schemas']['RequiredMappingByWorkflows'];
+export type Resolution = components['schemas']['Resolution'];
+export type ResolutionId = components['schemas']['ResolutionId'];
+export type ResolutionJsonBean = components['schemas']['ResolutionJsonBean'];
+export type Resource = components['schemas']['Resource'];
+export type RestrictedPermission = components['schemas']['RestrictedPermission'];
+export type RichText = components['schemas']['RichText'];
+export type RoleActor = components['schemas']['RoleActor'];
+export type RuleConfiguration = components['schemas']['RuleConfiguration'];
+export type SanitizedJqlQueries = components['schemas']['SanitizedJqlQueries'];
+export type SanitizedJqlQuery = components['schemas']['SanitizedJqlQuery'];
+export type Scope = components['schemas']['Scope'];
+export type Screen = components['schemas']['Screen'];
+export type ScreenableField = components['schemas']['ScreenableField'];
+export type ScreenableTab = components['schemas']['ScreenableTab'];
+export type ScreenDetails = components['schemas']['ScreenDetails'];
+export type ScreenScheme = components['schemas']['ScreenScheme'];
+export type ScreenSchemeDetails = components['schemas']['ScreenSchemeDetails'];
+export type ScreenSchemeId = components['schemas']['ScreenSchemeId'];
+export type ScreenTypes = components['schemas']['ScreenTypes'];
+export type ScreenWithTab = components['schemas']['ScreenWithTab'];
+export type SearchAndReconcileRequestBean = components['schemas']['SearchAndReconcileRequestBean'];
+export type SearchAndReconcileResults = components['schemas']['SearchAndReconcileResults'];
+export type SearchAutoCompleteFilter = components['schemas']['SearchAutoCompleteFilter'];
+export type SearchRequestBean = components['schemas']['SearchRequestBean'];
+export type SearchResults = components['schemas']['SearchResults'];
+export type SecurityLevel = components['schemas']['SecurityLevel'];
+export type SecurityLevelMember = components['schemas']['SecurityLevelMember'];
+export type SecurityScheme = components['schemas']['SecurityScheme'];
+export type SecuritySchemeId = components['schemas']['SecuritySchemeId'];
+export type SecuritySchemeLevelBean = components['schemas']['SecuritySchemeLevelBean'];
+export type SecuritySchemeLevelMemberBean = components['schemas']['SecuritySchemeLevelMemberBean'];
+export type SecuritySchemeMembersRequest = components['schemas']['SecuritySchemeMembersRequest'];
+export type SecuritySchemes = components['schemas']['SecuritySchemes'];
+export type SecuritySchemeWithProjects = components['schemas']['SecuritySchemeWithProjects'];
+export type ServerInformation = components['schemas']['ServerInformation'];
+export type ServiceManagementNavigationInfo = components['schemas']['ServiceManagementNavigationInfo'];
+export type ServiceRegistry = components['schemas']['ServiceRegistry'];
+export type ServiceRegistryTier = components['schemas']['ServiceRegistryTier'];
+export type SetDefaultLevelsRequest = components['schemas']['SetDefaultLevelsRequest'];
+export type SetDefaultPriorityRequest = components['schemas']['SetDefaultPriorityRequest'];
+export type SetDefaultResolutionRequest = components['schemas']['SetDefaultResolutionRequest'];
+export type SharePermission = components['schemas']['SharePermission'];
+export type SharePermissionInputBean = components['schemas']['SharePermissionInputBean'];
+export type SimpleApplicationPropertyBean = components['schemas']['SimpleApplicationPropertyBean'];
+export type SimpleErrorCollection = components['schemas']['SimpleErrorCollection'];
+export type SimpleLink = components['schemas']['SimpleLink'];
+export type SimpleListWrapperApplicationRole = components['schemas']['SimpleListWrapperApplicationRole'];
+export type SimpleListWrapperGroupName = components['schemas']['SimpleListWrapperGroupName'];
+export type SimpleUsage = components['schemas']['SimpleUsage'];
+export type SimplifiedHierarchyLevel = components['schemas']['SimplifiedHierarchyLevel'];
+export type SimplifiedIssueTransition = components['schemas']['SimplifiedIssueTransition'];
+export type SoftwareNavigationInfo = components['schemas']['SoftwareNavigationInfo'];
+export type Status = components['schemas']['Status'];
+export type StatusCategory = components['schemas']['StatusCategory'];
+export type StatusCreate = components['schemas']['StatusCreate'];
+export type StatusCreateRequest = components['schemas']['StatusCreateRequest'];
+export type StatusDetails = components['schemas']['StatusDetails'];
+export type StatusesPerWorkflow = components['schemas']['StatusesPerWorkflow'];
+export type StatusLayoutUpdate = components['schemas']['StatusLayoutUpdate'];
+export type StatusMapping = components['schemas']['StatusMapping'];
+export type StatusMappingDto = components['schemas']['StatusMappingDTO'];
+export type StatusMetadata = components['schemas']['StatusMetadata'];
+export type StatusMigration = components['schemas']['StatusMigration'];
+export type StatusReferenceAndPort = components['schemas']['StatusReferenceAndPort'];
+export type StatusScope = components['schemas']['StatusScope'];
+export type StatusUpdate = components['schemas']['StatusUpdate'];
+export type StatusUpdateRequest = components['schemas']['StatusUpdateRequest'];
+export type StreamingResponseBody = components['schemas']['StreamingResponseBody'];
+export type StringList = components['schemas']['StringList'];
+export type SubmittedBulkOperation = components['schemas']['SubmittedBulkOperation'];
+export type SuggestedIssue = components['schemas']['SuggestedIssue'];
+export type SuggestedMappingsForPrioritiesRequestBean = components['schemas']['SuggestedMappingsForPrioritiesRequestBean'];
+export type SuggestedMappingsForProjectsRequestBean = components['schemas']['SuggestedMappingsForProjectsRequestBean'];
+export type SuggestedMappingsRequestBean = components['schemas']['SuggestedMappingsRequestBean'];
+export type SystemAvatars = components['schemas']['SystemAvatars'];
+export type TargetClassification = components['schemas']['targetClassification'];
+export type TargetMandatoryFields = components['schemas']['targetMandatoryFields'];
+export type TargetStatus = components['schemas']['targetStatus'];
+export type TargetToSourcesMapping = components['schemas']['targetToSourcesMapping'];
+export type TaskProgressBeanJsonNode = components['schemas']['TaskProgressBeanJsonNode'];
+export type TaskProgressBeanObject = components['schemas']['TaskProgressBeanObject'];
+export type TaskProgressBeanRemoveOptionFromIssuesResult = components['schemas']['TaskProgressBeanRemoveOptionFromIssuesResult'];
+export type TimeTrackingConfiguration = components['schemas']['TimeTrackingConfiguration'];
+export type TimeTrackingDetails = components['schemas']['TimeTrackingDetails'];
+export type TimeTrackingProvider = components['schemas']['TimeTrackingProvider'];
+export type Transition = components['schemas']['Transition'];
+export type Transitions = components['schemas']['Transitions'];
+export type TransitionScreenDetails = components['schemas']['TransitionScreenDetails'];
+export type TransitionUpdateDto = components['schemas']['TransitionUpdateDTO'];
+export type UiModificationContextDetails = components['schemas']['UiModificationContextDetails'];
+export type UiModificationDetails = components['schemas']['UiModificationDetails'];
+export type UiModificationIdentifiers = components['schemas']['UiModificationIdentifiers'];
+export type UnrestrictedUserEmail = components['schemas']['UnrestrictedUserEmail'];
+export type UpdateCustomFieldDetails = components['schemas']['UpdateCustomFieldDetails'];
+export type UpdateDefaultProjectClassificationBean = components['schemas']['UpdateDefaultProjectClassificationBean'];
+export type UpdateDefaultScreenScheme = components['schemas']['UpdateDefaultScreenScheme'];
+export type UpdatedProjectCategory = components['schemas']['UpdatedProjectCategory'];
+export type UpdateFieldConfigurationSchemeDetails = components['schemas']['UpdateFieldConfigurationSchemeDetails'];
+export type UpdateIssueSecurityLevelDetails = components['schemas']['UpdateIssueSecurityLevelDetails'];
+export type UpdateIssueSecuritySchemeRequestBean = components['schemas']['UpdateIssueSecuritySchemeRequestBean'];
+export type UpdateNotificationSchemeDetails = components['schemas']['UpdateNotificationSchemeDetails'];
+export type UpdatePrioritiesInSchemeRequestBean = components['schemas']['UpdatePrioritiesInSchemeRequestBean'];
+export type UpdatePriorityDetails = components['schemas']['UpdatePriorityDetails'];
+export type UpdatePrioritySchemeRequestBean = components['schemas']['UpdatePrioritySchemeRequestBean'];
+export type UpdatePrioritySchemeResponseBean = components['schemas']['UpdatePrioritySchemeResponseBean'];
+export type UpdateProjectDetails = components['schemas']['UpdateProjectDetails'];
+export type UpdateProjectsInSchemeRequestBean = components['schemas']['UpdateProjectsInSchemeRequestBean'];
+export type UpdateResolutionDetails = components['schemas']['UpdateResolutionDetails'];
+export type UpdateScreenDetails = components['schemas']['UpdateScreenDetails'];
+export type UpdateScreenSchemeDetails = components['schemas']['UpdateScreenSchemeDetails'];
+export type UpdateScreenTypes = components['schemas']['UpdateScreenTypes'];
+export type UpdateUiModificationDetails = components['schemas']['UpdateUiModificationDetails'];
+export type UpdateUserToGroupBean = components['schemas']['UpdateUserToGroupBean'];
+export type User = components['schemas']['User'];
+export type UserBean = components['schemas']['UserBean'];
+export type UserBeanAvatarUrls = components['schemas']['UserBeanAvatarUrls'];
+export type UserColumnRequestBody = components['schemas']['UserColumnRequestBody'];
+export type UserContextVariable = components['schemas']['UserContextVariable'];
+export type UserDetails = components['schemas']['UserDetails'];
+export type UserFilter = components['schemas']['UserFilter'];
+export type UserKey = components['schemas']['UserKey'];
+export type UserList = components['schemas']['UserList'];
+export type UserMigrationBean = components['schemas']['UserMigrationBean'];
+export type UserPermission = components['schemas']['UserPermission'];
+export type UserPickerUser = components['schemas']['UserPickerUser'];
+export type ValidationOptionsForCreate = components['schemas']['ValidationOptionsForCreate'];
+export type ValidationOptionsForUpdate = components['schemas']['ValidationOptionsForUpdate'];
+export type ValueOperand = components['schemas']['ValueOperand'];
+export type Version = components['schemas']['Version'];
+export type VersionApprover = components['schemas']['VersionApprover'];
+export type VersionIssueCounts = components['schemas']['VersionIssueCounts'];
+export type VersionIssuesStatus = components['schemas']['VersionIssuesStatus'];
+export type VersionMoveBean = components['schemas']['VersionMoveBean'];
+export type VersionRelatedWork = components['schemas']['VersionRelatedWork'];
+export type VersionUnresolvedIssuesCount = components['schemas']['VersionUnresolvedIssuesCount'];
+export type VersionUsageInCustomField = components['schemas']['VersionUsageInCustomField'];
+export type Visibility = components['schemas']['Visibility'];
+export type Votes = components['schemas']['Votes'];
+export type WarningCollection = components['schemas']['WarningCollection'];
+export type Watchers = components['schemas']['Watchers'];
+export type Webhook = components['schemas']['Webhook'];
+export type WebhookDetails = components['schemas']['WebhookDetails'];
+export type WebhookRegistrationDetails = components['schemas']['WebhookRegistrationDetails'];
+export type WebhooksExpirationDate = components['schemas']['WebhooksExpirationDate'];
+export type Workflow = components['schemas']['Workflow'];
+export type WorkflowAssociationStatusMapping = components['schemas']['WorkflowAssociationStatusMapping'];
+export type WorkflowCapabilities = components['schemas']['WorkflowCapabilities'];
+export type WorkflowCompoundCondition = components['schemas']['WorkflowCompoundCondition'];
+export type WorkflowCondition = components['schemas']['WorkflowCondition'];
+export type WorkflowCreate = components['schemas']['WorkflowCreate'];
+export type WorkflowCreateRequest = components['schemas']['WorkflowCreateRequest'];
+export type WorkflowCreateResponse = components['schemas']['WorkflowCreateResponse'];
+export type WorkflowCreateValidateRequest = components['schemas']['WorkflowCreateValidateRequest'];
+export type WorkflowElementReference = components['schemas']['WorkflowElementReference'];
+export type WorkflowId = components['schemas']['WorkflowId'];
+export type WorkflowIDs = components['schemas']['WorkflowIDs'];
+export type WorkflowLayout = components['schemas']['WorkflowLayout'];
+export type WorkflowMetadataAndIssueTypeRestModel = components['schemas']['WorkflowMetadataAndIssueTypeRestModel'];
+export type WorkflowMetadataRestModel = components['schemas']['WorkflowMetadataRestModel'];
+export type WorkflowOperations = components['schemas']['WorkflowOperations'];
+export type WorkflowReadRequest = components['schemas']['WorkflowReadRequest'];
+export type WorkflowReadResponse = components['schemas']['WorkflowReadResponse'];
+export type WorkflowReferenceStatus = components['schemas']['WorkflowReferenceStatus'];
+export type WorkflowRuleConfiguration = components['schemas']['WorkflowRuleConfiguration'];
+export type WorkflowRules = components['schemas']['WorkflowRules'];
+export type WorkflowRulesSearch = components['schemas']['WorkflowRulesSearch'];
+export type WorkflowRulesSearchDetails = components['schemas']['WorkflowRulesSearchDetails'];
+export type WorkflowScheme = components['schemas']['WorkflowScheme'];
+export type WorkflowSchemeAssociation = components['schemas']['WorkflowSchemeAssociation'];
+export type WorkflowSchemeAssociations = components['schemas']['WorkflowSchemeAssociations'];
+export type WorkflowSchemeIdName = components['schemas']['WorkflowSchemeIdName'];
+export type WorkflowSchemeProjectAssociation = components['schemas']['WorkflowSchemeProjectAssociation'];
+export type WorkflowSchemeReadRequest = components['schemas']['WorkflowSchemeReadRequest'];
+export type WorkflowSchemeReadResponse = components['schemas']['WorkflowSchemeReadResponse'];
+export type WorkflowSchemeUpdateRequest = components['schemas']['WorkflowSchemeUpdateRequest'];
+export type WorkflowSchemeUpdateRequiredMappingsRequest = components['schemas']['WorkflowSchemeUpdateRequiredMappingsRequest'];
+export type WorkflowSchemeUpdateRequiredMappingsResponse = components['schemas']['WorkflowSchemeUpdateRequiredMappingsResponse'];
+export type WorkflowScope = components['schemas']['WorkflowScope'];
+export type WorkflowSearchResponse = components['schemas']['WorkflowSearchResponse'];
+export type WorkflowSimpleCondition = components['schemas']['WorkflowSimpleCondition'];
+export type WorkflowStatus = components['schemas']['WorkflowStatus'];
+export type WorkflowStatusAndPort = components['schemas']['WorkflowStatusAndPort'];
+export type WorkflowStatusLayout = components['schemas']['WorkflowStatusLayout'];
+export type WorkflowStatusUpdate = components['schemas']['WorkflowStatusUpdate'];
+export type WorkflowsWithTransitionRulesDetails = components['schemas']['WorkflowsWithTransitionRulesDetails'];
+export type WorkflowTransition = components['schemas']['WorkflowTransition'];
+export type WorkflowTransitionLinks = components['schemas']['WorkflowTransitionLinks'];
+export type WorkflowTransitionProperty = components['schemas']['WorkflowTransitionProperty'];
+export type WorkflowTransitionRule = components['schemas']['WorkflowTransitionRule'];
+export type WorkflowTransitionRules = components['schemas']['WorkflowTransitionRules'];
+export type WorkflowTransitionRulesDetails = components['schemas']['WorkflowTransitionRulesDetails'];
+export type WorkflowTransitionRulesUpdate = components['schemas']['WorkflowTransitionRulesUpdate'];
+export type WorkflowTransitionRulesUpdateErrorDetails = components['schemas']['WorkflowTransitionRulesUpdateErrorDetails'];
+export type WorkflowTransitionRulesUpdateErrors = components['schemas']['WorkflowTransitionRulesUpdateErrors'];
+export type WorkflowTransitions = components['schemas']['WorkflowTransitions'];
+export type WorkflowTrigger = components['schemas']['WorkflowTrigger'];
+export type WorkflowUpdate = components['schemas']['WorkflowUpdate'];
+export type WorkflowUpdateRequest = components['schemas']['WorkflowUpdateRequest'];
+export type WorkflowUpdateResponse = components['schemas']['WorkflowUpdateResponse'];
+export type WorkflowUpdateValidateRequestBean = components['schemas']['WorkflowUpdateValidateRequestBean'];
+export type WorkflowUsages = components['schemas']['WorkflowUsages'];
+export type WorkflowValidationError = components['schemas']['WorkflowValidationError'];
+export type WorkflowValidationErrorList = components['schemas']['WorkflowValidationErrorList'];
+export type Worklog = components['schemas']['Worklog'];
+export type WorklogIdsRequestBean = components['schemas']['WorklogIdsRequestBean'];
+export type WorklogsMoveRequestBean = components['schemas']['WorklogsMoveRequestBean'];
+export type WorkManagementNavigationInfo = components['schemas']['WorkManagementNavigationInfo'];
+export type WorkspaceDataPolicy = components['schemas']['WorkspaceDataPolicy'];
 export type $defs = Record<string, never>;
 export type operations = Record<string, never>;

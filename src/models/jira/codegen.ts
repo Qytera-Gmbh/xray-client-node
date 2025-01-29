@@ -23,7 +23,11 @@ async function generateCloudModels(): Promise<void> {
     info: spec.info,
     openapi: spec.openapi || "3.0.0",
   };
-  const output = await openapi(schemaOnlySpec);
+  const output = await openapi(schemaOnlySpec, {
+    alphabetize: true,
+    rootTypes: true,
+    rootTypesNoSchemaPrefix: true,
+  });
   const directory = join(import.meta.dirname, "__generated__");
   if (!existsSync(directory)) {
     mkdirSync(directory, { recursive: true });
