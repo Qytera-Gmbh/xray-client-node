@@ -34,7 +34,7 @@ async function generateCloudModels(): Promise<void> {
   }
   writeFileSync(
     join(directory, "index.ts"),
-    [COMMENT_HEADER, "", "/* eslint-disable */", "", astToString(output)].join("\n"),
+    [COMMENT_HEADER, "/* eslint-disable */", "", astToString(output)].join("\n"),
     "utf-8"
   );
 }
