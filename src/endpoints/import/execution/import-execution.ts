@@ -1,13 +1,16 @@
 import type { BaseClient } from "../../../client/base-client.js";
 import type {
-  ImportResponse,
+  ImportExecutionResponseCloud,
+  ImportExecutionResponseServer,
   XrayTestExecutionResults,
 } from "../../../models/import/execution/import-execution.js";
 
 /**
  * Models the execution import endpoints.
  */
-export class ImportExecution {
+export class ImportExecution<
+  ImportExecutionResponseType extends ImportExecutionResponseCloud | ImportExecutionResponseServer,
+> {
   private readonly client: BaseClient;
 
   /**
@@ -28,7 +31,7 @@ export class ImportExecution {
    * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresults
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresults
    */
-  public async xray(results: XrayTestExecutionResults): Promise<ImportResponse> {
+  public async xray(results: XrayTestExecutionResults): Promise<ImportExecutionResponseType> {
     const response = await this.client.send(`/import/execution`, {
       body: JSON.stringify(results),
       expectedStatus: 200,
@@ -38,6 +41,6 @@ export class ImportExecution {
       },
       method: "POST",
     });
-    return (await response.json()) as ImportResponse;
+    return (await response.json()) as ImportExecutionResponseType;
   }
 }
