@@ -1,6 +1,7 @@
 import { Dataset } from "../endpoints/dataset/dataset.js";
 import { ImportExecution } from "../endpoints/import/execution/import-execution.js";
 import { TestExecutions } from "../endpoints/test-executions/test-executions.js";
+import { TestPlans } from "../endpoints/test-plans/test-plans.js";
 import type { DatasetExportQueryServer } from "../models/xray/dataset/dataset.js";
 import type { ImportExecutionResponseServer } from "../models/xray/import/execution/import-execution.js";
 import type { ClientConfiguration } from "./base-client.js";
@@ -12,6 +13,7 @@ export class XrayClientServer extends BaseClient {
     execution: new ImportExecution<ImportExecutionResponseServer>(this),
   };
   testExecutions = new TestExecutions(this);
+  testPlans = new TestPlans(this);
 
   /**
    * Constructs a new Xray server client.
