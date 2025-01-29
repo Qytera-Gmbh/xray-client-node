@@ -14,7 +14,7 @@
   "author": "dev@qytera.de",
   "license": "MIT",
   "repository": {
-    "url": "git+https://github.com/Qytera-Gmbh/xray-client.git",
+    "url": "git+https://github.com/Qytera-Gmbh/xray-client-node.git",
     "type": "git"
   },
   "keywords": [
