@@ -52,13 +52,28 @@ export class ImportExecution<
    * @param results the test results
    * @param info - the Jira test execution issue information
    * @returns the key of the test execution issue
+   *
    * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresultsMultipart
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresultsMultipart
    */
-  public xrayMultipart(
+  public async xrayMultipart(
     results: XrayTestExecutionResults,
     info: IssueUpdateDetails
   ): Promise<ImportExecutionResponseType> {
-    throw new Error("");
+    const resultString = JSON.stringify(results);
+    const infoString = JSON.stringify(info);
+    const formData = new FormData();
+    formData.append("results", resultString, "results.json");
+    formData.append("info", infoString, "info.json");
+    const response = await this.client.send(`/import/execution/multipart`, {
+      body: formData,
+      expectedStatus: 200,
+      headers: {
+        ["Accept"]: "application/json",
+        ["Content-Type"]: "application/json",
+      },
+      method: "POST",
+    });
+    return (await response.json()) as ImportExecutionResponseType;
   }
 }
