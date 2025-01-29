@@ -1,12 +1,15 @@
 import type { BaseClient } from "../../client/base-client.js";
-import type { GetTestsResponse } from "../../models/xray/test-plans/test-plans.js";
+import type {
+  GetTestExecutionsResponse,
+  GetTestsResponse,
+} from "../../models/xray/testplan/test-plan.js";
 
 /**
  * Models the test plans endpoints in Xray server.
  *
  * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
  */
-export class TestPlans {
+export class TestPlanApi {
   private readonly client: BaseClient;
 
   /**
@@ -22,9 +25,9 @@ export class TestPlans {
    * Return a list of the test associated with the test plan. Note that this endpoint may be
    * paginated.
    *
-   * @param testPlanKey the key of the test execution
+   * @param testPlanKey the key of the test plan
    * @param query optional query parameters
-   * @returns the tests of the test execution
+   * @returns the tests of the test plan
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
    */
@@ -97,5 +100,22 @@ export class TestPlans {
    */
   public removeTest(testPlanKey: string, testKey: string): Promise<void> {
     throw new Error("Method not implemented");
+  }
+
+  /**
+   * Return a list of the test executions associated with the test plan. Note that this endpoint may
+   * be paginated.
+   *
+   * @param testPlanKey the key of the test plan
+   * @returns the test executions of the test plan
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
+   */
+  public async getTestExecutions(testPlanKey: string): Promise<GetTestExecutionsResponse> {
+    const response = await this.client.send(`/testplans/${testPlanKey}/testexecution`, {
+      expectedStatus: 200,
+      method: "GET",
+    });
+    return (await response.json()) as GetTestExecutionsResponse;
   }
 }

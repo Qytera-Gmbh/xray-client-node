@@ -7,7 +7,7 @@ import type {
 /**
  * Models the execution import endpoints.
  */
-export class Dataset<ExportType extends DatasetExportQueryCloud | DatasetExportQueryServer> {
+export class DatasetApi<ExportType extends DatasetExportQueryCloud | DatasetExportQueryServer> {
   private readonly client: BaseClient;
 
   /**

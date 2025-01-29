@@ -5,7 +5,7 @@ import { createStreamableFile } from "../../util/form-data.js";
 /**
  * Models the attachment endpoints.
  */
-export class Attachments {
+export class AttachmentsApi {
   private readonly client: BaseClient;
 
   /**

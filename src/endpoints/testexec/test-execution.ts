@@ -1,12 +1,12 @@
 import type { BaseClient } from "../../client/base-client.js";
-import type { GetTestsResponse } from "../../models/xray/test-executions/test-executions.js";
+import type { GetTestsResponse } from "../../models/xray/testexec/test-execution.js";
 
 /**
  * Models the test executions endpoints in Xray server.
  *
  * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
  */
-export class TestExecutions {
+export class TestExecutionApi {
   private readonly client: BaseClient;
 
   /**

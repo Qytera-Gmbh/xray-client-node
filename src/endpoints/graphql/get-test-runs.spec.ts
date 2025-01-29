@@ -2,12 +2,12 @@ import assert from "node:assert";
 import path from "node:path";
 import { describe, it } from "node:test";
 import { XRAY_CLIENT_CLOUD } from "../../../test/clients.js";
-import { GetTestRuns } from "./get-test-runs.js";
+import { GetTestRunsApi } from "./get-test-runs.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("query", () => {
     it("returns test run data", async () => {
-      const controller = new GetTestRuns(XRAY_CLIENT_CLOUD);
+      const controller = new GetTestRunsApi(XRAY_CLIENT_CLOUD);
       const response = await controller.query(
         { limit: 100, testExecIssueIds: ["XCN-2"] },
         `

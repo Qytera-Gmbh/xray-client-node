@@ -5,7 +5,7 @@ import type { QueryResponse } from "../../models/xray/graphql/graphql.js";
 /**
  * Models the GraphQL test run endpoints.
  */
-export class GetTestRuns {
+export class GetTestRunsApi {
   private readonly client: BaseClient;
 
   /**

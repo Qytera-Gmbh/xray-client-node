@@ -9,7 +9,7 @@ import type {
 /**
  * Models the execution import endpoints.
  */
-export class ImportExecution<
+export class ImportExecutionApi<
   ImportExecutionResponseType extends ImportExecutionResponseCloud | ImportExecutionResponseServer,
 > {
   private readonly client: BaseClient;
