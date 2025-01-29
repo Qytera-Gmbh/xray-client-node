@@ -1,6 +1,6 @@
 import type { CodegenConfig } from "@graphql-codegen/cli";
 import { generate } from "@graphql-codegen/cli";
-import { getEnv } from "../../../test/util.js";
+import { getEnv } from "../../../../test/util.js";
 
 import "dotenv/config";
 

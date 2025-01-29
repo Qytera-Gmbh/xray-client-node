@@ -1,10 +1,10 @@
 import type { BaseClient } from "../../../client/base-client.js";
+import type { IssueUpdateDetails } from "../../../models/jira/__generated__/index.js";
 import type {
   ImportExecutionResponseCloud,
   ImportExecutionResponseServer,
   XrayTestExecutionResults,
-} from "../../../models/import/execution/import-execution.js";
-import type { IssueUpdateDetails } from "../../../models/jira/__generated__/index.js";
+} from "../../../models/xray/execution/import-execution.js";
 
 /**
  * Models the execution import endpoints.

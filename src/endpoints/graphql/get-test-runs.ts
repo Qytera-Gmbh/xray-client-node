@@ -1,6 +1,6 @@
 import type { BaseClient } from "../../client/base-client.js";
-import type { TestExecution } from "../../models/graphql/__generated__/index.js";
-import type { QueryResponse } from "../../models/graphql/graphql.js";
+import type { TestExecution } from "../../models/xray/graphql/__generated__/index.js";
+import type { QueryResponse } from "../../models/xray/graphql/graphql.js";
 
 /**
  * Models the GraphQL test run endpoints.

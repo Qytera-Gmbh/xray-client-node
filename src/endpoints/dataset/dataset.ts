@@ -2,7 +2,7 @@ import type { BaseClient } from "../../client/base-client.js";
 import type {
   DatasetExportQueryCloud,
   DatasetExportQueryServer,
-} from "../../models/dataset/dataset.js";
+} from "../../models/xray/dataset/dataset.js";
 
 /**
  * Models the execution import endpoints.

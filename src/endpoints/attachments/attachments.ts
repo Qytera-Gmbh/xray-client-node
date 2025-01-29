@@ -1,5 +1,5 @@
 import type { BaseClient } from "../../client/base-client.js";
-import type { AddAttachmentResponse } from "../../models/attachments/attachments.js";
+import type { AddAttachmentResponse } from "../../models/xray/attachments/attachments.js";
 import { createStreamableFile } from "../../util/form-data.js";
 
 /**
