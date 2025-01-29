@@ -12,7 +12,7 @@
 This project provides TypeScript clients to users that want to interact with the API of [Xray](https://www.getxray.app/). Supports Xray server and Xray cloud.
 
 > [!WARNING]
-> The client is still in a very early stage of development and may change a lot.
+> The client is at a very early stage of development and may not fully cover all Xray interactions.
 
 # Installation
 
@@ -22,4 +22,50 @@ npm install @qytera/xray-client
 
 # Usage
 
-TBD
+Simply create a client instance for your Xray setup and start using the fully typed endpoints available.
+
+## Xray Cloud
+
+```ts
+import { XrayClientCloud } from "@qytera/xray-client";
+
+// Xray cloud authentication.
+export const cloudClient = new XrayClientCloud({
+  credentials: {
+    clientId: "xray-client-id",
+    clientSecret: "xray-client-secret",
+  },
+  url: "https://xray.cloud.getxray.app",
+});
+
+const csvData = await cloudClient.dataset.export({ testIssueKey: "PRJ-123" });
+```
+
+## Xray Server
+
+```ts
+import { XrayClientServer } from "@qytera/xray-client";
+
+// PAT authentication.
+export const serverClient = new XrayClientServer({
+  credentials: {
+    token: "jira-token",
+  },
+  url: "https://jira.company.com",
+});
+
+// Basic authentication.
+export const serverClient = new XrayClientServer({
+  credentials: {
+    username: "jira-username",
+    password: "jira-password",
+  },
+  url: "https://jira.company.com",
+});
+
+const csvData = await serverClient.dataset.export({ testIssueKey: "PRJ-123" });
+```
+
+# Credits
+
+This project was heavily inspired by [jira.js](https://github.com/MrRefactoring/jira.js).
