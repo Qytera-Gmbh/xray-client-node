@@ -4,6 +4,7 @@ import type {
   ImportExecutionResponseServer,
   XrayTestExecutionResults,
 } from "../../../models/import/execution/import-execution.js";
+import type { IssueUpdateDetails } from "../../../models/jira/__generated__/index.js";
 
 /**
  * Models the execution import endpoints.
@@ -42,5 +43,22 @@ export class ImportExecution<
       method: "POST",
     });
     return (await response.json()) as ImportExecutionResponseType;
+  }
+
+  /**
+   * Uploads test results to the Xray instance while also allowing modification of arbitrary Jira
+   * fields.
+   *
+   * @param results the test results
+   * @param info - the Jira test execution issue information
+   * @returns the key of the test execution issue
+   * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresultsMultipart
+   * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresultsMultipart
+   */
+  public xrayMultipart(
+    results: XrayTestExecutionResults,
+    info: IssueUpdateDetails
+  ): Promise<ImportExecutionResponseType> {
+    throw new Error("");
   }
 }
