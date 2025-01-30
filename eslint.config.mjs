@@ -68,6 +68,7 @@ export default tseslint.config(
         },
     },
     { files: ["**/*.mjs"], ...tseslint.configs.disableTypeChecked },
+    { ignores: ["dist/", "**/*.js"] },
     {
         files: ["**/*.spec.ts"],
         rules: {

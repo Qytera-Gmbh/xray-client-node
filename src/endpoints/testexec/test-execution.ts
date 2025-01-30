@@ -64,7 +64,9 @@ export class TestExecutionApi {
    * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
    */
   public associateTests(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     testExecKey: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     body: {
       /**
        * Tests to associate with the test execution.
@@ -99,7 +101,12 @@ export class TestExecutionApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
    */
-  public removeTest(testExecKey: string, testKey: string): Promise<void> {
+  public removeTest(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    testExecKey: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    testKey: string
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 }

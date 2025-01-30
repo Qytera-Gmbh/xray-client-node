@@ -4,12 +4,12 @@
   "description": "A typesafe HTTP client for the Xray API.",
   "main": "index.js",
   "scripts": {
-    "generate": "npm run generate:graphql && npm run generate:jira-cloud",
+    "build": "tsc --project tsconfig-build.json && shx cp README.md package.json package-lock.json dist/",
+    "code:format": "prettier src/**/*.ts test/**/*.ts index.ts --write",
+    "code:lint": "eslint",
     "generate:graphql": "node --import ./test/loader.js src/models/xray/graphql/codegen.ts",
     "generate:jira-cloud": "node --import ./test/loader-esnext.js src/models/jira/codegen.ts",
-    "test": "node --import ./test/loader.js ./test/run-unit-tests.ts",
-    "build": "tsc --project tsconfig-build.json && shx cp README.md package.json package-lock.json dist/",
-    "lint": "npx eslint src/**/*.ts test/**/*.ts"
+    "test": "node --import ./test/loader.js ./test/run-unit-tests.ts"
   },
   "author": "dev@qytera.de",
   "license": "MIT",
