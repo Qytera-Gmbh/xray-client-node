@@ -1,6 +1,6 @@
 import type { BaseClient } from "../../client/base-client.js";
 import type { TestExecution } from "../../models/xray/graphql/__generated__/index.js";
-import type { QueryResponse } from "../../models/xray/graphql/graphql.js";
+import type { NullHandling, QueryResponse } from "../../models/xray/graphql/graphql.js";
 
 /**
  * Models the GraphQL test run endpoints.
@@ -44,7 +44,7 @@ export class GetTestRunsApi {
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
    */
-  public async query(
+  public async query<N extends NullHandling = "without-null">(
     variables: {
       /**
        * The maximum amount of Test Runs to be returned. The maximum is 100.
@@ -72,7 +72,7 @@ export class GetTestRunsApi {
       testRunAssignees?: string[];
     },
     resultShape: string
-  ): Promise<QueryResponse<{ getTestRuns: TestExecution["testRuns"] }>> {
+  ): Promise<QueryResult<N>> {
     const queryString = `
       query($testIssueIds: [String], $testExecIssueIds: [String], $testRunAssignees: [String], $limit: Int!, $start: Int, $modifiedSince: String) {
         getTestRuns(testIssueIds: $testIssueIds, testExecIssueIds: $testExecIssueIds, testRunAssignees: $testRunAssignees, limit: $limit, start: $start, modifiedSince: $modifiedSince) {
@@ -88,8 +88,13 @@ export class GetTestRunsApi {
       },
       method: "POST",
     });
-    return (await response.json()) as QueryResponse<{
-      getTestRuns: TestExecution["testRuns"];
-    }>;
+    return (await response.json()) as QueryResult<N>;
   }
 }
+
+type QueryResult<N extends NullHandling> = QueryResponse<
+  {
+    getTestRuns: TestExecution["testRuns"];
+  },
+  N
+>;

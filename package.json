@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "generate": "npm run generate:graphql && npm run generate:jira-cloud",
-    "generate:graphql": "node --import ./test/loader.js src/models/graphql/codegen.ts",
+    "generate:graphql": "node --import ./test/loader.js src/models/xray/graphql/codegen.ts",
     "generate:jira-cloud": "node --import ./test/loader-esnext.js src/models/jira/codegen.ts",
     "test": "node --import ./test/loader.js ./test/run-unit-tests.ts",
     "build": "tsc --project tsconfig-build.json && shx cp README.md package.json package-lock.json dist/",

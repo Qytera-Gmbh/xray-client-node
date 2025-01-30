@@ -1,6 +1,6 @@
 import type { BaseClient } from "../../client/base-client.js";
 import type { TestPlan } from "../../models/xray/graphql/__generated__/index.js";
-import type { QueryResponse } from "../../models/xray/graphql/graphql.js";
+import type { NullHandling, QueryResponse } from "../../models/xray/graphql/graphql.js";
 
 /**
  * Models the GraphQL test plan endpoints.
@@ -46,7 +46,7 @@ export class GetTestPlanApi {
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestplan.doc.html
    */
-  public async query(
+  public async query<N extends NullHandling = "without-null">(
     variables: {
       /**
        * The issue id of the Test Plan issue to be returned.
@@ -54,7 +54,7 @@ export class GetTestPlanApi {
       issueId: string;
     },
     resultShape: string
-  ): Promise<QueryResponse<{ getTestPlan: TestPlan }>> {
+  ): Promise<QueryResult<N>> {
     const queryString = `
       query ($issueId: String) {
         getTestPlan(issueId: $issueId) {
@@ -70,6 +70,13 @@ export class GetTestPlanApi {
       },
       method: "POST",
     });
-    return (await response.json()) as QueryResponse<{ getTestPlan: TestPlan }>;
+    return (await response.json()) as QueryResult<N>;
   }
 }
+
+type QueryResult<N extends NullHandling> = QueryResponse<
+  {
+    getTestPlan: TestPlan;
+  },
+  N
+>;
