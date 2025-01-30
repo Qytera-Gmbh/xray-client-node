@@ -63,7 +63,9 @@ export class TestPlanApi {
    * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
    */
   public associateTests(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     testPlanKey: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     body: {
       /**
        * Tests to associate with the test plan.
@@ -98,7 +100,12 @@ export class TestPlanApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
    */
-  public removeTest(testPlanKey: string, testKey: string): Promise<void> {
+  public removeTest(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    testPlanKey: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    testKey: string
+  ): Promise<void> {
     throw new Error("Method not implemented");
   }
 

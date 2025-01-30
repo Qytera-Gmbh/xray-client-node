@@ -1,4 +1,3 @@
-
 // =========================================================
 //  GENERATED USING @graphql-codegen/cli
 //  See: https://www.npmjs.com/package/@graphql-codegen/cli
@@ -10,119 +9,123 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never;
+};
+export type Incremental<T> =
+  | T
+  | { [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  JSON: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  JSON: { input: any; output: any };
 };
 
 export type ActionFolderResult = {
-  __typename?: 'ActionFolderResult';
+  __typename?: "ActionFolderResult";
   /** Folder updated during the operation. */
   folder: Maybe<SimpleFolderResults>;
   /** Warning generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Added Defects Result Type */
 export type AddDefectsResult = {
-  __typename?: 'AddDefectsResult';
+  __typename?: "AddDefectsResult";
   /** Ids of the added Defects. */
-  addedDefects: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedDefects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Add Evidence Result Type */
 export type AddEvidenceResult = {
-  __typename?: 'AddEvidenceResult';
+  __typename?: "AddEvidenceResult";
   /** Ids of the added Evidence. */
-  addedEvidence: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedEvidence: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Add Preconditions Result type */
 export type AddPreconditionsResult = {
-  __typename?: 'AddPreconditionsResult';
+  __typename?: "AddPreconditionsResult";
   /** Issue ids of the added Preconditions. */
-  addedPreconditions: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedPreconditions: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warning generated during the operation. */
-  warning: Maybe<Scalars['String']['output']>;
+  warning: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Add Test Environments Result type */
 export type AddTestEnvironmentsResult = {
-  __typename?: 'AddTestEnvironmentsResult';
+  __typename?: "AddTestEnvironmentsResult";
   /** Test Environments that were associated. */
-  associatedTestEnvironments: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  associatedTestEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Test Environments that were created. */
-  createdTestEnvironments: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  createdTestEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warning generated during the operation. */
-  warning: Maybe<Scalars['String']['output']>;
+  warning: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Add Test Executions Result type */
 export type AddTestExecutionsResult = {
-  __typename?: 'AddTestExecutionsResult';
+  __typename?: "AddTestExecutionsResult";
   /** Issue ids of the added Test Executions. */
-  addedTestExecutions: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedTestExecutions: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warning generated during the operation. */
-  warning: Maybe<Scalars['String']['output']>;
+  warning: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Add Test Plans Result type */
 export type AddTestPlansResult = {
-  __typename?: 'AddTestPlansResult';
+  __typename?: "AddTestPlansResult";
   /** Issue ids of the added Test Plans. */
-  addedTestPlans: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedTestPlans: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warning generated during the operation. */
-  warning: Maybe<Scalars['String']['output']>;
+  warning: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Add Test Sets Result type */
 export type AddTestSetsResult = {
-  __typename?: 'AddTestSetsResult';
+  __typename?: "AddTestSetsResult";
   /** Issue ids of the added Test Set. */
-  addedTestSets: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedTestSets: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warning generated during the operation. */
-  warning: Maybe<Scalars['String']['output']>;
+  warning: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Add Tests Result type */
 export type AddTestsResult = {
-  __typename?: 'AddTestsResult';
+  __typename?: "AddTestsResult";
   /** Issue Ids of the added Tests. */
-  addedTests: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedTests: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warning generated during the operation. */
-  warning: Maybe<Scalars['String']['output']>;
+  warning: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Step Attachment type */
 export type Attachment = {
-  __typename?: 'Attachment';
+  __typename?: "Attachment";
   /** Download link of the attachment. */
-  downloadLink: Maybe<Scalars['String']['output']>;
+  downloadLink: Maybe<Scalars["String"]["output"]>;
   /** Filename of the attachment. */
-  filename: Maybe<Scalars['String']['output']>;
+  filename: Maybe<Scalars["String"]["output"]>;
   /** Id of the attachment. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** If the file is stored in Jira. */
-  storedInJira: Maybe<Scalars['Boolean']['output']>;
+  storedInJira: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 /** Attachment Data Input */
 export type AttachmentDataInput = {
   /** Id of an attachment. */
-  attachmentId: InputMaybe<Scalars['String']['input']>;
+  attachmentId: InputMaybe<Scalars["String"]["input"]>;
   /** Data of the attachment. Base64 format. */
-  data: InputMaybe<Scalars['String']['input']>;
+  data: InputMaybe<Scalars["String"]["input"]>;
   /**
    *  A valid <b>AttachmentDataInput</b> must have the properties <b>filename</b>, <b>mimeType</b> and <b>data</b> defined.
    * In alternative, the <b>attachmentId</b> property can be used alone.
@@ -131,19 +134,19 @@ export type AttachmentDataInput = {
    *
    * Filename of the attachment.
    */
-  filename: InputMaybe<Scalars['String']['input']>;
+  filename: InputMaybe<Scalars["String"]["input"]>;
   /** Content Type of the attachment. */
-  mimeType: InputMaybe<Scalars['String']['input']>;
+  mimeType: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Attachment input */
 export type AttachmentInput = {
   /** Data of the attachment. This data should be in base64. */
-  data: InputMaybe<Scalars['String']['input']>;
+  data: InputMaybe<Scalars["String"]["input"]>;
   /** Filename of the attachment. */
-  filename: InputMaybe<Scalars['String']['input']>;
+  filename: InputMaybe<Scalars["String"]["input"]>;
   /** Content Type of the attachment. */
-  mimeType: InputMaybe<Scalars['String']['input']>;
+  mimeType: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Attachment Operations Input */
@@ -151,31 +154,31 @@ export type AttachmentOperationsInput = {
   /** Attachments to add to the Step. */
   add: InputMaybe<Array<InputMaybe<AttachmentInput>>>;
   /** Filenames of the attachments to remove from the Step. */
-  removeFilenames: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  removeFilenames: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   /** Ids of the attachments to remove from the Step. */
-  removeIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  removeIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
 
 /** Xray History Changes type */
 export type Changes = {
-  __typename?: 'Changes';
+  __typename?: "Changes";
   /** Change details. */
-  change: Maybe<Scalars['String']['output']>;
+  change: Maybe<Scalars["String"]["output"]>;
   /** Field the change refers to. */
-  field: Maybe<Scalars['String']['output']>;
+  field: Maybe<Scalars["String"]["output"]>;
 };
 
 export type CoverableIssue = {
-  __typename?: 'CoverableIssue';
+  __typename?: "CoverableIssue";
   /** Issue id of the Coverable Issue Issue. */
-  issueId: Maybe<Scalars['String']['output']>;
+  issueId: Maybe<Scalars["String"]["output"]>;
   /**
    * Extra Jira information of the Coverable issue.
    *
    * Arguments
    * fields: List of the fields to be displayed.
    */
-  jira: Scalars['JSON']['output'];
+  jira: Scalars["JSON"]["output"];
   /**
    * Test Coverage Status of the Coverable Issue. This status can be calculated based on latest status, version or Test Plan.
    *
@@ -197,216 +200,213 @@ export type CoverableIssue = {
   tests: Maybe<TestResults>;
 };
 
-
 export type CoverableIssueJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 export type CoverableIssueStatusArgs = {
-  environment: InputMaybe<Scalars['String']['input']>;
-  isFinal: InputMaybe<Scalars['Boolean']['input']>;
-  testPlan: InputMaybe<Scalars['String']['input']>;
-  version: InputMaybe<Scalars['String']['input']>;
+  environment: InputMaybe<Scalars["String"]["input"]>;
+  isFinal: InputMaybe<Scalars["Boolean"]["input"]>;
+  testPlan: InputMaybe<Scalars["String"]["input"]>;
+  version: InputMaybe<Scalars["String"]["input"]>;
 };
 
-
 export type CoverableIssueTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Coverable Issue Results type */
 export type CoverableIssueResults = {
-  __typename?: 'CoverableIssueResults';
+  __typename?: "CoverableIssueResults";
   /** The maximum amount of Coverable Issues to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Test issue results. */
   results: Maybe<Array<Maybe<CoverableIssue>>>;
   /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of issues. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
   /** Warnings generated if you have a invalid Coverable Issue */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 export type CoverageStatus = {
-  __typename?: 'CoverageStatus';
+  __typename?: "CoverageStatus";
   /** Color of the Coverage Status */
-  color: Maybe<Scalars['String']['output']>;
+  color: Maybe<Scalars["String"]["output"]>;
   /** Description of the Coverage Status */
-  description: Maybe<Scalars['String']['output']>;
+  description: Maybe<Scalars["String"]["output"]>;
   /** Name of the Coverage Status */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Create Precondition Response type */
 export type CreatePreconditionResult = {
-  __typename?: 'CreatePreconditionResult';
+  __typename?: "CreatePreconditionResult";
   /** Precondition that was created. */
   precondition: Maybe<Precondition>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Create Step input */
 export type CreateStepInput = {
   /** Action of the Step. */
-  action: InputMaybe<Scalars['String']['input']>;
+  action: InputMaybe<Scalars["String"]["input"]>;
   /** Attachments of the Step. */
   attachments: InputMaybe<Array<InputMaybe<AttachmentInput>>>;
   /** The issue id of the test called by the step. */
-  callTestIssueId: InputMaybe<Scalars['String']['input']>;
+  callTestIssueId: InputMaybe<Scalars["String"]["input"]>;
   /** Custom Fields of the Step */
   customFields: InputMaybe<Array<InputMaybe<CustomStepFieldInput>>>;
   /** Data of the Step. */
-  data: InputMaybe<Scalars['String']['input']>;
+  data: InputMaybe<Scalars["String"]["input"]>;
   /** Result of the Step. */
-  result: InputMaybe<Scalars['String']['input']>;
+  result: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Create Test Execution Result type */
 export type CreateTestExecutionResult = {
-  __typename?: 'CreateTestExecutionResult';
+  __typename?: "CreateTestExecutionResult";
   /** Test Environments that were created. */
-  createdTestEnvironments: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  createdTestEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Test Execution that was created. */
   testExecution: Maybe<TestExecution>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Create Test Plan Result type */
 export type CreateTestPlanResult = {
-  __typename?: 'CreateTestPlanResult';
+  __typename?: "CreateTestPlanResult";
   /** Test Plan that was created. */
   testPlan: Maybe<TestPlan>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Create Test Result type */
 export type CreateTestResult = {
-  __typename?: 'CreateTestResult';
+  __typename?: "CreateTestResult";
   /** Test that was created. */
   test: Maybe<Test>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Create Test Set Result type */
 export type CreateTestSetResult = {
-  __typename?: 'CreateTestSetResult';
+  __typename?: "CreateTestSetResult";
   /** Test Set that was created. */
   testSet: Maybe<TestSet>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Custom Field Input */
 export type CustomFieldInput = {
   /** Id of the custom field. */
-  id: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars["String"]["input"]>;
   /** Value of the custom field. */
-  value: InputMaybe<Scalars['JSON']['input']>;
+  value: InputMaybe<Scalars["JSON"]["input"]>;
 };
 
 /** Step CustomField type */
 export type CustomStepField = {
-  __typename?: 'CustomStepField';
+  __typename?: "CustomStepField";
   /** Id of the Custom Field. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Name of the Custom Field. */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Value of the Custom Field. */
-  value: Maybe<Scalars['JSON']['output']>;
+  value: Maybe<Scalars["JSON"]["output"]>;
 };
 
 /** Step Custom Field input */
 export type CustomStepFieldInput = {
   /** Id of the Custom Field. */
-  id: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars["String"]["input"]>;
   /** value of the Custom Field. */
-  value: InputMaybe<Scalars['JSON']['input']>;
+  value: InputMaybe<Scalars["JSON"]["input"]>;
 };
 
 /** Evidence Type */
 export type Evidence = {
-  __typename?: 'Evidence';
+  __typename?: "Evidence";
   /** Evidence creation timestamp. */
-  createdOn: Maybe<Scalars['String']['output']>;
+  createdOn: Maybe<Scalars["String"]["output"]>;
   /** Download link of the Evidence. */
-  downloadLink: Maybe<Scalars['String']['output']>;
+  downloadLink: Maybe<Scalars["String"]["output"]>;
   /** Filename of the Evidence. */
-  filename: Maybe<Scalars['String']['output']>;
+  filename: Maybe<Scalars["String"]["output"]>;
   /** Id of the Evidence. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** File size in bytes. */
-  size: Maybe<Scalars['Int']['output']>;
+  size: Maybe<Scalars["Int"]["output"]>;
   /** If file is stored in Jira */
-  storedInJira: Maybe<Scalars['Boolean']['output']>;
+  storedInJira: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 /** Example Type */
 export type Example = {
-  __typename?: 'Example';
+  __typename?: "Example";
   /** Duration of the Example. */
-  duration: Maybe<Scalars['Float']['output']>;
+  duration: Maybe<Scalars["Float"]["output"]>;
   /** Id of the Example. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Status of the Example. */
   status: Maybe<StepStatus>;
 };
 
 /** Expanded test step type */
 export type ExpandedStep = {
-  __typename?: 'ExpandedStep';
+  __typename?: "ExpandedStep";
   /** Action of the Step. */
-  action: Maybe<Scalars['String']['output']>;
+  action: Maybe<Scalars["String"]["output"]>;
   /** Attachments of the Step. */
   attachments: Maybe<Array<Maybe<Attachment>>>;
   /** The issue id of the called test with the step */
-  calledTestIssueId: Maybe<Scalars['String']['output']>;
+  calledTestIssueId: Maybe<Scalars["String"]["output"]>;
   /** Custom Fields of the Step. */
   customFields: Maybe<Array<Maybe<CustomStepField>>>;
   /** Data of the Step. */
-  data: Maybe<Scalars['String']['output']>;
+  data: Maybe<Scalars["String"]["output"]>;
   /** Id of the Step. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** The issue id of the test calling the step */
-  parentTestIssueId: Maybe<Scalars['String']['output']>;
+  parentTestIssueId: Maybe<Scalars["String"]["output"]>;
   /** Result of the Step. */
-  result: Maybe<Scalars['String']['output']>;
+  result: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Expaded test issue type */
 export type ExpandedTest = {
-  __typename?: 'ExpandedTest';
+  __typename?: "ExpandedTest";
   /** List of Coverable Issues associated with the Test issue */
   coverableIssues: Maybe<CoverableIssueResults>;
   /** Test Repository folder of the Test. */
   folder: Maybe<Folder>;
   /** Gherkin definition of the Test issue. */
-  gherkin: Maybe<Scalars['String']['output']>;
+  gherkin: Maybe<Scalars["String"]["output"]>;
   /** List of Xray History results for the issue */
   history: Maybe<XrayHistoryResults>;
   /** Issue id of the Test issue. */
-  issueId: Maybe<Scalars['String']['output']>;
+  issueId: Maybe<Scalars["String"]["output"]>;
   /** Extra Jira information of the Test issue. */
-  jira: Scalars['JSON']['output'];
+  jira: Scalars["JSON"]["output"];
   /** Date when the test was last modified. */
-  lastModified: Maybe<Scalars['String']['output']>;
+  lastModified: Maybe<Scalars["String"]["output"]>;
   /** List of Precondition associated with the Test issue. */
   preconditions: Maybe<PreconditionResults>;
   /** Project id of the Test issue. */
-  projectId: Maybe<Scalars['String']['output']>;
+  projectId: Maybe<Scalars["String"]["output"]>;
   /**
    * Gherkin type of the Test issue.
    * Possible values: 'scenario' or 'scenario_outline'.
    */
-  scenarioType: Maybe<Scalars['String']['output']>;
+  scenarioType: Maybe<Scalars["String"]["output"]>;
   /** Status of the Test. This status can be calculated based on latest status, version or Test Plan. */
   status: Maybe<TestStatusType>;
   /** Expanded step definition of the test. */
@@ -424,150 +424,140 @@ export type ExpandedTest = {
   /** List of Test versions of the Test */
   testVersions: Maybe<TestVersionResults>;
   /** Unstructured definition of the Test issue. */
-  unstructured: Maybe<Scalars['String']['output']>;
+  unstructured: Maybe<Scalars["String"]["output"]>;
   /** Version id of the Test issue. */
-  versionId: Maybe<Scalars['Int']['output']>;
+  versionId: Maybe<Scalars["Int"]["output"]>;
   /** Warnings generated while expanding the test steps. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestCoverableIssuesArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestHistoryArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestPreconditionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestStatusArgs = {
-  environment: InputMaybe<Scalars['String']['input']>;
-  isFinal?: InputMaybe<Scalars['Boolean']['input']>;
-  testPlan: InputMaybe<Scalars['String']['input']>;
-  version: InputMaybe<Scalars['String']['input']>;
+  environment: InputMaybe<Scalars["String"]["input"]>;
+  isFinal?: InputMaybe<Scalars["Boolean"]["input"]>;
+  testPlan: InputMaybe<Scalars["String"]["input"]>;
+  version: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestTestPlansArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestTestRunsArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestTestSetsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Expaded test issue type */
 export type ExpandedTestTestVersionsArgs = {
-  archived?: InputMaybe<Scalars['Boolean']['input']>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
-  testTypeId: InputMaybe<Scalars['String']['input']>;
+  archived?: InputMaybe<Scalars["Boolean"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
+  testTypeId: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Expanded tests results type */
 export type ExpandedTestResults = {
-  __typename?: 'ExpandedTestResults';
+  __typename?: "ExpandedTestResults";
   /** The maximum amount of Tests to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Expanded test issue results. */
   results: Maybe<Array<Maybe<ExpandedTest>>>;
   /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of issues. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Test Repository folder type. */
 export type Folder = {
-  __typename?: 'Folder';
+  __typename?: "Folder";
   /** Folder name */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Folder path */
-  path: Maybe<Scalars['String']['output']>;
+  path: Maybe<Scalars["String"]["output"]>;
 };
 
 export type FolderResults = {
-  __typename?: 'FolderResults';
+  __typename?: "FolderResults";
   /** Folder children */
-  folders: Maybe<Scalars['JSON']['output']>;
+  folders: Maybe<Scalars["JSON"]["output"]>;
   /** Folder issues count */
-  issuesCount: Maybe<Scalars['Int']['output']>;
+  issuesCount: Maybe<Scalars["Int"]["output"]>;
   /** Folder name */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Folder path */
-  path: Maybe<Scalars['String']['output']>;
+  path: Maybe<Scalars["String"]["output"]>;
   /** Folder preconditions count */
-  preconditionsCount: Maybe<Scalars['Int']['output']>;
+  preconditionsCount: Maybe<Scalars["Int"]["output"]>;
   /** Folder tests count */
-  testsCount: Maybe<Scalars['Int']['output']>;
+  testsCount: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Folder Search input */
 export type FolderSearchInput = {
   /** Whether descendant folders should be included in the search. */
-  includeDescendants: InputMaybe<Scalars['Boolean']['input']>;
+  includeDescendants: InputMaybe<Scalars["Boolean"]["input"]>;
   /** Path of the Folder. */
-  path: Scalars['String']['input'];
+  path: Scalars["String"]["input"];
   /** Test Plan id of the Folder. */
-  testPlanId: InputMaybe<Scalars['String']['input']>;
+  testPlanId: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Issue Link Type type */
 export type IssueLinkType = {
-  __typename?: 'IssueLinkType';
+  __typename?: "IssueLinkType";
   /** Id of Issue Link Type */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Name of Issue Link Type */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
+  __typename?: "Mutation";
   /**
    * Mutation used to add defects to a Test Run.
    * ===
@@ -1211,7 +1201,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  deleteFolder: Maybe<Scalars['String']['output']>;
+  deleteFolder: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to delete a Precondition
    * ===
@@ -1223,7 +1213,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  deletePrecondition: Maybe<Scalars['String']['output']>;
+  deletePrecondition: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to delete a Test.
    * ===
@@ -1235,7 +1225,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  deleteTest: Maybe<Scalars['String']['output']>;
+  deleteTest: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to delete a Test Execution.
    * ===
@@ -1247,7 +1237,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  deleteTestExecution: Maybe<Scalars['String']['output']>;
+  deleteTestExecution: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to delete a Test Plan.
    * ===
@@ -1259,7 +1249,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  deleteTestPlan: Maybe<Scalars['String']['output']>;
+  deleteTestPlan: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to delete a Test Set
    * ===
@@ -1271,7 +1261,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  deleteTestSet: Maybe<Scalars['String']['output']>;
+  deleteTestSet: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to move a Folder.
    * ===
@@ -1319,7 +1309,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeAllTestSteps: Maybe<Scalars['String']['output']>;
+  removeAllTestSteps: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove defects from a Test Run.
    * ===
@@ -1331,7 +1321,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeDefectsFromTestRun: Maybe<Scalars['String']['output']>;
+  removeDefectsFromTestRun: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove defects from a Test Run.
    * ===
@@ -1402,7 +1392,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeIssuesFromFolder: Maybe<Scalars['String']['output']>;
+  removeIssuesFromFolder: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Preconditions from the Test.
    * ===
@@ -1422,7 +1412,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removePreconditionsFromTest: Maybe<Scalars['String']['output']>;
+  removePreconditionsFromTest: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Test Environments from the Test Execution.
    * ===
@@ -1437,7 +1427,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestEnvironmentsFromTestExecution: Maybe<Scalars['String']['output']>;
+  removeTestEnvironmentsFromTestExecution: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Test Executions from the Test.
    * ===
@@ -1449,7 +1439,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestExecutionsFromTest: Maybe<Scalars['String']['output']>;
+  removeTestExecutionsFromTest: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Test Executions from the Test Plan.
    * ===
@@ -1461,7 +1451,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestExecutionsFromTestPlan: Maybe<Scalars['String']['output']>;
+  removeTestExecutionsFromTestPlan: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Test Plans from the Test.
    * ===
@@ -1473,7 +1463,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestPlansFromTest: Maybe<Scalars['String']['output']>;
+  removeTestPlansFromTest: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Test Sets from the Test.
    * ===
@@ -1485,7 +1475,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestSetsFromTest: Maybe<Scalars['String']['output']>;
+  removeTestSetsFromTest: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove a Step from a Test.
    * ===
@@ -1499,7 +1489,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestStep: Maybe<Scalars['String']['output']>;
+  removeTestStep: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove tests from Folder.
    * ===
@@ -1514,7 +1504,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestsFromFolder: Maybe<Scalars['String']['output']>;
+  removeTestsFromFolder: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Tests from the Precondition. One of <b>testIssueIds</b> or <b>tests</b> is required.
    * ===
@@ -1537,7 +1527,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestsFromPrecondition: Maybe<Scalars['String']['output']>;
+  removeTestsFromPrecondition: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Tests from the Test Execution.
    * ===
@@ -1549,7 +1539,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestsFromTestExecution: Maybe<Scalars['String']['output']>;
+  removeTestsFromTestExecution: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Tests from the Test Plan.
    * ===
@@ -1561,7 +1551,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestsFromTestPlan: Maybe<Scalars['String']['output']>;
+  removeTestsFromTestPlan: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to remove Tests from the Test Set.
    * ===
@@ -1573,7 +1563,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  removeTestsFromTestSet: Maybe<Scalars['String']['output']>;
+  removeTestsFromTestSet: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to rename a Folder.
    * ===
@@ -1608,7 +1598,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  resetTestRun: Maybe<Scalars['String']['output']>;
+  resetTestRun: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to set the timer in Test Run. This will start, pause or stop the timer in Test Run.
    * ===
@@ -1637,7 +1627,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  setTestRunTimer: Maybe<Scalars['String']['output']>;
+  setTestRunTimer: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to update the Gherkin definition of a Test.
    * ===
@@ -1745,7 +1735,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  updatePreconditionFolder: Maybe<Scalars['String']['output']>;
+  updatePreconditionFolder: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used update the Test folder on the Test Repository.
    * ===
@@ -1769,7 +1759,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  updateTestFolder: Maybe<Scalars['String']['output']>;
+  updateTestFolder: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to update a Test Run.
    * ===
@@ -1795,7 +1785,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  updateTestRunComment: Maybe<Scalars['String']['output']>;
+  updateTestRunComment: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to update the status of a Test Run Example.
    * ===
@@ -1824,7 +1814,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  updateTestRunStatus: Maybe<Scalars['String']['output']>;
+  updateTestRunStatus: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to update the Test Run Step.
    * ===
@@ -1865,7 +1855,7 @@ export type Mutation = {
    * </pre>
    * ===
    */
-  updateTestRunStepComment: Maybe<Scalars['String']['output']>;
+  updateTestRunStepComment: Maybe<Scalars["String"]["output"]>;
   /**
    * Mutation used to update the status of a Test Run Step.
    * ===
@@ -1964,542 +1954,472 @@ export type Mutation = {
   updateUnstructuredTestDefinition: Maybe<Test>;
 };
 
-
 export type MutationAddDefectsToTestRunArgs = {
-  id: Scalars['String']['input'];
-  issues: Array<InputMaybe<Scalars['String']['input']>>;
+  id: Scalars["String"]["input"];
+  issues: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationAddDefectsToTestRunStepArgs = {
-  issues: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  iterationRank: InputMaybe<Scalars['String']['input']>;
-  stepId: Scalars['String']['input'];
-  testRunId: Scalars['String']['input'];
+  issues: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  iterationRank: InputMaybe<Scalars["String"]["input"]>;
+  stepId: Scalars["String"]["input"];
+  testRunId: Scalars["String"]["input"];
 };
-
 
 export type MutationAddEvidenceToTestRunArgs = {
   evidence: Array<InputMaybe<AttachmentDataInput>>;
-  id: Scalars['String']['input'];
+  id: Scalars["String"]["input"];
 };
-
 
 export type MutationAddEvidenceToTestRunStepArgs = {
   evidence: InputMaybe<Array<InputMaybe<AttachmentDataInput>>>;
-  iterationRank: InputMaybe<Scalars['String']['input']>;
-  stepId: Scalars['String']['input'];
-  testRunId: Scalars['String']['input'];
+  iterationRank: InputMaybe<Scalars["String"]["input"]>;
+  stepId: Scalars["String"]["input"];
+  testRunId: Scalars["String"]["input"];
 };
-
 
 export type MutationAddIssuesToFolderArgs = {
-  index: InputMaybe<Scalars['Int']['input']>;
-  issueIds: Array<InputMaybe<Scalars['String']['input']>>;
-  path: Scalars['String']['input'];
-  projectId: Scalars['String']['input'];
+  index: InputMaybe<Scalars["Int"]["input"]>;
+  issueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
+  path: Scalars["String"]["input"];
+  projectId: Scalars["String"]["input"];
 };
-
 
 export type MutationAddPreconditionsToTestArgs = {
-  issueId: Scalars['String']['input'];
-  preconditionIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  issueId: Scalars["String"]["input"];
+  preconditionIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type MutationAddTestEnvironmentsToTestExecutionArgs = {
-  issueId: Scalars['String']['input'];
-  testEnvironments: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testEnvironments: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationAddTestExecutionsToTestArgs = {
-  issueId: Scalars['String']['input'];
-  testExecIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  issueId: Scalars["String"]["input"];
+  testExecIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type MutationAddTestExecutionsToTestPlanArgs = {
-  issueId: Scalars['String']['input'];
-  testExecIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testExecIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationAddTestPlansToTestArgs = {
-  issueId: Scalars['String']['input'];
-  testPlanIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testPlanIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationAddTestSetsToTestArgs = {
-  issueId: Scalars['String']['input'];
-  testSetIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testSetIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationAddTestStepArgs = {
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
   step: CreateStepInput;
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type MutationAddTestsToFolderArgs = {
-  index: InputMaybe<Scalars['Int']['input']>;
-  path: Scalars['String']['input'];
-  projectId: InputMaybe<Scalars['String']['input']>;
-  testIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
-  testPlanId: InputMaybe<Scalars['String']['input']>;
+  index: InputMaybe<Scalars["Int"]["input"]>;
+  path: Scalars["String"]["input"];
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
+  testPlanId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type MutationAddTestsToPreconditionArgs = {
-  issueId: Scalars['String']['input'];
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  issueId: Scalars["String"]["input"];
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
 };
-
 
 export type MutationAddTestsToTestExecutionArgs = {
-  issueId: Scalars['String']['input'];
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  issueId: Scalars["String"]["input"];
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
 };
-
 
 export type MutationAddTestsToTestPlanArgs = {
-  issueId: Scalars['String']['input'];
-  testIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationAddTestsToTestSetArgs = {
-  issueId: Scalars['String']['input'];
-  testIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationCreateFolderArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  path: Scalars['String']['input'];
-  projectId: InputMaybe<Scalars['String']['input']>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  testPlanId: InputMaybe<Scalars['String']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  path: Scalars["String"]["input"];
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  testPlanId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type MutationCreatePreconditionArgs = {
-  definition: InputMaybe<Scalars['String']['input']>;
-  folderPath: InputMaybe<Scalars['String']['input']>;
-  jira: Scalars['JSON']['input'];
+  definition: InputMaybe<Scalars["String"]["input"]>;
+  folderPath: InputMaybe<Scalars["String"]["input"]>;
+  jira: Scalars["JSON"]["input"];
   preconditionType: InputMaybe<UpdatePreconditionTypeInput>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
 };
-
 
 export type MutationCreateTestArgs = {
-  folderPath: InputMaybe<Scalars['String']['input']>;
-  gherkin: InputMaybe<Scalars['String']['input']>;
-  jira: Scalars['JSON']['input'];
-  preconditionIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  folderPath: InputMaybe<Scalars["String"]["input"]>;
+  gherkin: InputMaybe<Scalars["String"]["input"]>;
+  jira: Scalars["JSON"]["input"];
+  preconditionIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   steps: InputMaybe<Array<InputMaybe<CreateStepInput>>>;
   testType: InputMaybe<UpdateTestTypeInput>;
-  unstructured: InputMaybe<Scalars['String']['input']>;
+  unstructured: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type MutationCreateTestExecutionArgs = {
-  jira: Scalars['JSON']['input'];
-  testEnvironments: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  jira: Scalars["JSON"]["input"];
+  testEnvironments: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
 };
-
 
 export type MutationCreateTestPlanArgs = {
-  jira: Scalars['JSON']['input'];
-  savedFilter: InputMaybe<Scalars['String']['input']>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  jira: Scalars["JSON"]["input"];
+  savedFilter: InputMaybe<Scalars["String"]["input"]>;
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 export type MutationCreateTestSetArgs = {
-  jira: Scalars['JSON']['input'];
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  jira: Scalars["JSON"]["input"];
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 export type MutationDeleteFolderArgs = {
-  path: Scalars['String']['input'];
-  projectId: InputMaybe<Scalars['String']['input']>;
-  testPlanId: InputMaybe<Scalars['String']['input']>;
+  path: Scalars["String"]["input"];
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  testPlanId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type MutationDeletePreconditionArgs = {
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type MutationDeleteTestArgs = {
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type MutationDeleteTestExecutionArgs = {
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type MutationDeleteTestPlanArgs = {
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type MutationDeleteTestSetArgs = {
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type MutationMoveFolderArgs = {
-  destinationPath: Scalars['String']['input'];
-  index: InputMaybe<Scalars['Int']['input']>;
-  path: Scalars['String']['input'];
-  projectId: InputMaybe<Scalars['String']['input']>;
-  testPlanId: InputMaybe<Scalars['String']['input']>;
+  destinationPath: Scalars["String"]["input"];
+  index: InputMaybe<Scalars["Int"]["input"]>;
+  path: Scalars["String"]["input"];
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  testPlanId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type MutationRemoveAllTestStepsArgs = {
-  issueId: Scalars['String']['input'];
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  issueId: Scalars["String"]["input"];
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type MutationRemoveDefectsFromTestRunArgs = {
-  id: Scalars['String']['input'];
-  issues: Array<InputMaybe<Scalars['String']['input']>>;
+  id: Scalars["String"]["input"];
+  issues: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRemoveDefectsFromTestRunStepArgs = {
-  issues: Array<InputMaybe<Scalars['String']['input']>>;
-  iterationRank: InputMaybe<Scalars['String']['input']>;
-  stepId: Scalars['String']['input'];
-  testRunId: Scalars['String']['input'];
+  issues: Array<InputMaybe<Scalars["String"]["input"]>>;
+  iterationRank: InputMaybe<Scalars["String"]["input"]>;
+  stepId: Scalars["String"]["input"];
+  testRunId: Scalars["String"]["input"];
 };
-
 
 export type MutationRemoveEvidenceFromTestRunArgs = {
-  evidenceFilenames: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  evidenceIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  id: Scalars['String']['input'];
+  evidenceFilenames: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  evidenceIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  id: Scalars["String"]["input"];
 };
-
 
 export type MutationRemoveEvidenceFromTestRunStepArgs = {
-  evidenceFilenames: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  evidenceIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  iterationRank: InputMaybe<Scalars['String']['input']>;
-  stepId: Scalars['String']['input'];
-  testRunId: Scalars['String']['input'];
+  evidenceFilenames: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  evidenceIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  iterationRank: InputMaybe<Scalars["String"]["input"]>;
+  stepId: Scalars["String"]["input"];
+  testRunId: Scalars["String"]["input"];
 };
-
 
 export type MutationRemoveIssuesFromFolderArgs = {
-  issueIds: Array<InputMaybe<Scalars['String']['input']>>;
-  projectId: Scalars['String']['input'];
+  issueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
+  projectId: Scalars["String"]["input"];
 };
-
 
 export type MutationRemovePreconditionsFromTestArgs = {
-  issueId: Scalars['String']['input'];
-  preconditionIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  issueId: Scalars["String"]["input"];
+  preconditionIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type MutationRemoveTestEnvironmentsFromTestExecutionArgs = {
-  issueId: Scalars['String']['input'];
-  testEnvironments: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testEnvironments: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRemoveTestExecutionsFromTestArgs = {
-  issueId: Scalars['String']['input'];
-  testExecIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testExecIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRemoveTestExecutionsFromTestPlanArgs = {
-  issueId: Scalars['String']['input'];
-  testExecIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testExecIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRemoveTestPlansFromTestArgs = {
-  issueId: Scalars['String']['input'];
-  testPlanIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testPlanIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRemoveTestSetsFromTestArgs = {
-  issueId: Scalars['String']['input'];
-  testSetIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testSetIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRemoveTestStepArgs = {
-  stepId: Scalars['String']['input'];
+  stepId: Scalars["String"]["input"];
 };
-
 
 export type MutationRemoveTestsFromFolderArgs = {
-  projectId: InputMaybe<Scalars['String']['input']>;
-  testIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
-  testPlanId: InputMaybe<Scalars['String']['input']>;
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
+  testPlanId: InputMaybe<Scalars["String"]["input"]>;
 };
 
-
 export type MutationRemoveTestsFromPreconditionArgs = {
-  issueId: Scalars['String']['input'];
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  issueId: Scalars["String"]["input"];
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
 };
 
-
 export type MutationRemoveTestsFromTestExecutionArgs = {
-  issueId: Scalars['String']['input'];
-  testIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRemoveTestsFromTestPlanArgs = {
-  issueId: Scalars['String']['input'];
-  testIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRemoveTestsFromTestSetArgs = {
-  issueId: Scalars['String']['input'];
-  testIssueIds: Array<InputMaybe<Scalars['String']['input']>>;
+  issueId: Scalars["String"]["input"];
+  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
 };
-
 
 export type MutationRenameFolderArgs = {
-  newName: Scalars['String']['input'];
-  path: Scalars['String']['input'];
-  projectId: InputMaybe<Scalars['String']['input']>;
-  testPlanId: InputMaybe<Scalars['String']['input']>;
+  newName: Scalars["String"]["input"];
+  path: Scalars["String"]["input"];
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  testPlanId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type MutationResetTestRunArgs = {
-  id: Scalars['String']['input'];
+  id: Scalars["String"]["input"];
 };
-
 
 export type MutationSetTestRunTimerArgs = {
-  reset: InputMaybe<Scalars['Boolean']['input']>;
-  running: InputMaybe<Scalars['Boolean']['input']>;
-  testRunId: Scalars['String']['input'];
+  reset: InputMaybe<Scalars["Boolean"]["input"]>;
+  running: InputMaybe<Scalars["Boolean"]["input"]>;
+  testRunId: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdateGherkinTestDefinitionArgs = {
-  gherkin: Scalars['String']['input'];
-  issueId: Scalars['String']['input'];
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  gherkin: Scalars["String"]["input"];
+  issueId: Scalars["String"]["input"];
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type MutationUpdateIterationStatusArgs = {
-  iterationRank: Scalars['String']['input'];
-  status: Scalars['String']['input'];
-  testRunId: Scalars['String']['input'];
+  iterationRank: Scalars["String"]["input"];
+  status: Scalars["String"]["input"];
+  testRunId: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdatePreconditionArgs = {
   data: InputMaybe<UpdatePreconditionInput>;
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdatePreconditionFolderArgs = {
-  folderPath: Scalars['String']['input'];
-  issueId: Scalars['String']['input'];
+  folderPath: Scalars["String"]["input"];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdateTestFolderArgs = {
-  folderPath: Scalars['String']['input'];
-  issueId: Scalars['String']['input'];
+  folderPath: Scalars["String"]["input"];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdateTestRunArgs = {
-  assigneeId: InputMaybe<Scalars['String']['input']>;
-  comment: InputMaybe<Scalars['String']['input']>;
+  assigneeId: InputMaybe<Scalars["String"]["input"]>;
+  comment: InputMaybe<Scalars["String"]["input"]>;
   customFields: InputMaybe<Array<InputMaybe<CustomFieldInput>>>;
-  executedById: InputMaybe<Scalars['String']['input']>;
-  finishedOn: InputMaybe<Scalars['String']['input']>;
-  id: Scalars['String']['input'];
-  startedOn: InputMaybe<Scalars['String']['input']>;
+  executedById: InputMaybe<Scalars["String"]["input"]>;
+  finishedOn: InputMaybe<Scalars["String"]["input"]>;
+  id: Scalars["String"]["input"];
+  startedOn: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type MutationUpdateTestRunCommentArgs = {
-  comment: Scalars['String']['input'];
-  id: Scalars['String']['input'];
+  comment: Scalars["String"]["input"];
+  id: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdateTestRunExampleStatusArgs = {
-  exampleId: Scalars['String']['input'];
-  status: Scalars['String']['input'];
+  exampleId: Scalars["String"]["input"];
+  status: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdateTestRunStatusArgs = {
-  id: Scalars['String']['input'];
-  status: Scalars['String']['input'];
+  id: Scalars["String"]["input"];
+  status: Scalars["String"]["input"];
 };
 
-
 export type MutationUpdateTestRunStepArgs = {
-  iterationRank: InputMaybe<Scalars['String']['input']>;
-  stepId: Scalars['String']['input'];
-  testRunId: Scalars['String']['input'];
+  iterationRank: InputMaybe<Scalars["String"]["input"]>;
+  stepId: Scalars["String"]["input"];
+  testRunId: Scalars["String"]["input"];
   updateData: UpdateTestRunStepInput;
 };
 
-
 export type MutationUpdateTestRunStepCommentArgs = {
-  comment: Scalars['String']['input'];
-  iterationRank: InputMaybe<Scalars['String']['input']>;
-  stepId: Scalars['String']['input'];
-  testRunId: Scalars['String']['input'];
+  comment: Scalars["String"]["input"];
+  iterationRank: InputMaybe<Scalars["String"]["input"]>;
+  stepId: Scalars["String"]["input"];
+  testRunId: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdateTestRunStepStatusArgs = {
-  iterationRank: InputMaybe<Scalars['String']['input']>;
-  status: Scalars['String']['input'];
-  stepId: Scalars['String']['input'];
-  testRunId: Scalars['String']['input'];
+  iterationRank: InputMaybe<Scalars["String"]["input"]>;
+  status: Scalars["String"]["input"];
+  stepId: Scalars["String"]["input"];
+  testRunId: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdateTestStepArgs = {
   step: UpdateStepInput;
-  stepId: Scalars['String']['input'];
+  stepId: Scalars["String"]["input"];
 };
-
 
 export type MutationUpdateTestTypeArgs = {
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
   testType: UpdateTestTypeInput;
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
 
-
 export type MutationUpdateUnstructuredTestDefinitionArgs = {
-  issueId: Scalars['String']['input'];
-  unstructured: Scalars['String']['input'];
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  issueId: Scalars["String"]["input"];
+  unstructured: Scalars["String"]["input"];
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Precondition issue type */
 export type Precondition = {
-  __typename?: 'Precondition';
+  __typename?: "Precondition";
   /** Definition of the Precondition issue. */
-  definition: Maybe<Scalars['String']['output']>;
+  definition: Maybe<Scalars["String"]["output"]>;
   /** Test Repository folder of the Precondition. */
   folder: Maybe<Folder>;
   /** List of Xray History results for the issue */
   history: Maybe<XrayHistoryResults>;
   /** Id of the Precondition issue. */
-  issueId: Maybe<Scalars['String']['output']>;
+  issueId: Maybe<Scalars["String"]["output"]>;
   /** Extra Jira information of the Precondition Issue. */
-  jira: Maybe<Scalars['JSON']['output']>;
+  jira: Maybe<Scalars["JSON"]["output"]>;
   /** Date when the precondition was last modified. */
-  lastModified: Maybe<Scalars['String']['output']>;
+  lastModified: Maybe<Scalars["String"]["output"]>;
   /** Precondition Type of the Precondition issue. */
   preconditionType: Maybe<TestType>;
   /** Project id of the Precondition issue. */
-  projectId: Maybe<Scalars['String']['output']>;
+  projectId: Maybe<Scalars["String"]["output"]>;
   /** List of the Test versions associated with the Precondition issue. */
   testVersions: Maybe<TestVersionResults>;
   /** List of the Tests associated with the Precondition issue. */
   tests: Maybe<TestResults>;
 };
 
-
 /** Precondition issue type */
 export type PreconditionHistoryArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Precondition issue type */
 export type PreconditionJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 /** Precondition issue type */
 export type PreconditionTestVersionsArgs = {
-  archived?: InputMaybe<Scalars['Boolean']['input']>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
-  testTypeId: InputMaybe<Scalars['String']['input']>;
+  archived?: InputMaybe<Scalars["Boolean"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
+  testTypeId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 /** Precondition issue type */
 export type PreconditionTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Folder Search input */
 export type PreconditionFolderSearchInput = {
   /** Whether descendant folders should be included in the search. */
-  includeDescendants: InputMaybe<Scalars['Boolean']['input']>;
+  includeDescendants: InputMaybe<Scalars["Boolean"]["input"]>;
   /** Path of the Folder. */
-  path: Scalars['String']['input'];
+  path: Scalars["String"]["input"];
 };
 
 /** Precondition Results type */
 export type PreconditionResults = {
-  __typename?: 'PreconditionResults';
+  __typename?: "PreconditionResults";
   /** Maximum amount of Preconditions to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Precondition issue results. */
   results: Maybe<Array<Maybe<Precondition>>>;
   /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of issues. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Project Settings type */
 export type ProjectSettings = {
-  __typename?: 'ProjectSettings';
+  __typename?: "ProjectSettings";
   /** Defect Issue Types. */
-  defectIssueTypes: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  defectIssueTypes: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Project id. */
-  projectId: Maybe<Scalars['String']['output']>;
+  projectId: Maybe<Scalars["String"]["output"]>;
   /** Test Coverage Settings. */
   testCoverageSettings: Maybe<ProjectSettingsTestCoverage>;
   /** Test Environments. */
-  testEnvironments: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  testEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Test Run Custom Fields Settings. */
   testRunCustomFieldSettings: Maybe<ProjectSettingsTestRunCustomFields>;
   /** Test Step Settings. */
@@ -2510,76 +2430,76 @@ export type ProjectSettings = {
 
 /** Project Test Coverage Settings type */
 export type ProjectSettingsTestCoverage = {
-  __typename?: 'ProjectSettingsTestCoverage';
+  __typename?: "ProjectSettingsTestCoverage";
   /** Coverable issue type ids */
-  coverableIssueTypeIds: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  coverableIssueTypeIds: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Epic - Issues(Stories) relation */
-  epicIssuesRelation: Maybe<Scalars['Boolean']['output']>;
+  epicIssuesRelation: Maybe<Scalars["Boolean"]["output"]>;
   /** Issue Link Type Direction */
-  issueLinkTypeDirection: Maybe<Scalars['String']['output']>;
+  issueLinkTypeDirection: Maybe<Scalars["String"]["output"]>;
   /** Issue Link Type Id */
-  issueLinkTypeId: Maybe<Scalars['String']['output']>;
+  issueLinkTypeId: Maybe<Scalars["String"]["output"]>;
   /** Issue - Sub-tasks relation */
-  issueSubTasksRelation: Maybe<Scalars['Boolean']['output']>;
+  issueSubTasksRelation: Maybe<Scalars["Boolean"]["output"]>;
 };
 
 /** Project Test Run Custom Field Settings type */
 export type ProjectSettingsTestRunCustomField = {
-  __typename?: 'ProjectSettingsTestRunCustomField';
+  __typename?: "ProjectSettingsTestRunCustomField";
   /** Id */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Name */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Is the field required */
-  required: Maybe<Scalars['Boolean']['output']>;
+  required: Maybe<Scalars["Boolean"]["output"]>;
   /** Type */
-  type: Maybe<Scalars['String']['output']>;
+  type: Maybe<Scalars["String"]["output"]>;
   /** Values */
-  values: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  values: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Project Test Run Custom Field Field Settings type */
 export type ProjectSettingsTestRunCustomFields = {
-  __typename?: 'ProjectSettingsTestRunCustomFields';
+  __typename?: "ProjectSettingsTestRunCustomFields";
   /** Fields */
   fields: Maybe<Array<Maybe<ProjectSettingsTestRunCustomField>>>;
 };
 
 /** Project Test Step Field Settings type */
 export type ProjectSettingsTestStepField = {
-  __typename?: 'ProjectSettingsTestStepField';
+  __typename?: "ProjectSettingsTestStepField";
   /** Is the field disabled */
-  disabled: Maybe<Scalars['Boolean']['output']>;
+  disabled: Maybe<Scalars["Boolean"]["output"]>;
   /** Id */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Name */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Is the field required */
-  required: Maybe<Scalars['Boolean']['output']>;
+  required: Maybe<Scalars["Boolean"]["output"]>;
   /** Type */
-  type: Maybe<Scalars['String']['output']>;
+  type: Maybe<Scalars["String"]["output"]>;
   /** Values */
-  values: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  values: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Project Test Step Settings type */
 export type ProjectSettingsTestStepSettings = {
-  __typename?: 'ProjectSettingsTestStepSettings';
+  __typename?: "ProjectSettingsTestStepSettings";
   /** Fields */
   fields: Maybe<Array<Maybe<ProjectSettingsTestStepField>>>;
 };
 
 /** Project Test Type Settings type */
 export type ProjectSettingsTestType = {
-  __typename?: 'ProjectSettingsTestType';
+  __typename?: "ProjectSettingsTestType";
   /** Default Test Type Id */
-  defaultTestTypeId: Maybe<Scalars['String']['output']>;
+  defaultTestTypeId: Maybe<Scalars["String"]["output"]>;
   /** Test Types */
   testTypes: Maybe<Array<Maybe<TestType>>>;
 };
 
 export type Query = {
-  __typename?: 'Query';
+  __typename?: "Query";
   /**
    * Returns a Coverable Issue by issueId.
    * ===
@@ -3488,228 +3408,206 @@ export type Query = {
   getTests: Maybe<TestResults>;
 };
 
-
 export type QueryGetCoverableIssueArgs = {
-  issueId: Scalars['String']['input'];
+  issueId: Scalars["String"]["input"];
 };
-
 
 export type QueryGetCoverableIssuesArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  jql: InputMaybe<Scalars['String']['input']>;
-  limit: Scalars['Int']['input'];
-  start: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  jql: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  start: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type QueryGetExpandedTestArgs = {
-  issueId: Scalars['String']['input'];
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  issueId: Scalars["String"]["input"];
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type QueryGetExpandedTestsArgs = {
   folder: InputMaybe<FolderSearchInput>;
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  jql: InputMaybe<Scalars['String']['input']>;
-  limit: Scalars['Int']['input'];
-  modifiedSince: InputMaybe<Scalars['String']['input']>;
-  projectId: InputMaybe<Scalars['String']['input']>;
-  start: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  jql: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  start: InputMaybe<Scalars["Int"]["input"]>;
   testType: InputMaybe<TestTypeInput>;
   tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
 };
 
-
 export type QueryGetFolderArgs = {
-  path: Scalars['String']['input'];
-  projectId: InputMaybe<Scalars['String']['input']>;
-  testPlanId: InputMaybe<Scalars['String']['input']>;
+  path: Scalars["String"]["input"];
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  testPlanId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetPreconditionArgs = {
-  issueId: InputMaybe<Scalars['String']['input']>;
+  issueId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetPreconditionsArgs = {
   folder: InputMaybe<PreconditionFolderSearchInput>;
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  jql: InputMaybe<Scalars['String']['input']>;
-  limit: Scalars['Int']['input'];
-  modifiedSince: InputMaybe<Scalars['String']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  jql: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
   preconditionType: InputMaybe<TestTypeInput>;
-  projectId: InputMaybe<Scalars['String']['input']>;
-  start: InputMaybe<Scalars['Int']['input']>;
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  start: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type QueryGetProjectSettingsArgs = {
-  projectIdOrKey: InputMaybe<Scalars['String']['input']>;
+  projectIdOrKey: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetStatusArgs = {
-  name: InputMaybe<Scalars['String']['input']>;
+  name: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetStepStatusArgs = {
-  name: InputMaybe<Scalars['String']['input']>;
+  name: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetTestArgs = {
-  issueId: InputMaybe<Scalars['String']['input']>;
+  issueId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetTestExecutionArgs = {
-  issueId: InputMaybe<Scalars['String']['input']>;
+  issueId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  jql: InputMaybe<Scalars['String']['input']>;
-  limit: Scalars['Int']['input'];
-  modifiedSince: InputMaybe<Scalars['String']['input']>;
-  projectId: InputMaybe<Scalars['String']['input']>;
-  start: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  jql: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  start: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type QueryGetTestPlanArgs = {
-  issueId: InputMaybe<Scalars['String']['input']>;
+  issueId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetTestPlansArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  jql: InputMaybe<Scalars['String']['input']>;
-  limit: Scalars['Int']['input'];
-  modifiedSince: InputMaybe<Scalars['String']['input']>;
-  projectId: InputMaybe<Scalars['String']['input']>;
-  start: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  jql: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  start: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type QueryGetTestRunArgs = {
-  testExecIssueId: InputMaybe<Scalars['String']['input']>;
-  testIssueId: InputMaybe<Scalars['String']['input']>;
+  testExecIssueId: InputMaybe<Scalars["String"]["input"]>;
+  testIssueId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetTestRunByIdArgs = {
-  id: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetTestRunsArgs = {
-  limit: Scalars['Int']['input'];
-  modifiedSince: InputMaybe<Scalars['String']['input']>;
-  start: InputMaybe<Scalars['Int']['input']>;
-  testExecIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  testRunAssignees: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  limit: Scalars["Int"]["input"];
+  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
+  start: InputMaybe<Scalars["Int"]["input"]>;
+  testExecIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  testRunAssignees: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 export type QueryGetTestRunsByIdArgs = {
-  ids: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start: InputMaybe<Scalars['Int']['input']>;
+  ids: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type QueryGetTestSetArgs = {
-  issueId: InputMaybe<Scalars['String']['input']>;
+  issueId: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 export type QueryGetTestSetsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  jql: InputMaybe<Scalars['String']['input']>;
-  limit: Scalars['Int']['input'];
-  modifiedSince: InputMaybe<Scalars['String']['input']>;
-  projectId: InputMaybe<Scalars['String']['input']>;
-  start: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  jql: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  start: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type QueryGetTestsArgs = {
   folder: InputMaybe<FolderSearchInput>;
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  jql: InputMaybe<Scalars['String']['input']>;
-  limit: Scalars['Int']['input'];
-  modifiedSince: InputMaybe<Scalars['String']['input']>;
-  projectId: InputMaybe<Scalars['String']['input']>;
-  start: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  jql: InputMaybe<Scalars["String"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
+  projectId: InputMaybe<Scalars["String"]["input"]>;
+  start: InputMaybe<Scalars["Int"]["input"]>;
   testType: InputMaybe<TestTypeInput>;
 };
 
 /** Remove defects Result Type */
 export type RemoveDefectsResult = {
-  __typename?: 'RemoveDefectsResult';
+  __typename?: "RemoveDefectsResult";
   /** Ids of the removed Defects. */
-  removedDefects: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  removedDefects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Remove Evidence Result Type */
 export type RemoveEvidenceResult = {
-  __typename?: 'RemoveEvidenceResult';
+  __typename?: "RemoveEvidenceResult";
   /** Ids of the removed Evidence. */
-  removedEvidence: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  removedEvidence: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Result Type */
 export type Result = {
-  __typename?: 'Result';
+  __typename?: "Result";
   /** Backgrounds of the Results. */
   backgrounds: Maybe<Array<Maybe<ResultsStep>>>;
   /** Duration of the Result. */
-  duration: Maybe<Scalars['Float']['output']>;
+  duration: Maybe<Scalars["Float"]["output"]>;
   /** Examples of the Result. */
   examples: Maybe<Array<Maybe<ResultsExample>>>;
   /** Hooks of the Results. */
   hooks: Maybe<Array<Maybe<ResultsStep>>>;
   /** Output if exist an error or a failure (JUNIT, XUNIT, NUNIT, TESTNG) */
-  log: Maybe<Scalars['String']['output']>;
+  log: Maybe<Scalars["String"]["output"]>;
   /** Name of the Result. */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Status of the Result. */
   status: Maybe<StepStatus>;
   /** Steps of the Results. */
   steps: Maybe<Array<Maybe<ResultsStep>>>;
   /** Whether or not the Result was imported. */
-  wasImported: Maybe<Scalars['String']['output']>;
+  wasImported: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Results Embedding */
 export type ResultsEmbedding = {
-  __typename?: 'ResultsEmbedding';
+  __typename?: "ResultsEmbedding";
   /** Data of the Embedding. Base64 format. */
-  data: Maybe<Scalars['String']['output']>;
+  data: Maybe<Scalars["String"]["output"]>;
   /** Link to download the embedding if no data is present */
-  downloadLink: Maybe<Scalars['String']['output']>;
+  downloadLink: Maybe<Scalars["String"]["output"]>;
   /** Filename of the Embedding. */
-  filename: Maybe<Scalars['String']['output']>;
+  filename: Maybe<Scalars["String"]["output"]>;
   /** Mime Type of the Embedding. */
-  mimeType: Maybe<Scalars['String']['output']>;
+  mimeType: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Results Example Type */
 export type ResultsExample = {
-  __typename?: 'ResultsExample';
+  __typename?: "ResultsExample";
   /** Backgrounds of the Results. */
   backgrounds: Maybe<Array<Maybe<ResultsStep>>>;
   /** Duration of the Result. */
-  duration: Maybe<Scalars['Float']['output']>;
+  duration: Maybe<Scalars["Float"]["output"]>;
   /** Hooks of the Results. */
   hooks: Maybe<Array<Maybe<ResultsStep>>>;
   /** Status of the Result. */
@@ -3717,115 +3615,115 @@ export type ResultsExample = {
   /** Steps of the Results. */
   steps: Maybe<Array<Maybe<ResultsStep>>>;
   /** Whether or not the Result was imported. */
-  wasImported: Maybe<Scalars['String']['output']>;
+  wasImported: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Results Step */
 export type ResultsStep = {
-  __typename?: 'ResultsStep';
+  __typename?: "ResultsStep";
   /** Duration of the step. */
-  duration: Maybe<Scalars['Float']['output']>;
+  duration: Maybe<Scalars["Float"]["output"]>;
   /** Embeddings of the step. */
   embeddings: Maybe<Array<Maybe<ResultsEmbedding>>>;
   /** Error of the step. */
-  error: Maybe<Scalars['String']['output']>;
+  error: Maybe<Scalars["String"]["output"]>;
   /** If a gherkin step, keyword of the gherkin step. */
-  keyword: Maybe<Scalars['String']['output']>;
+  keyword: Maybe<Scalars["String"]["output"]>;
   /** If a Robot step, output of the Robot step. */
-  log: Maybe<Scalars['String']['output']>;
+  log: Maybe<Scalars["String"]["output"]>;
   /** Name of the step. */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Status of the step. */
   status: Maybe<StepStatus>;
 };
 
 export type SimpleFolderResults = {
-  __typename?: 'SimpleFolderResults';
+  __typename?: "SimpleFolderResults";
   /** Folder issues count */
-  issuesCount: Maybe<Scalars['Int']['output']>;
+  issuesCount: Maybe<Scalars["Int"]["output"]>;
   /** Folder name */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Folder path */
-  path: Maybe<Scalars['String']['output']>;
+  path: Maybe<Scalars["String"]["output"]>;
   /** Folder preconditions count */
-  preconditionsCount: Maybe<Scalars['Int']['output']>;
+  preconditionsCount: Maybe<Scalars["Int"]["output"]>;
   /** Folder tests count */
-  testsCount: Maybe<Scalars['Int']['output']>;
+  testsCount: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Status Type */
 export type Status = {
-  __typename?: 'Status';
+  __typename?: "Status";
   /** Color of the Status. */
-  color: Maybe<Scalars['String']['output']>;
+  color: Maybe<Scalars["String"]["output"]>;
   /** Coverage mapping of the Status. */
-  coverageStatus: Maybe<Scalars['String']['output']>;
+  coverageStatus: Maybe<Scalars["String"]["output"]>;
   /** Description of the Status. */
-  description: Maybe<Scalars['String']['output']>;
+  description: Maybe<Scalars["String"]["output"]>;
   /** Whether the Status is final or not. */
-  final: Maybe<Scalars['Boolean']['output']>;
+  final: Maybe<Scalars["Boolean"]["output"]>;
   /** Name of the Status. */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Test Step type */
 export type Step = {
-  __typename?: 'Step';
+  __typename?: "Step";
   /** Action of the Step. */
-  action: Maybe<Scalars['String']['output']>;
+  action: Maybe<Scalars["String"]["output"]>;
   /** Attachments of the Step. */
   attachments: Maybe<Array<Maybe<Attachment>>>;
   /** The issue id of the test being called in the step. */
-  callTestIssueId: Maybe<Scalars['String']['output']>;
+  callTestIssueId: Maybe<Scalars["String"]["output"]>;
   /** Custom Fields of the Step. */
   customFields: Maybe<Array<Maybe<CustomStepField>>>;
   /** Data of the Step. */
-  data: Maybe<Scalars['String']['output']>;
+  data: Maybe<Scalars["String"]["output"]>;
   /** Id of the Step. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Result of the Step. */
-  result: Maybe<Scalars['String']['output']>;
+  result: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Step Status Type */
 export type StepStatus = {
-  __typename?: 'StepStatus';
+  __typename?: "StepStatus";
   /** Color of the Status. */
-  color: Maybe<Scalars['String']['output']>;
+  color: Maybe<Scalars["String"]["output"]>;
   /** Description of the Status. */
-  description: Maybe<Scalars['String']['output']>;
+  description: Maybe<Scalars["String"]["output"]>;
   /** Name of the Status. */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** The test status to which the step status is mapped to. */
   testStatus: Maybe<Status>;
 };
 
 /** Test issue type */
 export type Test = {
-  __typename?: 'Test';
+  __typename?: "Test";
   /** List of Coverable Issues associated with the Test issue */
   coverableIssues: Maybe<CoverableIssueResults>;
   /** Test Repository folder of the Test. */
   folder: Maybe<Folder>;
   /** Gherkin definition of the Test issue. */
-  gherkin: Maybe<Scalars['String']['output']>;
+  gherkin: Maybe<Scalars["String"]["output"]>;
   /** List of Xray History results for the issue */
   history: Maybe<XrayHistoryResults>;
   /** Issue id of the Test issue. */
-  issueId: Maybe<Scalars['String']['output']>;
+  issueId: Maybe<Scalars["String"]["output"]>;
   /** Extra Jira information of the Test issue. */
-  jira: Scalars['JSON']['output'];
+  jira: Scalars["JSON"]["output"];
   /** Date when the test was last modified. */
-  lastModified: Maybe<Scalars['String']['output']>;
+  lastModified: Maybe<Scalars["String"]["output"]>;
   /** List of Precondition associated with the Test issue. */
   preconditions: Maybe<PreconditionResults>;
   /** Project id of the Test issue. */
-  projectId: Maybe<Scalars['String']['output']>;
+  projectId: Maybe<Scalars["String"]["output"]>;
   /**
    * Gherkin type of the Test issue.
    * Possible values: 'scenario' or 'scenario_outline'.
    */
-  scenarioType: Maybe<Scalars['String']['output']>;
+  scenarioType: Maybe<Scalars["String"]["output"]>;
   /** Status of the Test. This status can be calculated based on latest status, version or Test Plan. */
   status: Maybe<TestStatusType>;
   /** Step definition of the Test issue. */
@@ -3843,102 +3741,92 @@ export type Test = {
   /** List of Test versions of the Test */
   testVersions: Maybe<TestVersionResults>;
   /** Unstructured definition of the Test issue. */
-  unstructured: Maybe<Scalars['String']['output']>;
+  unstructured: Maybe<Scalars["String"]["output"]>;
 };
-
 
 /** Test issue type */
 export type TestCoverableIssuesArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test issue type */
 export type TestHistoryArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test issue type */
 export type TestJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 /** Test issue type */
 export type TestPreconditionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test issue type */
 export type TestStatusArgs = {
-  environment: InputMaybe<Scalars['String']['input']>;
-  isFinal?: InputMaybe<Scalars['Boolean']['input']>;
-  testPlan: InputMaybe<Scalars['String']['input']>;
-  version: InputMaybe<Scalars['String']['input']>;
+  environment: InputMaybe<Scalars["String"]["input"]>;
+  isFinal?: InputMaybe<Scalars["Boolean"]["input"]>;
+  testPlan: InputMaybe<Scalars["String"]["input"]>;
+  version: InputMaybe<Scalars["String"]["input"]>;
 };
-
 
 /** Test issue type */
 export type TestTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test issue type */
 export type TestTestPlansArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test issue type */
 export type TestTestRunsArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test issue type */
 export type TestTestSetsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test issue type */
 export type TestTestVersionsArgs = {
-  archived?: InputMaybe<Scalars['Boolean']['input']>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
-  testTypeId: InputMaybe<Scalars['String']['input']>;
+  archived?: InputMaybe<Scalars["Boolean"]["input"]>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
+  testTypeId: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Test Execution issue type */
 export type TestExecution = {
-  __typename?: 'TestExecution';
+  __typename?: "TestExecution";
   /** List of Xray History results for the issue */
   history: Maybe<XrayHistoryResults>;
   /** Id of the Test Execution issue. */
-  issueId: Maybe<Scalars['String']['output']>;
+  issueId: Maybe<Scalars["String"]["output"]>;
   /** Extra Jira information of the Test Execution Issue. */
-  jira: Maybe<Scalars['JSON']['output']>;
+  jira: Maybe<Scalars["JSON"]["output"]>;
   /** Date when the test exec was last modified. */
-  lastModified: Maybe<Scalars['String']['output']>;
+  lastModified: Maybe<Scalars["String"]["output"]>;
   /** Project id of the Test Execution issue. */
-  projectId: Maybe<Scalars['String']['output']>;
+  projectId: Maybe<Scalars["String"]["output"]>;
   /** Test Environments of the Test Execution. */
-  testEnvironments: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  testEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** List of Test Plans associated with the Test Execution Issue. */
   testPlans: Maybe<TestPlanResults>;
   /** List of Test Runs for the Test Execution Issue. */
@@ -3947,162 +3835,153 @@ export type TestExecution = {
   tests: Maybe<TestResults>;
 };
 
-
 /** Test Execution issue type */
 export type TestExecutionHistoryArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test Execution issue type */
 export type TestExecutionJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 /** Test Execution issue type */
 export type TestExecutionTestPlansArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test Execution issue type */
 export type TestExecutionTestRunsArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test Execution issue type */
 export type TestExecutionTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Test Execution Results Type */
 export type TestExecutionResults = {
-  __typename?: 'TestExecutionResults';
+  __typename?: "TestExecutionResults";
   /** Maximum amount of Test Executions to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Test Execution issue results. */
   results: Maybe<Array<Maybe<TestExecution>>>;
   /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of issues. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Test Plan issue type */
 export type TestPlan = {
-  __typename?: 'TestPlan';
+  __typename?: "TestPlan";
   /** Folder structure of the Test Plan. */
   folders: Maybe<FolderResults>;
   /** List of Xray History results for the issue */
   history: Maybe<XrayHistoryResults>;
   /** Id of the Test Plan issue. */
-  issueId: Maybe<Scalars['String']['output']>;
+  issueId: Maybe<Scalars["String"]["output"]>;
   /** Extra Jira information of the Test Plan issue. */
-  jira: Maybe<Scalars['JSON']['output']>;
+  jira: Maybe<Scalars["JSON"]["output"]>;
   /** Date when the test plan was last modified. */
-  lastModified: Maybe<Scalars['String']['output']>;
+  lastModified: Maybe<Scalars["String"]["output"]>;
   /** Project id of the Test Plan issue. */
-  projectId: Maybe<Scalars['String']['output']>;
+  projectId: Maybe<Scalars["String"]["output"]>;
   /** List of Test Executions associated with the Test Plan issue. */
   testExecutions: Maybe<TestExecutionResults>;
   /** List of Tests associated with the Test Plan issue. */
   tests: Maybe<TestResults>;
 };
 
-
 /** Test Plan issue type */
 export type TestPlanHistoryArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test Plan issue type */
 export type TestPlanJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 /** Test Plan issue type */
 export type TestPlanTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test Plan issue type */
 export type TestPlanTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Test Plan Results type */
 export type TestPlanResults = {
-  __typename?: 'TestPlanResults';
+  __typename?: "TestPlanResults";
   /** Maximum amount of Test Plans to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Test Plan issue results. */
   results: Maybe<Array<Maybe<TestPlan>>>;
   /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of issues. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Test Results type */
 export type TestResults = {
-  __typename?: 'TestResults';
+  __typename?: "TestResults";
   /** The maximum amount of Tests to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Test issue results. */
   results: Maybe<Array<Maybe<Test>>>;
   /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of issues. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
   /** Warnings generated if you have a invalid Test */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Test Run type */
 export type TestRun = {
-  __typename?: 'TestRun';
+  __typename?: "TestRun";
   /** User's account id assigned to the Test Run. This is user assigned to the Test Run, not taking into account the assignee of the test execution. */
-  assigneeId: Maybe<Scalars['String']['output']>;
+  assigneeId: Maybe<Scalars["String"]["output"]>;
   /** Comment definition of the Test Run. */
-  comment: Maybe<Scalars['String']['output']>;
+  comment: Maybe<Scalars["String"]["output"]>;
   /** Custom Fields of the Test Run. */
   customFields: Maybe<Array<Maybe<TestRunCustomFieldValue>>>;
   /** Defects of the Test Run. */
-  defects: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  defects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Evidence of the Test Run. */
   evidence: Maybe<Array<Maybe<Evidence>>>;
   /** Examples of the Test Run. */
   examples: Maybe<Array<Maybe<Example>>>;
   /** User's account id that executed the Test Run. */
-  executedById: Maybe<Scalars['String']['output']>;
+  executedById: Maybe<Scalars["String"]["output"]>;
   /** Finished On date of the Test Run. */
-  finishedOn: Maybe<Scalars['String']['output']>;
+  finishedOn: Maybe<Scalars["String"]["output"]>;
   /** Cucumber definition of the Test issue. */
-  gherkin: Maybe<Scalars['String']['output']>;
+  gherkin: Maybe<Scalars["String"]["output"]>;
   /** Id of the Test Run. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Iterations of the Test Run. */
   iterations: Maybe<TestRunIterationResults>;
   /** Date when the test run was last modified. */
-  lastModified: Maybe<Scalars['String']['output']>;
+  lastModified: Maybe<Scalars["String"]["output"]>;
   /** Parameters of the Test Run. */
   parameters: Maybe<Array<Maybe<TestRunParameter>>>;
   /** Preconditions of the Test Run. */
@@ -4110,9 +3989,9 @@ export type TestRun = {
   /** Results of the Test Run. */
   results: Maybe<Array<Maybe<Result>>>;
   /** Cucumber Type definition of the Test Run. */
-  scenarioType: Maybe<Scalars['String']['output']>;
+  scenarioType: Maybe<Scalars["String"]["output"]>;
   /** Started On date of the Test Run. */
-  startedOn: Maybe<Scalars['String']['output']>;
+  startedOn: Maybe<Scalars["String"]["output"]>;
   /** Status of the Test Run. */
   status: Maybe<Status>;
   /** Step definition of the Test Run. */
@@ -4126,48 +4005,46 @@ export type TestRun = {
   /** Test version of the Test Run. */
   testVersion: Maybe<TestVersion>;
   /** Generic definition of the Test issue. */
-  unstructured: Maybe<Scalars['String']['output']>;
+  unstructured: Maybe<Scalars["String"]["output"]>;
 };
-
 
 /** Test Run type */
 export type TestRunIterationsArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test Run type */
 export type TestRunPreconditionsArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Custom Fields Type */
 export type TestRunCustomFieldValue = {
-  __typename?: 'TestRunCustomFieldValue';
-  id: Maybe<Scalars['String']['output']>;
-  name: Maybe<Scalars['String']['output']>;
-  values: Maybe<Scalars['JSON']['output']>;
+  __typename?: "TestRunCustomFieldValue";
+  id: Maybe<Scalars["String"]["output"]>;
+  name: Maybe<Scalars["String"]["output"]>;
+  values: Maybe<Scalars["JSON"]["output"]>;
 };
 
 /** Step CustomField type */
 export type TestRunCustomStepField = {
-  __typename?: 'TestRunCustomStepField';
+  __typename?: "TestRunCustomStepField";
   /** Id of the Custom Field. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Name of the Custom Field. */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
   /** Value of the Custom Field. */
-  value: Maybe<Scalars['JSON']['output']>;
+  value: Maybe<Scalars["JSON"]["output"]>;
 };
 
 /** Test Run Defect Operations Input */
 export type TestRunDefectOperationsInput = {
   /** Defects to add to the Test Run Step. */
-  add: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  add: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   /** Defects to remove from the Test Run Step. */
-  remove: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  remove: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
 
 /** Test Run Evidence Operations Input */
@@ -4175,254 +4052,250 @@ export type TestRunEvidenceOperationsInput = {
   /** Evidence to add to the Test Run Step. */
   add: InputMaybe<Array<InputMaybe<AttachmentDataInput>>>;
   /** Evidence filenames to remove from the Test Run Step. */
-  removeFilenames: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  removeFilenames: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
   /** Evidence ids to remove from the Test Run Step. */
-  removeIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  removeIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
 
 /** Test Run iteration type */
 export type TestRunIteration = {
-  __typename?: 'TestRunIteration';
+  __typename?: "TestRunIteration";
   /** Parameters of the iteration. */
   parameters: Maybe<Array<Maybe<TestRunParameter>>>;
   /** Rank of the iteration. */
-  rank: Maybe<Scalars['String']['output']>;
+  rank: Maybe<Scalars["String"]["output"]>;
   /** Status of the iteration. */
   status: Maybe<StepStatus>;
   /** Step results of the iteration. */
   stepResults: Maybe<TestRunIterationStepResults>;
 };
 
-
 /** Test Run iteration type */
 export type TestRunIterationStepResultsArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Test Run iterations results type */
 export type TestRunIterationResults = {
-  __typename?: 'TestRunIterationResults';
+  __typename?: "TestRunIterationResults";
   /** Maximum amount of iterations to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Iteration results. */
   results: Maybe<Array<Maybe<TestRunIteration>>>;
   /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of iterations. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Test Run iteration step result type */
 export type TestRunIterationStepResult = {
-  __typename?: 'TestRunIterationStepResult';
+  __typename?: "TestRunIterationStepResult";
   /** Actual Result of the Test Run step. */
-  actualResult: Maybe<Scalars['String']['output']>;
+  actualResult: Maybe<Scalars["String"]["output"]>;
   /** Comment of the Test Run step. */
-  comment: Maybe<Scalars['String']['output']>;
+  comment: Maybe<Scalars["String"]["output"]>;
   /** Defects of the Test Run step. */
-  defects: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  defects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Evidence of the Test Run step. */
   evidence: Maybe<Array<Maybe<Evidence>>>;
   /** Id of the Test Run step. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Status of the Test Run step. */
   status: Maybe<StepStatus>;
 };
 
 /** Test Run iteration step results results type */
 export type TestRunIterationStepResults = {
-  __typename?: 'TestRunIterationStepResults';
+  __typename?: "TestRunIterationStepResults";
   /** Maximum amount of step results to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Step results. */
   results: Maybe<Array<Maybe<TestRunIterationStepResult>>>;
   /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of steps. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Test Run parameter type */
 export type TestRunParameter = {
-  __typename?: 'TestRunParameter';
-  name: Maybe<Scalars['String']['output']>;
-  value: Maybe<Scalars['String']['output']>;
+  __typename?: "TestRunParameter";
+  name: Maybe<Scalars["String"]["output"]>;
+  value: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Test Run Precondition type */
 export type TestRunPrecondition = {
-  __typename?: 'TestRunPrecondition';
+  __typename?: "TestRunPrecondition";
   /** Precondition definition. */
-  definition: Maybe<Scalars['String']['output']>;
+  definition: Maybe<Scalars["String"]["output"]>;
   /** Precondition of the Test Run. */
   preconditionRef: Maybe<Precondition>;
 };
 
 /** Precondition Results type */
 export type TestRunPreconditionResults = {
-  __typename?: 'TestRunPreconditionResults';
+  __typename?: "TestRunPreconditionResults";
   /** Maximum amount of Preconditions to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Precondition results. */
   results: Maybe<Array<Maybe<TestRunPrecondition>>>;
   /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of preconditions. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Test Run Results type */
 export type TestRunResults = {
-  __typename?: 'TestRunResults';
+  __typename?: "TestRunResults";
   /** The maximum amount of Test Runs to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Test Run results. */
   results: Maybe<Array<Maybe<TestRun>>>;
   /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of Test Runs. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Test Run Step Type */
 export type TestRunStep = {
-  __typename?: 'TestRunStep';
+  __typename?: "TestRunStep";
   /** Action of the Test Run Step. */
-  action: Maybe<Scalars['String']['output']>;
+  action: Maybe<Scalars["String"]["output"]>;
   /** Actual Result of the Test Run Step. */
-  actualResult: Maybe<Scalars['String']['output']>;
+  actualResult: Maybe<Scalars["String"]["output"]>;
   /** Attachments of the Test Run Step. */
   attachments: Maybe<Array<Maybe<Attachment>>>;
   /** Comment of the Test Run Step. */
-  comment: Maybe<Scalars['String']['output']>;
+  comment: Maybe<Scalars["String"]["output"]>;
   /** Custom Fields of the Test Run Step. */
   customFields: Maybe<Array<Maybe<TestRunCustomStepField>>>;
   /** Data of the Test Run Step. */
-  data: Maybe<Scalars['String']['output']>;
+  data: Maybe<Scalars["String"]["output"]>;
   /** Defects of the Test Run Step. */
-  defects: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  defects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Evidence of the Test Run Step. */
   evidence: Maybe<Array<Maybe<Evidence>>>;
   /** Id of the Test Run Step. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /** Result of the Test Run Step. */
-  result: Maybe<Scalars['String']['output']>;
+  result: Maybe<Scalars["String"]["output"]>;
   /** Status of the Test Run Step. */
   status: Maybe<StepStatus>;
 };
 
 /** Test Set type */
 export type TestSet = {
-  __typename?: 'TestSet';
+  __typename?: "TestSet";
   /** List of Xray History results for the issue */
   history: Maybe<XrayHistoryResults>;
   /** Issue id of the Test Set Issue. */
-  issueId: Maybe<Scalars['String']['output']>;
+  issueId: Maybe<Scalars["String"]["output"]>;
   /** Extra Jira information of the Test Set Issue. */
-  jira: Maybe<Scalars['JSON']['output']>;
+  jira: Maybe<Scalars["JSON"]["output"]>;
   /** Date when the test set was last modified. */
-  lastModified: Maybe<Scalars['String']['output']>;
+  lastModified: Maybe<Scalars["String"]["output"]>;
   /** Project id of the Test Set Issue. */
-  projectId: Maybe<Scalars['String']['output']>;
+  projectId: Maybe<Scalars["String"]["output"]>;
   /** List of Tests associated with the Test Set Issue. */
   tests: Maybe<TestResults>;
 };
 
-
 /** Test Set type */
 export type TestSetHistoryArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 /** Test Set type */
 export type TestSetJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
 };
-
 
 /** Test Set type */
 export type TestSetTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Test Set Results */
 export type TestSetResults = {
-  __typename?: 'TestSetResults';
+  __typename?: "TestSetResults";
   /** Maximum amount of test sets to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Test Set issue results. */
   results: Maybe<Array<Maybe<TestSet>>>;
   /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of issues. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Test Status Type */
 export type TestStatusType = {
-  __typename?: 'TestStatusType';
+  __typename?: "TestStatusType";
   /** Color of the Test Status. */
-  color: Maybe<Scalars['String']['output']>;
+  color: Maybe<Scalars["String"]["output"]>;
   /** Description of the Test Status. */
-  description: Maybe<Scalars['String']['output']>;
+  description: Maybe<Scalars["String"]["output"]>;
   /** Whether the status is final or not. */
-  final: Maybe<Scalars['Boolean']['output']>;
+  final: Maybe<Scalars["Boolean"]["output"]>;
   /** Name of the Test Status. */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Test Type type */
 export type TestType = {
-  __typename?: 'TestType';
+  __typename?: "TestType";
   /** Id of the Test Type. */
-  id: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars["String"]["output"]>;
   /**
    * Kind of the Test Type.
    * Possible values are "Gherkin", "Steps" or "Unstructured".
    */
-  kind: Maybe<Scalars['String']['output']>;
+  kind: Maybe<Scalars["String"]["output"]>;
   /** Name of the Test Type. */
-  name: Maybe<Scalars['String']['output']>;
+  name: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Test Type input */
 export type TestTypeInput = {
   /** Id of the Test Type. */
-  id: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars["String"]["input"]>;
   /**
    * Kind of the Test Type.
    * Possible values are "Gherkin", "Steps" or "Unstructured".
    */
-  kind: InputMaybe<Scalars['String']['input']>;
+  kind: InputMaybe<Scalars["String"]["input"]>;
   /** Name of the Test Type. */
-  name: InputMaybe<Scalars['String']['input']>;
+  name: InputMaybe<Scalars["String"]["input"]>;
 };
 
 export type TestVersion = {
-  __typename?: 'TestVersion';
+  __typename?: "TestVersion";
   /** If is an archived Test version. */
-  archived: Scalars['Boolean']['output'];
+  archived: Scalars["Boolean"]["output"];
   /** If is the default Test version. */
-  default: Scalars['Boolean']['output'];
+  default: Scalars["Boolean"]["output"];
   /** Gherkin definition of the Test version. */
-  gherkin: Maybe<Scalars['String']['output']>;
+  gherkin: Maybe<Scalars["String"]["output"]>;
   /** Number of the Test version. */
-  id: Scalars['Int']['output'];
+  id: Scalars["Int"]["output"];
   /** Date when the Test version was last modified. */
-  lastModified: Maybe<Scalars['String']['output']>;
+  lastModified: Maybe<Scalars["String"]["output"]>;
   /** Name of the Test version. */
-  name: Scalars['String']['output'];
+  name: Scalars["String"]["output"];
   preconditions: Maybe<PreconditionResults>;
   /**
    * Gherkin type of the Test version.
    * Possible values: 'scenario' or 'scenario_outline'.
    */
-  scenarioType: Maybe<Scalars['String']['output']>;
+  scenarioType: Maybe<Scalars["String"]["output"]>;
   /** Step definition of the Test version. */
   steps: Maybe<Array<Maybe<Step>>>;
   test: Test;
@@ -4432,63 +4305,60 @@ export type TestVersion = {
   /** Test type of the Test version. */
   testType: Maybe<TestType>;
   /** Unstructured definition of the Test version. */
-  unstructured: Maybe<Scalars['String']['output']>;
+  unstructured: Maybe<Scalars["String"]["output"]>;
 };
-
 
 export type TestVersionPreconditionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
-
 
 export type TestVersionTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
-
 export type TestVersionTestRunsArgs = {
-  limit: Scalars['Int']['input'];
-  start?: InputMaybe<Scalars['Int']['input']>;
+  limit: Scalars["Int"]["input"];
+  start?: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Test version results type */
 export type TestVersionResults = {
-  __typename?: 'TestVersionResults';
+  __typename?: "TestVersionResults";
   /** The maximum amount of Test versions to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Test version results. */
   results: Maybe<Array<Maybe<TestVersion>>>;
   /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of Test versions. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
 
 /** Test with Version input */
 export type TestWithVersionInput = {
   /** Issue id of the Test issue. */
-  issueId: InputMaybe<Scalars['String']['input']>;
+  issueId: InputMaybe<Scalars["String"]["input"]>;
   /** Test Version id of the Test Issue */
-  versionId: InputMaybe<Scalars['Int']['input']>;
+  versionId: InputMaybe<Scalars["Int"]["input"]>;
 };
 
 /** Update Test Run iteration status result type */
 export type UpdateIterationStatusResult = {
-  __typename?: 'UpdateIterationStatusResult';
+  __typename?: "UpdateIterationStatusResult";
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Update Precondition input */
 export type UpdatePreconditionInput = {
   /** Definition of the Precondition Issue. */
-  definition: InputMaybe<Scalars['String']['input']>;
+  definition: InputMaybe<Scalars["String"]["input"]>;
   /** the repository path to which the Precondition should be moved to */
-  folderPath: InputMaybe<Scalars['String']['input']>;
+  folderPath: InputMaybe<Scalars["String"]["input"]>;
   /** Precondition type of the Precondition Issue. */
   preconditionType: InputMaybe<UpdatePreconditionTypeInput>;
 };
@@ -4496,118 +4366,118 @@ export type UpdatePreconditionInput = {
 /** Precondition Type input */
 export type UpdatePreconditionTypeInput = {
   /** Id of the Precondition Type. */
-  id: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars["String"]["input"]>;
   /** Name of the Precondition Type. */
-  name: InputMaybe<Scalars['String']['input']>;
+  name: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Update Step input */
 export type UpdateStepInput = {
   /** Action of the Step. */
-  action: InputMaybe<Scalars['String']['input']>;
+  action: InputMaybe<Scalars["String"]["input"]>;
   /** Attachments of the Step. */
   attachments: InputMaybe<AttachmentOperationsInput>;
   /** Custom Fields of the Step */
   customFields: InputMaybe<Array<InputMaybe<CustomStepFieldInput>>>;
   /** Data of the Step. */
-  data: InputMaybe<Scalars['String']['input']>;
+  data: InputMaybe<Scalars["String"]["input"]>;
   /** Result of the Step. */
-  result: InputMaybe<Scalars['String']['input']>;
+  result: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Update Test Run Example Status Result Type */
 export type UpdateTestRunExampleStatusResult = {
-  __typename?: 'UpdateTestRunExampleStatusResult';
+  __typename?: "UpdateTestRunExampleStatusResult";
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Update Test Run Result Type */
 export type UpdateTestRunResult = {
-  __typename?: 'UpdateTestRunResult';
+  __typename?: "UpdateTestRunResult";
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Update Test Run Step Input */
 export type UpdateTestRunStepInput = {
   /** Actual Result of the Test Run Step. */
-  actualResult: InputMaybe<Scalars['String']['input']>;
+  actualResult: InputMaybe<Scalars["String"]["input"]>;
   /** Comment to add to the Test Run Step. */
-  comment: InputMaybe<Scalars['String']['input']>;
+  comment: InputMaybe<Scalars["String"]["input"]>;
   /** Defects of the Test Run Step. */
   defects: InputMaybe<TestRunDefectOperationsInput>;
   /** Evidence of the Test Run Step. */
   evidence: InputMaybe<TestRunEvidenceOperationsInput>;
   /** Status to set to the Test Run Step. */
-  status: InputMaybe<Scalars['String']['input']>;
+  status: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Update Test Run Step Result Type */
 export type UpdateTestRunStepResult = {
-  __typename?: 'UpdateTestRunStepResult';
+  __typename?: "UpdateTestRunStepResult";
   /** Ids of the added Defects. */
-  addedDefects: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedDefects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Ids of the added Evidence. */
-  addedEvidence: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedEvidence: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Ids of the removed Defects. */
-  removedDefects: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  removedDefects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Ids of the removed Evidence. */
-  removedEvidence: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  removedEvidence: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Update Test Run Step Status Result Type */
 export type UpdateTestRunStepStatusResult = {
-  __typename?: 'UpdateTestRunStepStatusResult';
+  __typename?: "UpdateTestRunStepStatusResult";
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Update Test Step Results type */
 export type UpdateTestStepResult = {
-  __typename?: 'UpdateTestStepResult';
+  __typename?: "UpdateTestStepResult";
   /** List of added attachments. */
-  addedAttachments: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  addedAttachments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** List of removed attachments. */
-  removedAttachments: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  removedAttachments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
   /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
 };
 
 /** Test Type input */
 export type UpdateTestTypeInput = {
   /** Id of the Test Type. */
-  id: InputMaybe<Scalars['String']['input']>;
+  id: InputMaybe<Scalars["String"]["input"]>;
   /** Name of the Test Type. */
-  name: InputMaybe<Scalars['String']['input']>;
+  name: InputMaybe<Scalars["String"]["input"]>;
 };
 
 /** Xray History Entry type */
 export type XrayHistoryEntry = {
-  __typename?: 'XrayHistoryEntry';
+  __typename?: "XrayHistoryEntry";
   /** Action performed. */
-  action: Maybe<Scalars['String']['output']>;
+  action: Maybe<Scalars["String"]["output"]>;
   /** Details of the change(s). */
   changes: Maybe<Array<Maybe<Changes>>>;
   /** Date of change(s). */
-  date: Maybe<Scalars['String']['output']>;
+  date: Maybe<Scalars["String"]["output"]>;
   /** User that performed the change(s). */
-  user: Maybe<Scalars['String']['output']>;
+  user: Maybe<Scalars["String"]["output"]>;
   /** Test Version that the changes refer to (if applicable). */
-  version: Maybe<Scalars['String']['output']>;
+  version: Maybe<Scalars["String"]["output"]>;
 };
 
 /** Xray History Results type */
 export type XrayHistoryResults = {
-  __typename?: 'XrayHistoryResults';
+  __typename?: "XrayHistoryResults";
   /** Maximum amount of History results to be returned. The maximum is 100. */
-  limit: Maybe<Scalars['Int']['output']>;
+  limit: Maybe<Scalars["Int"]["output"]>;
   /** Precondition issue results. */
   results: Maybe<Array<Maybe<XrayHistoryEntry>>>;
   /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars['Int']['output']>;
+  start: Maybe<Scalars["Int"]["output"]>;
   /** Total amount of issues. */
-  total: Maybe<Scalars['Int']['output']>;
+  total: Maybe<Scalars["Int"]["output"]>;
 };
