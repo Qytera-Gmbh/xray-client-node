@@ -20,22 +20,18 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         ]
       );
       assert.deepStrictEqual(response, {
-        data: {
-          getTestRuns: {
-            limit: 100,
-            results: [
-              {
-                test: {
-                  jira: {
-                    key: "XCN-1",
-                  },
-                },
+        limit: 100,
+        results: [
+          {
+            test: {
+              jira: {
+                key: "XCN-1",
               },
-            ],
-            start: 0,
-            total: 1,
+            },
           },
-        },
+        ],
+        start: 0,
+        total: 1,
       });
     });
   });

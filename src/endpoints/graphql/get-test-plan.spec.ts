@@ -19,23 +19,19 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         ]),
       ]);
       assert.deepStrictEqual(response, {
-        data: {
-          getTestPlan: {
-            issueId: "15051",
-            jira: {
-              key: "XCN-3",
+        issueId: "15051",
+        jira: {
+          key: "XCN-3",
+        },
+        tests: {
+          results: [
+            {
+              issueId: "15049",
+              testType: {
+                name: "Manual",
+              },
             },
-            tests: {
-              results: [
-                {
-                  issueId: "15049",
-                  testType: {
-                    name: "Manual",
-                  },
-                },
-              ],
-            },
-          },
+          ],
         },
       });
     });

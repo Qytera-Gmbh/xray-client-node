@@ -99,6 +99,7 @@ export class GetTestRunsApi {
       },
       method: "POST",
     });
-    return (await response.json()) as GetOutput<T>;
+    const json = (await response.json()) as { data: { getTestRuns: GetOutput<T> } };
+    return json.data.getTestRuns;
   }
 }
