@@ -4,6 +4,7 @@
 //
 // Modifications applied to final file:
 // - export Selection type to make typesafe query wrappers possible
+// - replace default JSON type with actual object type
 // ==========================================================================================
 
 import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
@@ -2212,7 +2213,7 @@ export class FolderResults extends $Base<"FolderResults"> {
 /**
  * The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
  */
-export type JSON = string;
+export type JSON = Record<string, any>;
 
 /**
  * Test issue type
@@ -8888,7 +8889,7 @@ mutation {
 The mutation below start the timer in Test Run.
 <pre>
 mutation {
-    <b>setTestRunTimer</b>(
+    <b>setTestRunTimer</b>( 
         testRunId: "5acc7ab0a3fe1b6fcdc3c737"
         running: true
     ) {
@@ -8900,7 +8901,7 @@ mutation {
 The mutation below stop the timer in Test Run.
 <pre>
 mutation {
-    <b>setTestRunTimer</b>(
+    <b>setTestRunTimer</b>( 
         testRunId: "5acc7ab0a3fe1b6fcdc3c737"
         reset: true
     ) {

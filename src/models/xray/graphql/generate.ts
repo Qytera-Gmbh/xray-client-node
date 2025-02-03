@@ -41,7 +41,10 @@ writeFileSync(
     "//",
     "// Modifications applied to final file:",
     "// - export Selection type to make typesafe query wrappers possible",
+    "// - replace default JSON type with actual object type",
     "// ==========================================================================================",
-    readFileSync(BUILDER_FILE, "utf-8").replace("type Selection", "export type Selection"),
+    readFileSync(BUILDER_FILE, "utf-8")
+      .replace("type Selection", "export type Selection")
+      .replace("type JSON = string", "type JSON = Record<string, any>;"),
   ].join("\n")
 );
