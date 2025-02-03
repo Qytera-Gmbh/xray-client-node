@@ -4,12 +4,12 @@
   "description": "A typesafe HTTP client for the Xray API.",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --project tsconfig-build.json && shx cp README.md package.json package-lock.json dist/",
+    "build": "node --import ./loader.js build.ts",
     "code:format": "prettier src/**/*.ts test/**/*.ts index.ts --write",
     "code:lint": "eslint",
-    "generate:graphql": "node --import ./test/loader.js src/models/xray/graphql/generate.ts",
-    "generate:jira-cloud": "node --import ./test/loader-esnext.js src/models/jira/codegen.ts",
-    "test": "node --import ./test/loader.js ./test/run-unit-tests.ts"
+    "generate:graphql": "node --import ./loader.js src/models/xray/graphql/generate.ts",
+    "generate:jira-cloud": "node --import ./loader-esnext.js src/models/jira/codegen.ts",
+    "test": "node --import ./loader.js ./test/run-unit-tests.ts"
   },
   "author": "dev@qytera.de",
   "license": "MIT",
@@ -40,7 +40,6 @@
     "eslint-plugin-perfectionist": "^4.7.0",
     "openapi-typescript": "^7.6.0",
     "prettier": "^3.4.2",
-    "shx": "^0.3.4",
     "ts-node": "^10.9.2",
     "typed-graphql-builder": "^4.1.7",
     "typescript": "^5.7.3",
