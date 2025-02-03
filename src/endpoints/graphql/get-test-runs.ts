@@ -30,17 +30,29 @@ export class GetTestRunsApi {
    * ```ts
    * query(
    *   { limit: 100, testExecIssueIds: ["XCN-2"] },
-   *   `
-   *     total
-   *     limit
-   *     start
-   *     results {
-   *       test {
-   *         jira(fields: ["key"])
-   *       }
-   *     }
-   *   `
+   *   (testRunResults) => [
+   *     testRunResults.total,
+   *     testRunResults.limit,
+   *     testRunResults.start,
+   *     testRunResults.results((testRun) => [
+   *       testRun.test((test) => [test.jira({ fields: ["key"] })]),
+   *     ]),
+   *   ]
    * );
+   *
+   * // Equivalent to:
+   * // {
+   * //   getTestRuns(limit: 100, testExecIssueIds: ["XCN-2"]) {
+   * //     total
+   * //     limit
+   * //     start
+   * //     results {
+   * //       test {
+   * //         jira(fields: ["key"])
+   * //       }
+   * //     }
+   * //   }
+   * // }
    * ```
    *
    * @param variables the query arguments

@@ -29,17 +29,50 @@ export class GetTestPlansApi {
    *
    * ```ts
    * query(
-   *   { limit: 100 },
-   *   `
-   *     total
-   *     limit
-   *     start
-   *     results {
-   *       issueId
-   *       jira(fields: ["key", "assignee", "reporter"])
-   *     }
-   *   `
+   *  {
+   *    jql: "project = XCN",
+   *    limit: 1,
+   *  },
+   *  (testPlanResults) => [
+   *    testPlanResults.start,
+   *    testPlanResults.limit,
+   *    testPlanResults.results((testPlan) => [
+   *      testPlan.issueId,
+   *      testPlan.jira({ fields: ["key"] }),
+   *      testPlan.tests({ limit: 10 }, (testResults) => [
+   *        testResults.start,
+   *        testResults.limit,
+   *        testResults.results((test) => [
+   *          test.issueId,
+   *          test.jira({ fields: ["key"] }),
+   *          test.testType((testType) => [testType.name]),
+   *        ]),
+   *      ]),
+   *    ]),
+   *  ]
    * );
+   *
+   * // Equivalent to:
+   * // {
+   * //   getTestPlans(jql: "project = XCN", limit: 1) {
+   * //     start
+   * //     limit
+   * //     results {
+   * //       issueId
+   * //       jira(fields: ["key"])
+   * //       tests(limit: 10) {
+   * //         start
+   * //         limit
+   * //         results {
+   * //           issueId
+   * //           jira(fields: ["key"])
+   * //           testType {
+   * //             name
+   * //         }
+   * //       }
+   * //     }
+   * //   }
+   * // }
    * ```
    *
    * @param variables the query arguments
