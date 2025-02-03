@@ -1,6 +1,11 @@
+import { print } from "graphql";
 import type { BaseClient } from "../../client/base-client.js";
-import type { TestExecution } from "../../models/xray/graphql/__generated__/index.js";
-import type { NullHandling, QueryResponse } from "../../models/xray/graphql/graphql.js";
+import type {
+  GetOutput,
+  Selection,
+  TestRunResults,
+} from "../../models/xray/graphql/__generated__/index.js";
+import { query } from "../../models/xray/graphql/__generated__/index.js";
 
 /**
  * Models the GraphQL test run endpoints.
@@ -44,7 +49,7 @@ export class GetTestRunsApi {
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
    */
-  public async query<N extends NullHandling = "without-null">(
+  public async query<T extends Selection<TestRunResults>>(
     variables: {
       /**
        * The maximum amount of Test Runs to be returned. The maximum is 100.
@@ -71,30 +76,17 @@ export class GetTestRunsApi {
        */
       testRunAssignees?: string[];
     },
-    resultShape: string
-  ): Promise<QueryResult<N>> {
-    const queryString = `
-      query($testIssueIds: [String], $testExecIssueIds: [String], $testRunAssignees: [String], $limit: Int!, $start: Int, $modifiedSince: String) {
-        getTestRuns(testIssueIds: $testIssueIds, testExecIssueIds: $testExecIssueIds, testRunAssignees: $testRunAssignees, limit: $limit, start: $start, modifiedSince: $modifiedSince) {
-          ${resultShape}
-        }
-      }
-    `;
+    resultShape: (testRunResults: TestRunResults) => [...T]
+  ): Promise<GetOutput<T>> {
+    const document = query((q) => [q.getTestRuns<typeof variables, T>(variables, resultShape)]);
     const response = await this.client.send("/graphql", {
-      body: JSON.stringify({ query: queryString, variables: variables }),
+      body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
         ["Content-Type"]: "application/json",
       },
       method: "POST",
     });
-    return (await response.json()) as QueryResult<N>;
+    return (await response.json()) as GetOutput<T>;
   }
 }
-
-type QueryResult<N extends NullHandling> = QueryResponse<
-  {
-    getTestRuns: TestExecution["testRuns"];
-  },
-  N
->;

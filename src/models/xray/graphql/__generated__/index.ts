@@ -1,4483 +1,10646 @@
-// =========================================================
-//  GENERATED USING @graphql-codegen/cli
-//  See: https://www.npmjs.com/package/@graphql-codegen/cli
-// =========================================================
+// ==========================================================================================
+// GENERATED USING typed-graphql-builder
+// See: https://www.npmjs.com/package/typed-graphql-builder
+//
+// Modifications applied to final file:
+// - export Selection type to make typesafe query wrappers possible
+// ==========================================================================================
+
+import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
+import { gql } from "graphql-tag";
 
 /* eslint-disable */
-export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
-  [_ in K]?: never;
-};
-export type Incremental<T> =
-  | T
-  | { [P in keyof T]?: P extends " $fragmentName" | "__typename" ? T[P] : never };
-/** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
-  ID: { input: string; output: string };
-  String: { input: string; output: string };
-  Boolean: { input: boolean; output: boolean };
-  Int: { input: number; output: number };
-  Float: { input: number; output: number };
-  JSON: { input: any; output: any };
+
+const VariableName = " $1fcbcbff-3e78-462f-b45c-668a3e09bfd8";
+
+const ScalarBrandingField = " $1fcbcbff-3e78-462f-b45c-668a3e09bfd9";
+
+type CustomScalar<T> = { [ScalarBrandingField]: T };
+
+class Variable<T, Name extends string> {
+  private [VariableName]: Name;
+  // @ts-ignore
+  private _type?: T;
+
+  // @ts-ignore
+  constructor(
+    name: Name,
+    private readonly isRequired?: boolean
+  ) {
+    this[VariableName] = name;
+  }
+}
+
+type ArrayInput<I> = [I] extends [$Atomic] ? never : ReadonlyArray<VariabledInput<I>>;
+
+type AllowedInlineScalars<S> = S extends string | number ? S : never;
+
+export type UnwrapCustomScalars<T> =
+  T extends CustomScalar<infer S>
+    ? S
+    : T extends ReadonlyArray<infer I>
+      ? ReadonlyArray<UnwrapCustomScalars<I>>
+      : T extends Record<string, any>
+        ? { [K in keyof T]: UnwrapCustomScalars<T[K]> }
+        : T;
+
+type VariableWithoutScalars<T, Str extends string> = Variable<UnwrapCustomScalars<T>, Str>;
+
+// the array wrapper prevents distributive conditional types
+// https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
+type VariabledInput<T> = [T] extends [CustomScalar<infer S> | null | undefined]
+  ? // scalars only support variable input
+    Variable<S | null | undefined, any> | AllowedInlineScalars<S> | null | undefined
+  : [T] extends [CustomScalar<infer S>]
+    ? Variable<S, any> | AllowedInlineScalars<S>
+    : [T] extends [$Atomic]
+      ? Variable<T, any> | T
+      : T extends ReadonlyArray<infer I>
+        ? VariableWithoutScalars<T, any> | T | ArrayInput<I>
+        : T extends Record<string, any> | null | undefined
+          ?
+              | VariableWithoutScalars<T | null | undefined, any>
+              | null
+              | undefined
+              | { [K in keyof T]: VariabledInput<T[K]> }
+              | T
+          : T extends Record<string, any>
+            ? VariableWithoutScalars<T, any> | { [K in keyof T]: VariabledInput<T[K]> } | T
+            : never;
+
+type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void
+  ? I
+  : never;
+
+/**
+ * Creates a new query variable
+ *
+ * @param name The variable name
+ */
+export const $ = <Type, Name extends string>(name: Name): Variable<Type, Name> => {
+  return new Variable(name);
 };
 
-export type ActionFolderResult = {
-  __typename?: "ActionFolderResult";
-  /** Folder updated during the operation. */
-  folder: Maybe<SimpleFolderResults>;
-  /** Warning generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+/**
+ * Creates a new query variable. A value will be required even if the input is optional
+ *
+ * @param name The variable name
+ */
+export const $$ = <Type, Name extends string>(name: Name): Variable<NonNullable<Type>, Name> => {
+  return new Variable(name, true);
 };
 
-/** Added Defects Result Type */
-export type AddDefectsResult = {
-  __typename?: "AddDefectsResult";
-  /** Ids of the added Defects. */
-  addedDefects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+type SelectOptions = {
+  argTypes?: { [key: string]: string };
+  args?: { [key: string]: any };
+  selection?: Selection<any>;
 };
 
-/** Add Evidence Result Type */
-export type AddEvidenceResult = {
-  __typename?: "AddEvidenceResult";
-  /** Ids of the added Evidence. */
-  addedEvidence: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+class $Field<Name extends string, Type, Vars = {}> {
+  public kind: "field" = "field";
+  public type!: Type;
+
+  public vars!: Vars;
+  public alias: string | null = null;
+
+  constructor(
+    public name: Name,
+    public options: SelectOptions
+  ) {}
+
+  as<Rename extends string>(alias: Rename): $Field<Rename, Type, Vars> {
+    const f = new $Field(this.name, this.options);
+    f.alias = alias;
+    return f as any;
+  }
+}
+
+class $Base<Name extends string> {
+  // @ts-ignore
+  constructor(private $$name: Name) {}
+
+  protected $_select<Key extends string>(
+    name: Key,
+    options: SelectOptions = {}
+  ): $Field<Key, any, any> {
+    return new $Field(name, options);
+  }
+}
+
+// @ts-ignore
+class $Union<T, Name extends String> extends $Base<Name> {
+  // @ts-ignore
+  private $$type!: T;
+  // @ts-ignore
+  private $$name!: Name;
+
+  constructor(
+    private selectorClasses: { [K in keyof T]: { new (): T[K] } },
+    $$name: Name
+  ) {
+    super($$name);
+  }
+
+  $on<Type extends keyof T, Sel extends Selection<T[Type]>>(
+    alternative: Type,
+    selectorFn: (selector: T[Type]) => [...Sel]
+  ): $UnionSelection<GetOutput<Sel>, GetVariables<Sel>> {
+    const selection = selectorFn(new this.selectorClasses[alternative]());
+
+    return new $UnionSelection(alternative as string, selection);
+  }
+}
+
+// @ts-ignore
+class $Interface<T, Name extends string> extends $Base<Name> {
+  // @ts-ignore
+  private $$type!: T;
+  // @ts-ignore
+  private $$name!: Name;
+
+  constructor(
+    private selectorClasses: { [K in keyof T]: { new (): T[K] } },
+    $$name: Name
+  ) {
+    super($$name);
+  }
+  $on<Type extends keyof T, Sel extends Selection<T[Type]>>(
+    alternative: Type,
+    selectorFn: (selector: T[Type]) => [...Sel]
+  ): $UnionSelection<GetOutput<Sel>, GetVariables<Sel>> {
+    const selection = selectorFn(new this.selectorClasses[alternative]());
+
+    return new $UnionSelection(alternative as string, selection);
+  }
+}
+
+class $UnionSelection<T, Vars> {
+  public kind: "union" = "union";
+  // @ts-ignore
+  private vars!: Vars;
+  constructor(
+    public alternativeName: string,
+    public alternativeSelection: Selection<T>
+  ) {}
+}
+
+export type Selection<_any> = ReadonlyArray<$Field<any, any, any> | $UnionSelection<any, any>>;
+
+type NeverNever<T> = [T] extends [never] ? {} : T;
+
+type Simplify<T> = { [K in keyof T]: T[K] } & {};
+
+type LeafType<T> = T extends CustomScalar<infer S> ? S : T;
+
+export type GetOutput<X extends Selection<any>> = Simplify<
+  UnionToIntersection<
+    {
+      [I in keyof X]: X[I] extends $Field<infer Name, infer Type, any>
+        ? { [K in Name]: LeafType<Type> }
+        : never;
+    }[keyof X & number]
+  > &
+    NeverNever<
+      {
+        [I in keyof X]: X[I] extends $UnionSelection<infer Type, any> ? LeafType<Type> : never;
+      }[keyof X & number]
+    >
+>;
+
+type PossiblyOptionalVar<VName extends string, VType> = undefined extends VType
+  ? { [key in VName]?: VType }
+  : null extends VType
+    ? { [key in VName]?: VType }
+    : { [key in VName]: VType };
+
+type ExtractInputVariables<Inputs> =
+  Inputs extends Variable<infer VType, infer VName>
+    ? PossiblyOptionalVar<VName, VType>
+    : // Avoid generating an index signature for possibly undefined or null inputs.
+      // The compiler incorrectly infers null or undefined, and we must force access the Inputs
+      // type to convince the compiler its "never", while still retaining {} as the result
+      // for null and undefined cases
+      // Works around issue 79
+      Inputs extends null | undefined
+      ? { [K in keyof Inputs]: Inputs[K] }
+      : Inputs extends $Atomic
+        ? {}
+        : Inputs extends any[] | readonly any[]
+          ? UnionToIntersection<
+              { [K in keyof Inputs]: ExtractInputVariables<Inputs[K]> }[keyof Inputs & number]
+            >
+          : UnionToIntersection<
+              { [K in keyof Inputs]: ExtractInputVariables<Inputs[K]> }[keyof Inputs]
+            >;
+
+export type GetVariables<Sel extends Selection<any>, ExtraVars = {}> = UnionToIntersection<
+  {
+    [I in keyof Sel]: Sel[I] extends $Field<any, any, infer Vars>
+      ? Vars
+      : Sel[I] extends $UnionSelection<any, infer Vars>
+        ? Vars
+        : never;
+  }[keyof Sel & number]
+> &
+  ExtractInputVariables<ExtraVars>;
+
+type ArgVarType = {
+  type: string;
+  isRequired: boolean;
+  array: {
+    isRequired: boolean;
+  } | null;
 };
 
-/** Add Preconditions Result type */
-export type AddPreconditionsResult = {
-  __typename?: "AddPreconditionsResult";
-  /** Issue ids of the added Preconditions. */
-  addedPreconditions: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warning generated during the operation. */
-  warning: Maybe<Scalars["String"]["output"]>;
+const arrRegex = /\[(.*?)\]/;
+
+/**
+ * Converts graphql string type to `ArgVarType`
+ * @param input
+ * @returns
+ */
+function getArgVarType(input: string): ArgVarType {
+  const array = input.includes("[")
+    ? {
+        isRequired: input.endsWith("!"),
+      }
+    : null;
+
+  const type = array ? arrRegex.exec(input)![1]! : input;
+  const isRequired = type.endsWith("!");
+
+  return {
+    array,
+    isRequired: isRequired,
+    type: type.replace("!", ""),
+  };
+}
+
+function fieldToQuery(prefix: string, field: $Field<any, any, any>) {
+  const variables = new Map<string, { variable: Variable<any, any>; type: ArgVarType }>();
+
+  function stringifyArgs(
+    args: any,
+    argTypes: { [key: string]: string },
+    argVarType?: ArgVarType
+  ): string {
+    switch (typeof args) {
+      case "string":
+        const cleanType = argVarType!.type;
+        if ($Enums.has(cleanType!)) return args;
+        else return JSON.stringify(args);
+      case "number":
+      case "boolean":
+        return JSON.stringify(args);
+      default:
+        if (args == null) return "null";
+        if (VariableName in (args as any)) {
+          if (!argVarType)
+            throw new globalThis.Error("Cannot use variabe as sole unnamed field argument");
+          const variable = args as Variable<any, any>;
+          const argVarName = variable[VariableName];
+          variables.set(argVarName, { type: argVarType, variable: variable });
+          return "$" + argVarName;
+        }
+        if (Array.isArray(args))
+          return "[" + args.map((arg) => stringifyArgs(arg, argTypes, argVarType)).join(",") + "]";
+        const wrapped = (content: string) => (argVarType ? "{" + content + "}" : content);
+        return wrapped(
+          Array.from(Object.entries(args))
+            .map(([key, val]) => {
+              let argTypeForKey = argTypes[key];
+              if (!argTypeForKey) {
+                throw new globalThis.Error(`Argument type for ${key} not found`);
+              }
+              const cleanType = argTypeForKey.replace("[", "").replace("]", "").replace(/!/g, "");
+              return (
+                key +
+                ":" +
+                stringifyArgs(val, $InputTypes[cleanType]!, getArgVarType(argTypeForKey))
+              );
+            })
+            .join(",")
+        );
+    }
+  }
+
+  function extractTextAndVars(field: $Field<any, any, any> | $UnionSelection<any, any>) {
+    if (field.kind === "field") {
+      let retVal = field.name;
+      if (field.alias) retVal = field.alias + ":" + retVal;
+      const args = field.options.args,
+        argTypes = field.options.argTypes;
+      if (args && Object.keys(args).length > 0) {
+        retVal += "(" + stringifyArgs(args, argTypes!) + ")";
+      }
+      let sel = field.options.selection;
+      if (sel) {
+        retVal += "{";
+        for (let subField of sel) {
+          retVal += extractTextAndVars(subField);
+        }
+        retVal += "}";
+      }
+      return retVal + " ";
+    } else if (field.kind === "union") {
+      let retVal = "... on " + field.alternativeName + " {";
+      for (let subField of field.alternativeSelection) {
+        retVal += extractTextAndVars(subField);
+      }
+      retVal += "}";
+
+      return retVal + " ";
+    } else {
+      throw new globalThis.Error("Uknown field kind");
+    }
+  }
+
+  const queryRaw = extractTextAndVars(field)!;
+
+  const queryBody = queryRaw.substring(queryRaw.indexOf("{"));
+
+  const varList = Array.from(variables.entries());
+  let ret = prefix;
+  if (varList.length) {
+    ret +=
+      "(" +
+      varList
+        .map(([name, { type: kind, variable }]) => {
+          let type = kind.array ? "[" : "";
+          type += kind.type;
+          if (kind.isRequired) type += "!";
+          if (kind.array) type += kind.array.isRequired ? "]!" : "]";
+
+          if (!type.endsWith("!") && (variable as any).isRequired === true) {
+            type += "!";
+          }
+
+          return "$" + name + ":" + type;
+        })
+        .join(",") +
+      ")";
+  }
+  ret += queryBody;
+
+  return ret;
+}
+
+export type OutputTypeOf<T> =
+  T extends $Interface<infer Subtypes, any>
+    ? { [K in keyof Subtypes]: OutputTypeOf<Subtypes[K]> }[keyof Subtypes]
+    : T extends $Union<infer Subtypes, any>
+      ? { [K in keyof Subtypes]: OutputTypeOf<Subtypes[K]> }[keyof Subtypes]
+      : T extends $Base<any>
+        ? { [K in keyof T]?: OutputTypeOf<T[K]> }
+        : [T] extends [$Field<any, infer FieldType, any>]
+          ? FieldType
+          : [T] extends [(selFn: (arg: infer Inner) => any) => any]
+            ? OutputTypeOf<Inner>
+            : [T] extends [(args: any, selFn: (arg: infer Inner) => any) => any]
+              ? OutputTypeOf<Inner>
+              : never;
+
+export type QueryOutputType<T extends TypedDocumentNode<any>> =
+  T extends TypedDocumentNode<infer Out> ? Out : never;
+
+export type QueryInputType<T extends TypedDocumentNode<any>> =
+  T extends TypedDocumentNode<any, infer In> ? In : never;
+
+export function fragment<T, Sel extends Selection<T>>(
+  GQLType: { new (): T },
+  selectFn: (selector: T) => [...Sel]
+) {
+  return selectFn(new GQLType());
+}
+
+type LastOf<T> =
+  UnionToIntersection<T extends any ? () => T : never> extends () => infer R ? R : never;
+
+// TS4.0+
+type Push<T extends any[], V> = [...T, V];
+
+// TS4.1+
+type TuplifyUnion<T, L = LastOf<T>, N = [T] extends [never] ? true : false> = true extends N
+  ? []
+  : Push<TuplifyUnion<Exclude<T, L>>, L>;
+
+type AllFieldProperties<I> = {
+  [K in keyof I]: I[K] extends $Field<infer Name, infer Type, any>
+    ? $Field<Name, Type, any>
+    : never;
 };
 
-/** Add Test Environments Result type */
-export type AddTestEnvironmentsResult = {
-  __typename?: "AddTestEnvironmentsResult";
-  /** Test Environments that were associated. */
-  associatedTestEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Test Environments that were created. */
-  createdTestEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warning generated during the operation. */
-  warning: Maybe<Scalars["String"]["output"]>;
-};
+type ValueOf<T> = T[keyof T];
 
-/** Add Test Executions Result type */
-export type AddTestExecutionsResult = {
-  __typename?: "AddTestExecutionsResult";
-  /** Issue ids of the added Test Executions. */
-  addedTestExecutions: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warning generated during the operation. */
-  warning: Maybe<Scalars["String"]["output"]>;
-};
+export type AllFields<T> = TuplifyUnion<ValueOf<AllFieldProperties<T>>>;
 
-/** Add Test Plans Result type */
-export type AddTestPlansResult = {
-  __typename?: "AddTestPlansResult";
-  /** Issue ids of the added Test Plans. */
-  addedTestPlans: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warning generated during the operation. */
-  warning: Maybe<Scalars["String"]["output"]>;
-};
+export function all<I extends $Base<any>>(instance: I) {
+  const prototype = Object.getPrototypeOf(instance);
+  const allFields = Object.getOwnPropertyNames(prototype)
+    .map((k) => prototype[k])
+    .filter((o) => o?.kind === "field")
+    .map((o) => o?.name) as (keyof typeof instance)[];
+  return allFields.map((fieldName) => instance?.[fieldName]) as any as AllFields<I>;
+}
 
-/** Add Test Sets Result type */
-export type AddTestSetsResult = {
-  __typename?: "AddTestSetsResult";
-  /** Issue ids of the added Test Set. */
-  addedTestSets: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warning generated during the operation. */
-  warning: Maybe<Scalars["String"]["output"]>;
-};
+// We use a dummy conditional type that involves GenericType to defer the compiler's inference of
+// any possible variables nested in this type. This addresses a problem where variables are
+// inferred with type unknown
+type ExactArgNames<GenericType, Constraint> = GenericType extends never
+  ? never
+  : [Constraint] extends [$Atomic | CustomScalar<any>]
+    ? GenericType
+    : Constraint extends ReadonlyArray<infer InnerConstraint>
+      ? GenericType extends ReadonlyArray<infer Inner>
+        ? ReadonlyArray<ExactArgNames<Inner, InnerConstraint>>
+        : GenericType
+      : GenericType & {
+          [Key in keyof GenericType]: Key extends keyof Constraint
+            ? ExactArgNames<GenericType[Key], Constraint[Key]>
+            : never;
+        };
 
-/** Add Tests Result type */
-export type AddTestsResult = {
-  __typename?: "AddTestsResult";
-  /** Issue Ids of the added Tests. */
-  addedTests: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warning generated during the operation. */
-  warning: Maybe<Scalars["String"]["output"]>;
-};
+type $Atomic = number | string | boolean | null | undefined;
 
-/** Step Attachment type */
-export type Attachment = {
-  __typename?: "Attachment";
-  /** Download link of the attachment. */
-  downloadLink: Maybe<Scalars["String"]["output"]>;
-  /** Filename of the attachment. */
-  filename: Maybe<Scalars["String"]["output"]>;
-  /** Id of the attachment. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** If the file is stored in Jira. */
-  storedInJira: Maybe<Scalars["Boolean"]["output"]>;
-};
+let $Enums = new Set<string>([]);
 
-/** Attachment Data Input */
-export type AttachmentDataInput = {
-  /** Id of an attachment. */
-  attachmentId: InputMaybe<Scalars["String"]["input"]>;
-  /** Data of the attachment. Base64 format. */
-  data: InputMaybe<Scalars["String"]["input"]>;
+export class Query extends $Base<"Query"> {
+  constructor() {
+    super("Query");
+  }
+
   /**
-   *  A valid <b>AttachmentDataInput</b> must have the properties <b>filename</b>, <b>mimeType</b> and <b>data</b> defined.
-   * In alternative, the <b>attachmentId</b> property can be used alone.
-   * If both <b>attachmentId</b> and other properties are defined, <b>attachmentId</b> takes precedence and will be used as if it was defined alone.
-   *
-   *
+ * Returns a Coverable Issue by issueId.
+===
+The query below returns a Coverable Issue.
+<pre>
+{
+    <b>getCoverableIssue</b> {
+        issueId
+        jira(fields: ["assignee", "reporter"])
+        status {
+            name
+            description
+            color
+        }
+    }
+}
+</pre>
+===
+===
+The query below returns the Coverable Issue with issue id **12345**.
+<pre>
+{
+    <b>getCoverableIssue</b>(issueId: "12345") {
+        issueId
+    }
+}
+</pre>
+===
+ */
+  getCoverableIssue<
+    Args extends VariabledInput<{
+      issueId: string;
+    }>,
+    Sel extends Selection<CoverableIssue>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+      }
+    >,
+    selectorFn: (s: CoverableIssue) => [...Sel]
+  ): $Field<"getCoverableIssue", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+      },
+      args,
+
+      selection: selectorFn(new CoverableIssue()),
+    };
+    return this.$_select("getCoverableIssue", options as any) as any;
+  }
+
+  /**
+ * Returns multiple coverable issues by jql or issue ids.
+===
+The query below returns 10 coverable issues that match the provided jql.
+<pre>
+{
+    <b>getCoverableIssues</b>(limit: 10) {
+        total
+        start
+        limit
+        results {
+            issueId
+            jira(fields: ["assignee", "reporter"])
+            status {
+                name
+                description
+                color
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getCoverableIssues<
+    Args extends VariabledInput<{
+      jql?: string | null | undefined;
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<CoverableIssueResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        jql?: string | null | undefined;
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: CoverableIssueResults) => [...Sel]
+  ): $Field<"getCoverableIssues", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        jql: "String",
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new CoverableIssueResults()),
+    };
+    return this.$_select("getCoverableIssues", options as any) as any;
+  }
+
+  /**
+ * Returns a test (with the call test steps expanded) by issue id and version id.
+===
+The query below returns the test version 2 of the test with the id "12345".
+<pre>
+{
+    <b>getExpandedTest</b>(issueId: "12345", testVersionId: "2") {
+        issueId
+        testType {
+            name
+            kind
+        }
+        steps {
+            parentTestIssueId
+            calledTestIssueId
+            id
+            data
+            action
+            result
+            attachments {
+                id
+                filename
+            }
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  getExpandedTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+    }>,
+    Sel extends Selection<ExpandedTest>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: ExpandedTest) => [...Sel]
+  ): $Field<"getExpandedTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+      },
+      args,
+
+      selection: selectorFn(new ExpandedTest()),
+    };
+    return this.$_select("getExpandedTest", options as any) as any;
+  }
+
+  /**
+ * Returns multiple tests (with the call test steps expanded) by jql, issue ids, project id or test type.
+===
+The query below returns the first 100 tests.
+<pre>
+{
+    <b>getExpandedTests</b>(limit: 100) {
+        total
+        start
+        limit
+        results {
+            issueId
+            testType {
+                name
+                kind
+            }
+            jira(fields: ["assignee", "reporter"])
+            warnings
+        }
+    }
+}
+</pre>
+===
+===
+The query below returns 10 tests that match the provided jql.
+<pre>
+{
+    <b>getExpandedTests</b>(jql: "project = 'PC'", limit: 10) {
+        total
+        start
+        limit
+        results {
+            issueId
+            testType {
+                name
+                kind
+            }
+            steps {
+                parentTestIssueId
+                calledTestIssueId
+                id
+                data
+                action
+                result
+                attachments {
+                    id
+                    filename
+                }
+                customfields {
+                    id
+                    value
+                }
+            }
+            jira(fields: ["assignee", "reporter"])
+            warnings
+        }
+    }
+}
+</pre>
+<b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
+===
+===
+The query below returns the tests of each test version.
+<pre>
+{
+    <b>getExpandedTests</b>(tests:[{ issueId:"12345", testVersionId: "1" }, { issueId:"54321", testVersionId: "2" }]) {
+        total
+        start
+        limit
+        results {
+            issueId
+            testType {
+                name
+                kind
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getExpandedTests<
+    Args extends VariabledInput<{
+      jql?: string | null | undefined;
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      projectId?: string | null | undefined;
+      testType?: TestTypeInput | null | undefined;
+      modifiedSince?: string | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+      folder?: FolderSearchInput | null | undefined;
+    }>,
+    Sel extends Selection<ExpandedTestResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        jql?: string | null | undefined;
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+        projectId?: string | null | undefined;
+        testType?: TestTypeInput | null | undefined;
+        modifiedSince?: string | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+        folder?: FolderSearchInput | null | undefined;
+      }
+    >,
+    selectorFn: (s: ExpandedTestResults) => [...Sel]
+  ): $Field<"getExpandedTests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        jql: "String",
+        issueIds: "[String]",
+        tests: "[TestWithVersionInput]",
+        projectId: "String",
+        testType: "TestTypeInput",
+        modifiedSince: "String",
+        limit: "Int!",
+        start: "Int",
+        folder: "FolderSearchInput",
+      },
+      args,
+
+      selection: selectorFn(new ExpandedTestResults()),
+    };
+    return this.$_select("getExpandedTests", options as any) as any;
+  }
+
+  /**
+ * Returns the folder for the given projectId with the specified Path along with its child folders.
+===
+The query below returns the root folder and all its child folders.
+<pre>
+{
+    <b>getFolder</b>(projectId: "10000", path: "/") {
+        name
+        path
+        testsCount
+        folders
+    }
+}
+</pre>
+===
+===
+The query below returns the folder with path "/generic" and all its child folders.
+<pre>
+{
+    <b>getFolder</b>(projectId: "10000", path: "/generic") {
+        name
+        path
+        testsCount
+        folders
+    }
+}
+</pre>
+===
+ */
+  getFolder<
+    Args extends VariabledInput<{
+      projectId?: string | null | undefined;
+      testPlanId?: string | null | undefined;
+      path: string;
+    }>,
+    Sel extends Selection<FolderResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId?: string | null | undefined;
+        testPlanId?: string | null | undefined;
+        path: string;
+      }
+    >,
+    selectorFn: (s: FolderResults) => [...Sel]
+  ): $Field<"getFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String",
+        testPlanId: "String",
+        path: "String!",
+      },
+      args,
+
+      selection: selectorFn(new FolderResults()),
+    };
+    return this.$_select("getFolder", options as any) as any;
+  }
+
+  /**
+ * Returns the Issue Link Types
+===
+The Query below returns all Issue Link Types
+<pre>
+{
+    <b>getIssueLinkTypes</b> {
+        issueLinks {
+            id
+            name
+        }
+    }
+}
+</pre>
+===
+ */
+  getIssueLinkTypes<Sel extends Selection<IssueLinkType>>(
+    selectorFn: (s: IssueLinkType) => [...Sel]
+  ): $Field<"getIssueLinkTypes", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new IssueLinkType()),
+    };
+    return this.$_select("getIssueLinkTypes", options as any) as any;
+  }
+
+  /**
+ * Returns a Precondition by issue id.
+===
+The Query below returns a Precondition.
+<pre>
+{
+    <b>getPrecondition</b> {
+        issueId
+        preconditionType {
+            kind
+            name
+        }
+    }
+}
+</pre>
+===
+===
+The Query below returns the Precondition with issue id **12345**
+<pre>
+{
+    <b>getPrecondition</b>(issueId: "12345") {
+        issueId
+        definition
+        jira(fields: ["assignee", "reporter"])
+    }
+}
+</pre>
+===
+ */
+  getPrecondition<
+    Args extends VariabledInput<{
+      issueId?: string | null | undefined;
+    }>,
+    Sel extends Selection<Precondition>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: Precondition) => [...Sel]
+  ): $Field<"getPrecondition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getPrecondition<Sel extends Selection<Precondition>>(
+    selectorFn: (s: Precondition) => [...Sel]
+  ): $Field<"getPrecondition", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getPrecondition(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        issueId: "String",
+      },
+      args,
+
+      selection: selectorFn(new Precondition()),
+    };
+    return this.$_select("getPrecondition", options as any) as any;
+  }
+
+  /**
+ * Returns multiple Preconditions by jql, issueIds, projectId or Precondition Type.
+===
+The Query below returns the first 100 Preconditions.
+<pre>
+{
+    <b>getPreconditions</b>(limit: 100) {
+        total
+        start
+        limit
+        results {
+            issueId
+            preconditionType {
+                name
+                kind
+            }
+            definition
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+===
+===
+The Query below returns 10 Preconditions that match the provided jql
+<pre>
+{
+    <b>getPreconditions</b>(jql: "project = 'PC'", limit: 10) {
+        results {
+            issueId
+            preconditionType {
+                name
+                kind
+            }
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+<b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
+===
+ */
+  getPreconditions<
+    Args extends VariabledInput<{
+      jql?: string | null | undefined;
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      projectId?: string | null | undefined;
+      preconditionType?: TestTypeInput | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+      modifiedSince?: string | null | undefined;
+      folder?: PreconditionFolderSearchInput | null | undefined;
+    }>,
+    Sel extends Selection<PreconditionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        jql?: string | null | undefined;
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        projectId?: string | null | undefined;
+        preconditionType?: TestTypeInput | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+        modifiedSince?: string | null | undefined;
+        folder?: PreconditionFolderSearchInput | null | undefined;
+      }
+    >,
+    selectorFn: (s: PreconditionResults) => [...Sel]
+  ): $Field<"getPreconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        jql: "String",
+        issueIds: "[String]",
+        projectId: "String",
+        preconditionType: "TestTypeInput",
+        limit: "Int!",
+        start: "Int",
+        modifiedSince: "String",
+        folder: "PreconditionFolderSearchInput",
+      },
+      args,
+
+      selection: selectorFn(new PreconditionResults()),
+    };
+    return this.$_select("getPreconditions", options as any) as any;
+  }
+
+  /**
+ * Returns the Project Settings of a Project.
+===
+The Query below returns multiple Status
+<pre>
+{
+    <b>getProjectSettings</b> ( projectIdOrKey: "10000" ) {
+        projectId,
+        testEnvironments,
+        testCoverageSettings {
+            coverableIssueTypeIds
+            epicIssuesRelation
+            issueSubTasksRelation
+            issueLinkTypeId
+            issueLinkTypeDirection
+        }
+        defectIssueTypes
+        testTypeSettings {
+            testTypes {
+                id
+                name
+                kind
+            }
+            defaultTestTypeId
+        }
+    }
+}
+</pre>
+===
+ */
+  getProjectSettings<
+    Args extends VariabledInput<{
+      projectIdOrKey?: string | null | undefined;
+    }>,
+    Sel extends Selection<ProjectSettings>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectIdOrKey?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: ProjectSettings) => [...Sel]
+  ): $Field<"getProjectSettings", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getProjectSettings<Sel extends Selection<ProjectSettings>>(
+    selectorFn: (s: ProjectSettings) => [...Sel]
+  ): $Field<"getProjectSettings", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getProjectSettings(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        projectIdOrKey: "String",
+      },
+      args,
+
+      selection: selectorFn(new ProjectSettings()),
+    };
+    return this.$_select("getProjectSettings", options as any) as any;
+  }
+
+  /**
+ * Returns a Status by Test Run Status name.
+===
+The Query below returns a Status
+<pre>
+{
+    <b>getStatus</b>( name: "PASSED") {
+        name
+        description
+        final
+        color
+    }
+}
+</pre>
+===
+ */
+  getStatus<
+    Args extends VariabledInput<{
+      name?: string | null | undefined;
+    }>,
+    Sel extends Selection<Status>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        name?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: Status) => [...Sel]
+  ): $Field<"getStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getStatus<Sel extends Selection<Status>>(
+    selectorFn: (s: Status) => [...Sel]
+  ): $Field<"getStatus", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getStatus(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        name: "String",
+      },
+      args,
+
+      selection: selectorFn(new Status()),
+    };
+    return this.$_select("getStatus", options as any) as any;
+  }
+
+  /**
+ * Returns all Test Run Status.
+===
+The Query below returns multiple Status
+<pre>
+{
+    <b>getStatuses</b> {
+        name
+        description
+        final
+        color
+    }
+}
+</pre>
+===
+ */
+  getStatuses<Sel extends Selection<Status>>(
+    selectorFn: (s: Status) => [...Sel]
+  ): $Field<"getStatuses", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Status()),
+    };
+    return this.$_select("getStatuses", options as any) as any;
+  }
+
+  /**
+ * Returns a Status by Test Run Step Status name.
+===
+The Query below returns a Status
+<pre>
+{
+    <b>getStepStatus</b>( name: "PASSED") {
+        name
+        description
+        color
+    }
+}
+</pre>
+===
+ */
+  getStepStatus<
+    Args extends VariabledInput<{
+      name?: string | null | undefined;
+    }>,
+    Sel extends Selection<StepStatus>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        name?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"getStepStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getStepStatus<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"getStepStatus", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getStepStatus(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        name: "String",
+      },
+      args,
+
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("getStepStatus", options as any) as any;
+  }
+
+  /**
+ * Returns all Test Run Step Status.
+===
+The Query below returns multiple Status
+<pre>
+{
+    <b>getStepStatuses</b> {
+        name
+        description
+        color
+    }
+}
+</pre>
+===
+ */
+  getStepStatuses<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"getStepStatuses", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("getStepStatuses", options as any) as any;
+  }
+
+  /**
+ * Returns a Test by issueId.
+===
+The query below returns a Test.
+<pre>
+{
+    <b>getTest</b> {
+        issueId
+        gherkin
+        jira(fields: ["assignee", "reporter"])
+    }
+}
+</pre>
+===
+===
+The query below returns the Test with issue id **12345**.
+<pre>
+{
+    <b>getTest</b>(issueId: "12345") {
+        issueId
+        testType {
+            name
+            kind
+        }
+        steps {
+            id
+            data
+            action
+            result
+            attachments {
+                id
+                filename
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getTest<
+    Args extends VariabledInput<{
+      issueId?: string | null | undefined;
+    }>,
+    Sel extends Selection<Test>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<"getTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getTest<Sel extends Selection<Test>>(
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<"getTest", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getTest(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        issueId: "String",
+      },
+      args,
+
+      selection: selectorFn(new Test()),
+    };
+    return this.$_select("getTest", options as any) as any;
+  }
+
+  /**
+ * Returns a Test Execution by issue id.
+===
+The Query below returns a Test Execution.
+<pre>
+{
+    <b>getTestExecution</b> {
+        issueId
+        projectId
+        jira(fields: ["assignee", "reporter"])
+    }
+}
+</pre>
+===
+===
+The Query below returns the Test Execution with issue id **12345**.
+<pre>
+{
+    <b>getTestExecution</b>(issueId: "12345") {
+        issueId
+        tests(limit: 100) {
+            total
+            start
+            limit
+            results {
+                issueId
+                testType {
+                    name
+                }
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getTestExecution<
+    Args extends VariabledInput<{
+      issueId?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestExecution>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestExecution) => [...Sel]
+  ): $Field<"getTestExecution", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getTestExecution<Sel extends Selection<TestExecution>>(
+    selectorFn: (s: TestExecution) => [...Sel]
+  ): $Field<"getTestExecution", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getTestExecution(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        issueId: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestExecution()),
+    };
+    return this.$_select("getTestExecution", options as any) as any;
+  }
+
+  /**
+ * Returns multiple Test Executions by jql, issue ids or project id.
+===
+The Query below returns the first 100 Test Executions
+<pre>
+{
+    <b>getTestExecutions</b>(limit: 100) {
+        total
+        start
+        limit
+        results {
+            issueId
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+===
+===
+The Query below returns 10 Test Executions that match the provided jql.
+<pre>
+{
+    <b>getTestExecutions</b>(jql: "project = 'PC'", limit: 10) {
+        total
+        start
+        limit
+        results {
+            issueId
+            tests(limit: 10) {
+                total
+                start
+                limit
+                results {
+                    issueId
+                    testType {
+                        name
+                    }
+                }
+            }
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+<b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
+===
+ */
+  getTestExecutions<
+    Args extends VariabledInput<{
+      jql?: string | null | undefined;
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      projectId?: string | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+      modifiedSince?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestExecutionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        jql?: string | null | undefined;
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        projectId?: string | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+        modifiedSince?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestExecutionResults) => [...Sel]
+  ): $Field<"getTestExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        jql: "String",
+        issueIds: "[String]",
+        projectId: "String",
+        limit: "Int!",
+        start: "Int",
+        modifiedSince: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestExecutionResults()),
+    };
+    return this.$_select("getTestExecutions", options as any) as any;
+  }
+
+  /**
+ * Returns a Test Plan by issue id.
+===
+The Query below returns a Test Plan.
+<pre>
+{
+    <b>getTestPlan</b> {
+        issueId
+        projectId
+        jira(fields: ["assignee", "reporter"])
+    }
+}
+</pre>
+===
+===
+The Query below returns the Test Plan with issue id **12345**
+<pre>
+{
+    <b>getTestPlan</b>(issueId: "12345") {
+        issueId
+        tests(limit: 100) {
+            results {
+                issueId
+                testType {
+                    name
+                }
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getTestPlan<
+    Args extends VariabledInput<{
+      issueId?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestPlan>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestPlan) => [...Sel]
+  ): $Field<"getTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getTestPlan<Sel extends Selection<TestPlan>>(
+    selectorFn: (s: TestPlan) => [...Sel]
+  ): $Field<"getTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getTestPlan(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        issueId: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestPlan()),
+    };
+    return this.$_select("getTestPlan", options as any) as any;
+  }
+
+  /**
+ * Returns multiple Test Plans by jql, issue ids or project id.
+===
+The Query below returns the first 100 Test Plans
+<pre>
+{
+    <b>getTestPlans</b>(limit: 100) {
+        total
+        start
+        limit
+        results {
+            issueId
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+===
+===
+The Query below returns 10 Test Plans that match the provided jql.
+<pre>
+{
+    <b>getTestPlans</b>(jql: "project = 'PC'", limit: 10) {
+        total
+        start
+        limit
+        results {
+            issueId
+            tests(limit: 10) {
+                total
+                start
+                limit
+                results {
+                    issueId
+                    testType {
+                        name
+                    }
+                }
+            }
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+<b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
+===
+ */
+  getTestPlans<
+    Args extends VariabledInput<{
+      jql?: string | null | undefined;
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      projectId?: string | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+      modifiedSince?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestPlanResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        jql?: string | null | undefined;
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        projectId?: string | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+        modifiedSince?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestPlanResults) => [...Sel]
+  ): $Field<"getTestPlans", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        jql: "String",
+        issueIds: "[String]",
+        projectId: "String",
+        limit: "Int!",
+        start: "Int",
+        modifiedSince: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestPlanResults()),
+    };
+    return this.$_select("getTestPlans", options as any) as any;
+  }
+
+  /**
+ * Returns a Test Run by Test issue id and Test Execution issue id.
+===
+The Query below returns a Test Run
+<pre>
+{
+    <b>getTestRun</b>( testIssueId: "11165", testExecIssueId: "11164") {
+        id
+        status {
+            name
+            color
+            description
+        }
+        gherkin
+        examples {
+            id
+            status {
+                name
+                color
+                description
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getTestRun<
+    Args extends VariabledInput<{
+      testIssueId?: string | null | undefined;
+      testExecIssueId?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestRun>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testIssueId?: string | null | undefined;
+        testExecIssueId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRun) => [...Sel]
+  ): $Field<"getTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getTestRun<Sel extends Selection<TestRun>>(
+    selectorFn: (s: TestRun) => [...Sel]
+  ): $Field<"getTestRun", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getTestRun(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        testIssueId: "String",
+        testExecIssueId: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestRun()),
+    };
+    return this.$_select("getTestRun", options as any) as any;
+  }
+
+  /**
+ * Returns a Test Run by id.
+===
+The Query below returns a Test Run.
+<pre>
+{
+    <b>getTestRunById</b>( id: "5acc7ab0a3fe1b6fcdc3c737") {
+        id
+        status {
+            name
+            color
+            description
+        }
+        steps {
+            action
+            data
+            result
+            attachments {
+                id
+                filename
+            }
+            status {
+                name
+                color
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getTestRunById<
+    Args extends VariabledInput<{
+      id?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestRun>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRun) => [...Sel]
+  ): $Field<"getTestRunById", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getTestRunById<Sel extends Selection<TestRun>>(
+    selectorFn: (s: TestRun) => [...Sel]
+  ): $Field<"getTestRunById", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getTestRunById(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        id: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestRun()),
+    };
+    return this.$_select("getTestRunById", options as any) as any;
+  }
+
+  /**
+ * Returns multiple Test Runs testIssueIds and/or testExecIssueIds.
+===
+The query below returns the first 100 Test Runs that match the given testIssueIds and testExecIssueIds.
+<pre>
+{
+    <b>getTestRuns</b>( testIssueIds: ["10001", "10002"], testExecIssueIds: ["10001", "10002"], limit: 100 ) {
+        total
+        limit
+        start
+        results {
+            id
+            status {
+                name
+                color
+                description
+            }
+            gherkin
+            examples {
+                id
+                status {
+                name
+                color
+                description
+                }
+            }
+            test {
+                issueId
+            }
+            testExecution {
+                issueId
+            }
+        }
+    }
+}
+</pre>
+=== ===
+The query below returns the first 100 Test Runs that match the given ids.
+<pre>
+{
+    <b>getTestRuns</b>( testIssueIds: ["12345"], limit: 100 ) {
+        total
+        limit
+        start
+        results {
+            id
+            status {
+                name
+                color
+                description
+            }
+            steps {
+                action
+                data
+                result
+                attachments {
+                    id
+                    filename
+                }
+                status {
+                    name
+                    color
+                }
+            }
+            test {
+                issueId
+            }
+            testExecution {
+                issueId
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getTestRuns<
+    Args extends VariabledInput<{
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      testExecIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      testRunAssignees?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+      modifiedSince?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestRunResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        testExecIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        testRunAssignees?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+        modifiedSince?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunResults) => [...Sel]
+  ): $Field<"getTestRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testIssueIds: "[String]",
+        testExecIssueIds: "[String]",
+        testRunAssignees: "[String]",
+        limit: "Int!",
+        start: "Int",
+        modifiedSince: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestRunResults()),
+    };
+    return this.$_select("getTestRuns", options as any) as any;
+  }
+
+  /**
+ * Returns multiple Test Runs by id.
+===
+The query below returns the first 100 Test Runs that match the given ids.
+<pre>
+{
+    <b>getTestRunsById</b>( ids: ["5acc7ab0a3fe1b6fcdc3c737"], limit: 10 ) {
+        total
+        limit
+        start
+        results {
+            id
+            status {
+                name
+                color
+                description
+            }
+            gherkin
+            examples {
+                id
+                status {
+                    name
+                    color
+                    description
+                }
+            }
+            test {
+                issueId
+            }
+            testExecution {
+                issueId
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getTestRunsById<
+    Args extends VariabledInput<{
+      ids?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestRunResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        ids?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunResults) => [...Sel]
+  ): $Field<"getTestRunsById", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        ids: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestRunResults()),
+    };
+    return this.$_select("getTestRunsById", options as any) as any;
+  }
+
+  /**
+ * Returns a Test Set by issueId
+===
+The query below returns a test set
+<pre>
+{
+    <b>getTestSet</b> {
+        issueId
+        projectId
+        jira(fields: ["assignee", "reporter"])
+    }
+}
+</pre>
+===
+===
+The query below returns the test set with issue id **12345**
+<pre>
+{
+    <b>getTestSet</b>(issueId: "12345") {
+        issueId
+        tests(limit: 100) {
+            results {
+                issueId
+                testType {
+                    name
+                }
+            }
+        }
+    }
+}
+</pre>
+===
+ */
+  getTestSet<
+    Args extends VariabledInput<{
+      issueId?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestSet>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestSet) => [...Sel]
+  ): $Field<"getTestSet", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  getTestSet<Sel extends Selection<TestSet>>(
+    selectorFn: (s: TestSet) => [...Sel]
+  ): $Field<"getTestSet", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  getTestSet(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        issueId: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestSet()),
+    };
+    return this.$_select("getTestSet", options as any) as any;
+  }
+
+  /**
+ * Returns multiple Test Sets by jql, issueIds or projectId.
+===
+The query below returns the first 100 Test Sets.
+<pre>
+{
+    <b>getTestSets</b>(limit: 100) {
+        total
+        start
+        limit
+        results {
+            issueId
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+===
+===
+The query below returns 10 Test Sets that match the provided jql.
+<pre>
+{
+    <b>getTestSets</b>(jql: "project = 'PC'", limit: 10) {
+        total
+        start
+        limit
+        results {
+            issueId
+            tests(limit: 10) {
+                results {
+                    issueId
+                    testType {
+                        name
+                    }
+                }
+            }
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+<b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
+===
+ */
+  getTestSets<
+    Args extends VariabledInput<{
+      jql?: string | null | undefined;
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      projectId?: string | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+      modifiedSince?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestSetResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        jql?: string | null | undefined;
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        projectId?: string | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+        modifiedSince?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestSetResults) => [...Sel]
+  ): $Field<"getTestSets", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        jql: "String",
+        issueIds: "[String]",
+        projectId: "String",
+        limit: "Int!",
+        start: "Int",
+        modifiedSince: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestSetResults()),
+    };
+    return this.$_select("getTestSets", options as any) as any;
+  }
+
+  /**
+ * Returns multiple tests by jql, issue ids, project id or test type.
+===
+The query below returns the first 100 tests.
+<pre>
+{
+    <b>getTests</b>(limit: 100) {
+        total
+        start
+        limit
+        results {
+            issueId
+            testType {
+                name
+                kind
+            }
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+===
+===
+The query below returns 10 tests that match the provided jql.
+<pre>
+{
+    <b>getTests</b>(jql: "project = 'PC'", limit: 10) {
+        total
+        start
+        limit
+        results {
+            issueId
+            testType {
+                name
+                kind
+            }
+            steps {
+                id
+                data
+                action
+                result
+                attachments {
+                    id
+                    filename
+                }
+                customfields {
+                    id
+                    value
+                }
+            }
+            jira(fields: ["assignee", "reporter"])
+        }
+    }
+}
+</pre>
+<b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
+===
+ */
+  getTests<
+    Args extends VariabledInput<{
+      jql?: string | null | undefined;
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      projectId?: string | null | undefined;
+      testType?: TestTypeInput | null | undefined;
+      modifiedSince?: string | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+      folder?: FolderSearchInput | null | undefined;
+    }>,
+    Sel extends Selection<TestResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        jql?: string | null | undefined;
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        projectId?: string | null | undefined;
+        testType?: TestTypeInput | null | undefined;
+        modifiedSince?: string | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+        folder?: FolderSearchInput | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestResults) => [...Sel]
+  ): $Field<"getTests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        jql: "String",
+        issueIds: "[String]",
+        projectId: "String",
+        testType: "TestTypeInput",
+        modifiedSince: "String",
+        limit: "Int!",
+        start: "Int",
+        folder: "FolderSearchInput",
+      },
+      args,
+
+      selection: selectorFn(new TestResults()),
+    };
+    return this.$_select("getTests", options as any) as any;
+  }
+}
+
+export class FolderResults extends $Base<"FolderResults"> {
+  constructor() {
+    super("FolderResults");
+  }
+
+  /**
+   * Folder children
+   */
+  get folders(): $Field<"folders", JSON | null | undefined> {
+    return this.$_select("folders") as any;
+  }
+
+  /**
+   * Folder issues count
+   */
+  get issuesCount(): $Field<"issuesCount", number | null | undefined> {
+    return this.$_select("issuesCount") as any;
+  }
+
+  /**
+   * Folder name
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Folder path
+   */
+  get path(): $Field<"path", string | null | undefined> {
+    return this.$_select("path") as any;
+  }
+
+  /**
+   * Folder preconditions count
+   */
+  get preconditionsCount(): $Field<"preconditionsCount", number | null | undefined> {
+    return this.$_select("preconditionsCount") as any;
+  }
+
+  /**
+   * Folder tests count
+   */
+  get testsCount(): $Field<"testsCount", number | null | undefined> {
+    return this.$_select("testsCount") as any;
+  }
+}
+
+/**
+ * The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+ */
+export type JSON = string;
+
+/**
+ * Test issue type
+ */
+export class Test extends $Base<"Test"> {
+  constructor() {
+    super("Test");
+  }
+
+  /**
+   * List of Coverable Issues associated with the Test issue
+   */
+  coverableIssues<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<CoverableIssueResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: CoverableIssueResults) => [...Sel]
+  ): $Field<"coverableIssues", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new CoverableIssueResults()),
+    };
+    return this.$_select("coverableIssues", options as any) as any;
+  }
+
+  /**
+   * Test Repository folder of the Test.
+   */
+  folder<Sel extends Selection<Folder>>(
+    selectorFn: (s: Folder) => [...Sel]
+  ): $Field<"folder", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Folder()),
+    };
+    return this.$_select("folder", options as any) as any;
+  }
+
+  /**
+   * Gherkin definition of the Test issue.
+   */
+  get gherkin(): $Field<"gherkin", string | null | undefined> {
+    return this.$_select("gherkin") as any;
+  }
+
+  /**
+   * List of Xray History results for the issue
+   */
+  history<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<XrayHistoryResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: XrayHistoryResults) => [...Sel]
+  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new XrayHistoryResults()),
+    };
+    return this.$_select("history", options as any) as any;
+  }
+
+  /**
+   * Issue id of the Test issue.
+   */
+  get issueId(): $Field<"issueId", string | null | undefined> {
+    return this.$_select("issueId") as any;
+  }
+
+  /**
+   * Extra Jira information of the Test issue.
+   */
+  jira<
+    Args extends VariabledInput<{
+      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >
+  ): $Field<"jira", JSON, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        fields: "[String]",
+      },
+      args,
+    };
+    return this.$_select("jira", options as any) as any;
+  }
+
+  /**
+   * Date when the test was last modified.
+   */
+  get lastModified(): $Field<"lastModified", string | null | undefined> {
+    return this.$_select("lastModified") as any;
+  }
+
+  /**
+   * List of Precondition associated with the Test issue.
+   */
+  preconditions<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<PreconditionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: PreconditionResults) => [...Sel]
+  ): $Field<"preconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new PreconditionResults()),
+    };
+    return this.$_select("preconditions", options as any) as any;
+  }
+
+  /**
+   * Project id of the Test issue.
+   */
+  get projectId(): $Field<"projectId", string | null | undefined> {
+    return this.$_select("projectId") as any;
+  }
+
+  /**
+ * Gherkin type of the Test issue.
+Possible values: 'scenario' or 'scenario_outline'.
+ */
+  get scenarioType(): $Field<"scenarioType", string | null | undefined> {
+    return this.$_select("scenarioType") as any;
+  }
+
+  /**
+   * Status of the Test. This status can be calculated based on latest status, version or Test Plan.
+   */
+  status<
+    Args extends VariabledInput<{
+      environment?: string | null | undefined;
+      isFinal?: boolean | null | undefined;
+      version?: string | null | undefined;
+      testPlan?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestStatusType>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        environment?: string | null | undefined;
+        isFinal?: boolean | null | undefined;
+        version?: string | null | undefined;
+        testPlan?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestStatusType) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  status<Sel extends Selection<TestStatusType>>(
+    selectorFn: (s: TestStatusType) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  status(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        environment: "String",
+        isFinal: "Boolean",
+        version: "String",
+        testPlan: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestStatusType()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+
+  /**
+   * Step definition of the Test issue.
+   */
+  steps<Sel extends Selection<Step>>(
+    selectorFn: (s: Step) => [...Sel]
+  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Step()),
+    };
+    return this.$_select("steps", options as any) as any;
+  }
+
+  /**
+   * List of Test Executions associated with the Test issue.
+   */
+  testExecutions<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestExecutionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestExecutionResults) => [...Sel]
+  ): $Field<"testExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestExecutionResults()),
+    };
+    return this.$_select("testExecutions", options as any) as any;
+  }
+
+  /**
+   * List of Test Plans associated with the Test issue.
+   */
+  testPlans<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestPlanResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestPlanResults) => [...Sel]
+  ): $Field<"testPlans", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestPlanResults()),
+    };
+    return this.$_select("testPlans", options as any) as any;
+  }
+
+  /**
+   * List of Test Runs for the Test issue
+   */
+  testRuns<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestRunResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunResults) => [...Sel]
+  ): $Field<"testRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestRunResults()),
+    };
+    return this.$_select("testRuns", options as any) as any;
+  }
+
+  /**
+   * List of Test Sets associated with the Test issue.
+   */
+  testSets<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestSetResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestSetResults) => [...Sel]
+  ): $Field<"testSets", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestSetResults()),
+    };
+    return this.$_select("testSets", options as any) as any;
+  }
+
+  /**
+   * Test type of the Test issue.
+   */
+  testType<Sel extends Selection<TestType>>(
+    selectorFn: (s: TestType) => [...Sel]
+  ): $Field<"testType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestType()),
+    };
+    return this.$_select("testType", options as any) as any;
+  }
+
+  /**
+   * List of Test versions of the Test
+   */
+  testVersions<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+      archived?: boolean | null | undefined;
+      testTypeId?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestVersionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+        archived?: boolean | null | undefined;
+        testTypeId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestVersionResults) => [...Sel]
+  ): $Field<"testVersions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+        archived: "Boolean",
+        testTypeId: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestVersionResults()),
+    };
+    return this.$_select("testVersions", options as any) as any;
+  }
+
+  /**
+   * Unstructured definition of the Test issue.
+   */
+  get unstructured(): $Field<"unstructured", string | null | undefined> {
+    return this.$_select("unstructured") as any;
+  }
+}
+
+/**
+ * Test Type type
+ */
+export class TestType extends $Base<"TestType"> {
+  constructor() {
+    super("TestType");
+  }
+
+  /**
+   * Id of the Test Type.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+ * Kind of the Test Type.
+Possible values are "Gherkin", "Steps" or "Unstructured".
+ */
+  get kind(): $Field<"kind", string | null | undefined> {
+    return this.$_select("kind") as any;
+  }
+
+  /**
+   * Name of the Test Type.
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+}
+
+/**
+ * Test Step type
+ */
+export class Step extends $Base<"Step"> {
+  constructor() {
+    super("Step");
+  }
+
+  /**
+   * Action of the Step.
+   */
+  get action(): $Field<"action", string | null | undefined> {
+    return this.$_select("action") as any;
+  }
+
+  /**
+   * Attachments of the Step.
+   */
+  attachments<Sel extends Selection<Attachment>>(
+    selectorFn: (s: Attachment) => [...Sel]
+  ): $Field<"attachments", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Attachment()),
+    };
+    return this.$_select("attachments", options as any) as any;
+  }
+
+  /**
+   * The issue id of the test being called in the step.
+   */
+  get callTestIssueId(): $Field<"callTestIssueId", string | null | undefined> {
+    return this.$_select("callTestIssueId") as any;
+  }
+
+  /**
+   * Custom Fields of the Step.
+   */
+  customFields<Sel extends Selection<CustomStepField>>(
+    selectorFn: (s: CustomStepField) => [...Sel]
+  ): $Field<"customFields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new CustomStepField()),
+    };
+    return this.$_select("customFields", options as any) as any;
+  }
+
+  /**
+   * Data of the Step.
+   */
+  get data(): $Field<"data", string | null | undefined> {
+    return this.$_select("data") as any;
+  }
+
+  /**
+   * Id of the Step.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Result of the Step.
+   */
+  get result(): $Field<"result", string | null | undefined> {
+    return this.$_select("result") as any;
+  }
+}
+
+/**
+ * Step Attachment type
+ */
+export class Attachment extends $Base<"Attachment"> {
+  constructor() {
+    super("Attachment");
+  }
+
+  /**
+   * Download link of the attachment.
+   */
+  get downloadLink(): $Field<"downloadLink", string | null | undefined> {
+    return this.$_select("downloadLink") as any;
+  }
+
+  /**
    * Filename of the attachment.
    */
-  filename: InputMaybe<Scalars["String"]["input"]>;
-  /** Content Type of the attachment. */
-  mimeType: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Attachment input */
-export type AttachmentInput = {
-  /** Data of the attachment. This data should be in base64. */
-  data: InputMaybe<Scalars["String"]["input"]>;
-  /** Filename of the attachment. */
-  filename: InputMaybe<Scalars["String"]["input"]>;
-  /** Content Type of the attachment. */
-  mimeType: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Attachment Operations Input */
-export type AttachmentOperationsInput = {
-  /** Attachments to add to the Step. */
-  add: InputMaybe<Array<InputMaybe<AttachmentInput>>>;
-  /** Filenames of the attachments to remove from the Step. */
-  removeFilenames: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  /** Ids of the attachments to remove from the Step. */
-  removeIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Xray History Changes type */
-export type Changes = {
-  __typename?: "Changes";
-  /** Change details. */
-  change: Maybe<Scalars["String"]["output"]>;
-  /** Field the change refers to. */
-  field: Maybe<Scalars["String"]["output"]>;
-};
-
-export type CoverableIssue = {
-  __typename?: "CoverableIssue";
-  /** Issue id of the Coverable Issue Issue. */
-  issueId: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Extra Jira information of the Coverable issue.
-   *
-   * Arguments
-   * fields: List of the fields to be displayed.
-   */
-  jira: Scalars["JSON"]["output"];
-  /**
-   * Test Coverage Status of the Coverable Issue. This status can be calculated based on latest status, version or Test Plan.
-   *
-   * Arguments
-   * environment: the environment for which to calculate the for status.
-   * isFinal: whether the final statuses has precedence over non-final.
-   * version: the version name for which to calculate the status for.
-   * testPlan: the Test Plan issue id for which to calculate the status for.
-   */
-  status: Maybe<CoverageStatus>;
-  /**
-   * List of Tests associated with the Coverable Issue issue.
-   *
-   * Arguments
-   * issueIds: the issue ids of the Tests.
-   * limit: the maximum amount of tests to be returned. The maximum is 100.
-   * start: the index of the first item to return in the page of results (page offset).
-   */
-  tests: Maybe<TestResults>;
-};
-
-export type CoverableIssueJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-export type CoverableIssueStatusArgs = {
-  environment: InputMaybe<Scalars["String"]["input"]>;
-  isFinal: InputMaybe<Scalars["Boolean"]["input"]>;
-  testPlan: InputMaybe<Scalars["String"]["input"]>;
-  version: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type CoverableIssueTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Coverable Issue Results type */
-export type CoverableIssueResults = {
-  __typename?: "CoverableIssueResults";
-  /** The maximum amount of Coverable Issues to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Test issue results. */
-  results: Maybe<Array<Maybe<CoverableIssue>>>;
-  /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of issues. */
-  total: Maybe<Scalars["Int"]["output"]>;
-  /** Warnings generated if you have a invalid Coverable Issue */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-export type CoverageStatus = {
-  __typename?: "CoverageStatus";
-  /** Color of the Coverage Status */
-  color: Maybe<Scalars["String"]["output"]>;
-  /** Description of the Coverage Status */
-  description: Maybe<Scalars["String"]["output"]>;
-  /** Name of the Coverage Status */
-  name: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Create Precondition Response type */
-export type CreatePreconditionResult = {
-  __typename?: "CreatePreconditionResult";
-  /** Precondition that was created. */
-  precondition: Maybe<Precondition>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Create Step input */
-export type CreateStepInput = {
-  /** Action of the Step. */
-  action: InputMaybe<Scalars["String"]["input"]>;
-  /** Attachments of the Step. */
-  attachments: InputMaybe<Array<InputMaybe<AttachmentInput>>>;
-  /** The issue id of the test called by the step. */
-  callTestIssueId: InputMaybe<Scalars["String"]["input"]>;
-  /** Custom Fields of the Step */
-  customFields: InputMaybe<Array<InputMaybe<CustomStepFieldInput>>>;
-  /** Data of the Step. */
-  data: InputMaybe<Scalars["String"]["input"]>;
-  /** Result of the Step. */
-  result: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Create Test Execution Result type */
-export type CreateTestExecutionResult = {
-  __typename?: "CreateTestExecutionResult";
-  /** Test Environments that were created. */
-  createdTestEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Test Execution that was created. */
-  testExecution: Maybe<TestExecution>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Create Test Plan Result type */
-export type CreateTestPlanResult = {
-  __typename?: "CreateTestPlanResult";
-  /** Test Plan that was created. */
-  testPlan: Maybe<TestPlan>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Create Test Result type */
-export type CreateTestResult = {
-  __typename?: "CreateTestResult";
-  /** Test that was created. */
-  test: Maybe<Test>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Create Test Set Result type */
-export type CreateTestSetResult = {
-  __typename?: "CreateTestSetResult";
-  /** Test Set that was created. */
-  testSet: Maybe<TestSet>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Custom Field Input */
-export type CustomFieldInput = {
-  /** Id of the custom field. */
-  id: InputMaybe<Scalars["String"]["input"]>;
-  /** Value of the custom field. */
-  value: InputMaybe<Scalars["JSON"]["input"]>;
-};
-
-/** Step CustomField type */
-export type CustomStepField = {
-  __typename?: "CustomStepField";
-  /** Id of the Custom Field. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Name of the Custom Field. */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Value of the Custom Field. */
-  value: Maybe<Scalars["JSON"]["output"]>;
-};
-
-/** Step Custom Field input */
-export type CustomStepFieldInput = {
-  /** Id of the Custom Field. */
-  id: InputMaybe<Scalars["String"]["input"]>;
-  /** value of the Custom Field. */
-  value: InputMaybe<Scalars["JSON"]["input"]>;
-};
-
-/** Evidence Type */
-export type Evidence = {
-  __typename?: "Evidence";
-  /** Evidence creation timestamp. */
-  createdOn: Maybe<Scalars["String"]["output"]>;
-  /** Download link of the Evidence. */
-  downloadLink: Maybe<Scalars["String"]["output"]>;
-  /** Filename of the Evidence. */
-  filename: Maybe<Scalars["String"]["output"]>;
-  /** Id of the Evidence. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** File size in bytes. */
-  size: Maybe<Scalars["Int"]["output"]>;
-  /** If file is stored in Jira */
-  storedInJira: Maybe<Scalars["Boolean"]["output"]>;
-};
-
-/** Example Type */
-export type Example = {
-  __typename?: "Example";
-  /** Duration of the Example. */
-  duration: Maybe<Scalars["Float"]["output"]>;
-  /** Id of the Example. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Status of the Example. */
-  status: Maybe<StepStatus>;
-};
-
-/** Expanded test step type */
-export type ExpandedStep = {
-  __typename?: "ExpandedStep";
-  /** Action of the Step. */
-  action: Maybe<Scalars["String"]["output"]>;
-  /** Attachments of the Step. */
-  attachments: Maybe<Array<Maybe<Attachment>>>;
-  /** The issue id of the called test with the step */
-  calledTestIssueId: Maybe<Scalars["String"]["output"]>;
-  /** Custom Fields of the Step. */
-  customFields: Maybe<Array<Maybe<CustomStepField>>>;
-  /** Data of the Step. */
-  data: Maybe<Scalars["String"]["output"]>;
-  /** Id of the Step. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** The issue id of the test calling the step */
-  parentTestIssueId: Maybe<Scalars["String"]["output"]>;
-  /** Result of the Step. */
-  result: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTest = {
-  __typename?: "ExpandedTest";
-  /** List of Coverable Issues associated with the Test issue */
-  coverableIssues: Maybe<CoverableIssueResults>;
-  /** Test Repository folder of the Test. */
-  folder: Maybe<Folder>;
-  /** Gherkin definition of the Test issue. */
-  gherkin: Maybe<Scalars["String"]["output"]>;
-  /** List of Xray History results for the issue */
-  history: Maybe<XrayHistoryResults>;
-  /** Issue id of the Test issue. */
-  issueId: Maybe<Scalars["String"]["output"]>;
-  /** Extra Jira information of the Test issue. */
-  jira: Scalars["JSON"]["output"];
-  /** Date when the test was last modified. */
-  lastModified: Maybe<Scalars["String"]["output"]>;
-  /** List of Precondition associated with the Test issue. */
-  preconditions: Maybe<PreconditionResults>;
-  /** Project id of the Test issue. */
-  projectId: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Gherkin type of the Test issue.
-   * Possible values: 'scenario' or 'scenario_outline'.
-   */
-  scenarioType: Maybe<Scalars["String"]["output"]>;
-  /** Status of the Test. This status can be calculated based on latest status, version or Test Plan. */
-  status: Maybe<TestStatusType>;
-  /** Expanded step definition of the test. */
-  steps: Maybe<Array<Maybe<ExpandedStep>>>;
-  /** List of Test Executions associated with the Test issue. */
-  testExecutions: Maybe<TestExecutionResults>;
-  /** List of Test Plans associated with the Test issue. */
-  testPlans: Maybe<TestPlanResults>;
-  /** List of Test Runs for the Test issue */
-  testRuns: Maybe<TestRunResults>;
-  /** List of Test Sets associated with the Test issue. */
-  testSets: Maybe<TestSetResults>;
-  /** Test type of the Test issue. */
-  testType: Maybe<TestType>;
-  /** List of Test versions of the Test */
-  testVersions: Maybe<TestVersionResults>;
-  /** Unstructured definition of the Test issue. */
-  unstructured: Maybe<Scalars["String"]["output"]>;
-  /** Version id of the Test issue. */
-  versionId: Maybe<Scalars["Int"]["output"]>;
-  /** Warnings generated while expanding the test steps. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestCoverableIssuesArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestHistoryArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestPreconditionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestStatusArgs = {
-  environment: InputMaybe<Scalars["String"]["input"]>;
-  isFinal?: InputMaybe<Scalars["Boolean"]["input"]>;
-  testPlan: InputMaybe<Scalars["String"]["input"]>;
-  version: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestTestPlansArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestTestRunsArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestTestSetsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Expaded test issue type */
-export type ExpandedTestTestVersionsArgs = {
-  archived?: InputMaybe<Scalars["Boolean"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-  testTypeId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Expanded tests results type */
-export type ExpandedTestResults = {
-  __typename?: "ExpandedTestResults";
-  /** The maximum amount of Tests to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Expanded test issue results. */
-  results: Maybe<Array<Maybe<ExpandedTest>>>;
-  /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of issues. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Test Repository folder type. */
-export type Folder = {
-  __typename?: "Folder";
-  /** Folder name */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Folder path */
-  path: Maybe<Scalars["String"]["output"]>;
-};
-
-export type FolderResults = {
-  __typename?: "FolderResults";
-  /** Folder children */
-  folders: Maybe<Scalars["JSON"]["output"]>;
-  /** Folder issues count */
-  issuesCount: Maybe<Scalars["Int"]["output"]>;
-  /** Folder name */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Folder path */
-  path: Maybe<Scalars["String"]["output"]>;
-  /** Folder preconditions count */
-  preconditionsCount: Maybe<Scalars["Int"]["output"]>;
-  /** Folder tests count */
-  testsCount: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Folder Search input */
-export type FolderSearchInput = {
-  /** Whether descendant folders should be included in the search. */
-  includeDescendants: InputMaybe<Scalars["Boolean"]["input"]>;
-  /** Path of the Folder. */
-  path: Scalars["String"]["input"];
-  /** Test Plan id of the Folder. */
-  testPlanId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Issue Link Type type */
-export type IssueLinkType = {
-  __typename?: "IssueLinkType";
-  /** Id of Issue Link Type */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Name of Issue Link Type */
-  name: Maybe<Scalars["String"]["output"]>;
-};
-
-export type Mutation = {
-  __typename?: "Mutation";
-  /**
-   * Mutation used to add defects to a Test Run.
-   * ===
-   * The mutation below adds 2 defects to the Test Run.
-   * <pre>
-   * mutation {
-   *     <b>addDefectsToTestRun</b>( id: "5acc7ab0a3fe1b6fcdc3c737", issues: ["XRAY-1234", "12345"]) {
-   *         addedDefects
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addDefectsToTestRun: Maybe<AddDefectsResult>;
-  /**
-   * Mutation used to add defects to a Test Run Step.
-   * ===
-   * The mutation below adds 2 defects to the Test Run Step.
-   * <pre>
-   * mutation {
-   *     <b>addDefectsToTestRunStep</b>(
-   *         testRunId: "5e8489c05f200f3cd45bbaf0",
-   *         stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
-   *         issues: ["XRAY-1234", "12345"]
-   *     ) {
-   *         addedDefects
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addDefectsToTestRunStep: Maybe<AddDefectsResult>;
-  /**
-   * Mutation used to add evidence to a Test Run.
-   * ===
-   * The mutation below adds an evidence to the Test Run.
-   * <pre>
-   * mutation {
-   *     <b>addEvidenceToTestRun</b>(
-   *         id: "5acc7ab0a3fe1b6fcdc3c737",
-   *         evidence: [
-   *             {
-   *                 filename: "evidence.txt"
-   *                 mimeType: "text/plain"
-   *                 data: "SGVsbG8gV29ybGQ="
-   *             }
-   *         ]
-   *     ) {
-   *         addedEvidence
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addEvidenceToTestRun: Maybe<AddEvidenceResult>;
-  /**
-   * Mutation used to add evidence to a Test Run Step.
-   * ===
-   * The mutation below adds an evidence to the Test Run Step.
-   * <pre>
-   * mutation {
-   *     <b>addEvidenceToTestRunStep</b>(
-   *         testRunId: "5e8489c05f200f3cd45bbaf0",
-   *         stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
-   *         evidence: [
-   *             {
-   *                 filename: "evidence.txt"
-   *                 mimeType: "text/plain"
-   *                 data: "SGVsbG8gV29ybGQ="
-   *             }
-   *         ]
-   *     ) {
-   *         addedEvidence
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addEvidenceToTestRunStep: Maybe<AddEvidenceResult>;
-  /**
-   * Mutation used to add issues to a Folder.
-   * ===
-   * The mutation below will add issues to a Folder.
-   * <pre>
-   * mutation {
-   *     <b>addIssuesToFolder</b>(
-   *         projectId: "10000",
-   *         path: "/generic",
-   *         issueIds: ["10002","12324","12345"]
-   *     ) {
-   *         folder {
-   *             name
-   *             path
-   *             issuesCount
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addIssuesToFolder: Maybe<ActionFolderResult>;
-  /**
-   * Mutation used to associate Preconditions to the Test.
-   * <b>Note</b>: The preconditions to be associated with the Test must be of the same Test Type of the Test.
-   * ===
-   * The mutation below will associate the precondition with issue id "54321" to the test "12345".
-   * <pre>
-   * mutation {
-   *     <b>addPreconditionsToTest</b>(
-   *         issueId: "12345",
-   *         preconditionIssueIds: ["54321"]
-   *     ) {
-   *         addedPreconditions
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will associate the precondition with issue id "54321" to the version 3 of the Test "12345".
-   * <pre>
-   * mutation {
-   *     <b>addPreconditionsToTest</b>(
-   *         issueId: "12345",
-   *         versionId: 3,
-   *         preconditionIssueIds: ["54321"]
-   *     ) {
-   *         addedPreconditions
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addPreconditionsToTest: Maybe<AddPreconditionsResult>;
-  /**
-   * Mutation used to add Test Environments to the Test Execution.
-   * ===
-   * The mutation below will add the test Environments "android" and "ios" to the Test execution "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestEnvironmentsToTestExecution</b>(
-   *         issueId: "12345",
-   *         testEnvironments: ["android", "ios"]
-   *     ) {
-   *         associatedTestEnvironments
-   *         createdTestEnvironments
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestEnvironmentsToTestExecution: Maybe<AddTestEnvironmentsResult>;
-  /**
-   * Mutation used to associate Test Executions to the Test.
-   * ===
-   * The mutation below will associate the Test Execution with issue id "54321" to the Test "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestExecutionsToTest</b>(
-   *         issueId: "12345",
-   *         testExecIssueIds: ["54321"]
-   *     ) {
-   *         addedTestExecutions
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will associate the Test Execution with issue id "54321" to version 3 of the Test "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestExecutionsToTest</b>(
-   *         issueId: "12345",
-   *         versionId: 3,
-   *         testExecIssueIds: ["54321"]
-   *     ) {
-   *         addedTestExecutions
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestExecutionsToTest: Maybe<AddTestExecutionsResult>;
-  /**
-   * Mutation used to associate Test Executions to the Test Plan.
-   * ===
-   * The mutation below will associate the Test Execution with issue id "54321" to the test Plan "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestExecutionsToTestPlan</b>(
-   *         issueId: "12345",
-   *         testExecIssueIds: ["54321"]
-   *     ) {
-   *         addedTestExecutions
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestExecutionsToTestPlan: Maybe<AddTestExecutionsResult>;
-  /**
-   * Mutation used to associate Test Plans to the Test.
-   * ===
-   * The mutation below will associate the Test Plan with issue id "54321" to the test "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestPlansToTest</b>(
-   *         issueId: "12345",
-   *         testPlanIssueIds: ["54321"]
-   *     ) {
-   *         addedTestPlans
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestPlansToTest: Maybe<AddTestPlansResult>;
-  /**
-   * Mutation used to associate Test Sets to the Test.
-   * ===
-   * The mutation below will associate the test set with issue id "54321" to the test "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestSetsToTest</b>(
-   *         issueId: "12345",
-   *         testSetIssueIds: ["54321"]
-   *     ) {
-   *         addedTestSets
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestSetsToTest: Maybe<AddTestSetsResult>;
-  /**
-   * Mutation used to add a Step to a Test.
-   * ===
-   * The mutation below will add a new Step to the test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestStep</b>(
-   *         issueId: "12345",
-   *         step: {
-   *             action: "Use Xray Cloud Rest Api to add a new Step to the Test",
-   *             result: "Step was added to the Test",
-   *             customFields: [{id:"5ddc0e585da9670010e608dc", value:"Tokyo"}]
-   *         }
-   *     ) {
-   *         id
-   *         action
-   *         data
-   *         result
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will add a new Step to the version 3 of the Test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestStep</b>(
-   *         issueId: "12345",
-   *         versionId: 3,
-   *         step: {
-   *             action: "Use Xray Cloud Rest Api to add a new Step to the Test",
-   *             result: "Step was added to the Test",
-   *             customFields: [{id:"5ddc0e585da9670010e608dc", value:"Tokyo"}]
-   *         }
-   *     ) {
-   *         id
-   *         action
-   *         data
-   *         result
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestStep: Maybe<Step>;
-  /**
-   * Mutation used to add tests to a Folder.
-   * ===
-   * The mutation below will add tests to a Folder.
-   * <pre>
-   * mutation {
-   *     <b>addTestsToFolder</b>(
-   *         projectId: "10000",
-   *         path: "/generic",
-   *         testIssueIds: ["10002","12324","12345"]
-   *     ) {
-   *         folder {
-   *             name
-   *             path
-   *             testsCount
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestsToFolder: Maybe<ActionFolderResult>;
-  /**
-   * Mutation used to associate Tests to the Precondition. One of <b>testIssueIds</b> or <b>tests</b> is required.
-   * <b>Note</b>: The Tests to be associated with the Precondition must be of the same Test Type of the Precondition.
-   * ===
-   * The mutation below will associate the Test with issue id "54321" to the Precondition "12345"
-   * <pre>
-   * mutation {
-   *     <b>addTestsToPrecondition</b>(
-   *         issueId: "12345",
-   *         testIssueIds: ["54321"]
-   *     ) {
-   *         addedTests
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will associate the version 2 of Test "54321" and the version 3 of Test "67890" to the Precondition "12345"
-   * <pre>
-   * mutation {
-   *     <b>addTestsToPrecondition</b>(
-   *         issueId: "12345",
-   *         tests: [{ issueId: "54321", versionId: 2 }, { issueId: "67890", versionId: 3 }]
-   *     ) {
-   *         addedTests
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestsToPrecondition: Maybe<AddTestsResult>;
-  /**
-   * Mutation used to associate Tests to the Test Execution. One of <b>testIssueIds</b> or <b>tests</b> is required.
-   * ===
-   * The mutation below will associate the test with issue id "54321" to the Test execution "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestsToTestExecution</b>(
-   *         issueId: "12345",
-   *         testIssueIds: ["54321"]
-   *     ) {
-   *         addedTests
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestsToTestExecution: Maybe<AddTestsResult>;
-  /**
-   * Mutation used to associate Tests to the Test Plan.
-   * ===
-   * The mutation below will associate the test with issue id "54321" to the Test Plan "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestsToTestPlan</b>(
-   *         issueId: "12345",
-   *         testIssueIds: ["54321"]
-   *     ) {
-   *         addedTests
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestsToTestPlan: Maybe<AddTestsResult>;
-  /**
-   * Mutation used to associate Tests to the Test Set.
-   * ===
-   * The mutation below will associate the test with issue id "54321" to the Test Set "12345".
-   * <pre>
-   * mutation {
-   *     <b>addTestsToTestSet</b>(
-   *         issueId: "12345",
-   *         testIssueIds: ["54321"]
-   *     ) {
-   *         addedTests
-   *         warning
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  addTestsToTestSet: Maybe<AddTestsResult>;
-  /**
-   * Mutation used to create a new Folder.
-   * ===
-   * The mutation below will create a new Folder.
-   * <pre>
-   * mutation {
-   *     <b>createFolder</b>(
-   *         projectId: "10000",
-   *         path: "/generic"
-   *     ) {
-   *         folder {
-   *             name
-   *             path
-   *             testsCount
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will create a new Folder and add tests to it.
-   * <pre>
-   * mutation {
-   *     <b>createFolder</b>(
-   *         projectId: "10000",
-   *         path: "/generic",
-   *         testIssueIds: ["10002","12324","12345"]
-   *     ) {
-   *         folder {
-   *             name
-   *             path
-   *             testsCount
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will create a new Folder and add tests and/or preconditions to it.
-   * <pre>
-   * mutation {
-   *     <b>createFolder</b>(
-   *         projectId: "10000",
-   *         path: "/generic",
-   *         issueIds: ["10002","12324","12345"]
-   *     ) {
-   *         folder {
-   *             name
-   *             path
-   *             testsCount
-   *             issuesCount
-   *             preconditionsCount
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * <b>Note</b>: Use createFolder with <b>testIssueIds</b> (in which all ids must be from Tests)
-   * OR with <b>issueIds</b> (which can be eiter Test ids and/or Precondition ids), but not with both.
-   * ===
-   */
-  createFolder: Maybe<ActionFolderResult>;
-  /**
-   * Mutation used to create a new Precondition.
-   * ===
-   * The mutation below will create a new Precondition.
-   * <pre>
-   * mutation {
-   *     <b>createPrecondition</b>(
-   *         preconditionType: { name: "Generic" }
-   *         definition: "Turn on calculator."
-   *         jira: {
-   *             fields: { summary:"Turn on calculator", project: {key: "CALC"} }
-   *         }
-   *     ) {
-   *         precondition {
-   *             issueId
-   *             preconditionType {
-   *                 name
-   *             }
-   *             definition
-   *             jira(fields: ["key"])
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  createPrecondition: Maybe<CreatePreconditionResult>;
-  /**
-   * Mutation used to create a new Test.
-   * ===
-   * The mutation below will create a new Test.
-   * <pre>
-   * mutation {
-   *     <b>createTest</b>(
-   *         testType: { name: "Generic" },
-   *         unstructured: "Perform exploratory tests on calculator.",
-   *         jira: {
-   *             fields: { summary:"Exploratory Test", project: {key: "CALC"} }
-   *         }
-   *     ) {
-   *         test {
-   *             issueId
-   *             testType {
-   *                 name
-   *             }
-   *             unstructured
-   *             jira(fields: ["key"])
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * === ===
-   * The mutation below will create a new Test.
-   * <pre>
-   * mutation {
-   *     <b>createTest</b>(
-   *         testType: { name: "Manual" },
-   *         steps: [
-   *             {
-   *                 action: "Create first example step",
-   *                 result: "First step was created"
-   *             },
-   *             {
-   *                 action: "Create second example step with data",
-   *                 data: "Data for the step",
-   *                 result: "Second step was created with data"
-   *             }
-   *         ],
-   *         jira: {
-   *             fields: { summary:"Exploratory Test", project: {key: "CALC"} }
-   *         }
-   *     ) {
-   *         test {
-   *             issueId
-   *             testType {
-   *                 name
-   *             }
-   *             steps {
-   *                 action
-   *                 data
-   *                 result
-   *             }
-   *             jira(fields: ["key"])
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  createTest: Maybe<CreateTestResult>;
-  /**
-   * Mutation used to create a new Test Execution.
-   * ===
-   * The mutation below will create a new Test Execution.
-   * <pre>
-   * mutation {
-   *     <b>createTestExecution</b>(
-   *         testIssueIds: ["54321"]
-   *         testEnvironments: ["android"]
-   *         jira: {
-   *             fields: { summary: "Test Execution for CALC-123", project: {key: "CALC"} }
-   *         }
-   *     ) {
-   *         testExecution {
-   *             issueId
-   *             jira(fields: ["key"])
-   *         }
-   *         warnings
-   *         createdTestEnvironments
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  createTestExecution: Maybe<CreateTestExecutionResult>;
-  /**
-   * Mutation used to create a new Test Plan.
-   * ===
-   * The mutation below will create a new Test Plan.
-   * <pre>
-   * mutation {
-   *     <b>createTestPlan</b>(
-   *         testIssueIds: ["54321"]
-   *         jira: {
-   *             fields: { summary: "Test Plan for v1.0", project: {key: "CALC"} }
-   *         }
-   *     ) {
-   *         testPlan {
-   *             issueId
-   *             jira(fields: ["key"])
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  createTestPlan: Maybe<CreateTestPlanResult>;
-  /**
-   * Mutation used to create a new Test Set.
-   * ===
-   * The mutation below will create a new Test Set.
-   * <pre>
-   * mutation {
-   *     <b>createTestSet</b>(
-   *         testIssueIds: ["54321"]
-   *         jira: {
-   *             fields: { summary: "Test Set for Generic Tests", project: {key: "CALC"} }
-   *         }
-   *     ) {
-   *         testSet {
-   *             issueId
-   *             jira(fields: ["key"])
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  createTestSet: Maybe<CreateTestSetResult>;
-  /**
-   * Mutation used to delete a Folder.
-   * ===
-   * The mutation below will delete a Folder.
-   * <pre>
-   * mutation {
-   *     <b>deleteFolder</b>(
-   *         projectId: "10000",
-   *         path: "/generic"
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  deleteFolder: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to delete a Precondition
-   * ===
-   * The mutation below will delete the Precondition with issue id "12345"
-   * <pre>
-   * mutation {
-   *     <b>deletePrecondition</b>(issueId: "12345")
-   * }
-   * </pre>
-   * ===
-   */
-  deletePrecondition: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to delete a Test.
-   * ===
-   * The mutation below will delete the Test with issue id "12345".
-   * <pre>
-   * mutation {
-   *     <b>deleteTest</b>(issueId: "12345")
-   * }
-   * </pre>
-   * ===
-   */
-  deleteTest: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to delete a Test Execution.
-   * ===
-   * The mutation below will delete the Test Execution with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>deleteTestExecution</b>(issueId: "12345")
-   * }
-   * </pre>
-   * ===
-   */
-  deleteTestExecution: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to delete a Test Plan.
-   * ===
-   * The mutation below will delete the Test Plan with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>deleteTestPlan</b>(issueId: "12345")
-   * }
-   * </pre>
-   * ===
-   */
-  deleteTestPlan: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to delete a Test Set
-   * ===
-   * The mutation below will delete the Test Set with issue id "12345".
-   * <pre>
-   * mutation {
-   *     <b>deleteTestSet</b>(issueId: "12345")
-   * }
-   * </pre>
-   * ===
-   */
-  deleteTestSet: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to move a Folder.
-   * ===
-   * The mutation below will move a Folder.
-   * <pre>
-   * mutation {
-   *     <b>moveFolder</b>(
-   *         projectId: "10000",
-   *         path: "/generic",
-   *         destinationPath: "/testType"
-   *     ) {
-   *         folder {
-   *             name
-   *             path
-   *             testsCount
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  moveFolder: Maybe<ActionFolderResult>;
-  /**
-   * Mutation used to remove all Steps from a Test.
-   * ===
-   * The mutation below removes all the Steps from test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeAllTestSteps</b>(
-   *         issueId: "12345",
-   *     )
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below removes all the Steps from the version 3 of the Test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeAllTestSteps</b>(
-   *         issueId: "12345",
-   *         versionId: 3
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  removeAllTestSteps: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove defects from a Test Run.
-   * ===
-   * The mutation below removes 2 defects from the Test Run.
-   * <pre>
-   * mutation {
-   *     <b>removeDefectsFromTestRun</b>( id: "5acc7ab0a3fe1b6fcdc3c737", issues: ["XRAY-1234", "12345"])
-   * }
-   * </pre>
-   * ===
-   */
-  removeDefectsFromTestRun: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove defects from a Test Run.
-   * ===
-   * The mutation below removes 2 defects from the Test Run.
-   * <pre>
-   * mutation {
-   *     <b>removeDefectsFromTestRunStep</b>(
-   *         testRunId: "5e8489c05f200f3cd45bbaf0",
-   *         stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
-   *         issues: ["XRAY-1234", "12345"]
-   *     ) {
-   *         removedDefects
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  removeDefectsFromTestRunStep: Maybe<RemoveDefectsResult>;
-  /**
-   * Mutation used to remove evidence from a Test Run.
-   * ===
-   * The mutation below removes an evidence from the Test Run.
-   * <pre>
-   * mutation {
-   *     <b>removeEvidenceFromTestRun</b>(
-   *         id: "5acc7ab0a3fe1b6fcdc3c737",
-   *         evidenceFilenames: ["evidence.txt"]
-   *     ) {
-   *         removedEvidence
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  removeEvidenceFromTestRun: Maybe<RemoveEvidenceResult>;
-  /**
-   * Mutation used to remove evidence from a Test Run Step.
-   * ===
-   * The mutation below removes an evidence from the Test Run Step.
-   * <pre>
-   * mutation {
-   *     <b>removeEvidenceFromTestRunStep</b>(
-   *         testRunId: "5e8489c05f200f3cd45bbaf0",
-   *         stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
-   *         evidenceFilenames: ["evidence.txt"]
-   *     ) {
-   *         removedEvidence
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  removeEvidenceFromTestRunStep: Maybe<RemoveEvidenceResult>;
-  /**
-   * Mutation used to remove issues from Folder.
-   * ===
-   * The mutation below will remove issues from a Folder.
-   * <pre>
-   * mutation {
-   *     <b>removeIssuesFromFolder</b>(
-   *         projectId: "10000",
-   *         issueIds: ["10002","12324","12345"]
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  removeIssuesFromFolder: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Preconditions from the Test.
-   * ===
-   * The mutation below will remove the preconditions with issue id "54321" and "67890" from the test "12345".
-   * <pre>
-   * mutation {
-   *     <b>removePreconditionsFromTest</b>(issueId: "12345", preconditionIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will remove the preconditions with issue id "54321" and "67890" from the version 3 of the Test "12345".
-   * <pre>
-   * mutation {
-   *     <b>removePreconditionsFromTest</b>(issueId: "12345", versionId: 3, preconditionIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   */
-  removePreconditionsFromTest: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Test Environments from the Test Execution.
-   * ===
-   * The mutation below will remoive the Test Environments "android" and "ios" from the Test execution "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestEnvironmentsFromTestExecution</b>(
-   *         issueId: "12345",
-   *         testEnvironments: ["android", "ios"]
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestEnvironmentsFromTestExecution: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Test Executions from the Test.
-   * ===
-   * The mutation below will remove the Test Executions with issue id "54321" and "67890" from the Test "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestExecutionsFromTest</b>(issueId: "12345", testExecIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestExecutionsFromTest: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Test Executions from the Test Plan.
-   * ===
-   * The mutation below will remove the Test executions with issue id "54321" and "67890" from the Test Plan "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestExecutionsFromTestPlan</b>(issueId: "12345", testExecIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestExecutionsFromTestPlan: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Test Plans from the Test.
-   * ===
-   * The mutation below will remove the Test Plans with issue id "54321" and "67890" from the Test "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestPlansFromTest</b>(issueId: "12345", testPlanIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestPlansFromTest: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Test Sets from the Test.
-   * ===
-   * The mutation below will remove the Test Sets with issue id "54321" and "67890" from the test "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestSetsFromTest</b>(issueId: "12345", testSetIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestSetsFromTest: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove a Step from a Test.
-   * ===
-   * The mutation below removes the Step with id "836d30ec-f034-4a03-879e-9c44a1d6d1fe".
-   * <pre>
-   * mutation {
-   *     <b>removeTestStep</b>(
-   *         stepId: "836d30ec-f034-4a03-879e-9c44a1d6d1fe",
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestStep: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove tests from Folder.
-   * ===
-   * The mutation below will remove tests from a Folder.
-   * <pre>
-   * mutation {
-   *     <b>removeTestsFromFolder</b>(
-   *         projectId: "10000",
-   *         testIssueIds: ["10002","12324","12345"]
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestsFromFolder: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Tests from the Precondition. One of <b>testIssueIds</b> or <b>tests</b> is required.
-   * ===
-   * The mutation below will remove the Tests with issue id "54321" and "67890" from the Precondition "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestsFromPrecondition</b>(issueId: "12345", testIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will remove the version 2 of Test "54321" and the version 3 of Test "67890" from the Precondition "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestsFromPrecondition</b>(
-   *         issueId: "12345",
-   *         tests: [{ issueId: "54321", versionId: 2 }, { issueId: "67890", versionId: 3 }]
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestsFromPrecondition: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Tests from the Test Execution.
-   * ===
-   * The mutation below will remove the Tests with issue id "54321" and "67890" from the Test Execution "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestsFromTestExecution</b>(issueId: "12345", testIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestsFromTestExecution: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Tests from the Test Plan.
-   * ===
-   * The mutation below will remove the Tests with id "54321" and "67890" from the Test Plan "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestsFromTestPlan</b>(issueId: "12345", testIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestsFromTestPlan: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to remove Tests from the Test Set.
-   * ===
-   * The mutation below will remove the Tests with issue id "54321" and "67890" from the test set "12345".
-   * <pre>
-   * mutation {
-   *     <b>removeTestsFromTestSet</b>(issueId: "12345", testIssueIds: ["54321", "67890"])
-   * }
-   * </pre>
-   * ===
-   */
-  removeTestsFromTestSet: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to rename a Folder.
-   * ===
-   * The mutation below will rename a Folder.
-   * <pre>
-   * mutation {
-   *     <b>renameFolder</b>(
-   *         projectId: "10000",
-   *         path: "/generic",
-   *         newName: "Junit"
-   *     ) {
-   *         folder {
-   *             name
-   *             path
-   *             testsCount
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  renameFolder: Maybe<ActionFolderResult>;
-  /**
-   * Mutation used to reset the Test Run. This will load the new test definition and delete the current execution data.
-   * ===
-   * The mutation below resets the Test Run.
-   * <pre>
-   * mutation {
-   *     <b>resetTestRun</b>( id: "5acc7ab0a3fe1b6fcdc3c737")
-   * }
-   * </pre>
-   * ===
-   */
-  resetTestRun: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to set the timer in Test Run. This will start, pause or stop the timer in Test Run.
-   * ===
-   * The mutation below start the timer in Test Run.
-   * <pre>
-   * mutation {
-   *     <b>setTestRunTimer</b>(
-   *         testRunId: "5acc7ab0a3fe1b6fcdc3c737"
-   *         running: true
-   *     ) {
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   *
-   * The mutation below stop the timer in Test Run.
-   * <pre>
-   * mutation {
-   *     <b>setTestRunTimer</b>(
-   *         testRunId: "5acc7ab0a3fe1b6fcdc3c737"
-   *         reset: true
-   *     ) {
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  setTestRunTimer: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to update the Gherkin definition of a Test.
-   * ===
-   * The mutation below will update the gherkin definition of the Test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>updateGherkinTestDefinition</b>(issueId: "12345", gherkin: "Gherkin definition" ) {
-   *         issueId
-   *         gherkin
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will update the gherkin definition of the version 3 of the Test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>updateGherkinTestDefinition</b>(issueId: "12345", versionId: 3, gherkin: "Gherkin definition" ) {
-   *         issueId
-   *         gherkin
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateGherkinTestDefinition: Maybe<Test>;
-  /**
-   * Mutation used to update the status of a Test Run iteration.
-   * ===
-   * The mutation below updates the status of a Test Run iteration.
-   * <pre>
-   * mutation {
-   *     <b>updateIterationStatus</b>(
-   *         testRunId: "5e8489c05f200f3cd45bbaf0",
-   *         iterationRank: "0",
-   *         status: "PASSED"
-   *     ) {
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateIterationStatus: Maybe<UpdateIterationStatusResult>;
-  /**
-   * Mutation used to update a Precondition
-   * ===
-   * The mutation below will update the Precondition with id "49137"
-   * <pre>
-   * mutation {
-   *     <b>updatePrecondition</b>(
-   *         issueId: "49137",
-   *         data: { preconditionType: {name: "Manual" }, definition: "Turn on calculator" }
-   *     ) {
-   *         issueId
-   *         preconditionType {
-   *             kind
-   *             name
-   *         }
-   *         definition
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will update the Precondition with id "12345" and move it to the specified folder
-   * <pre>
-   * mutation {
-   *     <b>updatePrecondition</b>(
-   *         issueId: "12345",
-   *         data: { folderPath: "/generic" }
-   *     ) {
-   *         issueId
-   *         preconditionType {
-   *             kind
-   *             name
-   *         }
-   *         definition
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updatePrecondition: Maybe<Precondition>;
-  /**
-   * Mutation used update the precondition folder on the Test Repository.
-   * ===
-   * The mutation below will add the precondition to "Component/UI" folder.
-   * <pre>
-   * mutation {
-   *     <b>updatePreconditionFolder</b>(
-   *         issueId: "12345",
-   *         folderPath: "/Component/UI"
-   *     )
-   * }
-   * </pre>
-   * The mutation below will move the Precondition to the root.
-   * <pre>
-   * mutation {
-   *     <b>updatePreconditionFolder</b>(
-   *         issueId: "12345",
-   *         folderPath: "/"
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  updatePreconditionFolder: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used update the Test folder on the Test Repository.
-   * ===
-   * The mutation below will add the test to "Component/UI" folder.
-   * <pre>
-   * mutation {
-   *     <b>updateTestFolder</b>(
-   *         issueId: "12345",
-   *         folderPath: "/Component/UI"
-   *     )
-   * }
-   * </pre>
-   * The mutation below will move the Test to the root.
-   * <pre>
-   * mutation {
-   *     <b>updateTestFolder</b>(
-   *         issueId: "12345",
-   *         folderPath: "/"
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestFolder: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to update a Test Run.
-   * ===
-   * The mutation below updates a Test Run.
-   * <pre>
-   * mutation {
-   *     <b>updateTestRun</b>( id: "5acc7ab0a3fe1b6fcdc3c737", comment: "Everything is OK.", startedOn: "2020-03-09T10:35:09Z", finishedOn: "2020-04-09T10:35:09Z", assigneeId: "e5983db2-90f7-4135-a96f-46907e72290e", executedById: "e5983db2-90f7-4135-a96f-46907e72290e") {
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestRun: Maybe<UpdateTestRunResult>;
-  /**
-   * Mutation used to update the comment of a Test Run.
-   * ===
-   * The mutation below updates the comment of a Test Run.
-   * <pre>
-   * mutation {
-   *     <b>updateTestRunComment</b>( id: "5acc7ab0a3fe1b6fcdc3c737", comment: "Everything is OK.")
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestRunComment: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to update the status of a Test Run Example.
-   * ===
-   * The mutation below updates the status of a Test Run example.
-   * <pre>
-   * mutation {
-   *     <b>updateTestRunExampleStatus</b>(
-   *         exampleId: "5bbd8ab0a3fe1b6fcdc3c737",
-   *         status: "PASSED"
-   *     ) {
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestRunExampleStatus: Maybe<UpdateTestRunExampleStatusResult>;
-  /**
-   * Mutation used to update the status of a Test Run.
-   * ===
-   * The mutation below updates the status of a Test Run.
-   * <pre>
-   * mutation {
-   *     <b>updateTestRunStatus</b>( id: "5acc7ab0a3fe1b6fcdc3c737", status: "PASSED")
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestRunStatus: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to update the Test Run Step.
-   * ===
-   * The mutation below will change the status, update the comment and add a defect to the Test Run Step.
-   * <pre>
-   * mutation {
-   *     <b>updateTestRunStep</b>(
-   *         testRunId: "5e8489c05f200f3cd45bbaf0",
-   *         stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
-   *         updateData: {
-   *             comment: "Step failed"
-   *             status: "FAILED"
-   *             defects: {
-   *                 add: ["12345"]
-   *             }
-   *         }
-   *     ) {
-   *         addedDefects
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestRunStep: Maybe<UpdateTestRunStepResult>;
-  /**
-   * Mutation used to update the comment of a Test Run Step.
-   * ===
-   * The mutation below updates the comment of a Test Run Step.
-   * <pre>
-   * mutation {
-   *     <b>updateTestRunStepComment</b>(
-   *         testRunId: "5e8489c05f200f3cd45bbaf0",
-   *         stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
-   *         comment: "This step is OK."
-   *     )
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestRunStepComment: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Mutation used to update the status of a Test Run Step.
-   * ===
-   * The mutation below updates the status of a Test Run Step.
-   * <pre>
-   * mutation {
-   *     <b>updateTestRunStepStatus</b>(
-   *         testRunId: "5e8489c05f200f3cd45bbaf0",
-   *         stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
-   *         status: "PASSED"
-   *     ) {
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestRunStepStatus: Maybe<UpdateTestRunStepStatusResult>;
-  /**
-   * Mutation used to update a Step of a Test.
-   * ===
-   * The mutation below will update the Step with id "836d30ec-f034-4a03-879e-9c44a1d6d1fe".
-   * <pre>
-   * mutation {
-   *     <b>updateTestStep</b>(
-   *         stepId: "836d30ec-f034-4a03-879e-9c44a1d6d1fe",
-   *         step: {
-   *             result: "Xray Cloud Rest Api works as expected",
-   *             customFields: [{id:"5ddc0e585da9670010e608dc", value:"Lisbon"}]
-   *         }
-   *     ) {
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestStep: Maybe<UpdateTestStepResult>;
-  /**
-   * Mutation used to update the Test Type of a Test.
-   * ===
-   * The mutation below will update the Test Type of the Test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>updateTestType</b>(issueId: "12345", testType: {name: "Manual"} ) {
-   *         issueId
-   *         testType {
-   *             name
-   *             kind
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will update the Test Type of the version 3 of the Test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>updateTestType</b>(issueId: "12345", versionId: 3, testType: {name: "Manual"} ) {
-   *         issueId
-   *         testType {
-   *             name
-   *             kind
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateTestType: Maybe<Test>;
-  /**
-   * Mutation used to update the Unstructured definition of a Test.
-   * ===
-   * The mutation below will update the unstructured definition of the Test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>updateUnstructuredTestDefinition</b>(issueId: "12345", unstructured: "Generic definition" ) {
-   *         issueId
-   *         unstructured
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The mutation below will update the unstructured definition of the version 3 of the Test with id "12345".
-   * <pre>
-   * mutation {
-   *     <b>updateUnstructuredTestDefinition</b>(issueId: "12345", versionId: 3, unstructured: "Generic definition" ) {
-   *         issueId
-   *         unstructured
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  updateUnstructuredTestDefinition: Maybe<Test>;
-};
-
-export type MutationAddDefectsToTestRunArgs = {
-  id: Scalars["String"]["input"];
-  issues: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationAddDefectsToTestRunStepArgs = {
-  issues: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  iterationRank: InputMaybe<Scalars["String"]["input"]>;
-  stepId: Scalars["String"]["input"];
-  testRunId: Scalars["String"]["input"];
-};
-
-export type MutationAddEvidenceToTestRunArgs = {
-  evidence: Array<InputMaybe<AttachmentDataInput>>;
-  id: Scalars["String"]["input"];
-};
-
-export type MutationAddEvidenceToTestRunStepArgs = {
-  evidence: InputMaybe<Array<InputMaybe<AttachmentDataInput>>>;
-  iterationRank: InputMaybe<Scalars["String"]["input"]>;
-  stepId: Scalars["String"]["input"];
-  testRunId: Scalars["String"]["input"];
-};
-
-export type MutationAddIssuesToFolderArgs = {
-  index: InputMaybe<Scalars["Int"]["input"]>;
-  issueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-  path: Scalars["String"]["input"];
-  projectId: Scalars["String"]["input"];
-};
-
-export type MutationAddPreconditionsToTestArgs = {
-  issueId: Scalars["String"]["input"];
-  preconditionIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type MutationAddTestEnvironmentsToTestExecutionArgs = {
-  issueId: Scalars["String"]["input"];
-  testEnvironments: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationAddTestExecutionsToTestArgs = {
-  issueId: Scalars["String"]["input"];
-  testExecIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type MutationAddTestExecutionsToTestPlanArgs = {
-  issueId: Scalars["String"]["input"];
-  testExecIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationAddTestPlansToTestArgs = {
-  issueId: Scalars["String"]["input"];
-  testPlanIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationAddTestSetsToTestArgs = {
-  issueId: Scalars["String"]["input"];
-  testSetIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationAddTestStepArgs = {
-  issueId: Scalars["String"]["input"];
-  step: CreateStepInput;
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type MutationAddTestsToFolderArgs = {
-  index: InputMaybe<Scalars["Int"]["input"]>;
-  path: Scalars["String"]["input"];
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-  testPlanId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type MutationAddTestsToPreconditionArgs = {
-  issueId: Scalars["String"]["input"];
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
-};
-
-export type MutationAddTestsToTestExecutionArgs = {
-  issueId: Scalars["String"]["input"];
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
-};
-
-export type MutationAddTestsToTestPlanArgs = {
-  issueId: Scalars["String"]["input"];
-  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationAddTestsToTestSetArgs = {
-  issueId: Scalars["String"]["input"];
-  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationCreateFolderArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  path: Scalars["String"]["input"];
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  testPlanId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type MutationCreatePreconditionArgs = {
-  definition: InputMaybe<Scalars["String"]["input"]>;
-  folderPath: InputMaybe<Scalars["String"]["input"]>;
-  jira: Scalars["JSON"]["input"];
-  preconditionType: InputMaybe<UpdatePreconditionTypeInput>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
-};
-
-export type MutationCreateTestArgs = {
-  folderPath: InputMaybe<Scalars["String"]["input"]>;
-  gherkin: InputMaybe<Scalars["String"]["input"]>;
-  jira: Scalars["JSON"]["input"];
-  preconditionIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  steps: InputMaybe<Array<InputMaybe<CreateStepInput>>>;
-  testType: InputMaybe<UpdateTestTypeInput>;
-  unstructured: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type MutationCreateTestExecutionArgs = {
-  jira: Scalars["JSON"]["input"];
-  testEnvironments: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
-};
-
-export type MutationCreateTestPlanArgs = {
-  jira: Scalars["JSON"]["input"];
-  savedFilter: InputMaybe<Scalars["String"]["input"]>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-export type MutationCreateTestSetArgs = {
-  jira: Scalars["JSON"]["input"];
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-export type MutationDeleteFolderArgs = {
-  path: Scalars["String"]["input"];
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  testPlanId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type MutationDeletePreconditionArgs = {
-  issueId: Scalars["String"]["input"];
-};
-
-export type MutationDeleteTestArgs = {
-  issueId: Scalars["String"]["input"];
-};
-
-export type MutationDeleteTestExecutionArgs = {
-  issueId: Scalars["String"]["input"];
-};
-
-export type MutationDeleteTestPlanArgs = {
-  issueId: Scalars["String"]["input"];
-};
-
-export type MutationDeleteTestSetArgs = {
-  issueId: Scalars["String"]["input"];
-};
-
-export type MutationMoveFolderArgs = {
-  destinationPath: Scalars["String"]["input"];
-  index: InputMaybe<Scalars["Int"]["input"]>;
-  path: Scalars["String"]["input"];
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  testPlanId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type MutationRemoveAllTestStepsArgs = {
-  issueId: Scalars["String"]["input"];
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type MutationRemoveDefectsFromTestRunArgs = {
-  id: Scalars["String"]["input"];
-  issues: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRemoveDefectsFromTestRunStepArgs = {
-  issues: Array<InputMaybe<Scalars["String"]["input"]>>;
-  iterationRank: InputMaybe<Scalars["String"]["input"]>;
-  stepId: Scalars["String"]["input"];
-  testRunId: Scalars["String"]["input"];
-};
-
-export type MutationRemoveEvidenceFromTestRunArgs = {
-  evidenceFilenames: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  evidenceIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  id: Scalars["String"]["input"];
-};
-
-export type MutationRemoveEvidenceFromTestRunStepArgs = {
-  evidenceFilenames: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  evidenceIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  iterationRank: InputMaybe<Scalars["String"]["input"]>;
-  stepId: Scalars["String"]["input"];
-  testRunId: Scalars["String"]["input"];
-};
-
-export type MutationRemoveIssuesFromFolderArgs = {
-  issueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-  projectId: Scalars["String"]["input"];
-};
-
-export type MutationRemovePreconditionsFromTestArgs = {
-  issueId: Scalars["String"]["input"];
-  preconditionIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type MutationRemoveTestEnvironmentsFromTestExecutionArgs = {
-  issueId: Scalars["String"]["input"];
-  testEnvironments: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRemoveTestExecutionsFromTestArgs = {
-  issueId: Scalars["String"]["input"];
-  testExecIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRemoveTestExecutionsFromTestPlanArgs = {
-  issueId: Scalars["String"]["input"];
-  testExecIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRemoveTestPlansFromTestArgs = {
-  issueId: Scalars["String"]["input"];
-  testPlanIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRemoveTestSetsFromTestArgs = {
-  issueId: Scalars["String"]["input"];
-  testSetIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRemoveTestStepArgs = {
-  stepId: Scalars["String"]["input"];
-};
-
-export type MutationRemoveTestsFromFolderArgs = {
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-  testPlanId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type MutationRemoveTestsFromPreconditionArgs = {
-  issueId: Scalars["String"]["input"];
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
-};
-
-export type MutationRemoveTestsFromTestExecutionArgs = {
-  issueId: Scalars["String"]["input"];
-  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRemoveTestsFromTestPlanArgs = {
-  issueId: Scalars["String"]["input"];
-  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRemoveTestsFromTestSetArgs = {
-  issueId: Scalars["String"]["input"];
-  testIssueIds: Array<InputMaybe<Scalars["String"]["input"]>>;
-};
-
-export type MutationRenameFolderArgs = {
-  newName: Scalars["String"]["input"];
-  path: Scalars["String"]["input"];
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  testPlanId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type MutationResetTestRunArgs = {
-  id: Scalars["String"]["input"];
-};
-
-export type MutationSetTestRunTimerArgs = {
-  reset: InputMaybe<Scalars["Boolean"]["input"]>;
-  running: InputMaybe<Scalars["Boolean"]["input"]>;
-  testRunId: Scalars["String"]["input"];
-};
-
-export type MutationUpdateGherkinTestDefinitionArgs = {
-  gherkin: Scalars["String"]["input"];
-  issueId: Scalars["String"]["input"];
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type MutationUpdateIterationStatusArgs = {
-  iterationRank: Scalars["String"]["input"];
-  status: Scalars["String"]["input"];
-  testRunId: Scalars["String"]["input"];
-};
-
-export type MutationUpdatePreconditionArgs = {
-  data: InputMaybe<UpdatePreconditionInput>;
-  issueId: Scalars["String"]["input"];
-};
-
-export type MutationUpdatePreconditionFolderArgs = {
-  folderPath: Scalars["String"]["input"];
-  issueId: Scalars["String"]["input"];
-};
-
-export type MutationUpdateTestFolderArgs = {
-  folderPath: Scalars["String"]["input"];
-  issueId: Scalars["String"]["input"];
-};
-
-export type MutationUpdateTestRunArgs = {
-  assigneeId: InputMaybe<Scalars["String"]["input"]>;
-  comment: InputMaybe<Scalars["String"]["input"]>;
-  customFields: InputMaybe<Array<InputMaybe<CustomFieldInput>>>;
-  executedById: InputMaybe<Scalars["String"]["input"]>;
-  finishedOn: InputMaybe<Scalars["String"]["input"]>;
-  id: Scalars["String"]["input"];
-  startedOn: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type MutationUpdateTestRunCommentArgs = {
-  comment: Scalars["String"]["input"];
-  id: Scalars["String"]["input"];
-};
-
-export type MutationUpdateTestRunExampleStatusArgs = {
-  exampleId: Scalars["String"]["input"];
-  status: Scalars["String"]["input"];
-};
-
-export type MutationUpdateTestRunStatusArgs = {
-  id: Scalars["String"]["input"];
-  status: Scalars["String"]["input"];
-};
-
-export type MutationUpdateTestRunStepArgs = {
-  iterationRank: InputMaybe<Scalars["String"]["input"]>;
-  stepId: Scalars["String"]["input"];
-  testRunId: Scalars["String"]["input"];
-  updateData: UpdateTestRunStepInput;
-};
-
-export type MutationUpdateTestRunStepCommentArgs = {
-  comment: Scalars["String"]["input"];
-  iterationRank: InputMaybe<Scalars["String"]["input"]>;
-  stepId: Scalars["String"]["input"];
-  testRunId: Scalars["String"]["input"];
-};
-
-export type MutationUpdateTestRunStepStatusArgs = {
-  iterationRank: InputMaybe<Scalars["String"]["input"]>;
-  status: Scalars["String"]["input"];
-  stepId: Scalars["String"]["input"];
-  testRunId: Scalars["String"]["input"];
-};
-
-export type MutationUpdateTestStepArgs = {
-  step: UpdateStepInput;
-  stepId: Scalars["String"]["input"];
-};
-
-export type MutationUpdateTestTypeArgs = {
-  issueId: Scalars["String"]["input"];
-  testType: UpdateTestTypeInput;
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type MutationUpdateUnstructuredTestDefinitionArgs = {
-  issueId: Scalars["String"]["input"];
-  unstructured: Scalars["String"]["input"];
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Precondition issue type */
-export type Precondition = {
-  __typename?: "Precondition";
-  /** Definition of the Precondition issue. */
-  definition: Maybe<Scalars["String"]["output"]>;
-  /** Test Repository folder of the Precondition. */
-  folder: Maybe<Folder>;
-  /** List of Xray History results for the issue */
-  history: Maybe<XrayHistoryResults>;
-  /** Id of the Precondition issue. */
-  issueId: Maybe<Scalars["String"]["output"]>;
-  /** Extra Jira information of the Precondition Issue. */
-  jira: Maybe<Scalars["JSON"]["output"]>;
-  /** Date when the precondition was last modified. */
-  lastModified: Maybe<Scalars["String"]["output"]>;
-  /** Precondition Type of the Precondition issue. */
-  preconditionType: Maybe<TestType>;
-  /** Project id of the Precondition issue. */
-  projectId: Maybe<Scalars["String"]["output"]>;
-  /** List of the Test versions associated with the Precondition issue. */
-  testVersions: Maybe<TestVersionResults>;
-  /** List of the Tests associated with the Precondition issue. */
-  tests: Maybe<TestResults>;
-};
-
-/** Precondition issue type */
-export type PreconditionHistoryArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Precondition issue type */
-export type PreconditionJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Precondition issue type */
-export type PreconditionTestVersionsArgs = {
-  archived?: InputMaybe<Scalars["Boolean"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-  testTypeId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Precondition issue type */
-export type PreconditionTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Folder Search input */
-export type PreconditionFolderSearchInput = {
-  /** Whether descendant folders should be included in the search. */
-  includeDescendants: InputMaybe<Scalars["Boolean"]["input"]>;
-  /** Path of the Folder. */
-  path: Scalars["String"]["input"];
-};
-
-/** Precondition Results type */
-export type PreconditionResults = {
-  __typename?: "PreconditionResults";
-  /** Maximum amount of Preconditions to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Precondition issue results. */
-  results: Maybe<Array<Maybe<Precondition>>>;
-  /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of issues. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Project Settings type */
-export type ProjectSettings = {
-  __typename?: "ProjectSettings";
-  /** Defect Issue Types. */
-  defectIssueTypes: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Project id. */
-  projectId: Maybe<Scalars["String"]["output"]>;
-  /** Test Coverage Settings. */
-  testCoverageSettings: Maybe<ProjectSettingsTestCoverage>;
-  /** Test Environments. */
-  testEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Test Run Custom Fields Settings. */
-  testRunCustomFieldSettings: Maybe<ProjectSettingsTestRunCustomFields>;
-  /** Test Step Settings. */
-  testStepSettings: Maybe<ProjectSettingsTestStepSettings>;
-  /** Test Type Settings. */
-  testTypeSettings: Maybe<ProjectSettingsTestType>;
-};
-
-/** Project Test Coverage Settings type */
-export type ProjectSettingsTestCoverage = {
-  __typename?: "ProjectSettingsTestCoverage";
-  /** Coverable issue type ids */
-  coverableIssueTypeIds: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Epic - Issues(Stories) relation */
-  epicIssuesRelation: Maybe<Scalars["Boolean"]["output"]>;
-  /** Issue Link Type Direction */
-  issueLinkTypeDirection: Maybe<Scalars["String"]["output"]>;
-  /** Issue Link Type Id */
-  issueLinkTypeId: Maybe<Scalars["String"]["output"]>;
-  /** Issue - Sub-tasks relation */
-  issueSubTasksRelation: Maybe<Scalars["Boolean"]["output"]>;
-};
-
-/** Project Test Run Custom Field Settings type */
-export type ProjectSettingsTestRunCustomField = {
-  __typename?: "ProjectSettingsTestRunCustomField";
-  /** Id */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Name */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Is the field required */
-  required: Maybe<Scalars["Boolean"]["output"]>;
-  /** Type */
-  type: Maybe<Scalars["String"]["output"]>;
-  /** Values */
-  values: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Project Test Run Custom Field Field Settings type */
-export type ProjectSettingsTestRunCustomFields = {
-  __typename?: "ProjectSettingsTestRunCustomFields";
-  /** Fields */
-  fields: Maybe<Array<Maybe<ProjectSettingsTestRunCustomField>>>;
-};
-
-/** Project Test Step Field Settings type */
-export type ProjectSettingsTestStepField = {
-  __typename?: "ProjectSettingsTestStepField";
-  /** Is the field disabled */
-  disabled: Maybe<Scalars["Boolean"]["output"]>;
-  /** Id */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Name */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Is the field required */
-  required: Maybe<Scalars["Boolean"]["output"]>;
-  /** Type */
-  type: Maybe<Scalars["String"]["output"]>;
-  /** Values */
-  values: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Project Test Step Settings type */
-export type ProjectSettingsTestStepSettings = {
-  __typename?: "ProjectSettingsTestStepSettings";
-  /** Fields */
-  fields: Maybe<Array<Maybe<ProjectSettingsTestStepField>>>;
-};
-
-/** Project Test Type Settings type */
-export type ProjectSettingsTestType = {
-  __typename?: "ProjectSettingsTestType";
-  /** Default Test Type Id */
-  defaultTestTypeId: Maybe<Scalars["String"]["output"]>;
-  /** Test Types */
-  testTypes: Maybe<Array<Maybe<TestType>>>;
-};
-
-export type Query = {
-  __typename?: "Query";
-  /**
-   * Returns a Coverable Issue by issueId.
-   * ===
-   * The query below returns a Coverable Issue.
-   * <pre>
-   * {
-   *     <b>getCoverableIssue</b> {
-   *         issueId
-   *         jira(fields: ["assignee", "reporter"])
-   *         status {
-   *             name
-   *             description
-   *             color
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The query below returns the Coverable Issue with issue id **12345**.
-   * <pre>
-   * {
-   *     <b>getCoverableIssue</b>(issueId: "12345") {
-   *         issueId
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getCoverableIssue: Maybe<CoverableIssue>;
-  /**
-   * Returns multiple coverable issues by jql or issue ids.
-   * ===
-   * The query below returns 10 coverable issues that match the provided jql.
-   * <pre>
-   * {
-   *     <b>getCoverableIssues</b>(limit: 10) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             jira(fields: ["assignee", "reporter"])
-   *             status {
-   *                 name
-   *                 description
-   *                 color
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getCoverableIssues: Maybe<CoverableIssueResults>;
-  /**
-   * Returns a test (with the call test steps expanded) by issue id and version id.
-   * ===
-   * The query below returns the test version 2 of the test with the id "12345".
-   * <pre>
-   * {
-   *     <b>getExpandedTest</b>(issueId: "12345", testVersionId: "2") {
-   *         issueId
-   *         testType {
-   *             name
-   *             kind
-   *         }
-   *         steps {
-   *             parentTestIssueId
-   *             calledTestIssueId
-   *             id
-   *             data
-   *             action
-   *             result
-   *             attachments {
-   *                 id
-   *                 filename
-   *             }
-   *         }
-   *         warnings
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getExpandedTest: Maybe<ExpandedTest>;
-  /**
-   * Returns multiple tests (with the call test steps expanded) by jql, issue ids, project id or test type.
-   * ===
-   * The query below returns the first 100 tests.
-   * <pre>
-   * {
-   *     <b>getExpandedTests</b>(limit: 100) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             testType {
-   *                 name
-   *                 kind
-   *             }
-   *             jira(fields: ["assignee", "reporter"])
-   *             warnings
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The query below returns 10 tests that match the provided jql.
-   * <pre>
-   * {
-   *     <b>getExpandedTests</b>(jql: "project = 'PC'", limit: 10) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             testType {
-   *                 name
-   *                 kind
-   *             }
-   *             steps {
-   *                 parentTestIssueId
-   *                 calledTestIssueId
-   *                 id
-   *                 data
-   *                 action
-   *                 result
-   *                 attachments {
-   *                     id
-   *                     filename
-   *                 }
-   *                 customfields {
-   *                     id
-   *                     value
-   *                 }
-   *             }
-   *             jira(fields: ["assignee", "reporter"])
-   *             warnings
-   *         }
-   *     }
-   * }
-   * </pre>
-   * <b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
-   * ===
-   * ===
-   * The query below returns the tests of each test version.
-   * <pre>
-   * {
-   *     <b>getExpandedTests</b>(tests:[{ issueId:"12345", testVersionId: "1" }, { issueId:"54321", testVersionId: "2" }]) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             testType {
-   *                 name
-   *                 kind
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getExpandedTests: Maybe<ExpandedTestResults>;
-  /**
-   * Returns the folder for the given projectId with the specified Path along with its child folders.
-   * ===
-   * The query below returns the root folder and all its child folders.
-   * <pre>
-   * {
-   *     <b>getFolder</b>(projectId: "10000", path: "/") {
-   *         name
-   *         path
-   *         testsCount
-   *         folders
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The query below returns the folder with path "/generic" and all its child folders.
-   * <pre>
-   * {
-   *     <b>getFolder</b>(projectId: "10000", path: "/generic") {
-   *         name
-   *         path
-   *         testsCount
-   *         folders
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getFolder: Maybe<FolderResults>;
-  /**
-   * Returns the Issue Link Types
-   * ===
-   * The Query below returns all Issue Link Types
-   * <pre>
-   * {
-   *     <b>getIssueLinkTypes</b> {
-   *         issueLinks {
-   *             id
-   *             name
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getIssueLinkTypes: Maybe<Array<Maybe<IssueLinkType>>>;
-  /**
-   * Returns a Precondition by issue id.
-   * ===
-   * The Query below returns a Precondition.
-   * <pre>
-   * {
-   *     <b>getPrecondition</b> {
-   *         issueId
-   *         preconditionType {
-   *             kind
-   *             name
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The Query below returns the Precondition with issue id **12345**
-   * <pre>
-   * {
-   *     <b>getPrecondition</b>(issueId: "12345") {
-   *         issueId
-   *         definition
-   *         jira(fields: ["assignee", "reporter"])
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getPrecondition: Maybe<Precondition>;
-  /**
-   * Returns multiple Preconditions by jql, issueIds, projectId or Precondition Type.
-   * ===
-   * The Query below returns the first 100 Preconditions.
-   * <pre>
-   * {
-   *     <b>getPreconditions</b>(limit: 100) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             preconditionType {
-   *                 name
-   *                 kind
-   *             }
-   *             definition
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The Query below returns 10 Preconditions that match the provided jql
-   * <pre>
-   * {
-   *     <b>getPreconditions</b>(jql: "project = 'PC'", limit: 10) {
-   *         results {
-   *             issueId
-   *             preconditionType {
-   *                 name
-   *                 kind
-   *             }
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * <b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
-   * ===
-   */
-  getPreconditions: Maybe<PreconditionResults>;
-  /**
-   * Returns the Project Settings of a Project.
-   * ===
-   * The Query below returns multiple Status
-   * <pre>
-   * {
-   *     <b>getProjectSettings</b> ( projectIdOrKey: "10000" ) {
-   *         projectId,
-   *         testEnvironments,
-   *         testCoverageSettings {
-   *             coverableIssueTypeIds
-   *             epicIssuesRelation
-   *             issueSubTasksRelation
-   *             issueLinkTypeId
-   *             issueLinkTypeDirection
-   *         }
-   *         defectIssueTypes
-   *         testTypeSettings {
-   *             testTypes {
-   *                 id
-   *                 name
-   *                 kind
-   *             }
-   *             defaultTestTypeId
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getProjectSettings: Maybe<ProjectSettings>;
-  /**
-   * Returns a Status by Test Run Status name.
-   * ===
-   * The Query below returns a Status
-   * <pre>
-   * {
-   *     <b>getStatus</b>( name: "PASSED") {
-   *         name
-   *         description
-   *         final
-   *         color
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getStatus: Maybe<Status>;
-  /**
-   * Returns all Test Run Status.
-   * ===
-   * The Query below returns multiple Status
-   * <pre>
-   * {
-   *     <b>getStatuses</b> {
-   *         name
-   *         description
-   *         final
-   *         color
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getStatuses: Maybe<Array<Maybe<Status>>>;
-  /**
-   * Returns a Status by Test Run Step Status name.
-   * ===
-   * The Query below returns a Status
-   * <pre>
-   * {
-   *     <b>getStepStatus</b>( name: "PASSED") {
-   *         name
-   *         description
-   *         color
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getStepStatus: Maybe<StepStatus>;
-  /**
-   * Returns all Test Run Step Status.
-   * ===
-   * The Query below returns multiple Status
-   * <pre>
-   * {
-   *     <b>getStepStatuses</b> {
-   *         name
-   *         description
-   *         color
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getStepStatuses: Maybe<Array<Maybe<StepStatus>>>;
-  /**
-   * Returns a Test by issueId.
-   * ===
-   * The query below returns a Test.
-   * <pre>
-   * {
-   *     <b>getTest</b> {
-   *         issueId
-   *         gherkin
-   *         jira(fields: ["assignee", "reporter"])
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The query below returns the Test with issue id **12345**.
-   * <pre>
-   * {
-   *     <b>getTest</b>(issueId: "12345") {
-   *         issueId
-   *         testType {
-   *             name
-   *             kind
-   *         }
-   *         steps {
-   *             id
-   *             data
-   *             action
-   *             result
-   *             attachments {
-   *                 id
-   *                 filename
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getTest: Maybe<Test>;
-  /**
-   * Returns a Test Execution by issue id.
-   * ===
-   * The Query below returns a Test Execution.
-   * <pre>
-   * {
-   *     <b>getTestExecution</b> {
-   *         issueId
-   *         projectId
-   *         jira(fields: ["assignee", "reporter"])
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The Query below returns the Test Execution with issue id **12345**.
-   * <pre>
-   * {
-   *     <b>getTestExecution</b>(issueId: "12345") {
-   *         issueId
-   *         tests(limit: 100) {
-   *             total
-   *             start
-   *             limit
-   *             results {
-   *                 issueId
-   *                 testType {
-   *                     name
-   *                 }
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getTestExecution: Maybe<TestExecution>;
-  /**
-   * Returns multiple Test Executions by jql, issue ids or project id.
-   * ===
-   * The Query below returns the first 100 Test Executions
-   * <pre>
-   * {
-   *     <b>getTestExecutions</b>(limit: 100) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The Query below returns 10 Test Executions that match the provided jql.
-   * <pre>
-   * {
-   *     <b>getTestExecutions</b>(jql: "project = 'PC'", limit: 10) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             tests(limit: 10) {
-   *                 total
-   *                 start
-   *                 limit
-   *                 results {
-   *                     issueId
-   *                     testType {
-   *                         name
-   *                     }
-   *                 }
-   *             }
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * <b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
-   * ===
-   */
-  getTestExecutions: Maybe<TestExecutionResults>;
-  /**
-   * Returns a Test Plan by issue id.
-   * ===
-   * The Query below returns a Test Plan.
-   * <pre>
-   * {
-   *     <b>getTestPlan</b> {
-   *         issueId
-   *         projectId
-   *         jira(fields: ["assignee", "reporter"])
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The Query below returns the Test Plan with issue id **12345**
-   * <pre>
-   * {
-   *     <b>getTestPlan</b>(issueId: "12345") {
-   *         issueId
-   *         tests(limit: 100) {
-   *             results {
-   *                 issueId
-   *                 testType {
-   *                     name
-   *                 }
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getTestPlan: Maybe<TestPlan>;
-  /**
-   * Returns multiple Test Plans by jql, issue ids or project id.
-   * ===
-   * The Query below returns the first 100 Test Plans
-   * <pre>
-   * {
-   *     <b>getTestPlans</b>(limit: 100) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The Query below returns 10 Test Plans that match the provided jql.
-   * <pre>
-   * {
-   *     <b>getTestPlans</b>(jql: "project = 'PC'", limit: 10) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             tests(limit: 10) {
-   *                 total
-   *                 start
-   *                 limit
-   *                 results {
-   *                     issueId
-   *                     testType {
-   *                         name
-   *                     }
-   *                 }
-   *             }
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * <b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
-   * ===
-   */
-  getTestPlans: Maybe<TestPlanResults>;
-  /**
-   * Returns a Test Run by Test issue id and Test Execution issue id.
-   * ===
-   * The Query below returns a Test Run
-   * <pre>
-   * {
-   *     <b>getTestRun</b>( testIssueId: "11165", testExecIssueId: "11164") {
-   *         id
-   *         status {
-   *             name
-   *             color
-   *             description
-   *         }
-   *         gherkin
-   *         examples {
-   *             id
-   *             status {
-   *                 name
-   *                 color
-   *                 description
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getTestRun: Maybe<TestRun>;
-  /**
-   * Returns a Test Run by id.
-   * ===
-   * The Query below returns a Test Run.
-   * <pre>
-   * {
-   *     <b>getTestRunById</b>( id: "5acc7ab0a3fe1b6fcdc3c737") {
-   *         id
-   *         status {
-   *             name
-   *             color
-   *             description
-   *         }
-   *         steps {
-   *             action
-   *             data
-   *             result
-   *             attachments {
-   *                 id
-   *                 filename
-   *             }
-   *             status {
-   *                 name
-   *                 color
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getTestRunById: Maybe<TestRun>;
-  /**
-   * Returns multiple Test Runs testIssueIds and/or testExecIssueIds.
-   * ===
-   * The query below returns the first 100 Test Runs that match the given testIssueIds and testExecIssueIds.
-   * <pre>
-   * {
-   *     <b>getTestRuns</b>( testIssueIds: ["10001", "10002"], testExecIssueIds: ["10001", "10002"], limit: 100 ) {
-   *         total
-   *         limit
-   *         start
-   *         results {
-   *             id
-   *             status {
-   *                 name
-   *                 color
-   *                 description
-   *             }
-   *             gherkin
-   *             examples {
-   *                 id
-   *                 status {
-   *                 name
-   *                 color
-   *                 description
-   *                 }
-   *             }
-   *             test {
-   *                 issueId
-   *             }
-   *             testExecution {
-   *                 issueId
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * === ===
-   * The query below returns the first 100 Test Runs that match the given ids.
-   * <pre>
-   * {
-   *     <b>getTestRuns</b>( testIssueIds: ["12345"], limit: 100 ) {
-   *         total
-   *         limit
-   *         start
-   *         results {
-   *             id
-   *             status {
-   *                 name
-   *                 color
-   *                 description
-   *             }
-   *             steps {
-   *                 action
-   *                 data
-   *                 result
-   *                 attachments {
-   *                     id
-   *                     filename
-   *                 }
-   *                 status {
-   *                     name
-   *                     color
-   *                 }
-   *             }
-   *             test {
-   *                 issueId
-   *             }
-   *             testExecution {
-   *                 issueId
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getTestRuns: Maybe<TestRunResults>;
-  /**
-   * Returns multiple Test Runs by id.
-   * ===
-   * The query below returns the first 100 Test Runs that match the given ids.
-   * <pre>
-   * {
-   *     <b>getTestRunsById</b>( ids: ["5acc7ab0a3fe1b6fcdc3c737"], limit: 10 ) {
-   *         total
-   *         limit
-   *         start
-   *         results {
-   *             id
-   *             status {
-   *                 name
-   *                 color
-   *                 description
-   *             }
-   *             gherkin
-   *             examples {
-   *                 id
-   *                 status {
-   *                     name
-   *                     color
-   *                     description
-   *                 }
-   *             }
-   *             test {
-   *                 issueId
-   *             }
-   *             testExecution {
-   *                 issueId
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getTestRunsById: Maybe<TestRunResults>;
-  /**
-   * Returns a Test Set by issueId
-   * ===
-   * The query below returns a test set
-   * <pre>
-   * {
-   *     <b>getTestSet</b> {
-   *         issueId
-   *         projectId
-   *         jira(fields: ["assignee", "reporter"])
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The query below returns the test set with issue id **12345**
-   * <pre>
-   * {
-   *     <b>getTestSet</b>(issueId: "12345") {
-   *         issueId
-   *         tests(limit: 100) {
-   *             results {
-   *                 issueId
-   *                 testType {
-   *                     name
-   *                 }
-   *             }
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   */
-  getTestSet: Maybe<TestSet>;
-  /**
-   * Returns multiple Test Sets by jql, issueIds or projectId.
-   * ===
-   * The query below returns the first 100 Test Sets.
-   * <pre>
-   * {
-   *     <b>getTestSets</b>(limit: 100) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The query below returns 10 Test Sets that match the provided jql.
-   * <pre>
-   * {
-   *     <b>getTestSets</b>(jql: "project = 'PC'", limit: 10) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             tests(limit: 10) {
-   *                 results {
-   *                     issueId
-   *                     testType {
-   *                         name
-   *                     }
-   *                 }
-   *             }
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * <b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
-   * ===
-   */
-  getTestSets: Maybe<TestSetResults>;
-  /**
-   * Returns multiple tests by jql, issue ids, project id or test type.
-   * ===
-   * The query below returns the first 100 tests.
-   * <pre>
-   * {
-   *     <b>getTests</b>(limit: 100) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             testType {
-   *                 name
-   *                 kind
-   *             }
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * ===
-   * ===
-   * The query below returns 10 tests that match the provided jql.
-   * <pre>
-   * {
-   *     <b>getTests</b>(jql: "project = 'PC'", limit: 10) {
-   *         total
-   *         start
-   *         limit
-   *         results {
-   *             issueId
-   *             testType {
-   *                 name
-   *                 kind
-   *             }
-   *             steps {
-   *                 id
-   *                 data
-   *                 action
-   *                 result
-   *                 attachments {
-   *                     id
-   *                     filename
-   *                 }
-   *                 customfields {
-   *                     id
-   *                     value
-   *                 }
-   *             }
-   *             jira(fields: ["assignee", "reporter"])
-   *         }
-   *     }
-   * }
-   * </pre>
-   * <b>Note</b>: If the jql returns more than 100 issues an error will be returned asking the user to refine the jql search.
-   * ===
-   */
-  getTests: Maybe<TestResults>;
-};
-
-export type QueryGetCoverableIssueArgs = {
-  issueId: Scalars["String"]["input"];
-};
-
-export type QueryGetCoverableIssuesArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  jql: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  start: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type QueryGetExpandedTestArgs = {
-  issueId: Scalars["String"]["input"];
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type QueryGetExpandedTestsArgs = {
-  folder: InputMaybe<FolderSearchInput>;
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  jql: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  start: InputMaybe<Scalars["Int"]["input"]>;
-  testType: InputMaybe<TestTypeInput>;
-  tests: InputMaybe<Array<InputMaybe<TestWithVersionInput>>>;
-};
-
-export type QueryGetFolderArgs = {
-  path: Scalars["String"]["input"];
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  testPlanId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetPreconditionArgs = {
-  issueId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetPreconditionsArgs = {
-  folder: InputMaybe<PreconditionFolderSearchInput>;
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  jql: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
-  preconditionType: InputMaybe<TestTypeInput>;
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  start: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type QueryGetProjectSettingsArgs = {
-  projectIdOrKey: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetStatusArgs = {
-  name: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetStepStatusArgs = {
-  name: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetTestArgs = {
-  issueId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetTestExecutionArgs = {
-  issueId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  jql: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  start: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type QueryGetTestPlanArgs = {
-  issueId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetTestPlansArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  jql: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  start: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type QueryGetTestRunArgs = {
-  testExecIssueId: InputMaybe<Scalars["String"]["input"]>;
-  testIssueId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetTestRunByIdArgs = {
-  id: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetTestRunsArgs = {
-  limit: Scalars["Int"]["input"];
-  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
-  start: InputMaybe<Scalars["Int"]["input"]>;
-  testExecIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  testIssueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  testRunAssignees: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-export type QueryGetTestRunsByIdArgs = {
-  ids: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type QueryGetTestSetArgs = {
-  issueId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-export type QueryGetTestSetsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  jql: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  start: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-export type QueryGetTestsArgs = {
-  folder: InputMaybe<FolderSearchInput>;
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  jql: InputMaybe<Scalars["String"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  modifiedSince: InputMaybe<Scalars["String"]["input"]>;
-  projectId: InputMaybe<Scalars["String"]["input"]>;
-  start: InputMaybe<Scalars["Int"]["input"]>;
-  testType: InputMaybe<TestTypeInput>;
-};
-
-/** Remove defects Result Type */
-export type RemoveDefectsResult = {
-  __typename?: "RemoveDefectsResult";
-  /** Ids of the removed Defects. */
-  removedDefects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Remove Evidence Result Type */
-export type RemoveEvidenceResult = {
-  __typename?: "RemoveEvidenceResult";
-  /** Ids of the removed Evidence. */
-  removedEvidence: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Result Type */
-export type Result = {
-  __typename?: "Result";
-  /** Backgrounds of the Results. */
-  backgrounds: Maybe<Array<Maybe<ResultsStep>>>;
-  /** Duration of the Result. */
-  duration: Maybe<Scalars["Float"]["output"]>;
-  /** Examples of the Result. */
-  examples: Maybe<Array<Maybe<ResultsExample>>>;
-  /** Hooks of the Results. */
-  hooks: Maybe<Array<Maybe<ResultsStep>>>;
-  /** Output if exist an error or a failure (JUNIT, XUNIT, NUNIT, TESTNG) */
-  log: Maybe<Scalars["String"]["output"]>;
-  /** Name of the Result. */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Status of the Result. */
-  status: Maybe<StepStatus>;
-  /** Steps of the Results. */
-  steps: Maybe<Array<Maybe<ResultsStep>>>;
-  /** Whether or not the Result was imported. */
-  wasImported: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Results Embedding */
-export type ResultsEmbedding = {
-  __typename?: "ResultsEmbedding";
-  /** Data of the Embedding. Base64 format. */
-  data: Maybe<Scalars["String"]["output"]>;
-  /** Link to download the embedding if no data is present */
-  downloadLink: Maybe<Scalars["String"]["output"]>;
-  /** Filename of the Embedding. */
-  filename: Maybe<Scalars["String"]["output"]>;
-  /** Mime Type of the Embedding. */
-  mimeType: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Results Example Type */
-export type ResultsExample = {
-  __typename?: "ResultsExample";
-  /** Backgrounds of the Results. */
-  backgrounds: Maybe<Array<Maybe<ResultsStep>>>;
-  /** Duration of the Result. */
-  duration: Maybe<Scalars["Float"]["output"]>;
-  /** Hooks of the Results. */
-  hooks: Maybe<Array<Maybe<ResultsStep>>>;
-  /** Status of the Result. */
-  status: Maybe<StepStatus>;
-  /** Steps of the Results. */
-  steps: Maybe<Array<Maybe<ResultsStep>>>;
-  /** Whether or not the Result was imported. */
-  wasImported: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Results Step */
-export type ResultsStep = {
-  __typename?: "ResultsStep";
-  /** Duration of the step. */
-  duration: Maybe<Scalars["Float"]["output"]>;
-  /** Embeddings of the step. */
-  embeddings: Maybe<Array<Maybe<ResultsEmbedding>>>;
-  /** Error of the step. */
-  error: Maybe<Scalars["String"]["output"]>;
-  /** If a gherkin step, keyword of the gherkin step. */
-  keyword: Maybe<Scalars["String"]["output"]>;
-  /** If a Robot step, output of the Robot step. */
-  log: Maybe<Scalars["String"]["output"]>;
-  /** Name of the step. */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Status of the step. */
-  status: Maybe<StepStatus>;
-};
-
-export type SimpleFolderResults = {
-  __typename?: "SimpleFolderResults";
-  /** Folder issues count */
-  issuesCount: Maybe<Scalars["Int"]["output"]>;
-  /** Folder name */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Folder path */
-  path: Maybe<Scalars["String"]["output"]>;
-  /** Folder preconditions count */
-  preconditionsCount: Maybe<Scalars["Int"]["output"]>;
-  /** Folder tests count */
-  testsCount: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Status Type */
-export type Status = {
-  __typename?: "Status";
-  /** Color of the Status. */
-  color: Maybe<Scalars["String"]["output"]>;
-  /** Coverage mapping of the Status. */
-  coverageStatus: Maybe<Scalars["String"]["output"]>;
-  /** Description of the Status. */
-  description: Maybe<Scalars["String"]["output"]>;
-  /** Whether the Status is final or not. */
-  final: Maybe<Scalars["Boolean"]["output"]>;
-  /** Name of the Status. */
-  name: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Test Step type */
-export type Step = {
-  __typename?: "Step";
-  /** Action of the Step. */
-  action: Maybe<Scalars["String"]["output"]>;
-  /** Attachments of the Step. */
-  attachments: Maybe<Array<Maybe<Attachment>>>;
-  /** The issue id of the test being called in the step. */
-  callTestIssueId: Maybe<Scalars["String"]["output"]>;
-  /** Custom Fields of the Step. */
-  customFields: Maybe<Array<Maybe<CustomStepField>>>;
-  /** Data of the Step. */
-  data: Maybe<Scalars["String"]["output"]>;
-  /** Id of the Step. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Result of the Step. */
-  result: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Step Status Type */
-export type StepStatus = {
-  __typename?: "StepStatus";
-  /** Color of the Status. */
-  color: Maybe<Scalars["String"]["output"]>;
-  /** Description of the Status. */
-  description: Maybe<Scalars["String"]["output"]>;
-  /** Name of the Status. */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** The test status to which the step status is mapped to. */
-  testStatus: Maybe<Status>;
-};
-
-/** Test issue type */
-export type Test = {
-  __typename?: "Test";
-  /** List of Coverable Issues associated with the Test issue */
-  coverableIssues: Maybe<CoverableIssueResults>;
-  /** Test Repository folder of the Test. */
-  folder: Maybe<Folder>;
-  /** Gherkin definition of the Test issue. */
-  gherkin: Maybe<Scalars["String"]["output"]>;
-  /** List of Xray History results for the issue */
-  history: Maybe<XrayHistoryResults>;
-  /** Issue id of the Test issue. */
-  issueId: Maybe<Scalars["String"]["output"]>;
-  /** Extra Jira information of the Test issue. */
-  jira: Scalars["JSON"]["output"];
-  /** Date when the test was last modified. */
-  lastModified: Maybe<Scalars["String"]["output"]>;
-  /** List of Precondition associated with the Test issue. */
-  preconditions: Maybe<PreconditionResults>;
-  /** Project id of the Test issue. */
-  projectId: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Gherkin type of the Test issue.
-   * Possible values: 'scenario' or 'scenario_outline'.
-   */
-  scenarioType: Maybe<Scalars["String"]["output"]>;
-  /** Status of the Test. This status can be calculated based on latest status, version or Test Plan. */
-  status: Maybe<TestStatusType>;
-  /** Step definition of the Test issue. */
-  steps: Maybe<Array<Maybe<Step>>>;
-  /** List of Test Executions associated with the Test issue. */
-  testExecutions: Maybe<TestExecutionResults>;
-  /** List of Test Plans associated with the Test issue. */
-  testPlans: Maybe<TestPlanResults>;
-  /** List of Test Runs for the Test issue */
-  testRuns: Maybe<TestRunResults>;
-  /** List of Test Sets associated with the Test issue. */
-  testSets: Maybe<TestSetResults>;
-  /** Test type of the Test issue. */
-  testType: Maybe<TestType>;
-  /** List of Test versions of the Test */
-  testVersions: Maybe<TestVersionResults>;
-  /** Unstructured definition of the Test issue. */
-  unstructured: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Test issue type */
-export type TestCoverableIssuesArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test issue type */
-export type TestHistoryArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test issue type */
-export type TestJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Test issue type */
-export type TestPreconditionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test issue type */
-export type TestStatusArgs = {
-  environment: InputMaybe<Scalars["String"]["input"]>;
-  isFinal?: InputMaybe<Scalars["Boolean"]["input"]>;
-  testPlan: InputMaybe<Scalars["String"]["input"]>;
-  version: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Test issue type */
-export type TestTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test issue type */
-export type TestTestPlansArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test issue type */
-export type TestTestRunsArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test issue type */
-export type TestTestSetsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test issue type */
-export type TestTestVersionsArgs = {
-  archived?: InputMaybe<Scalars["Boolean"]["input"]>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-  testTypeId: InputMaybe<Scalars["String"]["input"]>;
-};
-
-/** Test Execution issue type */
-export type TestExecution = {
-  __typename?: "TestExecution";
-  /** List of Xray History results for the issue */
-  history: Maybe<XrayHistoryResults>;
-  /** Id of the Test Execution issue. */
-  issueId: Maybe<Scalars["String"]["output"]>;
-  /** Extra Jira information of the Test Execution Issue. */
-  jira: Maybe<Scalars["JSON"]["output"]>;
-  /** Date when the test exec was last modified. */
-  lastModified: Maybe<Scalars["String"]["output"]>;
-  /** Project id of the Test Execution issue. */
-  projectId: Maybe<Scalars["String"]["output"]>;
-  /** Test Environments of the Test Execution. */
-  testEnvironments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** List of Test Plans associated with the Test Execution Issue. */
-  testPlans: Maybe<TestPlanResults>;
-  /** List of Test Runs for the Test Execution Issue. */
-  testRuns: Maybe<TestRunResults>;
-  /** List of Tests associated with the Test Execution Issue. */
-  tests: Maybe<TestResults>;
-};
-
-/** Test Execution issue type */
-export type TestExecutionHistoryArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Execution issue type */
-export type TestExecutionJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Test Execution issue type */
-export type TestExecutionTestPlansArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Execution issue type */
-export type TestExecutionTestRunsArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Execution issue type */
-export type TestExecutionTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Execution Results Type */
-export type TestExecutionResults = {
-  __typename?: "TestExecutionResults";
-  /** Maximum amount of Test Executions to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Test Execution issue results. */
-  results: Maybe<Array<Maybe<TestExecution>>>;
-  /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of issues. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Test Plan issue type */
-export type TestPlan = {
-  __typename?: "TestPlan";
-  /** Folder structure of the Test Plan. */
-  folders: Maybe<FolderResults>;
-  /** List of Xray History results for the issue */
-  history: Maybe<XrayHistoryResults>;
-  /** Id of the Test Plan issue. */
-  issueId: Maybe<Scalars["String"]["output"]>;
-  /** Extra Jira information of the Test Plan issue. */
-  jira: Maybe<Scalars["JSON"]["output"]>;
-  /** Date when the test plan was last modified. */
-  lastModified: Maybe<Scalars["String"]["output"]>;
-  /** Project id of the Test Plan issue. */
-  projectId: Maybe<Scalars["String"]["output"]>;
-  /** List of Test Executions associated with the Test Plan issue. */
-  testExecutions: Maybe<TestExecutionResults>;
-  /** List of Tests associated with the Test Plan issue. */
-  tests: Maybe<TestResults>;
-};
-
-/** Test Plan issue type */
-export type TestPlanHistoryArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Plan issue type */
-export type TestPlanJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Test Plan issue type */
-export type TestPlanTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Plan issue type */
-export type TestPlanTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Plan Results type */
-export type TestPlanResults = {
-  __typename?: "TestPlanResults";
-  /** Maximum amount of Test Plans to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Test Plan issue results. */
-  results: Maybe<Array<Maybe<TestPlan>>>;
-  /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of issues. */
-  total: Maybe<Scalars["Int"]["output"]>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Test Results type */
-export type TestResults = {
-  __typename?: "TestResults";
-  /** The maximum amount of Tests to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Test issue results. */
-  results: Maybe<Array<Maybe<Test>>>;
-  /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of issues. */
-  total: Maybe<Scalars["Int"]["output"]>;
-  /** Warnings generated if you have a invalid Test */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
-
-/** Test Run type */
-export type TestRun = {
-  __typename?: "TestRun";
-  /** User's account id assigned to the Test Run. This is user assigned to the Test Run, not taking into account the assignee of the test execution. */
-  assigneeId: Maybe<Scalars["String"]["output"]>;
-  /** Comment definition of the Test Run. */
-  comment: Maybe<Scalars["String"]["output"]>;
-  /** Custom Fields of the Test Run. */
-  customFields: Maybe<Array<Maybe<TestRunCustomFieldValue>>>;
-  /** Defects of the Test Run. */
-  defects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Evidence of the Test Run. */
-  evidence: Maybe<Array<Maybe<Evidence>>>;
-  /** Examples of the Test Run. */
-  examples: Maybe<Array<Maybe<Example>>>;
-  /** User's account id that executed the Test Run. */
-  executedById: Maybe<Scalars["String"]["output"]>;
-  /** Finished On date of the Test Run. */
-  finishedOn: Maybe<Scalars["String"]["output"]>;
-  /** Cucumber definition of the Test issue. */
-  gherkin: Maybe<Scalars["String"]["output"]>;
-  /** Id of the Test Run. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Iterations of the Test Run. */
-  iterations: Maybe<TestRunIterationResults>;
-  /** Date when the test run was last modified. */
-  lastModified: Maybe<Scalars["String"]["output"]>;
-  /** Parameters of the Test Run. */
-  parameters: Maybe<Array<Maybe<TestRunParameter>>>;
-  /** Preconditions of the Test Run. */
-  preconditions: Maybe<TestRunPreconditionResults>;
-  /** Results of the Test Run. */
-  results: Maybe<Array<Maybe<Result>>>;
-  /** Cucumber Type definition of the Test Run. */
-  scenarioType: Maybe<Scalars["String"]["output"]>;
-  /** Started On date of the Test Run. */
-  startedOn: Maybe<Scalars["String"]["output"]>;
-  /** Status of the Test Run. */
-  status: Maybe<Status>;
-  /** Step definition of the Test Run. */
-  steps: Maybe<Array<Maybe<TestRunStep>>>;
-  /** Test of the Test Run. */
-  test: Maybe<Test>;
-  /** Test Execution of the Test Run. */
-  testExecution: Maybe<TestExecution>;
-  /** Test Type of the Test Run. */
-  testType: Maybe<TestType>;
-  /** Test version of the Test Run. */
-  testVersion: Maybe<TestVersion>;
-  /** Generic definition of the Test issue. */
-  unstructured: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Test Run type */
-export type TestRunIterationsArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Run type */
-export type TestRunPreconditionsArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Custom Fields Type */
-export type TestRunCustomFieldValue = {
-  __typename?: "TestRunCustomFieldValue";
-  id: Maybe<Scalars["String"]["output"]>;
-  name: Maybe<Scalars["String"]["output"]>;
-  values: Maybe<Scalars["JSON"]["output"]>;
-};
-
-/** Step CustomField type */
-export type TestRunCustomStepField = {
-  __typename?: "TestRunCustomStepField";
-  /** Id of the Custom Field. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Name of the Custom Field. */
-  name: Maybe<Scalars["String"]["output"]>;
-  /** Value of the Custom Field. */
-  value: Maybe<Scalars["JSON"]["output"]>;
-};
-
-/** Test Run Defect Operations Input */
-export type TestRunDefectOperationsInput = {
-  /** Defects to add to the Test Run Step. */
-  add: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  /** Defects to remove from the Test Run Step. */
-  remove: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Test Run Evidence Operations Input */
-export type TestRunEvidenceOperationsInput = {
-  /** Evidence to add to the Test Run Step. */
-  add: InputMaybe<Array<InputMaybe<AttachmentDataInput>>>;
-  /** Evidence filenames to remove from the Test Run Step. */
-  removeFilenames: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  /** Evidence ids to remove from the Test Run Step. */
-  removeIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Test Run iteration type */
-export type TestRunIteration = {
-  __typename?: "TestRunIteration";
-  /** Parameters of the iteration. */
-  parameters: Maybe<Array<Maybe<TestRunParameter>>>;
-  /** Rank of the iteration. */
-  rank: Maybe<Scalars["String"]["output"]>;
-  /** Status of the iteration. */
-  status: Maybe<StepStatus>;
-  /** Step results of the iteration. */
-  stepResults: Maybe<TestRunIterationStepResults>;
-};
-
-/** Test Run iteration type */
-export type TestRunIterationStepResultsArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Run iterations results type */
-export type TestRunIterationResults = {
-  __typename?: "TestRunIterationResults";
-  /** Maximum amount of iterations to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Iteration results. */
-  results: Maybe<Array<Maybe<TestRunIteration>>>;
-  /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of iterations. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Test Run iteration step result type */
-export type TestRunIterationStepResult = {
-  __typename?: "TestRunIterationStepResult";
-  /** Actual Result of the Test Run step. */
-  actualResult: Maybe<Scalars["String"]["output"]>;
-  /** Comment of the Test Run step. */
-  comment: Maybe<Scalars["String"]["output"]>;
-  /** Defects of the Test Run step. */
-  defects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Evidence of the Test Run step. */
-  evidence: Maybe<Array<Maybe<Evidence>>>;
-  /** Id of the Test Run step. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Status of the Test Run step. */
-  status: Maybe<StepStatus>;
-};
-
-/** Test Run iteration step results results type */
-export type TestRunIterationStepResults = {
-  __typename?: "TestRunIterationStepResults";
-  /** Maximum amount of step results to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Step results. */
-  results: Maybe<Array<Maybe<TestRunIterationStepResult>>>;
-  /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of steps. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Test Run parameter type */
-export type TestRunParameter = {
-  __typename?: "TestRunParameter";
-  name: Maybe<Scalars["String"]["output"]>;
-  value: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Test Run Precondition type */
-export type TestRunPrecondition = {
-  __typename?: "TestRunPrecondition";
-  /** Precondition definition. */
-  definition: Maybe<Scalars["String"]["output"]>;
-  /** Precondition of the Test Run. */
-  preconditionRef: Maybe<Precondition>;
-};
-
-/** Precondition Results type */
-export type TestRunPreconditionResults = {
-  __typename?: "TestRunPreconditionResults";
-  /** Maximum amount of Preconditions to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Precondition results. */
-  results: Maybe<Array<Maybe<TestRunPrecondition>>>;
-  /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of preconditions. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Test Run Results type */
-export type TestRunResults = {
-  __typename?: "TestRunResults";
-  /** The maximum amount of Test Runs to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Test Run results. */
-  results: Maybe<Array<Maybe<TestRun>>>;
-  /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of Test Runs. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Test Run Step Type */
-export type TestRunStep = {
-  __typename?: "TestRunStep";
-  /** Action of the Test Run Step. */
-  action: Maybe<Scalars["String"]["output"]>;
-  /** Actual Result of the Test Run Step. */
-  actualResult: Maybe<Scalars["String"]["output"]>;
-  /** Attachments of the Test Run Step. */
-  attachments: Maybe<Array<Maybe<Attachment>>>;
-  /** Comment of the Test Run Step. */
-  comment: Maybe<Scalars["String"]["output"]>;
-  /** Custom Fields of the Test Run Step. */
-  customFields: Maybe<Array<Maybe<TestRunCustomStepField>>>;
-  /** Data of the Test Run Step. */
-  data: Maybe<Scalars["String"]["output"]>;
-  /** Defects of the Test Run Step. */
-  defects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Evidence of the Test Run Step. */
-  evidence: Maybe<Array<Maybe<Evidence>>>;
-  /** Id of the Test Run Step. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /** Result of the Test Run Step. */
-  result: Maybe<Scalars["String"]["output"]>;
-  /** Status of the Test Run Step. */
-  status: Maybe<StepStatus>;
-};
-
-/** Test Set type */
-export type TestSet = {
-  __typename?: "TestSet";
-  /** List of Xray History results for the issue */
-  history: Maybe<XrayHistoryResults>;
-  /** Issue id of the Test Set Issue. */
-  issueId: Maybe<Scalars["String"]["output"]>;
-  /** Extra Jira information of the Test Set Issue. */
-  jira: Maybe<Scalars["JSON"]["output"]>;
-  /** Date when the test set was last modified. */
-  lastModified: Maybe<Scalars["String"]["output"]>;
-  /** Project id of the Test Set Issue. */
-  projectId: Maybe<Scalars["String"]["output"]>;
-  /** List of Tests associated with the Test Set Issue. */
-  tests: Maybe<TestResults>;
-};
-
-/** Test Set type */
-export type TestSetHistoryArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Set type */
-export type TestSetJiraArgs = {
-  fields: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-};
-
-/** Test Set type */
-export type TestSetTestsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
-
-/** Test Set Results */
-export type TestSetResults = {
-  __typename?: "TestSetResults";
-  /** Maximum amount of test sets to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Test Set issue results. */
-  results: Maybe<Array<Maybe<TestSet>>>;
-  /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of issues. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
-
-/** Test Status Type */
-export type TestStatusType = {
-  __typename?: "TestStatusType";
-  /** Color of the Test Status. */
-  color: Maybe<Scalars["String"]["output"]>;
-  /** Description of the Test Status. */
-  description: Maybe<Scalars["String"]["output"]>;
-  /** Whether the status is final or not. */
-  final: Maybe<Scalars["Boolean"]["output"]>;
-  /** Name of the Test Status. */
-  name: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Test Type type */
-export type TestType = {
-  __typename?: "TestType";
-  /** Id of the Test Type. */
-  id: Maybe<Scalars["String"]["output"]>;
-  /**
-   * Kind of the Test Type.
-   * Possible values are "Gherkin", "Steps" or "Unstructured".
-   */
-  kind: Maybe<Scalars["String"]["output"]>;
-  /** Name of the Test Type. */
-  name: Maybe<Scalars["String"]["output"]>;
-};
-
-/** Test Type input */
+  get filename(): $Field<"filename", string | null | undefined> {
+    return this.$_select("filename") as any;
+  }
+
+  /**
+   * Id of the attachment.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * If the file is stored in Jira.
+   */
+  get storedInJira(): $Field<"storedInJira", boolean | null | undefined> {
+    return this.$_select("storedInJira") as any;
+  }
+}
+
+/**
+ * Step CustomField type
+ */
+export class CustomStepField extends $Base<"CustomStepField"> {
+  constructor() {
+    super("CustomStepField");
+  }
+
+  /**
+   * Id of the Custom Field.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Name of the Custom Field.
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Value of the Custom Field.
+   */
+  get value(): $Field<"value", JSON | null | undefined> {
+    return this.$_select("value") as any;
+  }
+}
+
+/**
+ * Test Repository folder type.
+ */
+export class Folder extends $Base<"Folder"> {
+  constructor() {
+    super("Folder");
+  }
+
+  /**
+   * Folder name
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Folder path
+   */
+  get path(): $Field<"path", string | null | undefined> {
+    return this.$_select("path") as any;
+  }
+}
+
+/**
+ * Precondition Results type
+ */
+export class PreconditionResults extends $Base<"PreconditionResults"> {
+  constructor() {
+    super("PreconditionResults");
+  }
+
+  /**
+   * Maximum amount of Preconditions to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Precondition issue results.
+   */
+  results<Sel extends Selection<Precondition>>(
+    selectorFn: (s: Precondition) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Precondition()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of issues.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Precondition issue type
+ */
+export class Precondition extends $Base<"Precondition"> {
+  constructor() {
+    super("Precondition");
+  }
+
+  /**
+   * Definition of the Precondition issue.
+   */
+  get definition(): $Field<"definition", string | null | undefined> {
+    return this.$_select("definition") as any;
+  }
+
+  /**
+   * Test Repository folder of the Precondition.
+   */
+  folder<Sel extends Selection<Folder>>(
+    selectorFn: (s: Folder) => [...Sel]
+  ): $Field<"folder", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Folder()),
+    };
+    return this.$_select("folder", options as any) as any;
+  }
+
+  /**
+   * List of Xray History results for the issue
+   */
+  history<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<XrayHistoryResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: XrayHistoryResults) => [...Sel]
+  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new XrayHistoryResults()),
+    };
+    return this.$_select("history", options as any) as any;
+  }
+
+  /**
+   * Id of the Precondition issue.
+   */
+  get issueId(): $Field<"issueId", string | null | undefined> {
+    return this.$_select("issueId") as any;
+  }
+
+  /**
+   * Extra Jira information of the Precondition Issue.
+   */
+  jira<
+    Args extends VariabledInput<{
+      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >
+  ): $Field<"jira", JSON | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        fields: "[String]",
+      },
+      args,
+    };
+    return this.$_select("jira", options as any) as any;
+  }
+
+  /**
+   * Date when the precondition was last modified.
+   */
+  get lastModified(): $Field<"lastModified", string | null | undefined> {
+    return this.$_select("lastModified") as any;
+  }
+
+  /**
+   * Precondition Type of the Precondition issue.
+   */
+  preconditionType<Sel extends Selection<TestType>>(
+    selectorFn: (s: TestType) => [...Sel]
+  ): $Field<"preconditionType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestType()),
+    };
+    return this.$_select("preconditionType", options as any) as any;
+  }
+
+  /**
+   * Project id of the Precondition issue.
+   */
+  get projectId(): $Field<"projectId", string | null | undefined> {
+    return this.$_select("projectId") as any;
+  }
+
+  /**
+   * List of the Test versions associated with the Precondition issue.
+   */
+  testVersions<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+      archived?: boolean | null | undefined;
+      testTypeId?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestVersionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+        archived?: boolean | null | undefined;
+        testTypeId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestVersionResults) => [...Sel]
+  ): $Field<"testVersions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+        archived: "Boolean",
+        testTypeId: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestVersionResults()),
+    };
+    return this.$_select("testVersions", options as any) as any;
+  }
+
+  /**
+   * List of the Tests associated with the Precondition issue.
+   */
+  tests<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestResults) => [...Sel]
+  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestResults()),
+    };
+    return this.$_select("tests", options as any) as any;
+  }
+}
+
+/**
+ * Test Results type
+ */
+export class TestResults extends $Base<"TestResults"> {
+  constructor() {
+    super("TestResults");
+  }
+
+  /**
+   * The maximum amount of Tests to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Test issue results.
+   */
+  results<Sel extends Selection<Test>>(
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Test()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * The index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of issues.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+
+  /**
+   * Warnings generated if you have a invalid Test
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Test version results type
+ */
+export class TestVersionResults extends $Base<"TestVersionResults"> {
+  constructor() {
+    super("TestVersionResults");
+  }
+
+  /**
+   * The maximum amount of Test versions to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Test version results.
+   */
+  results<Sel extends Selection<TestVersion>>(
+    selectorFn: (s: TestVersion) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestVersion()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * The index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of Test versions.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+export class TestVersion extends $Base<"TestVersion"> {
+  constructor() {
+    super("TestVersion");
+  }
+
+  /**
+   * If is an archived Test version.
+   */
+  get archived(): $Field<"archived", boolean> {
+    return this.$_select("archived") as any;
+  }
+
+  /**
+   * If is the default Test version.
+   */
+  get default(): $Field<"default", boolean> {
+    return this.$_select("default") as any;
+  }
+
+  /**
+   * Gherkin definition of the Test version.
+   */
+  get gherkin(): $Field<"gherkin", string | null | undefined> {
+    return this.$_select("gherkin") as any;
+  }
+
+  /**
+   * Number of the Test version.
+   */
+  get id(): $Field<"id", number> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Date when the Test version was last modified.
+   */
+  get lastModified(): $Field<"lastModified", string | null | undefined> {
+    return this.$_select("lastModified") as any;
+  }
+
+  /**
+   * Name of the Test version.
+   */
+  get name(): $Field<"name", string> {
+    return this.$_select("name") as any;
+  }
+
+  preconditions<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<PreconditionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: PreconditionResults) => [...Sel]
+  ): $Field<"preconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new PreconditionResults()),
+    };
+    return this.$_select("preconditions", options as any) as any;
+  }
+
+  /**
+ * Gherkin type of the Test version.
+Possible values: 'scenario' or 'scenario_outline'.
+ */
+  get scenarioType(): $Field<"scenarioType", string | null | undefined> {
+    return this.$_select("scenarioType") as any;
+  }
+
+  /**
+   * Step definition of the Test version.
+   */
+  steps<Sel extends Selection<Step>>(
+    selectorFn: (s: Step) => [...Sel]
+  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Step()),
+    };
+    return this.$_select("steps", options as any) as any;
+  }
+
+  test<Sel extends Selection<Test>>(
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<"test", GetOutput<Sel>, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Test()),
+    };
+    return this.$_select("test", options as any) as any;
+  }
+
+  /**
+   * List of Test Executions associated with the Test version.
+   */
+  testExecutions<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestExecutionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestExecutionResults) => [...Sel]
+  ): $Field<"testExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestExecutionResults()),
+    };
+    return this.$_select("testExecutions", options as any) as any;
+  }
+
+  testRuns<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestRunResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunResults) => [...Sel]
+  ): $Field<"testRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestRunResults()),
+    };
+    return this.$_select("testRuns", options as any) as any;
+  }
+
+  /**
+   * Test type of the Test version.
+   */
+  testType<Sel extends Selection<TestType>>(
+    selectorFn: (s: TestType) => [...Sel]
+  ): $Field<"testType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestType()),
+    };
+    return this.$_select("testType", options as any) as any;
+  }
+
+  /**
+   * Unstructured definition of the Test version.
+   */
+  get unstructured(): $Field<"unstructured", string | null | undefined> {
+    return this.$_select("unstructured") as any;
+  }
+}
+
+/**
+ * Test Execution Results Type
+ */
+export class TestExecutionResults extends $Base<"TestExecutionResults"> {
+  constructor() {
+    super("TestExecutionResults");
+  }
+
+  /**
+   * Maximum amount of Test Executions to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Test Execution issue results.
+   */
+  results<Sel extends Selection<TestExecution>>(
+    selectorFn: (s: TestExecution) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestExecution()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of issues.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Test Execution issue type
+ */
+export class TestExecution extends $Base<"TestExecution"> {
+  constructor() {
+    super("TestExecution");
+  }
+
+  /**
+   * List of Xray History results for the issue
+   */
+  history<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<XrayHistoryResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: XrayHistoryResults) => [...Sel]
+  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new XrayHistoryResults()),
+    };
+    return this.$_select("history", options as any) as any;
+  }
+
+  /**
+   * Id of the Test Execution issue.
+   */
+  get issueId(): $Field<"issueId", string | null | undefined> {
+    return this.$_select("issueId") as any;
+  }
+
+  /**
+   * Extra Jira information of the Test Execution Issue.
+   */
+  jira<
+    Args extends VariabledInput<{
+      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >
+  ): $Field<"jira", JSON | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        fields: "[String]",
+      },
+      args,
+    };
+    return this.$_select("jira", options as any) as any;
+  }
+
+  /**
+   * Date when the test exec was last modified.
+   */
+  get lastModified(): $Field<"lastModified", string | null | undefined> {
+    return this.$_select("lastModified") as any;
+  }
+
+  /**
+   * Project id of the Test Execution issue.
+   */
+  get projectId(): $Field<"projectId", string | null | undefined> {
+    return this.$_select("projectId") as any;
+  }
+
+  /**
+   * Test Environments of the Test Execution.
+   */
+  get testEnvironments(): $Field<
+    "testEnvironments",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("testEnvironments") as any;
+  }
+
+  /**
+   * List of Test Plans associated with the Test Execution Issue.
+   */
+  testPlans<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestPlanResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestPlanResults) => [...Sel]
+  ): $Field<"testPlans", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestPlanResults()),
+    };
+    return this.$_select("testPlans", options as any) as any;
+  }
+
+  /**
+   * List of Test Runs for the Test Execution Issue.
+   */
+  testRuns<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestRunResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunResults) => [...Sel]
+  ): $Field<"testRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestRunResults()),
+    };
+    return this.$_select("testRuns", options as any) as any;
+  }
+
+  /**
+   * List of Tests associated with the Test Execution Issue.
+   */
+  tests<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestResults) => [...Sel]
+  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestResults()),
+    };
+    return this.$_select("tests", options as any) as any;
+  }
+}
+
+/**
+ * Test Plan Results type
+ */
+export class TestPlanResults extends $Base<"TestPlanResults"> {
+  constructor() {
+    super("TestPlanResults");
+  }
+
+  /**
+   * Maximum amount of Test Plans to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Test Plan issue results.
+   */
+  results<Sel extends Selection<TestPlan>>(
+    selectorFn: (s: TestPlan) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestPlan()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of issues.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Test Plan issue type
+ */
+export class TestPlan extends $Base<"TestPlan"> {
+  constructor() {
+    super("TestPlan");
+  }
+
+  /**
+   * Folder structure of the Test Plan.
+   */
+  folders<Sel extends Selection<FolderResults>>(
+    selectorFn: (s: FolderResults) => [...Sel]
+  ): $Field<"folders", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new FolderResults()),
+    };
+    return this.$_select("folders", options as any) as any;
+  }
+
+  /**
+   * List of Xray History results for the issue
+   */
+  history<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<XrayHistoryResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: XrayHistoryResults) => [...Sel]
+  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new XrayHistoryResults()),
+    };
+    return this.$_select("history", options as any) as any;
+  }
+
+  /**
+   * Id of the Test Plan issue.
+   */
+  get issueId(): $Field<"issueId", string | null | undefined> {
+    return this.$_select("issueId") as any;
+  }
+
+  /**
+   * Extra Jira information of the Test Plan issue.
+   */
+  jira<
+    Args extends VariabledInput<{
+      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >
+  ): $Field<"jira", JSON | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        fields: "[String]",
+      },
+      args,
+    };
+    return this.$_select("jira", options as any) as any;
+  }
+
+  /**
+   * Date when the test plan was last modified.
+   */
+  get lastModified(): $Field<"lastModified", string | null | undefined> {
+    return this.$_select("lastModified") as any;
+  }
+
+  /**
+   * Project id of the Test Plan issue.
+   */
+  get projectId(): $Field<"projectId", string | null | undefined> {
+    return this.$_select("projectId") as any;
+  }
+
+  /**
+   * List of Test Executions associated with the Test Plan issue.
+   */
+  testExecutions<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestExecutionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestExecutionResults) => [...Sel]
+  ): $Field<"testExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestExecutionResults()),
+    };
+    return this.$_select("testExecutions", options as any) as any;
+  }
+
+  /**
+   * List of Tests associated with the Test Plan issue.
+   */
+  tests<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestResults) => [...Sel]
+  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestResults()),
+    };
+    return this.$_select("tests", options as any) as any;
+  }
+}
+
+/**
+ * Xray History Results type
+ */
+export class XrayHistoryResults extends $Base<"XrayHistoryResults"> {
+  constructor() {
+    super("XrayHistoryResults");
+  }
+
+  /**
+   * Maximum amount of History results to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Precondition issue results.
+   */
+  results<Sel extends Selection<XrayHistoryEntry>>(
+    selectorFn: (s: XrayHistoryEntry) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new XrayHistoryEntry()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of issues.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Xray History Entry type
+ */
+export class XrayHistoryEntry extends $Base<"XrayHistoryEntry"> {
+  constructor() {
+    super("XrayHistoryEntry");
+  }
+
+  /**
+   * Action performed.
+   */
+  get action(): $Field<"action", string | null | undefined> {
+    return this.$_select("action") as any;
+  }
+
+  /**
+   * Details of the change(s).
+   */
+  changes<Sel extends Selection<Changes>>(
+    selectorFn: (s: Changes) => [...Sel]
+  ): $Field<"changes", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Changes()),
+    };
+    return this.$_select("changes", options as any) as any;
+  }
+
+  /**
+   * Date of change(s).
+   */
+  get date(): $Field<"date", string | null | undefined> {
+    return this.$_select("date") as any;
+  }
+
+  /**
+   * User that performed the change(s).
+   */
+  get user(): $Field<"user", string | null | undefined> {
+    return this.$_select("user") as any;
+  }
+
+  /**
+   * Test Version that the changes refer to (if applicable).
+   */
+  get version(): $Field<"version", string | null | undefined> {
+    return this.$_select("version") as any;
+  }
+}
+
+/**
+ * Xray History Changes type
+ */
+export class Changes extends $Base<"Changes"> {
+  constructor() {
+    super("Changes");
+  }
+
+  /**
+   * Change details.
+   */
+  get change(): $Field<"change", string | null | undefined> {
+    return this.$_select("change") as any;
+  }
+
+  /**
+   * Field the change refers to.
+   */
+  get field(): $Field<"field", string | null | undefined> {
+    return this.$_select("field") as any;
+  }
+}
+
+/**
+ * Test Run Results type
+ */
+export class TestRunResults extends $Base<"TestRunResults"> {
+  constructor() {
+    super("TestRunResults");
+  }
+
+  /**
+   * The maximum amount of Test Runs to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Test Run results.
+   */
+  results<Sel extends Selection<TestRun>>(
+    selectorFn: (s: TestRun) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRun()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * The index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of Test Runs.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Test Run type
+ */
+export class TestRun extends $Base<"TestRun"> {
+  constructor() {
+    super("TestRun");
+  }
+
+  /**
+   * User's account id assigned to the Test Run. This is user assigned to the Test Run, not taking into account the assignee of the test execution.
+   */
+  get assigneeId(): $Field<"assigneeId", string | null | undefined> {
+    return this.$_select("assigneeId") as any;
+  }
+
+  /**
+   * Comment definition of the Test Run.
+   */
+  get comment(): $Field<"comment", string | null | undefined> {
+    return this.$_select("comment") as any;
+  }
+
+  /**
+   * Custom Fields of the Test Run.
+   */
+  customFields<Sel extends Selection<TestRunCustomFieldValue>>(
+    selectorFn: (s: TestRunCustomFieldValue) => [...Sel]
+  ): $Field<"customFields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRunCustomFieldValue()),
+    };
+    return this.$_select("customFields", options as any) as any;
+  }
+
+  /**
+   * Defects of the Test Run.
+   */
+  get defects(): $Field<"defects", Readonly<Array<string | null | undefined>> | null | undefined> {
+    return this.$_select("defects") as any;
+  }
+
+  /**
+   * Evidence of the Test Run.
+   */
+  evidence<Sel extends Selection<Evidence>>(
+    selectorFn: (s: Evidence) => [...Sel]
+  ): $Field<"evidence", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Evidence()),
+    };
+    return this.$_select("evidence", options as any) as any;
+  }
+
+  /**
+   * Examples of the Test Run.
+   */
+  examples<Sel extends Selection<Example>>(
+    selectorFn: (s: Example) => [...Sel]
+  ): $Field<"examples", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Example()),
+    };
+    return this.$_select("examples", options as any) as any;
+  }
+
+  /**
+   * User's account id that executed the Test Run.
+   */
+  get executedById(): $Field<"executedById", string | null | undefined> {
+    return this.$_select("executedById") as any;
+  }
+
+  /**
+   * Finished On date of the Test Run.
+   */
+  get finishedOn(): $Field<"finishedOn", string | null | undefined> {
+    return this.$_select("finishedOn") as any;
+  }
+
+  /**
+   * Cucumber definition of the Test issue.
+   */
+  get gherkin(): $Field<"gherkin", string | null | undefined> {
+    return this.$_select("gherkin") as any;
+  }
+
+  /**
+   * Id of the Test Run.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Iterations of the Test Run.
+   */
+  iterations<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestRunIterationResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunIterationResults) => [...Sel]
+  ): $Field<"iterations", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestRunIterationResults()),
+    };
+    return this.$_select("iterations", options as any) as any;
+  }
+
+  /**
+   * Date when the test run was last modified.
+   */
+  get lastModified(): $Field<"lastModified", string | null | undefined> {
+    return this.$_select("lastModified") as any;
+  }
+
+  /**
+   * Parameters of the Test Run.
+   */
+  parameters<Sel extends Selection<TestRunParameter>>(
+    selectorFn: (s: TestRunParameter) => [...Sel]
+  ): $Field<"parameters", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRunParameter()),
+    };
+    return this.$_select("parameters", options as any) as any;
+  }
+
+  /**
+   * Preconditions of the Test Run.
+   */
+  preconditions<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestRunPreconditionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunPreconditionResults) => [...Sel]
+  ): $Field<"preconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestRunPreconditionResults()),
+    };
+    return this.$_select("preconditions", options as any) as any;
+  }
+
+  /**
+   * Results of the Test Run.
+   */
+  results<Sel extends Selection<Result>>(
+    selectorFn: (s: Result) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Result()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Cucumber Type definition of the Test Run.
+   */
+  get scenarioType(): $Field<"scenarioType", string | null | undefined> {
+    return this.$_select("scenarioType") as any;
+  }
+
+  /**
+   * Started On date of the Test Run.
+   */
+  get startedOn(): $Field<"startedOn", string | null | undefined> {
+    return this.$_select("startedOn") as any;
+  }
+
+  /**
+   * Status of the Test Run.
+   */
+  status<Sel extends Selection<Status>>(
+    selectorFn: (s: Status) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Status()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+
+  /**
+   * Step definition of the Test Run.
+   */
+  steps<Sel extends Selection<TestRunStep>>(
+    selectorFn: (s: TestRunStep) => [...Sel]
+  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRunStep()),
+    };
+    return this.$_select("steps", options as any) as any;
+  }
+
+  /**
+   * Test of the Test Run.
+   */
+  test<Sel extends Selection<Test>>(
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<"test", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Test()),
+    };
+    return this.$_select("test", options as any) as any;
+  }
+
+  /**
+   * Test Execution of the Test Run.
+   */
+  testExecution<Sel extends Selection<TestExecution>>(
+    selectorFn: (s: TestExecution) => [...Sel]
+  ): $Field<"testExecution", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestExecution()),
+    };
+    return this.$_select("testExecution", options as any) as any;
+  }
+
+  /**
+   * Test Type of the Test Run.
+   */
+  testType<Sel extends Selection<TestType>>(
+    selectorFn: (s: TestType) => [...Sel]
+  ): $Field<"testType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestType()),
+    };
+    return this.$_select("testType", options as any) as any;
+  }
+
+  /**
+   * Test version of the Test Run.
+   */
+  testVersion<Sel extends Selection<TestVersion>>(
+    selectorFn: (s: TestVersion) => [...Sel]
+  ): $Field<"testVersion", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestVersion()),
+    };
+    return this.$_select("testVersion", options as any) as any;
+  }
+
+  /**
+   * Generic definition of the Test issue.
+   */
+  get unstructured(): $Field<"unstructured", string | null | undefined> {
+    return this.$_select("unstructured") as any;
+  }
+}
+
+/**
+ * Status Type
+ */
+export class Status extends $Base<"Status"> {
+  constructor() {
+    super("Status");
+  }
+
+  /**
+   * Color of the Status.
+   */
+  get color(): $Field<"color", string | null | undefined> {
+    return this.$_select("color") as any;
+  }
+
+  /**
+   * Coverage mapping of the Status.
+   */
+  get coverageStatus(): $Field<"coverageStatus", string | null | undefined> {
+    return this.$_select("coverageStatus") as any;
+  }
+
+  /**
+   * Description of the Status.
+   */
+  get description(): $Field<"description", string | null | undefined> {
+    return this.$_select("description") as any;
+  }
+
+  /**
+   * Whether the Status is final or not.
+   */
+  get final(): $Field<"final", boolean | null | undefined> {
+    return this.$_select("final") as any;
+  }
+
+  /**
+   * Name of the Status.
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+}
+
+/**
+ * Evidence Type
+ */
+export class Evidence extends $Base<"Evidence"> {
+  constructor() {
+    super("Evidence");
+  }
+
+  /**
+   * Evidence creation timestamp.
+   */
+  get createdOn(): $Field<"createdOn", string | null | undefined> {
+    return this.$_select("createdOn") as any;
+  }
+
+  /**
+   * Download link of the Evidence.
+   */
+  get downloadLink(): $Field<"downloadLink", string | null | undefined> {
+    return this.$_select("downloadLink") as any;
+  }
+
+  /**
+   * Filename of the Evidence.
+   */
+  get filename(): $Field<"filename", string | null | undefined> {
+    return this.$_select("filename") as any;
+  }
+
+  /**
+   * Id of the Evidence.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * File size in bytes.
+   */
+  get size(): $Field<"size", number | null | undefined> {
+    return this.$_select("size") as any;
+  }
+
+  /**
+   * If file is stored in Jira
+   */
+  get storedInJira(): $Field<"storedInJira", boolean | null | undefined> {
+    return this.$_select("storedInJira") as any;
+  }
+}
+
+/**
+ * Test Run Step Type
+ */
+export class TestRunStep extends $Base<"TestRunStep"> {
+  constructor() {
+    super("TestRunStep");
+  }
+
+  /**
+   * Action of the Test Run Step.
+   */
+  get action(): $Field<"action", string | null | undefined> {
+    return this.$_select("action") as any;
+  }
+
+  /**
+   * Actual Result of the Test Run Step.
+   */
+  get actualResult(): $Field<"actualResult", string | null | undefined> {
+    return this.$_select("actualResult") as any;
+  }
+
+  /**
+   * Attachments of the Test Run Step.
+   */
+  attachments<Sel extends Selection<Attachment>>(
+    selectorFn: (s: Attachment) => [...Sel]
+  ): $Field<"attachments", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Attachment()),
+    };
+    return this.$_select("attachments", options as any) as any;
+  }
+
+  /**
+   * Comment of the Test Run Step.
+   */
+  get comment(): $Field<"comment", string | null | undefined> {
+    return this.$_select("comment") as any;
+  }
+
+  /**
+   * Custom Fields of the Test Run Step.
+   */
+  customFields<Sel extends Selection<TestRunCustomStepField>>(
+    selectorFn: (s: TestRunCustomStepField) => [...Sel]
+  ): $Field<"customFields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRunCustomStepField()),
+    };
+    return this.$_select("customFields", options as any) as any;
+  }
+
+  /**
+   * Data of the Test Run Step.
+   */
+  get data(): $Field<"data", string | null | undefined> {
+    return this.$_select("data") as any;
+  }
+
+  /**
+   * Defects of the Test Run Step.
+   */
+  get defects(): $Field<"defects", Readonly<Array<string | null | undefined>> | null | undefined> {
+    return this.$_select("defects") as any;
+  }
+
+  /**
+   * Evidence of the Test Run Step.
+   */
+  evidence<Sel extends Selection<Evidence>>(
+    selectorFn: (s: Evidence) => [...Sel]
+  ): $Field<"evidence", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Evidence()),
+    };
+    return this.$_select("evidence", options as any) as any;
+  }
+
+  /**
+   * Id of the Test Run Step.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Result of the Test Run Step.
+   */
+  get result(): $Field<"result", string | null | undefined> {
+    return this.$_select("result") as any;
+  }
+
+  /**
+   * Status of the Test Run Step.
+   */
+  status<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+}
+
+/**
+ * Step Status Type
+ */
+export class StepStatus extends $Base<"StepStatus"> {
+  constructor() {
+    super("StepStatus");
+  }
+
+  /**
+   * Color of the Status.
+   */
+  get color(): $Field<"color", string | null | undefined> {
+    return this.$_select("color") as any;
+  }
+
+  /**
+   * Description of the Status.
+   */
+  get description(): $Field<"description", string | null | undefined> {
+    return this.$_select("description") as any;
+  }
+
+  /**
+   * Name of the Status.
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * The test status to which the step status is mapped to.
+   */
+  testStatus<Sel extends Selection<Status>>(
+    selectorFn: (s: Status) => [...Sel]
+  ): $Field<"testStatus", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Status()),
+    };
+    return this.$_select("testStatus", options as any) as any;
+  }
+}
+
+/**
+ * Step CustomField type
+ */
+export class TestRunCustomStepField extends $Base<"TestRunCustomStepField"> {
+  constructor() {
+    super("TestRunCustomStepField");
+  }
+
+  /**
+   * Id of the Custom Field.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Name of the Custom Field.
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Value of the Custom Field.
+   */
+  get value(): $Field<"value", JSON | null | undefined> {
+    return this.$_select("value") as any;
+  }
+}
+
+/**
+ * Example Type
+ */
+export class Example extends $Base<"Example"> {
+  constructor() {
+    super("Example");
+  }
+
+  /**
+   * Duration of the Example.
+   */
+  get duration(): $Field<"duration", number | null | undefined> {
+    return this.$_select("duration") as any;
+  }
+
+  /**
+   * Id of the Example.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Status of the Example.
+   */
+  status<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+}
+
+/**
+ * Result Type
+ */
+export class Result extends $Base<"Result"> {
+  constructor() {
+    super("Result");
+  }
+
+  /**
+   * Backgrounds of the Results.
+   */
+  backgrounds<Sel extends Selection<ResultsStep>>(
+    selectorFn: (s: ResultsStep) => [...Sel]
+  ): $Field<"backgrounds", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ResultsStep()),
+    };
+    return this.$_select("backgrounds", options as any) as any;
+  }
+
+  /**
+   * Duration of the Result.
+   */
+  get duration(): $Field<"duration", number | null | undefined> {
+    return this.$_select("duration") as any;
+  }
+
+  /**
+   * Examples of the Result.
+   */
+  examples<Sel extends Selection<ResultsExample>>(
+    selectorFn: (s: ResultsExample) => [...Sel]
+  ): $Field<"examples", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ResultsExample()),
+    };
+    return this.$_select("examples", options as any) as any;
+  }
+
+  /**
+   * Hooks of the Results.
+   */
+  hooks<Sel extends Selection<ResultsStep>>(
+    selectorFn: (s: ResultsStep) => [...Sel]
+  ): $Field<"hooks", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ResultsStep()),
+    };
+    return this.$_select("hooks", options as any) as any;
+  }
+
+  /**
+   * Output if exist an error or a failure (JUNIT, XUNIT, NUNIT, TESTNG)
+   */
+  get log(): $Field<"log", string | null | undefined> {
+    return this.$_select("log") as any;
+  }
+
+  /**
+   * Name of the Result.
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Status of the Result.
+   */
+  status<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+
+  /**
+   * Steps of the Results.
+   */
+  steps<Sel extends Selection<ResultsStep>>(
+    selectorFn: (s: ResultsStep) => [...Sel]
+  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ResultsStep()),
+    };
+    return this.$_select("steps", options as any) as any;
+  }
+
+  /**
+   * Whether or not the Result was imported.
+   */
+  get wasImported(): $Field<"wasImported", string | null | undefined> {
+    return this.$_select("wasImported") as any;
+  }
+}
+
+/**
+ * Results Example Type
+ */
+export class ResultsExample extends $Base<"ResultsExample"> {
+  constructor() {
+    super("ResultsExample");
+  }
+
+  /**
+   * Backgrounds of the Results.
+   */
+  backgrounds<Sel extends Selection<ResultsStep>>(
+    selectorFn: (s: ResultsStep) => [...Sel]
+  ): $Field<"backgrounds", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ResultsStep()),
+    };
+    return this.$_select("backgrounds", options as any) as any;
+  }
+
+  /**
+   * Duration of the Result.
+   */
+  get duration(): $Field<"duration", number | null | undefined> {
+    return this.$_select("duration") as any;
+  }
+
+  /**
+   * Hooks of the Results.
+   */
+  hooks<Sel extends Selection<ResultsStep>>(
+    selectorFn: (s: ResultsStep) => [...Sel]
+  ): $Field<"hooks", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ResultsStep()),
+    };
+    return this.$_select("hooks", options as any) as any;
+  }
+
+  /**
+   * Status of the Result.
+   */
+  status<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+
+  /**
+   * Steps of the Results.
+   */
+  steps<Sel extends Selection<ResultsStep>>(
+    selectorFn: (s: ResultsStep) => [...Sel]
+  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ResultsStep()),
+    };
+    return this.$_select("steps", options as any) as any;
+  }
+
+  /**
+   * Whether or not the Result was imported.
+   */
+  get wasImported(): $Field<"wasImported", string | null | undefined> {
+    return this.$_select("wasImported") as any;
+  }
+}
+
+/**
+ * Results Step
+ */
+export class ResultsStep extends $Base<"ResultsStep"> {
+  constructor() {
+    super("ResultsStep");
+  }
+
+  /**
+   * Duration of the step.
+   */
+  get duration(): $Field<"duration", number | null | undefined> {
+    return this.$_select("duration") as any;
+  }
+
+  /**
+   * Embeddings of the step.
+   */
+  embeddings<Sel extends Selection<ResultsEmbedding>>(
+    selectorFn: (s: ResultsEmbedding) => [...Sel]
+  ): $Field<"embeddings", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ResultsEmbedding()),
+    };
+    return this.$_select("embeddings", options as any) as any;
+  }
+
+  /**
+   * Error of the step.
+   */
+  get error(): $Field<"error", string | null | undefined> {
+    return this.$_select("error") as any;
+  }
+
+  /**
+   * If a gherkin step, keyword of the gherkin step.
+   */
+  get keyword(): $Field<"keyword", string | null | undefined> {
+    return this.$_select("keyword") as any;
+  }
+
+  /**
+   * If a Robot step, output of the Robot step.
+   */
+  get log(): $Field<"log", string | null | undefined> {
+    return this.$_select("log") as any;
+  }
+
+  /**
+   * Name of the step.
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Status of the step.
+   */
+  status<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+}
+
+/**
+ * Results Embedding
+ */
+export class ResultsEmbedding extends $Base<"ResultsEmbedding"> {
+  constructor() {
+    super("ResultsEmbedding");
+  }
+
+  /**
+   * Data of the Embedding. Base64 format.
+   */
+  get data(): $Field<"data", string | null | undefined> {
+    return this.$_select("data") as any;
+  }
+
+  /**
+   * Link to download the embedding if no data is present
+   */
+  get downloadLink(): $Field<"downloadLink", string | null | undefined> {
+    return this.$_select("downloadLink") as any;
+  }
+
+  /**
+   * Filename of the Embedding.
+   */
+  get filename(): $Field<"filename", string | null | undefined> {
+    return this.$_select("filename") as any;
+  }
+
+  /**
+   * Mime Type of the Embedding.
+   */
+  get mimeType(): $Field<"mimeType", string | null | undefined> {
+    return this.$_select("mimeType") as any;
+  }
+}
+
+/**
+ * Precondition Results type
+ */
+export class TestRunPreconditionResults extends $Base<"TestRunPreconditionResults"> {
+  constructor() {
+    super("TestRunPreconditionResults");
+  }
+
+  /**
+   * Maximum amount of Preconditions to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Precondition results.
+   */
+  results<Sel extends Selection<TestRunPrecondition>>(
+    selectorFn: (s: TestRunPrecondition) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRunPrecondition()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of preconditions.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Test Run Precondition type
+ */
+export class TestRunPrecondition extends $Base<"TestRunPrecondition"> {
+  constructor() {
+    super("TestRunPrecondition");
+  }
+
+  /**
+   * Precondition definition.
+   */
+  get definition(): $Field<"definition", string | null | undefined> {
+    return this.$_select("definition") as any;
+  }
+
+  /**
+   * Precondition of the Test Run.
+   */
+  preconditionRef<Sel extends Selection<Precondition>>(
+    selectorFn: (s: Precondition) => [...Sel]
+  ): $Field<"preconditionRef", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Precondition()),
+    };
+    return this.$_select("preconditionRef", options as any) as any;
+  }
+}
+
+/**
+ * Custom Fields Type
+ */
+export class TestRunCustomFieldValue extends $Base<"TestRunCustomFieldValue"> {
+  constructor() {
+    super("TestRunCustomFieldValue");
+  }
+
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  get values(): $Field<"values", JSON | null | undefined> {
+    return this.$_select("values") as any;
+  }
+}
+
+/**
+ * Test Run parameter type
+ */
+export class TestRunParameter extends $Base<"TestRunParameter"> {
+  constructor() {
+    super("TestRunParameter");
+  }
+
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  get value(): $Field<"value", string | null | undefined> {
+    return this.$_select("value") as any;
+  }
+}
+
+/**
+ * Test Run iterations results type
+ */
+export class TestRunIterationResults extends $Base<"TestRunIterationResults"> {
+  constructor() {
+    super("TestRunIterationResults");
+  }
+
+  /**
+   * Maximum amount of iterations to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Iteration results.
+   */
+  results<Sel extends Selection<TestRunIteration>>(
+    selectorFn: (s: TestRunIteration) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRunIteration()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of iterations.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Test Run iteration type
+ */
+export class TestRunIteration extends $Base<"TestRunIteration"> {
+  constructor() {
+    super("TestRunIteration");
+  }
+
+  /**
+   * Parameters of the iteration.
+   */
+  parameters<Sel extends Selection<TestRunParameter>>(
+    selectorFn: (s: TestRunParameter) => [...Sel]
+  ): $Field<"parameters", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRunParameter()),
+    };
+    return this.$_select("parameters", options as any) as any;
+  }
+
+  /**
+   * Rank of the iteration.
+   */
+  get rank(): $Field<"rank", string | null | undefined> {
+    return this.$_select("rank") as any;
+  }
+
+  /**
+   * Status of the iteration.
+   */
+  status<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+
+  /**
+   * Step results of the iteration.
+   */
+  stepResults<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestRunIterationStepResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunIterationStepResults) => [...Sel]
+  ): $Field<"stepResults", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestRunIterationStepResults()),
+    };
+    return this.$_select("stepResults", options as any) as any;
+  }
+}
+
+/**
+ * Test Run iteration step results results type
+ */
+export class TestRunIterationStepResults extends $Base<"TestRunIterationStepResults"> {
+  constructor() {
+    super("TestRunIterationStepResults");
+  }
+
+  /**
+   * Maximum amount of step results to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Step results.
+   */
+  results<Sel extends Selection<TestRunIterationStepResult>>(
+    selectorFn: (s: TestRunIterationStepResult) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestRunIterationStepResult()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of steps.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Test Run iteration step result type
+ */
+export class TestRunIterationStepResult extends $Base<"TestRunIterationStepResult"> {
+  constructor() {
+    super("TestRunIterationStepResult");
+  }
+
+  /**
+   * Actual Result of the Test Run step.
+   */
+  get actualResult(): $Field<"actualResult", string | null | undefined> {
+    return this.$_select("actualResult") as any;
+  }
+
+  /**
+   * Comment of the Test Run step.
+   */
+  get comment(): $Field<"comment", string | null | undefined> {
+    return this.$_select("comment") as any;
+  }
+
+  /**
+   * Defects of the Test Run step.
+   */
+  get defects(): $Field<"defects", Readonly<Array<string | null | undefined>> | null | undefined> {
+    return this.$_select("defects") as any;
+  }
+
+  /**
+   * Evidence of the Test Run step.
+   */
+  evidence<Sel extends Selection<Evidence>>(
+    selectorFn: (s: Evidence) => [...Sel]
+  ): $Field<"evidence", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Evidence()),
+    };
+    return this.$_select("evidence", options as any) as any;
+  }
+
+  /**
+   * Id of the Test Run step.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Status of the Test Run step.
+   */
+  status<Sel extends Selection<StepStatus>>(
+    selectorFn: (s: StepStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new StepStatus()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+}
+
+/**
+ * Test Set Results
+ */
+export class TestSetResults extends $Base<"TestSetResults"> {
+  constructor() {
+    super("TestSetResults");
+  }
+
+  /**
+   * Maximum amount of test sets to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Test Set issue results.
+   */
+  results<Sel extends Selection<TestSet>>(
+    selectorFn: (s: TestSet) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestSet()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * Index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of issues.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Test Set type
+ */
+export class TestSet extends $Base<"TestSet"> {
+  constructor() {
+    super("TestSet");
+  }
+
+  /**
+   * List of Xray History results for the issue
+   */
+  history<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<XrayHistoryResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: XrayHistoryResults) => [...Sel]
+  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new XrayHistoryResults()),
+    };
+    return this.$_select("history", options as any) as any;
+  }
+
+  /**
+   * Issue id of the Test Set Issue.
+   */
+  get issueId(): $Field<"issueId", string | null | undefined> {
+    return this.$_select("issueId") as any;
+  }
+
+  /**
+   * Extra Jira information of the Test Set Issue.
+   */
+  jira<
+    Args extends VariabledInput<{
+      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >
+  ): $Field<"jira", JSON | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        fields: "[String]",
+      },
+      args,
+    };
+    return this.$_select("jira", options as any) as any;
+  }
+
+  /**
+   * Date when the test set was last modified.
+   */
+  get lastModified(): $Field<"lastModified", string | null | undefined> {
+    return this.$_select("lastModified") as any;
+  }
+
+  /**
+   * Project id of the Test Set Issue.
+   */
+  get projectId(): $Field<"projectId", string | null | undefined> {
+    return this.$_select("projectId") as any;
+  }
+
+  /**
+   * List of Tests associated with the Test Set Issue.
+   */
+  tests<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestResults) => [...Sel]
+  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestResults()),
+    };
+    return this.$_select("tests", options as any) as any;
+  }
+}
+
+/**
+ * Coverable Issue Results type
+ */
+export class CoverableIssueResults extends $Base<"CoverableIssueResults"> {
+  constructor() {
+    super("CoverableIssueResults");
+  }
+
+  /**
+   * The maximum amount of Coverable Issues to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Test issue results.
+   */
+  results<Sel extends Selection<CoverableIssue>>(
+    selectorFn: (s: CoverableIssue) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new CoverableIssue()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * The index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of issues.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+
+  /**
+   * Warnings generated if you have a invalid Coverable Issue
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+export class CoverableIssue extends $Base<"CoverableIssue"> {
+  constructor() {
+    super("CoverableIssue");
+  }
+
+  /**
+   * Issue id of the Coverable Issue Issue.
+   */
+  get issueId(): $Field<"issueId", string | null | undefined> {
+    return this.$_select("issueId") as any;
+  }
+
+  /**
+ * Extra Jira information of the Coverable issue.
+
+Arguments
+fields: List of the fields to be displayed.
+ */
+  jira<
+    Args extends VariabledInput<{
+      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >
+  ): $Field<"jira", JSON, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        fields: "[String]",
+      },
+      args,
+    };
+    return this.$_select("jira", options as any) as any;
+  }
+
+  /**
+ * Test Coverage Status of the Coverable Issue. This status can be calculated based on latest status, version or Test Plan.
+
+Arguments
+environment: the environment for which to calculate the for status.
+isFinal: whether the final statuses has precedence over non-final.
+version: the version name for which to calculate the status for.
+testPlan: the Test Plan issue id for which to calculate the status for.
+ */
+  status<
+    Args extends VariabledInput<{
+      environment?: string | null | undefined;
+      isFinal?: boolean | null | undefined;
+      version?: string | null | undefined;
+      testPlan?: string | null | undefined;
+    }>,
+    Sel extends Selection<CoverageStatus>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        environment?: string | null | undefined;
+        isFinal?: boolean | null | undefined;
+        version?: string | null | undefined;
+        testPlan?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: CoverageStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  status<Sel extends Selection<CoverageStatus>>(
+    selectorFn: (s: CoverageStatus) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  status(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        environment: "String",
+        isFinal: "Boolean",
+        version: "String",
+        testPlan: "String",
+      },
+      args,
+
+      selection: selectorFn(new CoverageStatus()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+
+  /**
+ * List of Tests associated with the Coverable Issue issue.
+
+Arguments
+issueIds: the issue ids of the Tests.
+limit: the maximum amount of tests to be returned. The maximum is 100.
+start: the index of the first item to return in the page of results (page offset).
+ */
+  tests<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestResults) => [...Sel]
+  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestResults()),
+    };
+    return this.$_select("tests", options as any) as any;
+  }
+}
+
+export class CoverageStatus extends $Base<"CoverageStatus"> {
+  constructor() {
+    super("CoverageStatus");
+  }
+
+  /**
+   * Color of the Coverage Status
+   */
+  get color(): $Field<"color", string | null | undefined> {
+    return this.$_select("color") as any;
+  }
+
+  /**
+   * Description of the Coverage Status
+   */
+  get description(): $Field<"description", string | null | undefined> {
+    return this.$_select("description") as any;
+  }
+
+  /**
+   * Name of the Coverage Status
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+}
+
+/**
+ * Test Status Type
+ */
+export class TestStatusType extends $Base<"TestStatusType"> {
+  constructor() {
+    super("TestStatusType");
+  }
+
+  /**
+   * Color of the Test Status.
+   */
+  get color(): $Field<"color", string | null | undefined> {
+    return this.$_select("color") as any;
+  }
+
+  /**
+   * Description of the Test Status.
+   */
+  get description(): $Field<"description", string | null | undefined> {
+    return this.$_select("description") as any;
+  }
+
+  /**
+   * Whether the status is final or not.
+   */
+  get final(): $Field<"final", boolean | null | undefined> {
+    return this.$_select("final") as any;
+  }
+
+  /**
+   * Name of the Test Status.
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+}
+
+/**
+ * Test Type input
+ */
 export type TestTypeInput = {
-  /** Id of the Test Type. */
-  id: InputMaybe<Scalars["String"]["input"]>;
+  id?: string | null | undefined;
+  kind?: string | null | undefined;
+  name?: string | null | undefined;
+};
+
+/**
+ * Folder Search input
+ */
+export type FolderSearchInput = {
+  includeDescendants?: boolean | null | undefined;
+  path: string;
+  testPlanId?: string | null | undefined;
+};
+
+/**
+ * Expaded test issue type
+ */
+export class ExpandedTest extends $Base<"ExpandedTest"> {
+  constructor() {
+    super("ExpandedTest");
+  }
+
   /**
-   * Kind of the Test Type.
-   * Possible values are "Gherkin", "Steps" or "Unstructured".
+   * List of Coverable Issues associated with the Test issue
    */
-  kind: InputMaybe<Scalars["String"]["input"]>;
-  /** Name of the Test Type. */
-  name: InputMaybe<Scalars["String"]["input"]>;
-};
+  coverableIssues<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<CoverableIssueResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: CoverableIssueResults) => [...Sel]
+  ): $Field<"coverableIssues", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
 
-export type TestVersion = {
-  __typename?: "TestVersion";
-  /** If is an archived Test version. */
-  archived: Scalars["Boolean"]["output"];
-  /** If is the default Test version. */
-  default: Scalars["Boolean"]["output"];
-  /** Gherkin definition of the Test version. */
-  gherkin: Maybe<Scalars["String"]["output"]>;
-  /** Number of the Test version. */
-  id: Scalars["Int"]["output"];
-  /** Date when the Test version was last modified. */
-  lastModified: Maybe<Scalars["String"]["output"]>;
-  /** Name of the Test version. */
-  name: Scalars["String"]["output"];
-  preconditions: Maybe<PreconditionResults>;
+      selection: selectorFn(new CoverableIssueResults()),
+    };
+    return this.$_select("coverableIssues", options as any) as any;
+  }
+
   /**
-   * Gherkin type of the Test version.
-   * Possible values: 'scenario' or 'scenario_outline'.
+   * Test Repository folder of the Test.
    */
-  scenarioType: Maybe<Scalars["String"]["output"]>;
-  /** Step definition of the Test version. */
-  steps: Maybe<Array<Maybe<Step>>>;
-  test: Test;
-  /** List of Test Executions associated with the Test version. */
-  testExecutions: Maybe<TestExecutionResults>;
-  testRuns: Maybe<TestRunResults>;
-  /** Test type of the Test version. */
-  testType: Maybe<TestType>;
-  /** Unstructured definition of the Test version. */
-  unstructured: Maybe<Scalars["String"]["output"]>;
-};
+  folder<Sel extends Selection<Folder>>(
+    selectorFn: (s: Folder) => [...Sel]
+  ): $Field<"folder", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Folder()),
+    };
+    return this.$_select("folder", options as any) as any;
+  }
 
-export type TestVersionPreconditionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
+  /**
+   * Gherkin definition of the Test issue.
+   */
+  get gherkin(): $Field<"gherkin", string | null | undefined> {
+    return this.$_select("gherkin") as any;
+  }
 
-export type TestVersionTestExecutionsArgs = {
-  issueIds: InputMaybe<Array<InputMaybe<Scalars["String"]["input"]>>>;
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
+  /**
+   * List of Xray History results for the issue
+   */
+  history<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<XrayHistoryResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: XrayHistoryResults) => [...Sel]
+  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
 
-export type TestVersionTestRunsArgs = {
-  limit: Scalars["Int"]["input"];
-  start?: InputMaybe<Scalars["Int"]["input"]>;
-};
+      selection: selectorFn(new XrayHistoryResults()),
+    };
+    return this.$_select("history", options as any) as any;
+  }
 
-/** Test version results type */
-export type TestVersionResults = {
-  __typename?: "TestVersionResults";
-  /** The maximum amount of Test versions to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Test version results. */
-  results: Maybe<Array<Maybe<TestVersion>>>;
-  /** The index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of Test versions. */
-  total: Maybe<Scalars["Int"]["output"]>;
-};
+  /**
+   * Issue id of the Test issue.
+   */
+  get issueId(): $Field<"issueId", string | null | undefined> {
+    return this.$_select("issueId") as any;
+  }
 
-/** Test with Version input */
+  /**
+   * Extra Jira information of the Test issue.
+   */
+  jira<
+    Args extends VariabledInput<{
+      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >
+  ): $Field<"jira", JSON, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        fields: "[String]",
+      },
+      args,
+    };
+    return this.$_select("jira", options as any) as any;
+  }
+
+  /**
+   * Date when the test was last modified.
+   */
+  get lastModified(): $Field<"lastModified", string | null | undefined> {
+    return this.$_select("lastModified") as any;
+  }
+
+  /**
+   * List of Precondition associated with the Test issue.
+   */
+  preconditions<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<PreconditionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: PreconditionResults) => [...Sel]
+  ): $Field<"preconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new PreconditionResults()),
+    };
+    return this.$_select("preconditions", options as any) as any;
+  }
+
+  /**
+   * Project id of the Test issue.
+   */
+  get projectId(): $Field<"projectId", string | null | undefined> {
+    return this.$_select("projectId") as any;
+  }
+
+  /**
+ * Gherkin type of the Test issue.
+Possible values: 'scenario' or 'scenario_outline'.
+ */
+  get scenarioType(): $Field<"scenarioType", string | null | undefined> {
+    return this.$_select("scenarioType") as any;
+  }
+
+  /**
+   * Status of the Test. This status can be calculated based on latest status, version or Test Plan.
+   */
+  status<
+    Args extends VariabledInput<{
+      environment?: string | null | undefined;
+      isFinal?: boolean | null | undefined;
+      version?: string | null | undefined;
+      testPlan?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestStatusType>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        environment?: string | null | undefined;
+        isFinal?: boolean | null | undefined;
+        version?: string | null | undefined;
+        testPlan?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestStatusType) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  status<Sel extends Selection<TestStatusType>>(
+    selectorFn: (s: TestStatusType) => [...Sel]
+  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  status(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        environment: "String",
+        isFinal: "Boolean",
+        version: "String",
+        testPlan: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestStatusType()),
+    };
+    return this.$_select("status", options as any) as any;
+  }
+
+  /**
+   * Expanded step definition of the test.
+   */
+  steps<Sel extends Selection<ExpandedStep>>(
+    selectorFn: (s: ExpandedStep) => [...Sel]
+  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ExpandedStep()),
+    };
+    return this.$_select("steps", options as any) as any;
+  }
+
+  /**
+   * List of Test Executions associated with the Test issue.
+   */
+  testExecutions<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestExecutionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestExecutionResults) => [...Sel]
+  ): $Field<"testExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestExecutionResults()),
+    };
+    return this.$_select("testExecutions", options as any) as any;
+  }
+
+  /**
+   * List of Test Plans associated with the Test issue.
+   */
+  testPlans<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestPlanResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestPlanResults) => [...Sel]
+  ): $Field<"testPlans", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestPlanResults()),
+    };
+    return this.$_select("testPlans", options as any) as any;
+  }
+
+  /**
+   * List of Test Runs for the Test issue
+   */
+  testRuns<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestRunResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestRunResults) => [...Sel]
+  ): $Field<"testRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestRunResults()),
+    };
+    return this.$_select("testRuns", options as any) as any;
+  }
+
+  /**
+   * List of Test Sets associated with the Test issue.
+   */
+  testSets<
+    Args extends VariabledInput<{
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      limit: number;
+      start?: number | null | undefined;
+    }>,
+    Sel extends Selection<TestSetResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        limit: number;
+        start?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestSetResults) => [...Sel]
+  ): $Field<"testSets", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueIds: "[String]",
+        limit: "Int!",
+        start: "Int",
+      },
+      args,
+
+      selection: selectorFn(new TestSetResults()),
+    };
+    return this.$_select("testSets", options as any) as any;
+  }
+
+  /**
+   * Test type of the Test issue.
+   */
+  testType<Sel extends Selection<TestType>>(
+    selectorFn: (s: TestType) => [...Sel]
+  ): $Field<"testType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestType()),
+    };
+    return this.$_select("testType", options as any) as any;
+  }
+
+  /**
+   * List of Test versions of the Test
+   */
+  testVersions<
+    Args extends VariabledInput<{
+      limit: number;
+      start?: number | null | undefined;
+      archived?: boolean | null | undefined;
+      testTypeId?: string | null | undefined;
+    }>,
+    Sel extends Selection<TestVersionResults>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        limit: number;
+        start?: number | null | undefined;
+        archived?: boolean | null | undefined;
+        testTypeId?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: TestVersionResults) => [...Sel]
+  ): $Field<"testVersions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        limit: "Int!",
+        start: "Int",
+        archived: "Boolean",
+        testTypeId: "String",
+      },
+      args,
+
+      selection: selectorFn(new TestVersionResults()),
+    };
+    return this.$_select("testVersions", options as any) as any;
+  }
+
+  /**
+   * Unstructured definition of the Test issue.
+   */
+  get unstructured(): $Field<"unstructured", string | null | undefined> {
+    return this.$_select("unstructured") as any;
+  }
+
+  /**
+   * Version id of the Test issue.
+   */
+  get versionId(): $Field<"versionId", number | null | undefined> {
+    return this.$_select("versionId") as any;
+  }
+
+  /**
+   * Warnings generated while expanding the test steps.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Expanded test step type
+ */
+export class ExpandedStep extends $Base<"ExpandedStep"> {
+  constructor() {
+    super("ExpandedStep");
+  }
+
+  /**
+   * Action of the Step.
+   */
+  get action(): $Field<"action", string | null | undefined> {
+    return this.$_select("action") as any;
+  }
+
+  /**
+   * Attachments of the Step.
+   */
+  attachments<Sel extends Selection<Attachment>>(
+    selectorFn: (s: Attachment) => [...Sel]
+  ): $Field<"attachments", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Attachment()),
+    };
+    return this.$_select("attachments", options as any) as any;
+  }
+
+  /**
+   * The issue id of the called test with the step
+   */
+  get calledTestIssueId(): $Field<"calledTestIssueId", string | null | undefined> {
+    return this.$_select("calledTestIssueId") as any;
+  }
+
+  /**
+   * Custom Fields of the Step.
+   */
+  customFields<Sel extends Selection<CustomStepField>>(
+    selectorFn: (s: CustomStepField) => [...Sel]
+  ): $Field<"customFields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new CustomStepField()),
+    };
+    return this.$_select("customFields", options as any) as any;
+  }
+
+  /**
+   * Data of the Step.
+   */
+  get data(): $Field<"data", string | null | undefined> {
+    return this.$_select("data") as any;
+  }
+
+  /**
+   * Id of the Step.
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * The issue id of the test calling the step
+   */
+  get parentTestIssueId(): $Field<"parentTestIssueId", string | null | undefined> {
+    return this.$_select("parentTestIssueId") as any;
+  }
+
+  /**
+   * Result of the Step.
+   */
+  get result(): $Field<"result", string | null | undefined> {
+    return this.$_select("result") as any;
+  }
+}
+
+/**
+ * Test with Version input
+ */
 export type TestWithVersionInput = {
-  /** Issue id of the Test issue. */
-  issueId: InputMaybe<Scalars["String"]["input"]>;
-  /** Test Version id of the Test Issue */
-  versionId: InputMaybe<Scalars["Int"]["input"]>;
+  issueId?: string | null | undefined;
+  versionId?: number | null | undefined;
 };
 
-/** Update Test Run iteration status result type */
-export type UpdateIterationStatusResult = {
-  __typename?: "UpdateIterationStatusResult";
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
+/**
+ * Expanded tests results type
+ */
+export class ExpandedTestResults extends $Base<"ExpandedTestResults"> {
+  constructor() {
+    super("ExpandedTestResults");
+  }
+
+  /**
+   * The maximum amount of Tests to be returned. The maximum is 100.
+   */
+  get limit(): $Field<"limit", number | null | undefined> {
+    return this.$_select("limit") as any;
+  }
+
+  /**
+   * Expanded test issue results.
+   */
+  results<Sel extends Selection<ExpandedTest>>(
+    selectorFn: (s: ExpandedTest) => [...Sel]
+  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ExpandedTest()),
+    };
+    return this.$_select("results", options as any) as any;
+  }
+
+  /**
+   * The index of the first item to return in the page of results (page offset).
+   */
+  get start(): $Field<"start", number | null | undefined> {
+    return this.$_select("start") as any;
+  }
+
+  /**
+   * Total amount of issues.
+   */
+  get total(): $Field<"total", number | null | undefined> {
+    return this.$_select("total") as any;
+  }
+}
+
+/**
+ * Folder Search input
+ */
+export type PreconditionFolderSearchInput = {
+  includeDescendants?: boolean | null | undefined;
+  path: string;
 };
 
-/** Update Precondition input */
-export type UpdatePreconditionInput = {
-  /** Definition of the Precondition Issue. */
-  definition: InputMaybe<Scalars["String"]["input"]>;
-  /** the repository path to which the Precondition should be moved to */
-  folderPath: InputMaybe<Scalars["String"]["input"]>;
-  /** Precondition type of the Precondition Issue. */
-  preconditionType: InputMaybe<UpdatePreconditionTypeInput>;
-};
+/**
+ * Project Settings type
+ */
+export class ProjectSettings extends $Base<"ProjectSettings"> {
+  constructor() {
+    super("ProjectSettings");
+  }
 
-/** Precondition Type input */
-export type UpdatePreconditionTypeInput = {
-  /** Id of the Precondition Type. */
-  id: InputMaybe<Scalars["String"]["input"]>;
-  /** Name of the Precondition Type. */
-  name: InputMaybe<Scalars["String"]["input"]>;
-};
+  /**
+   * Defect Issue Types.
+   */
+  get defectIssueTypes(): $Field<
+    "defectIssueTypes",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("defectIssueTypes") as any;
+  }
 
-/** Update Step input */
-export type UpdateStepInput = {
-  /** Action of the Step. */
-  action: InputMaybe<Scalars["String"]["input"]>;
-  /** Attachments of the Step. */
-  attachments: InputMaybe<AttachmentOperationsInput>;
-  /** Custom Fields of the Step */
-  customFields: InputMaybe<Array<InputMaybe<CustomStepFieldInput>>>;
-  /** Data of the Step. */
-  data: InputMaybe<Scalars["String"]["input"]>;
-  /** Result of the Step. */
-  result: InputMaybe<Scalars["String"]["input"]>;
-};
+  /**
+   * Project id.
+   */
+  get projectId(): $Field<"projectId", string | null | undefined> {
+    return this.$_select("projectId") as any;
+  }
 
-/** Update Test Run Example Status Result Type */
-export type UpdateTestRunExampleStatusResult = {
-  __typename?: "UpdateTestRunExampleStatusResult";
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
+  /**
+   * Test Coverage Settings.
+   */
+  testCoverageSettings<Sel extends Selection<ProjectSettingsTestCoverage>>(
+    selectorFn: (s: ProjectSettingsTestCoverage) => [...Sel]
+  ): $Field<"testCoverageSettings", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ProjectSettingsTestCoverage()),
+    };
+    return this.$_select("testCoverageSettings", options as any) as any;
+  }
 
-/** Update Test Run Result Type */
-export type UpdateTestRunResult = {
-  __typename?: "UpdateTestRunResult";
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
+  /**
+   * Test Environments.
+   */
+  get testEnvironments(): $Field<
+    "testEnvironments",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("testEnvironments") as any;
+  }
 
-/** Update Test Run Step Input */
-export type UpdateTestRunStepInput = {
-  /** Actual Result of the Test Run Step. */
-  actualResult: InputMaybe<Scalars["String"]["input"]>;
-  /** Comment to add to the Test Run Step. */
-  comment: InputMaybe<Scalars["String"]["input"]>;
-  /** Defects of the Test Run Step. */
-  defects: InputMaybe<TestRunDefectOperationsInput>;
-  /** Evidence of the Test Run Step. */
-  evidence: InputMaybe<TestRunEvidenceOperationsInput>;
-  /** Status to set to the Test Run Step. */
-  status: InputMaybe<Scalars["String"]["input"]>;
-};
+  /**
+   * Test Run Custom Fields Settings.
+   */
+  testRunCustomFieldSettings<Sel extends Selection<ProjectSettingsTestRunCustomFields>>(
+    selectorFn: (s: ProjectSettingsTestRunCustomFields) => [...Sel]
+  ): $Field<"testRunCustomFieldSettings", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ProjectSettingsTestRunCustomFields()),
+    };
+    return this.$_select("testRunCustomFieldSettings", options as any) as any;
+  }
 
-/** Update Test Run Step Result Type */
-export type UpdateTestRunStepResult = {
-  __typename?: "UpdateTestRunStepResult";
-  /** Ids of the added Defects. */
-  addedDefects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Ids of the added Evidence. */
-  addedEvidence: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Ids of the removed Defects. */
-  removedDefects: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Ids of the removed Evidence. */
-  removedEvidence: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
+  /**
+   * Test Step Settings.
+   */
+  testStepSettings<Sel extends Selection<ProjectSettingsTestStepSettings>>(
+    selectorFn: (s: ProjectSettingsTestStepSettings) => [...Sel]
+  ): $Field<"testStepSettings", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ProjectSettingsTestStepSettings()),
+    };
+    return this.$_select("testStepSettings", options as any) as any;
+  }
 
-/** Update Test Run Step Status Result Type */
-export type UpdateTestRunStepStatusResult = {
-  __typename?: "UpdateTestRunStepStatusResult";
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
+  /**
+   * Test Type Settings.
+   */
+  testTypeSettings<Sel extends Selection<ProjectSettingsTestType>>(
+    selectorFn: (s: ProjectSettingsTestType) => [...Sel]
+  ): $Field<"testTypeSettings", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ProjectSettingsTestType()),
+    };
+    return this.$_select("testTypeSettings", options as any) as any;
+  }
+}
 
-/** Update Test Step Results type */
-export type UpdateTestStepResult = {
-  __typename?: "UpdateTestStepResult";
-  /** List of added attachments. */
-  addedAttachments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** List of removed attachments. */
-  removedAttachments: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-  /** Warnings generated during the operation. */
-  warnings: Maybe<Array<Maybe<Scalars["String"]["output"]>>>;
-};
+/**
+ * Project Test Coverage Settings type
+ */
+export class ProjectSettingsTestCoverage extends $Base<"ProjectSettingsTestCoverage"> {
+  constructor() {
+    super("ProjectSettingsTestCoverage");
+  }
 
-/** Test Type input */
+  /**
+   * Coverable issue type ids
+   */
+  get coverableIssueTypeIds(): $Field<
+    "coverableIssueTypeIds",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("coverableIssueTypeIds") as any;
+  }
+
+  /**
+   * Epic - Issues(Stories) relation
+   */
+  get epicIssuesRelation(): $Field<"epicIssuesRelation", boolean | null | undefined> {
+    return this.$_select("epicIssuesRelation") as any;
+  }
+
+  /**
+   * Issue Link Type Direction
+   */
+  get issueLinkTypeDirection(): $Field<"issueLinkTypeDirection", string | null | undefined> {
+    return this.$_select("issueLinkTypeDirection") as any;
+  }
+
+  /**
+   * Issue Link Type Id
+   */
+  get issueLinkTypeId(): $Field<"issueLinkTypeId", string | null | undefined> {
+    return this.$_select("issueLinkTypeId") as any;
+  }
+
+  /**
+   * Issue - Sub-tasks relation
+   */
+  get issueSubTasksRelation(): $Field<"issueSubTasksRelation", boolean | null | undefined> {
+    return this.$_select("issueSubTasksRelation") as any;
+  }
+}
+
+/**
+ * Project Test Type Settings type
+ */
+export class ProjectSettingsTestType extends $Base<"ProjectSettingsTestType"> {
+  constructor() {
+    super("ProjectSettingsTestType");
+  }
+
+  /**
+   * Default Test Type Id
+   */
+  get defaultTestTypeId(): $Field<"defaultTestTypeId", string | null | undefined> {
+    return this.$_select("defaultTestTypeId") as any;
+  }
+
+  /**
+   * Test Types
+   */
+  testTypes<Sel extends Selection<TestType>>(
+    selectorFn: (s: TestType) => [...Sel]
+  ): $Field<"testTypes", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestType()),
+    };
+    return this.$_select("testTypes", options as any) as any;
+  }
+}
+
+/**
+ * Project Test Step Settings type
+ */
+export class ProjectSettingsTestStepSettings extends $Base<"ProjectSettingsTestStepSettings"> {
+  constructor() {
+    super("ProjectSettingsTestStepSettings");
+  }
+
+  /**
+   * Fields
+   */
+  fields<Sel extends Selection<ProjectSettingsTestStepField>>(
+    selectorFn: (s: ProjectSettingsTestStepField) => [...Sel]
+  ): $Field<"fields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ProjectSettingsTestStepField()),
+    };
+    return this.$_select("fields", options as any) as any;
+  }
+}
+
+/**
+ * Project Test Step Field Settings type
+ */
+export class ProjectSettingsTestStepField extends $Base<"ProjectSettingsTestStepField"> {
+  constructor() {
+    super("ProjectSettingsTestStepField");
+  }
+
+  /**
+   * Is the field disabled
+   */
+  get disabled(): $Field<"disabled", boolean | null | undefined> {
+    return this.$_select("disabled") as any;
+  }
+
+  /**
+   * Id
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Name
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Is the field required
+   */
+  get required(): $Field<"required", boolean | null | undefined> {
+    return this.$_select("required") as any;
+  }
+
+  /**
+   * Type
+   */
+  get type(): $Field<"type", string | null | undefined> {
+    return this.$_select("type") as any;
+  }
+
+  /**
+   * Values
+   */
+  get values(): $Field<"values", Readonly<Array<string | null | undefined>> | null | undefined> {
+    return this.$_select("values") as any;
+  }
+}
+
+/**
+ * Project Test Run Custom Field Field Settings type
+ */
+export class ProjectSettingsTestRunCustomFields extends $Base<"ProjectSettingsTestRunCustomFields"> {
+  constructor() {
+    super("ProjectSettingsTestRunCustomFields");
+  }
+
+  /**
+   * Fields
+   */
+  fields<Sel extends Selection<ProjectSettingsTestRunCustomField>>(
+    selectorFn: (s: ProjectSettingsTestRunCustomField) => [...Sel]
+  ): $Field<"fields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new ProjectSettingsTestRunCustomField()),
+    };
+    return this.$_select("fields", options as any) as any;
+  }
+}
+
+/**
+ * Project Test Run Custom Field Settings type
+ */
+export class ProjectSettingsTestRunCustomField extends $Base<"ProjectSettingsTestRunCustomField"> {
+  constructor() {
+    super("ProjectSettingsTestRunCustomField");
+  }
+
+  /**
+   * Id
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Name
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Is the field required
+   */
+  get required(): $Field<"required", boolean | null | undefined> {
+    return this.$_select("required") as any;
+  }
+
+  /**
+   * Type
+   */
+  get type(): $Field<"type", string | null | undefined> {
+    return this.$_select("type") as any;
+  }
+
+  /**
+   * Values
+   */
+  get values(): $Field<"values", Readonly<Array<string | null | undefined>> | null | undefined> {
+    return this.$_select("values") as any;
+  }
+}
+
+/**
+ * Issue Link Type type
+ */
+export class IssueLinkType extends $Base<"IssueLinkType"> {
+  constructor() {
+    super("IssueLinkType");
+  }
+
+  /**
+   * Id of Issue Link Type
+   */
+  get id(): $Field<"id", string | null | undefined> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Name of Issue Link Type
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+}
+
+export class Mutation extends $Base<"Mutation"> {
+  constructor() {
+    super("Mutation");
+  }
+
+  /**
+ * Mutation used to add defects to a Test Run.
+===
+The mutation below adds 2 defects to the Test Run.
+<pre>
+mutation {
+    <b>addDefectsToTestRun</b>( id: "5acc7ab0a3fe1b6fcdc3c737", issues: ["XRAY-1234", "12345"]) {
+        addedDefects
+        warnings
+    }
+}
+</pre>
+===
+ */
+  addDefectsToTestRun<
+    Args extends VariabledInput<{
+      id: string;
+      issues: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddDefectsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id: string;
+        issues: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddDefectsResult) => [...Sel]
+  ): $Field<"addDefectsToTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        id: "String!",
+        issues: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddDefectsResult()),
+    };
+    return this.$_select("addDefectsToTestRun", options as any) as any;
+  }
+
+  /**
+ * Mutation used to add defects to a Test Run Step.
+===
+The mutation below adds 2 defects to the Test Run Step.
+<pre>
+mutation {
+    <b>addDefectsToTestRunStep</b>(
+        testRunId: "5e8489c05f200f3cd45bbaf0",
+        stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
+        issues: ["XRAY-1234", "12345"]
+    ) {
+        addedDefects
+        warnings
+    }
+}
+</pre>
+===
+ */
+  addDefectsToTestRunStep<
+    Args extends VariabledInput<{
+      testRunId: string;
+      stepId: string;
+      issues?: Readonly<Array<string | null | undefined>> | null | undefined;
+      iterationRank?: string | null | undefined;
+    }>,
+    Sel extends Selection<AddDefectsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        stepId: string;
+        issues?: Readonly<Array<string | null | undefined>> | null | undefined;
+        iterationRank?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: AddDefectsResult) => [...Sel]
+  ): $Field<"addDefectsToTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        stepId: "String!",
+        issues: "[String]",
+        iterationRank: "String",
+      },
+      args,
+
+      selection: selectorFn(new AddDefectsResult()),
+    };
+    return this.$_select("addDefectsToTestRunStep", options as any) as any;
+  }
+
+  /**
+ * Mutation used to add evidence to a Test Run.
+===
+The mutation below adds an evidence to the Test Run.
+<pre>
+mutation {
+    <b>addEvidenceToTestRun</b>(
+        id: "5acc7ab0a3fe1b6fcdc3c737",
+        evidence: [
+            {
+                filename: "evidence.txt"
+                mimeType: "text/plain"
+                data: "SGVsbG8gV29ybGQ="
+            }
+        ]
+    ) {
+        addedEvidence
+        warnings
+    }
+}
+</pre>
+===
+ */
+  addEvidenceToTestRun<
+    Args extends VariabledInput<{
+      id: string;
+      evidence: Readonly<Array<AttachmentDataInput | null | undefined>>;
+    }>,
+    Sel extends Selection<AddEvidenceResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id: string;
+        evidence: Readonly<Array<AttachmentDataInput | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddEvidenceResult) => [...Sel]
+  ): $Field<"addEvidenceToTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        id: "String!",
+        evidence: "[AttachmentDataInput]!",
+      },
+      args,
+
+      selection: selectorFn(new AddEvidenceResult()),
+    };
+    return this.$_select("addEvidenceToTestRun", options as any) as any;
+  }
+
+  /**
+ * Mutation used to add evidence to a Test Run Step.
+===
+The mutation below adds an evidence to the Test Run Step.
+<pre>
+mutation {
+    <b>addEvidenceToTestRunStep</b>(
+        testRunId: "5e8489c05f200f3cd45bbaf0",
+        stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
+        evidence: [
+            {
+                filename: "evidence.txt"
+                mimeType: "text/plain"
+                data: "SGVsbG8gV29ybGQ="
+            }
+        ]
+    ) {
+        addedEvidence
+        warnings
+    }
+}
+</pre>
+===
+ */
+  addEvidenceToTestRunStep<
+    Args extends VariabledInput<{
+      testRunId: string;
+      stepId: string;
+      evidence?: Readonly<Array<AttachmentDataInput | null | undefined>> | null | undefined;
+      iterationRank?: string | null | undefined;
+    }>,
+    Sel extends Selection<AddEvidenceResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        stepId: string;
+        evidence?: Readonly<Array<AttachmentDataInput | null | undefined>> | null | undefined;
+        iterationRank?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: AddEvidenceResult) => [...Sel]
+  ): $Field<"addEvidenceToTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        stepId: "String!",
+        evidence: "[AttachmentDataInput]",
+        iterationRank: "String",
+      },
+      args,
+
+      selection: selectorFn(new AddEvidenceResult()),
+    };
+    return this.$_select("addEvidenceToTestRunStep", options as any) as any;
+  }
+
+  /**
+ * Mutation used to add issues to a Folder.
+===
+The mutation below will add issues to a Folder.
+<pre>
+mutation {
+    <b>addIssuesToFolder</b>(
+        projectId: "10000",
+        path: "/generic",
+        issueIds: ["10002","12324","12345"]
+    ) {
+        folder {
+            name
+            path
+            issuesCount
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  addIssuesToFolder<
+    Args extends VariabledInput<{
+      projectId: string;
+      path: string;
+      issueIds: Readonly<Array<string | null | undefined>>;
+      index?: number | null | undefined;
+    }>,
+    Sel extends Selection<ActionFolderResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId: string;
+        path: string;
+        issueIds: Readonly<Array<string | null | undefined>>;
+        index?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: ActionFolderResult) => [...Sel]
+  ): $Field<"addIssuesToFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String!",
+        path: "String!",
+        issueIds: "[String]!",
+        index: "Int",
+      },
+      args,
+
+      selection: selectorFn(new ActionFolderResult()),
+    };
+    return this.$_select("addIssuesToFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Preconditions to the Test.
+<b>Note</b>: The preconditions to be associated with the Test must be of the same Test Type of the Test.
+===
+The mutation below will associate the precondition with issue id "54321" to the test "12345".
+<pre>
+mutation {
+    <b>addPreconditionsToTest</b>(
+        issueId: "12345",
+        preconditionIssueIds: ["54321"]
+    ) {
+        addedPreconditions
+        warning
+    }
+}
+</pre>
+===
+===
+The mutation below will associate the precondition with issue id "54321" to the version 3 of the Test "12345".
+<pre>
+mutation {
+    <b>addPreconditionsToTest</b>(
+        issueId: "12345",
+        versionId: 3,
+        preconditionIssueIds: ["54321"]
+    ) {
+        addedPreconditions
+        warning
+    }
+}
+</pre>
+===
+ */
+  addPreconditionsToTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+      preconditionIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddPreconditionsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+        preconditionIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddPreconditionsResult) => [...Sel]
+  ): $Field<"addPreconditionsToTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+        preconditionIssueIds: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddPreconditionsResult()),
+    };
+    return this.$_select("addPreconditionsToTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to add Test Environments to the Test Execution.
+===
+The mutation below will add the test Environments "android" and "ios" to the Test execution "12345".
+<pre>
+mutation {
+    <b>addTestEnvironmentsToTestExecution</b>(
+        issueId: "12345",
+        testEnvironments: ["android", "ios"]
+    ) {
+        associatedTestEnvironments
+        createdTestEnvironments
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestEnvironmentsToTestExecution<
+    Args extends VariabledInput<{
+      issueId: string;
+      testEnvironments: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddTestEnvironmentsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testEnvironments: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddTestEnvironmentsResult) => [...Sel]
+  ): $Field<
+    "addTestEnvironmentsToTestExecution",
+    GetOutput<Sel> | undefined,
+    GetVariables<Sel, Args>
+  > {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testEnvironments: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddTestEnvironmentsResult()),
+    };
+    return this.$_select("addTestEnvironmentsToTestExecution", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Test Executions to the Test.
+===
+The mutation below will associate the Test Execution with issue id "54321" to the Test "12345".
+<pre>
+mutation {
+    <b>addTestExecutionsToTest</b>(
+        issueId: "12345",
+        testExecIssueIds: ["54321"]
+    ) {
+        addedTestExecutions
+        warning
+    }
+}
+</pre>
+===
+===
+The mutation below will associate the Test Execution with issue id "54321" to version 3 of the Test "12345".
+<pre>
+mutation {
+    <b>addTestExecutionsToTest</b>(
+        issueId: "12345",
+        versionId: 3,
+        testExecIssueIds: ["54321"]
+    ) {
+        addedTestExecutions
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestExecutionsToTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+      testExecIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddTestExecutionsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+        testExecIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddTestExecutionsResult) => [...Sel]
+  ): $Field<"addTestExecutionsToTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+        testExecIssueIds: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddTestExecutionsResult()),
+    };
+    return this.$_select("addTestExecutionsToTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Test Executions to the Test Plan.
+===
+The mutation below will associate the Test Execution with issue id "54321" to the test Plan "12345".
+<pre>
+mutation {
+    <b>addTestExecutionsToTestPlan</b>(
+        issueId: "12345",
+        testExecIssueIds: ["54321"]
+    ) {
+        addedTestExecutions
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestExecutionsToTestPlan<
+    Args extends VariabledInput<{
+      issueId: string;
+      testExecIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddTestExecutionsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testExecIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddTestExecutionsResult) => [...Sel]
+  ): $Field<"addTestExecutionsToTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testExecIssueIds: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddTestExecutionsResult()),
+    };
+    return this.$_select("addTestExecutionsToTestPlan", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Test Plans to the Test.
+===
+The mutation below will associate the Test Plan with issue id "54321" to the test "12345".
+<pre>
+mutation {
+    <b>addTestPlansToTest</b>(
+        issueId: "12345",
+        testPlanIssueIds: ["54321"]
+    ) {
+        addedTestPlans
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestPlansToTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      testPlanIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddTestPlansResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testPlanIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddTestPlansResult) => [...Sel]
+  ): $Field<"addTestPlansToTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testPlanIssueIds: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddTestPlansResult()),
+    };
+    return this.$_select("addTestPlansToTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Test Sets to the Test.
+===
+The mutation below will associate the test set with issue id "54321" to the test "12345".
+<pre>
+mutation {
+    <b>addTestSetsToTest</b>(
+        issueId: "12345",
+        testSetIssueIds: ["54321"]
+    ) {
+        addedTestSets
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestSetsToTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      testSetIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddTestSetsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testSetIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddTestSetsResult) => [...Sel]
+  ): $Field<"addTestSetsToTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testSetIssueIds: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddTestSetsResult()),
+    };
+    return this.$_select("addTestSetsToTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to add a Step to a Test.
+===
+The mutation below will add a new Step to the test with id "12345".
+<pre>
+mutation {
+    <b>addTestStep</b>(
+        issueId: "12345",
+        step: {
+            action: "Use Xray Cloud Rest Api to add a new Step to the Test",
+            result: "Step was added to the Test",
+            customFields: [{id:"5ddc0e585da9670010e608dc", value:"Tokyo"}]
+        }
+    ) {
+        id
+        action
+        data
+        result
+    }
+}
+</pre>
+===
+===
+The mutation below will add a new Step to the version 3 of the Test with id "12345".
+<pre>
+mutation {
+    <b>addTestStep</b>(
+        issueId: "12345",
+        versionId: 3,
+        step: {
+            action: "Use Xray Cloud Rest Api to add a new Step to the Test",
+            result: "Step was added to the Test",
+            customFields: [{id:"5ddc0e585da9670010e608dc", value:"Tokyo"}]
+        }
+    ) {
+        id
+        action
+        data
+        result
+    }
+}
+</pre>
+===
+ */
+  addTestStep<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+      step: CreateStepInput;
+    }>,
+    Sel extends Selection<Step>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+        step: CreateStepInput;
+      }
+    >,
+    selectorFn: (s: Step) => [...Sel]
+  ): $Field<"addTestStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+        step: "CreateStepInput!",
+      },
+      args,
+
+      selection: selectorFn(new Step()),
+    };
+    return this.$_select("addTestStep", options as any) as any;
+  }
+
+  /**
+ * Mutation used to add tests to a Folder.
+===
+The mutation below will add tests to a Folder.
+<pre>
+mutation {
+    <b>addTestsToFolder</b>(
+        projectId: "10000",
+        path: "/generic",
+        testIssueIds: ["10002","12324","12345"]
+    ) {
+        folder {
+            name
+            path
+            testsCount
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  addTestsToFolder<
+    Args extends VariabledInput<{
+      projectId?: string | null | undefined;
+      testPlanId?: string | null | undefined;
+      path: string;
+      testIssueIds: Readonly<Array<string | null | undefined>>;
+      index?: number | null | undefined;
+    }>,
+    Sel extends Selection<ActionFolderResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId?: string | null | undefined;
+        testPlanId?: string | null | undefined;
+        path: string;
+        testIssueIds: Readonly<Array<string | null | undefined>>;
+        index?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: ActionFolderResult) => [...Sel]
+  ): $Field<"addTestsToFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String",
+        testPlanId: "String",
+        path: "String!",
+        testIssueIds: "[String]!",
+        index: "Int",
+      },
+      args,
+
+      selection: selectorFn(new ActionFolderResult()),
+    };
+    return this.$_select("addTestsToFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Tests to the Precondition. One of <b>testIssueIds</b> or <b>tests</b> is required.
+<b>Note</b>: The Tests to be associated with the Precondition must be of the same Test Type of the Precondition.
+===
+The mutation below will associate the Test with issue id "54321" to the Precondition "12345"
+<pre>
+mutation {
+    <b>addTestsToPrecondition</b>(
+        issueId: "12345",
+        testIssueIds: ["54321"]
+    ) {
+        addedTests
+        warning
+    }
+}
+</pre>
+===
+===
+The mutation below will associate the version 2 of Test "54321" and the version 3 of Test "67890" to the Precondition "12345"
+<pre>
+mutation {
+    <b>addTestsToPrecondition</b>(
+        issueId: "12345",
+        tests: [{ issueId: "54321", versionId: 2 }, { issueId: "67890", versionId: 3 }]
+    ) {
+        addedTests
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestsToPrecondition<
+    Args extends VariabledInput<{
+      issueId: string;
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+    }>,
+    Sel extends Selection<AddTestsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      }
+    >,
+    selectorFn: (s: AddTestsResult) => [...Sel]
+  ): $Field<"addTestsToPrecondition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testIssueIds: "[String]",
+        tests: "[TestWithVersionInput]",
+      },
+      args,
+
+      selection: selectorFn(new AddTestsResult()),
+    };
+    return this.$_select("addTestsToPrecondition", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Tests to the Test Execution. One of <b>testIssueIds</b> or <b>tests</b> is required.
+===
+The mutation below will associate the test with issue id "54321" to the Test execution "12345".
+<pre>
+mutation {
+    <b>addTestsToTestExecution</b>(
+        issueId: "12345",
+        testIssueIds: ["54321"]
+    ) {
+        addedTests
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestsToTestExecution<
+    Args extends VariabledInput<{
+      issueId: string;
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+    }>,
+    Sel extends Selection<AddTestsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      }
+    >,
+    selectorFn: (s: AddTestsResult) => [...Sel]
+  ): $Field<"addTestsToTestExecution", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testIssueIds: "[String]",
+        tests: "[TestWithVersionInput]",
+      },
+      args,
+
+      selection: selectorFn(new AddTestsResult()),
+    };
+    return this.$_select("addTestsToTestExecution", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Tests to the Test Plan.
+===
+The mutation below will associate the test with issue id "54321" to the Test Plan "12345".
+<pre>
+mutation {
+    <b>addTestsToTestPlan</b>(
+        issueId: "12345",
+        testIssueIds: ["54321"]
+    ) {
+        addedTests
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestsToTestPlan<
+    Args extends VariabledInput<{
+      issueId: string;
+      testIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddTestsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddTestsResult) => [...Sel]
+  ): $Field<"addTestsToTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testIssueIds: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddTestsResult()),
+    };
+    return this.$_select("addTestsToTestPlan", options as any) as any;
+  }
+
+  /**
+ * Mutation used to associate Tests to the Test Set.
+===
+The mutation below will associate the test with issue id "54321" to the Test Set "12345".
+<pre>
+mutation {
+    <b>addTestsToTestSet</b>(
+        issueId: "12345",
+        testIssueIds: ["54321"]
+    ) {
+        addedTests
+        warning
+    }
+}
+</pre>
+===
+ */
+  addTestsToTestSet<
+    Args extends VariabledInput<{
+      issueId: string;
+      testIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+    Sel extends Selection<AddTestsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >,
+    selectorFn: (s: AddTestsResult) => [...Sel]
+  ): $Field<"addTestsToTestSet", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testIssueIds: "[String]!",
+      },
+      args,
+
+      selection: selectorFn(new AddTestsResult()),
+    };
+    return this.$_select("addTestsToTestSet", options as any) as any;
+  }
+
+  /**
+ * Mutation used to create a new Folder.
+===
+The mutation below will create a new Folder.
+<pre>
+mutation {
+    <b>createFolder</b>(
+        projectId: "10000",
+        path: "/generic"
+    ) {
+        folder {
+            name
+            path
+            testsCount
+        }
+        warnings
+    }
+}
+</pre>
+===
+===
+The mutation below will create a new Folder and add tests to it.
+<pre>
+mutation {
+    <b>createFolder</b>(
+        projectId: "10000",
+        path: "/generic",
+        testIssueIds: ["10002","12324","12345"]
+    ) {
+        folder {
+            name
+            path
+            testsCount
+        }
+        warnings
+    }
+}
+</pre>
+===
+===
+The mutation below will create a new Folder and add tests and/or preconditions to it.
+<pre>
+mutation {
+    <b>createFolder</b>(
+        projectId: "10000",
+        path: "/generic",
+        issueIds: ["10002","12324","12345"]
+    ) {
+        folder {
+            name
+            path
+            testsCount
+            issuesCount
+            preconditionsCount
+        }
+        warnings
+    }
+}
+</pre>
+<b>Note</b>: Use createFolder with <b>testIssueIds</b> (in which all ids must be from Tests)
+OR with <b>issueIds</b> (which can be eiter Test ids and/or Precondition ids), but not with both.
+===
+ */
+  createFolder<
+    Args extends VariabledInput<{
+      projectId?: string | null | undefined;
+      testPlanId?: string | null | undefined;
+      path: string;
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+    Sel extends Selection<ActionFolderResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId?: string | null | undefined;
+        testPlanId?: string | null | undefined;
+        path: string;
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >,
+    selectorFn: (s: ActionFolderResult) => [...Sel]
+  ): $Field<"createFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String",
+        testPlanId: "String",
+        path: "String!",
+        testIssueIds: "[String]",
+        issueIds: "[String]",
+      },
+      args,
+
+      selection: selectorFn(new ActionFolderResult()),
+    };
+    return this.$_select("createFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to create a new Precondition.
+===
+The mutation below will create a new Precondition.
+<pre>
+mutation {
+    <b>createPrecondition</b>(
+        preconditionType: { name: "Generic" }
+        definition: "Turn on calculator."
+        jira: {
+            fields: { summary:"Turn on calculator", project: {key: "CALC"} }
+        }
+    ) {
+        precondition {
+            issueId
+            preconditionType {
+                name
+            }
+            definition
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  createPrecondition<
+    Args extends VariabledInput<{
+      preconditionType?: UpdatePreconditionTypeInput | null | undefined;
+      definition?: string | null | undefined;
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      folderPath?: string | null | undefined;
+      jira: JSON;
+    }>,
+    Sel extends Selection<CreatePreconditionResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        preconditionType?: UpdatePreconditionTypeInput | null | undefined;
+        definition?: string | null | undefined;
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+        folderPath?: string | null | undefined;
+        jira: JSON;
+      }
+    >,
+    selectorFn: (s: CreatePreconditionResult) => [...Sel]
+  ): $Field<"createPrecondition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        preconditionType: "UpdatePreconditionTypeInput",
+        definition: "String",
+        testIssueIds: "[String]",
+        tests: "[TestWithVersionInput]",
+        folderPath: "String",
+        jira: "JSON!",
+      },
+      args,
+
+      selection: selectorFn(new CreatePreconditionResult()),
+    };
+    return this.$_select("createPrecondition", options as any) as any;
+  }
+
+  /**
+ * Mutation used to create a new Test.
+===
+The mutation below will create a new Test.
+<pre>
+mutation {
+    <b>createTest</b>(
+        testType: { name: "Generic" },
+        unstructured: "Perform exploratory tests on calculator.",
+        jira: {
+            fields: { summary:"Exploratory Test", project: {key: "CALC"} }
+        }
+    ) {
+        test {
+            issueId
+            testType {
+                name
+            }
+            unstructured
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}
+</pre>
+=== ===
+The mutation below will create a new Test.
+<pre>
+mutation {
+    <b>createTest</b>(
+        testType: { name: "Manual" },
+        steps: [
+            {
+                action: "Create first example step",
+                result: "First step was created"
+            },
+            {
+                action: "Create second example step with data",
+                data: "Data for the step",
+                result: "Second step was created with data"
+            }
+        ],
+        jira: {
+            fields: { summary:"Exploratory Test", project: {key: "CALC"} }
+        }
+    ) {
+        test {
+            issueId
+            testType {
+                name
+            }
+            steps {
+                action
+                data
+                result
+            }
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  createTest<
+    Args extends VariabledInput<{
+      testType?: UpdateTestTypeInput | null | undefined;
+      steps?: Readonly<Array<CreateStepInput | null | undefined>> | null | undefined;
+      unstructured?: string | null | undefined;
+      gherkin?: string | null | undefined;
+      preconditionIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      folderPath?: string | null | undefined;
+      jira: JSON;
+    }>,
+    Sel extends Selection<CreateTestResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testType?: UpdateTestTypeInput | null | undefined;
+        steps?: Readonly<Array<CreateStepInput | null | undefined>> | null | undefined;
+        unstructured?: string | null | undefined;
+        gherkin?: string | null | undefined;
+        preconditionIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        folderPath?: string | null | undefined;
+        jira: JSON;
+      }
+    >,
+    selectorFn: (s: CreateTestResult) => [...Sel]
+  ): $Field<"createTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testType: "UpdateTestTypeInput",
+        steps: "[CreateStepInput]",
+        unstructured: "String",
+        gherkin: "String",
+        preconditionIssueIds: "[String]",
+        folderPath: "String",
+        jira: "JSON!",
+      },
+      args,
+
+      selection: selectorFn(new CreateTestResult()),
+    };
+    return this.$_select("createTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to create a new Test Execution.
+===
+The mutation below will create a new Test Execution.
+<pre>
+mutation {
+    <b>createTestExecution</b>(
+        testIssueIds: ["54321"]
+        testEnvironments: ["android"]
+        jira: {
+            fields: { summary: "Test Execution for CALC-123", project: {key: "CALC"} }
+        }
+    ) {
+        testExecution {
+            issueId
+            jira(fields: ["key"])
+        }
+        warnings
+        createdTestEnvironments
+    }
+}
+</pre>
+===
+ */
+  createTestExecution<
+    Args extends VariabledInput<{
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      testEnvironments?: Readonly<Array<string | null | undefined>> | null | undefined;
+      jira: JSON;
+    }>,
+    Sel extends Selection<CreateTestExecutionResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+        testEnvironments?: Readonly<Array<string | null | undefined>> | null | undefined;
+        jira: JSON;
+      }
+    >,
+    selectorFn: (s: CreateTestExecutionResult) => [...Sel]
+  ): $Field<"createTestExecution", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testIssueIds: "[String]",
+        tests: "[TestWithVersionInput]",
+        testEnvironments: "[String]",
+        jira: "JSON!",
+      },
+      args,
+
+      selection: selectorFn(new CreateTestExecutionResult()),
+    };
+    return this.$_select("createTestExecution", options as any) as any;
+  }
+
+  /**
+ * Mutation used to create a new Test Plan.
+===
+The mutation below will create a new Test Plan.
+<pre>
+mutation {
+    <b>createTestPlan</b>(
+        testIssueIds: ["54321"]
+        jira: {
+            fields: { summary: "Test Plan for v1.0", project: {key: "CALC"} }
+        }
+    ) {
+        testPlan {
+            issueId
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  createTestPlan<
+    Args extends VariabledInput<{
+      savedFilter?: string | null | undefined;
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      jira: JSON;
+    }>,
+    Sel extends Selection<CreateTestPlanResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        savedFilter?: string | null | undefined;
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        jira: JSON;
+      }
+    >,
+    selectorFn: (s: CreateTestPlanResult) => [...Sel]
+  ): $Field<"createTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        savedFilter: "String",
+        testIssueIds: "[String]",
+        jira: "JSON!",
+      },
+      args,
+
+      selection: selectorFn(new CreateTestPlanResult()),
+    };
+    return this.$_select("createTestPlan", options as any) as any;
+  }
+
+  /**
+ * Mutation used to create a new Test Set.
+===
+The mutation below will create a new Test Set.
+<pre>
+mutation {
+    <b>createTestSet</b>(
+        testIssueIds: ["54321"]
+        jira: {
+            fields: { summary: "Test Set for Generic Tests", project: {key: "CALC"} }
+        }
+    ) {
+        testSet {
+            issueId
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  createTestSet<
+    Args extends VariabledInput<{
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      jira: JSON;
+    }>,
+    Sel extends Selection<CreateTestSetResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        jira: JSON;
+      }
+    >,
+    selectorFn: (s: CreateTestSetResult) => [...Sel]
+  ): $Field<"createTestSet", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testIssueIds: "[String]",
+        jira: "JSON!",
+      },
+      args,
+
+      selection: selectorFn(new CreateTestSetResult()),
+    };
+    return this.$_select("createTestSet", options as any) as any;
+  }
+
+  /**
+ * Mutation used to delete a Folder.
+===
+The mutation below will delete a Folder.
+<pre>
+mutation {
+    <b>deleteFolder</b>(
+        projectId: "10000",
+        path: "/generic"
+    )
+}
+</pre>
+===
+ */
+  deleteFolder<
+    Args extends VariabledInput<{
+      projectId?: string | null | undefined;
+      testPlanId?: string | null | undefined;
+      path: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId?: string | null | undefined;
+        testPlanId?: string | null | undefined;
+        path: string;
+      }
+    >
+  ): $Field<"deleteFolder", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String",
+        testPlanId: "String",
+        path: "String!",
+      },
+      args,
+    };
+    return this.$_select("deleteFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to delete a Precondition
+===
+The mutation below will delete the Precondition with issue id "12345"
+<pre>
+mutation {
+    <b>deletePrecondition</b>(issueId: "12345")
+}
+</pre>
+===
+ */
+  deletePrecondition<
+    Args extends VariabledInput<{
+      issueId: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+      }
+    >
+  ): $Field<"deletePrecondition", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+      },
+      args,
+    };
+    return this.$_select("deletePrecondition", options as any) as any;
+  }
+
+  /**
+ * Mutation used to delete a Test.
+===
+The mutation below will delete the Test with issue id "12345".
+<pre>
+mutation {
+    <b>deleteTest</b>(issueId: "12345")
+}
+</pre>
+===
+ */
+  deleteTest<
+    Args extends VariabledInput<{
+      issueId: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+      }
+    >
+  ): $Field<"deleteTest", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+      },
+      args,
+    };
+    return this.$_select("deleteTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to delete a Test Execution.
+===
+The mutation below will delete the Test Execution with id "12345".
+<pre>
+mutation {
+    <b>deleteTestExecution</b>(issueId: "12345")
+}
+</pre>
+===
+ */
+  deleteTestExecution<
+    Args extends VariabledInput<{
+      issueId: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+      }
+    >
+  ): $Field<"deleteTestExecution", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+      },
+      args,
+    };
+    return this.$_select("deleteTestExecution", options as any) as any;
+  }
+
+  /**
+ * Mutation used to delete a Test Plan.
+===
+The mutation below will delete the Test Plan with id "12345".
+<pre>
+mutation {
+    <b>deleteTestPlan</b>(issueId: "12345")
+}
+</pre>
+===
+ */
+  deleteTestPlan<
+    Args extends VariabledInput<{
+      issueId: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+      }
+    >
+  ): $Field<"deleteTestPlan", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+      },
+      args,
+    };
+    return this.$_select("deleteTestPlan", options as any) as any;
+  }
+
+  /**
+ * Mutation used to delete a Test Set
+===
+The mutation below will delete the Test Set with issue id "12345".
+<pre>
+mutation {
+    <b>deleteTestSet</b>(issueId: "12345")
+}
+</pre>
+===
+ */
+  deleteTestSet<
+    Args extends VariabledInput<{
+      issueId: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+      }
+    >
+  ): $Field<"deleteTestSet", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+      },
+      args,
+    };
+    return this.$_select("deleteTestSet", options as any) as any;
+  }
+
+  /**
+ * Mutation used to move a Folder.
+===
+The mutation below will move a Folder.
+<pre>
+mutation {
+    <b>moveFolder</b>(
+        projectId: "10000",
+        path: "/generic",
+        destinationPath: "/testType"
+    ) {
+        folder {
+            name
+            path
+            testsCount
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  moveFolder<
+    Args extends VariabledInput<{
+      projectId?: string | null | undefined;
+      testPlanId?: string | null | undefined;
+      path: string;
+      destinationPath: string;
+      index?: number | null | undefined;
+    }>,
+    Sel extends Selection<ActionFolderResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId?: string | null | undefined;
+        testPlanId?: string | null | undefined;
+        path: string;
+        destinationPath: string;
+        index?: number | null | undefined;
+      }
+    >,
+    selectorFn: (s: ActionFolderResult) => [...Sel]
+  ): $Field<"moveFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String",
+        testPlanId: "String",
+        path: "String!",
+        destinationPath: "String!",
+        index: "Int",
+      },
+      args,
+
+      selection: selectorFn(new ActionFolderResult()),
+    };
+    return this.$_select("moveFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove all Steps from a Test.
+===
+The mutation below removes all the Steps from test with id "12345".
+<pre>
+mutation {
+    <b>removeAllTestSteps</b>(
+        issueId: "12345",
+    )
+}
+</pre>
+===
+===
+The mutation below removes all the Steps from the version 3 of the Test with id "12345".
+<pre>
+mutation {
+    <b>removeAllTestSteps</b>(
+        issueId: "12345",
+        versionId: 3
+    )
+}
+</pre>
+===
+ */
+  removeAllTestSteps<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+      }
+    >
+  ): $Field<"removeAllTestSteps", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+      },
+      args,
+    };
+    return this.$_select("removeAllTestSteps", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove defects from a Test Run.
+===
+The mutation below removes 2 defects from the Test Run.
+<pre>
+mutation {
+    <b>removeDefectsFromTestRun</b>( id: "5acc7ab0a3fe1b6fcdc3c737", issues: ["XRAY-1234", "12345"])
+}
+</pre>
+===
+ */
+  removeDefectsFromTestRun<
+    Args extends VariabledInput<{
+      id: string;
+      issues: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id: string;
+        issues: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeDefectsFromTestRun", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        id: "String!",
+        issues: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeDefectsFromTestRun", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove defects from a Test Run.
+===
+The mutation below removes 2 defects from the Test Run.
+<pre>
+mutation {
+    <b>removeDefectsFromTestRunStep</b>(
+        testRunId: "5e8489c05f200f3cd45bbaf0",
+        stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
+        issues: ["XRAY-1234", "12345"]
+    ) {
+        removedDefects
+        warnings
+    }
+}
+</pre>
+===
+ */
+  removeDefectsFromTestRunStep<
+    Args extends VariabledInput<{
+      testRunId: string;
+      stepId: string;
+      issues: Readonly<Array<string | null | undefined>>;
+      iterationRank?: string | null | undefined;
+    }>,
+    Sel extends Selection<RemoveDefectsResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        stepId: string;
+        issues: Readonly<Array<string | null | undefined>>;
+        iterationRank?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: RemoveDefectsResult) => [...Sel]
+  ): $Field<"removeDefectsFromTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        stepId: "String!",
+        issues: "[String]!",
+        iterationRank: "String",
+      },
+      args,
+
+      selection: selectorFn(new RemoveDefectsResult()),
+    };
+    return this.$_select("removeDefectsFromTestRunStep", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove evidence from a Test Run.
+===
+The mutation below removes an evidence from the Test Run.
+<pre>
+mutation {
+    <b>removeEvidenceFromTestRun</b>(
+        id: "5acc7ab0a3fe1b6fcdc3c737",
+        evidenceFilenames: ["evidence.txt"]
+    ) {
+        removedEvidence
+        warnings
+    }
+}
+</pre>
+===
+ */
+  removeEvidenceFromTestRun<
+    Args extends VariabledInput<{
+      id: string;
+      evidenceIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      evidenceFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+    Sel extends Selection<RemoveEvidenceResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id: string;
+        evidenceIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        evidenceFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >,
+    selectorFn: (s: RemoveEvidenceResult) => [...Sel]
+  ): $Field<"removeEvidenceFromTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        id: "String!",
+        evidenceIds: "[String]",
+        evidenceFilenames: "[String]",
+      },
+      args,
+
+      selection: selectorFn(new RemoveEvidenceResult()),
+    };
+    return this.$_select("removeEvidenceFromTestRun", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove evidence from a Test Run Step.
+===
+The mutation below removes an evidence from the Test Run Step.
+<pre>
+mutation {
+    <b>removeEvidenceFromTestRunStep</b>(
+        testRunId: "5e8489c05f200f3cd45bbaf0",
+        stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
+        evidenceFilenames: ["evidence.txt"]
+    ) {
+        removedEvidence
+        warnings
+    }
+}
+</pre>
+===
+ */
+  removeEvidenceFromTestRunStep<
+    Args extends VariabledInput<{
+      testRunId: string;
+      stepId: string;
+      iterationRank?: string | null | undefined;
+      evidenceIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      evidenceFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+    }>,
+    Sel extends Selection<RemoveEvidenceResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        stepId: string;
+        iterationRank?: string | null | undefined;
+        evidenceIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        evidenceFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+      }
+    >,
+    selectorFn: (s: RemoveEvidenceResult) => [...Sel]
+  ): $Field<"removeEvidenceFromTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        stepId: "String!",
+        iterationRank: "String",
+        evidenceIds: "[String]",
+        evidenceFilenames: "[String]",
+      },
+      args,
+
+      selection: selectorFn(new RemoveEvidenceResult()),
+    };
+    return this.$_select("removeEvidenceFromTestRunStep", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove issues from Folder.
+===
+The mutation below will remove issues from a Folder.
+<pre>
+mutation {
+    <b>removeIssuesFromFolder</b>(
+        projectId: "10000",
+        issueIds: ["10002","12324","12345"]
+    )
+}
+</pre>
+===
+ */
+  removeIssuesFromFolder<
+    Args extends VariabledInput<{
+      projectId: string;
+      issueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId: string;
+        issueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeIssuesFromFolder", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String!",
+        issueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeIssuesFromFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Preconditions from the Test.
+===
+The mutation below will remove the preconditions with issue id "54321" and "67890" from the test "12345".
+<pre>
+mutation {
+    <b>removePreconditionsFromTest</b>(issueId: "12345", preconditionIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+===
+The mutation below will remove the preconditions with issue id "54321" and "67890" from the version 3 of the Test "12345".
+<pre>
+mutation {
+    <b>removePreconditionsFromTest</b>(issueId: "12345", versionId: 3, preconditionIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+ */
+  removePreconditionsFromTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+      preconditionIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+        preconditionIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removePreconditionsFromTest", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+        preconditionIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removePreconditionsFromTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Test Environments from the Test Execution.
+===
+The mutation below will remoive the Test Environments "android" and "ios" from the Test execution "12345".
+<pre>
+mutation {
+    <b>removeTestEnvironmentsFromTestExecution</b>(
+        issueId: "12345",
+        testEnvironments: ["android", "ios"]
+    )
+}
+</pre>
+===
+ */
+  removeTestEnvironmentsFromTestExecution<
+    Args extends VariabledInput<{
+      issueId: string;
+      testEnvironments: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testEnvironments: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<
+    "removeTestEnvironmentsFromTestExecution",
+    string | null | undefined,
+    GetVariables<[], Args>
+  > {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testEnvironments: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestEnvironmentsFromTestExecution", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Test Executions from the Test.
+===
+The mutation below will remove the Test Executions with issue id "54321" and "67890" from the Test "12345".
+<pre>
+mutation {
+    <b>removeTestExecutionsFromTest</b>(issueId: "12345", testExecIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+ */
+  removeTestExecutionsFromTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      testExecIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testExecIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeTestExecutionsFromTest", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testExecIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestExecutionsFromTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Test Executions from the Test Plan.
+===
+The mutation below will remove the Test executions with issue id "54321" and "67890" from the Test Plan "12345".
+<pre>
+mutation {
+    <b>removeTestExecutionsFromTestPlan</b>(issueId: "12345", testExecIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+ */
+  removeTestExecutionsFromTestPlan<
+    Args extends VariabledInput<{
+      issueId: string;
+      testExecIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testExecIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeTestExecutionsFromTestPlan", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testExecIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestExecutionsFromTestPlan", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Test Plans from the Test.
+===
+The mutation below will remove the Test Plans with issue id "54321" and "67890" from the Test "12345".
+<pre>
+mutation {
+    <b>removeTestPlansFromTest</b>(issueId: "12345", testPlanIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+ */
+  removeTestPlansFromTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      testPlanIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testPlanIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeTestPlansFromTest", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testPlanIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestPlansFromTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Test Sets from the Test.
+===
+The mutation below will remove the Test Sets with issue id "54321" and "67890" from the test "12345".
+<pre>
+mutation {
+    <b>removeTestSetsFromTest</b>(issueId: "12345", testSetIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+ */
+  removeTestSetsFromTest<
+    Args extends VariabledInput<{
+      issueId: string;
+      testSetIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testSetIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeTestSetsFromTest", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testSetIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestSetsFromTest", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove a Step from a Test.
+===
+The mutation below removes the Step with id "836d30ec-f034-4a03-879e-9c44a1d6d1fe".
+<pre>
+mutation {
+    <b>removeTestStep</b>(
+        stepId: "836d30ec-f034-4a03-879e-9c44a1d6d1fe",
+    )
+}
+</pre>
+===
+ */
+  removeTestStep<
+    Args extends VariabledInput<{
+      stepId: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        stepId: string;
+      }
+    >
+  ): $Field<"removeTestStep", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        stepId: "String!",
+      },
+      args,
+    };
+    return this.$_select("removeTestStep", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove tests from Folder.
+===
+The mutation below will remove tests from a Folder.
+<pre>
+mutation {
+    <b>removeTestsFromFolder</b>(
+        projectId: "10000",
+        testIssueIds: ["10002","12324","12345"]
+    )
+}
+</pre>
+===
+ */
+  removeTestsFromFolder<
+    Args extends VariabledInput<{
+      projectId?: string | null | undefined;
+      testPlanId?: string | null | undefined;
+      testIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId?: string | null | undefined;
+        testPlanId?: string | null | undefined;
+        testIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeTestsFromFolder", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String",
+        testPlanId: "String",
+        testIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestsFromFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Tests from the Precondition. One of <b>testIssueIds</b> or <b>tests</b> is required.
+===
+The mutation below will remove the Tests with issue id "54321" and "67890" from the Precondition "12345".
+<pre>
+mutation {
+    <b>removeTestsFromPrecondition</b>(issueId: "12345", testIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+===
+The mutation below will remove the version 2 of Test "54321" and the version 3 of Test "67890" from the Precondition "12345".
+<pre>
+mutation {
+    <b>removeTestsFromPrecondition</b>(
+        issueId: "12345",
+        tests: [{ issueId: "54321", versionId: 2 }, { issueId: "67890", versionId: 3 }]
+    )
+}
+</pre>
+===
+ */
+  removeTestsFromPrecondition<
+    Args extends VariabledInput<{
+      issueId: string;
+      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      }
+    >
+  ): $Field<"removeTestsFromPrecondition", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testIssueIds: "[String]",
+        tests: "[TestWithVersionInput]",
+      },
+      args,
+    };
+    return this.$_select("removeTestsFromPrecondition", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Tests from the Test Execution.
+===
+The mutation below will remove the Tests with issue id "54321" and "67890" from the Test Execution "12345".
+<pre>
+mutation {
+    <b>removeTestsFromTestExecution</b>(issueId: "12345", testIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+ */
+  removeTestsFromTestExecution<
+    Args extends VariabledInput<{
+      issueId: string;
+      testIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeTestsFromTestExecution", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestsFromTestExecution", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Tests from the Test Plan.
+===
+The mutation below will remove the Tests with id "54321" and "67890" from the Test Plan "12345".
+<pre>
+mutation {
+    <b>removeTestsFromTestPlan</b>(issueId: "12345", testIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+ */
+  removeTestsFromTestPlan<
+    Args extends VariabledInput<{
+      issueId: string;
+      testIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeTestsFromTestPlan", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestsFromTestPlan", options as any) as any;
+  }
+
+  /**
+ * Mutation used to remove Tests from the Test Set.
+===
+The mutation below will remove the Tests with issue id "54321" and "67890" from the test set "12345".
+<pre>
+mutation {
+    <b>removeTestsFromTestSet</b>(issueId: "12345", testIssueIds: ["54321", "67890"])
+}
+</pre>
+===
+ */
+  removeTestsFromTestSet<
+    Args extends VariabledInput<{
+      issueId: string;
+      testIssueIds: Readonly<Array<string | null | undefined>>;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        testIssueIds: Readonly<Array<string | null | undefined>>;
+      }
+    >
+  ): $Field<"removeTestsFromTestSet", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        testIssueIds: "[String]!",
+      },
+      args,
+    };
+    return this.$_select("removeTestsFromTestSet", options as any) as any;
+  }
+
+  /**
+ * Mutation used to rename a Folder.
+===
+The mutation below will rename a Folder.
+<pre>
+mutation {
+    <b>renameFolder</b>(
+        projectId: "10000",
+        path: "/generic",
+        newName: "Junit"
+    ) {
+        folder {
+            name
+            path
+            testsCount
+        }
+        warnings
+    }
+}
+</pre>
+===
+ */
+  renameFolder<
+    Args extends VariabledInput<{
+      projectId?: string | null | undefined;
+      testPlanId?: string | null | undefined;
+      path: string;
+      newName: string;
+    }>,
+    Sel extends Selection<ActionFolderResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        projectId?: string | null | undefined;
+        testPlanId?: string | null | undefined;
+        path: string;
+        newName: string;
+      }
+    >,
+    selectorFn: (s: ActionFolderResult) => [...Sel]
+  ): $Field<"renameFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        projectId: "String",
+        testPlanId: "String",
+        path: "String!",
+        newName: "String!",
+      },
+      args,
+
+      selection: selectorFn(new ActionFolderResult()),
+    };
+    return this.$_select("renameFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to reset the Test Run. This will load the new test definition and delete the current execution data.
+===
+The mutation below resets the Test Run.
+<pre>
+mutation {
+    <b>resetTestRun</b>( id: "5acc7ab0a3fe1b6fcdc3c737")
+}
+</pre>
+===
+ */
+  resetTestRun<
+    Args extends VariabledInput<{
+      id: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id: string;
+      }
+    >
+  ): $Field<"resetTestRun", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        id: "String!",
+      },
+      args,
+    };
+    return this.$_select("resetTestRun", options as any) as any;
+  }
+
+  /**
+ * Mutation used to set the timer in Test Run. This will start, pause or stop the timer in Test Run.
+===
+The mutation below start the timer in Test Run.
+<pre>
+mutation {
+    <b>setTestRunTimer</b>(
+        testRunId: "5acc7ab0a3fe1b6fcdc3c737"
+        running: true
+    ) {
+        warnings
+    }
+}
+</pre>
+
+The mutation below stop the timer in Test Run.
+<pre>
+mutation {
+    <b>setTestRunTimer</b>(
+        testRunId: "5acc7ab0a3fe1b6fcdc3c737"
+        reset: true
+    ) {
+        warnings
+    }
+}
+</pre>
+===
+ */
+  setTestRunTimer<
+    Args extends VariabledInput<{
+      testRunId: string;
+      running?: boolean | null | undefined;
+      reset?: boolean | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        running?: boolean | null | undefined;
+        reset?: boolean | null | undefined;
+      }
+    >
+  ): $Field<"setTestRunTimer", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        running: "Boolean",
+        reset: "Boolean",
+      },
+      args,
+    };
+    return this.$_select("setTestRunTimer", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the Gherkin definition of a Test.
+===
+The mutation below will update the gherkin definition of the Test with id "12345".
+<pre>
+mutation {
+    <b>updateGherkinTestDefinition</b>(issueId: "12345", gherkin: "Gherkin definition" ) {
+        issueId
+        gherkin
+    }
+}
+</pre>
+===
+===
+The mutation below will update the gherkin definition of the version 3 of the Test with id "12345".
+<pre>
+mutation {
+    <b>updateGherkinTestDefinition</b>(issueId: "12345", versionId: 3, gherkin: "Gherkin definition" ) {
+        issueId
+        gherkin
+    }
+}
+</pre>
+===
+ */
+  updateGherkinTestDefinition<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+      gherkin: string;
+    }>,
+    Sel extends Selection<Test>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+        gherkin: string;
+      }
+    >,
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<"updateGherkinTestDefinition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+        gherkin: "String!",
+      },
+      args,
+
+      selection: selectorFn(new Test()),
+    };
+    return this.$_select("updateGherkinTestDefinition", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the status of a Test Run iteration.
+===
+The mutation below updates the status of a Test Run iteration.
+<pre>
+mutation {
+    <b>updateIterationStatus</b>(
+        testRunId: "5e8489c05f200f3cd45bbaf0",
+        iterationRank: "0",
+        status: "PASSED"
+    ) {
+        warnings
+    }
+}
+</pre>
+===
+ */
+  updateIterationStatus<
+    Args extends VariabledInput<{
+      testRunId: string;
+      iterationRank: string;
+      status: string;
+    }>,
+    Sel extends Selection<UpdateIterationStatusResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        iterationRank: string;
+        status: string;
+      }
+    >,
+    selectorFn: (s: UpdateIterationStatusResult) => [...Sel]
+  ): $Field<"updateIterationStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        iterationRank: "String!",
+        status: "String!",
+      },
+      args,
+
+      selection: selectorFn(new UpdateIterationStatusResult()),
+    };
+    return this.$_select("updateIterationStatus", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update a Precondition
+===
+The mutation below will update the Precondition with id "49137"
+<pre>
+mutation {
+    <b>updatePrecondition</b>(
+        issueId: "49137",
+        data: { preconditionType: {name: "Manual" }, definition: "Turn on calculator" }
+    ) {
+        issueId
+        preconditionType {
+            kind
+            name
+        }
+        definition
+    }
+}
+</pre>
+===
+===
+The mutation below will update the Precondition with id "12345" and move it to the specified folder
+<pre>
+mutation {
+    <b>updatePrecondition</b>(
+        issueId: "12345",
+        data: { folderPath: "/generic" }
+    ) {
+        issueId
+        preconditionType {
+            kind
+            name
+        }
+        definition
+    }
+}
+</pre>
+===
+ */
+  updatePrecondition<
+    Args extends VariabledInput<{
+      issueId: string;
+      data?: UpdatePreconditionInput | null | undefined;
+    }>,
+    Sel extends Selection<Precondition>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        data?: UpdatePreconditionInput | null | undefined;
+      }
+    >,
+    selectorFn: (s: Precondition) => [...Sel]
+  ): $Field<"updatePrecondition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        data: "UpdatePreconditionInput",
+      },
+      args,
+
+      selection: selectorFn(new Precondition()),
+    };
+    return this.$_select("updatePrecondition", options as any) as any;
+  }
+
+  /**
+ * Mutation used update the precondition folder on the Test Repository.
+===
+The mutation below will add the precondition to "Component/UI" folder.
+<pre>
+mutation {
+    <b>updatePreconditionFolder</b>(
+        issueId: "12345",
+        folderPath: "/Component/UI"
+    )
+}
+</pre>
+The mutation below will move the Precondition to the root.
+<pre>
+mutation {
+    <b>updatePreconditionFolder</b>(
+        issueId: "12345",
+        folderPath: "/"
+    )
+}
+</pre>
+===
+ */
+  updatePreconditionFolder<
+    Args extends VariabledInput<{
+      issueId: string;
+      folderPath: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        folderPath: string;
+      }
+    >
+  ): $Field<"updatePreconditionFolder", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        folderPath: "String!",
+      },
+      args,
+    };
+    return this.$_select("updatePreconditionFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used update the Test folder on the Test Repository.
+===
+The mutation below will add the test to "Component/UI" folder.
+<pre>
+mutation {
+    <b>updateTestFolder</b>(
+        issueId: "12345",
+        folderPath: "/Component/UI"
+    )
+}
+</pre>
+The mutation below will move the Test to the root.
+<pre>
+mutation {
+    <b>updateTestFolder</b>(
+        issueId: "12345",
+        folderPath: "/"
+    )
+}
+</pre>
+===
+ */
+  updateTestFolder<
+    Args extends VariabledInput<{
+      issueId: string;
+      folderPath: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        folderPath: string;
+      }
+    >
+  ): $Field<"updateTestFolder", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        folderPath: "String!",
+      },
+      args,
+    };
+    return this.$_select("updateTestFolder", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update a Test Run.
+===
+The mutation below updates a Test Run.
+<pre>
+mutation {
+    <b>updateTestRun</b>( id: "5acc7ab0a3fe1b6fcdc3c737", comment: "Everything is OK.", startedOn: "2020-03-09T10:35:09Z", finishedOn: "2020-04-09T10:35:09Z", assigneeId: "e5983db2-90f7-4135-a96f-46907e72290e", executedById: "e5983db2-90f7-4135-a96f-46907e72290e") {
+        warnings
+    }
+}
+</pre>
+===
+ */
+  updateTestRun<
+    Args extends VariabledInput<{
+      id: string;
+      comment?: string | null | undefined;
+      startedOn?: string | null | undefined;
+      finishedOn?: string | null | undefined;
+      assigneeId?: string | null | undefined;
+      executedById?: string | null | undefined;
+      customFields?: Readonly<Array<CustomFieldInput | null | undefined>> | null | undefined;
+    }>,
+    Sel extends Selection<UpdateTestRunResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id: string;
+        comment?: string | null | undefined;
+        startedOn?: string | null | undefined;
+        finishedOn?: string | null | undefined;
+        assigneeId?: string | null | undefined;
+        executedById?: string | null | undefined;
+        customFields?: Readonly<Array<CustomFieldInput | null | undefined>> | null | undefined;
+      }
+    >,
+    selectorFn: (s: UpdateTestRunResult) => [...Sel]
+  ): $Field<"updateTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        id: "String!",
+        comment: "String",
+        startedOn: "String",
+        finishedOn: "String",
+        assigneeId: "String",
+        executedById: "String",
+        customFields: "[CustomFieldInput]",
+      },
+      args,
+
+      selection: selectorFn(new UpdateTestRunResult()),
+    };
+    return this.$_select("updateTestRun", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the comment of a Test Run.
+===
+The mutation below updates the comment of a Test Run.
+<pre>
+mutation {
+    <b>updateTestRunComment</b>( id: "5acc7ab0a3fe1b6fcdc3c737", comment: "Everything is OK.")
+}
+</pre>
+===
+ */
+  updateTestRunComment<
+    Args extends VariabledInput<{
+      id: string;
+      comment: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id: string;
+        comment: string;
+      }
+    >
+  ): $Field<"updateTestRunComment", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        id: "String!",
+        comment: "String!",
+      },
+      args,
+    };
+    return this.$_select("updateTestRunComment", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the status of a Test Run Example.
+===
+The mutation below updates the status of a Test Run example.
+<pre>
+mutation {
+    <b>updateTestRunExampleStatus</b>(
+        exampleId: "5bbd8ab0a3fe1b6fcdc3c737",
+        status: "PASSED"
+    ) {
+        warnings
+    }
+}
+</pre>
+===
+ */
+  updateTestRunExampleStatus<
+    Args extends VariabledInput<{
+      exampleId: string;
+      status: string;
+    }>,
+    Sel extends Selection<UpdateTestRunExampleStatusResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        exampleId: string;
+        status: string;
+      }
+    >,
+    selectorFn: (s: UpdateTestRunExampleStatusResult) => [...Sel]
+  ): $Field<"updateTestRunExampleStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        exampleId: "String!",
+        status: "String!",
+      },
+      args,
+
+      selection: selectorFn(new UpdateTestRunExampleStatusResult()),
+    };
+    return this.$_select("updateTestRunExampleStatus", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the status of a Test Run.
+===
+The mutation below updates the status of a Test Run.
+<pre>
+mutation {
+    <b>updateTestRunStatus</b>( id: "5acc7ab0a3fe1b6fcdc3c737", status: "PASSED")
+}
+</pre>
+===
+ */
+  updateTestRunStatus<
+    Args extends VariabledInput<{
+      id: string;
+      status: string;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        id: string;
+        status: string;
+      }
+    >
+  ): $Field<"updateTestRunStatus", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        id: "String!",
+        status: "String!",
+      },
+      args,
+    };
+    return this.$_select("updateTestRunStatus", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the Test Run Step.
+===
+The mutation below will change the status, update the comment and add a defect to the Test Run Step.
+<pre>
+mutation {
+    <b>updateTestRunStep</b>(
+        testRunId: "5e8489c05f200f3cd45bbaf0",
+        stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
+        updateData: {
+            comment: "Step failed"
+            status: "FAILED"
+            defects: {
+                add: ["12345"]
+            }
+        }
+    ) {
+        addedDefects
+        warnings
+    }
+}
+</pre>
+===
+ */
+  updateTestRunStep<
+    Args extends VariabledInput<{
+      testRunId: string;
+      stepId: string;
+      updateData: UpdateTestRunStepInput;
+      iterationRank?: string | null | undefined;
+    }>,
+    Sel extends Selection<UpdateTestRunStepResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        stepId: string;
+        updateData: UpdateTestRunStepInput;
+        iterationRank?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: UpdateTestRunStepResult) => [...Sel]
+  ): $Field<"updateTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        stepId: "String!",
+        updateData: "UpdateTestRunStepInput!",
+        iterationRank: "String",
+      },
+      args,
+
+      selection: selectorFn(new UpdateTestRunStepResult()),
+    };
+    return this.$_select("updateTestRunStep", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the comment of a Test Run Step.
+===
+The mutation below updates the comment of a Test Run Step.
+<pre>
+mutation {
+    <b>updateTestRunStepComment</b>(
+        testRunId: "5e8489c05f200f3cd45bbaf0",
+        stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
+        comment: "This step is OK."
+    )
+}
+</pre>
+===
+ */
+  updateTestRunStepComment<
+    Args extends VariabledInput<{
+      testRunId: string;
+      stepId: string;
+      comment: string;
+      iterationRank?: string | null | undefined;
+    }>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        stepId: string;
+        comment: string;
+        iterationRank?: string | null | undefined;
+      }
+    >
+  ): $Field<"updateTestRunStepComment", string | null | undefined, GetVariables<[], Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        stepId: "String!",
+        comment: "String!",
+        iterationRank: "String",
+      },
+      args,
+    };
+    return this.$_select("updateTestRunStepComment", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the status of a Test Run Step.
+===
+The mutation below updates the status of a Test Run Step.
+<pre>
+mutation {
+    <b>updateTestRunStepStatus</b>(
+        testRunId: "5e8489c05f200f3cd45bbaf0",
+        stepId: "316eb258-10bb-40c0-ae40-ab76004cc505",
+        status: "PASSED"
+    ) {
+        warnings
+    }
+}
+</pre>
+===
+ */
+  updateTestRunStepStatus<
+    Args extends VariabledInput<{
+      testRunId: string;
+      stepId: string;
+      status: string;
+      iterationRank?: string | null | undefined;
+    }>,
+    Sel extends Selection<UpdateTestRunStepStatusResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testRunId: string;
+        stepId: string;
+        status: string;
+        iterationRank?: string | null | undefined;
+      }
+    >,
+    selectorFn: (s: UpdateTestRunStepStatusResult) => [...Sel]
+  ): $Field<"updateTestRunStepStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testRunId: "String!",
+        stepId: "String!",
+        status: "String!",
+        iterationRank: "String",
+      },
+      args,
+
+      selection: selectorFn(new UpdateTestRunStepStatusResult()),
+    };
+    return this.$_select("updateTestRunStepStatus", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update a Step of a Test.
+===
+The mutation below will update the Step with id "836d30ec-f034-4a03-879e-9c44a1d6d1fe".
+<pre>
+mutation {
+    <b>updateTestStep</b>(
+        stepId: "836d30ec-f034-4a03-879e-9c44a1d6d1fe",
+        step: {
+            result: "Xray Cloud Rest Api works as expected",
+            customFields: [{id:"5ddc0e585da9670010e608dc", value:"Lisbon"}]
+        }
+    ) {
+        warnings
+    }
+}
+</pre>
+===
+ */
+  updateTestStep<
+    Args extends VariabledInput<{
+      stepId: string;
+      step: UpdateStepInput;
+    }>,
+    Sel extends Selection<UpdateTestStepResult>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        stepId: string;
+        step: UpdateStepInput;
+      }
+    >,
+    selectorFn: (s: UpdateTestStepResult) => [...Sel]
+  ): $Field<"updateTestStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        stepId: "String!",
+        step: "UpdateStepInput!",
+      },
+      args,
+
+      selection: selectorFn(new UpdateTestStepResult()),
+    };
+    return this.$_select("updateTestStep", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the Test Type of a Test.
+===
+The mutation below will update the Test Type of the Test with id "12345".
+<pre>
+mutation {
+    <b>updateTestType</b>(issueId: "12345", testType: {name: "Manual"} ) {
+        issueId
+        testType {
+            name
+            kind
+        }
+    }
+}
+</pre>
+===
+===
+The mutation below will update the Test Type of the version 3 of the Test with id "12345".
+<pre>
+mutation {
+    <b>updateTestType</b>(issueId: "12345", versionId: 3, testType: {name: "Manual"} ) {
+        issueId
+        testType {
+            name
+            kind
+        }
+    }
+}
+</pre>
+===
+ */
+  updateTestType<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+      testType: UpdateTestTypeInput;
+    }>,
+    Sel extends Selection<Test>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+        testType: UpdateTestTypeInput;
+      }
+    >,
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<"updateTestType", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+        testType: "UpdateTestTypeInput!",
+      },
+      args,
+
+      selection: selectorFn(new Test()),
+    };
+    return this.$_select("updateTestType", options as any) as any;
+  }
+
+  /**
+ * Mutation used to update the Unstructured definition of a Test.
+===
+The mutation below will update the unstructured definition of the Test with id "12345".
+<pre>
+mutation {
+    <b>updateUnstructuredTestDefinition</b>(issueId: "12345", unstructured: "Generic definition" ) {
+        issueId
+        unstructured
+    }
+}
+</pre>
+===
+===
+The mutation below will update the unstructured definition of the version 3 of the Test with id "12345".
+<pre>
+mutation {
+    <b>updateUnstructuredTestDefinition</b>(issueId: "12345", versionId: 3, unstructured: "Generic definition" ) {
+        issueId
+        unstructured
+    }
+}
+</pre>
+===
+ */
+  updateUnstructuredTestDefinition<
+    Args extends VariabledInput<{
+      issueId: string;
+      versionId?: number | null | undefined;
+      unstructured: string;
+    }>,
+    Sel extends Selection<Test>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        issueId: string;
+        versionId?: number | null | undefined;
+        unstructured: string;
+      }
+    >,
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<
+    "updateUnstructuredTestDefinition",
+    GetOutput<Sel> | undefined,
+    GetVariables<Sel, Args>
+  > {
+    const options = {
+      argTypes: {
+        issueId: "String!",
+        versionId: "Int",
+        unstructured: "String!",
+      },
+      args,
+
+      selection: selectorFn(new Test()),
+    };
+    return this.$_select("updateUnstructuredTestDefinition", options as any) as any;
+  }
+}
+
+export class ActionFolderResult extends $Base<"ActionFolderResult"> {
+  constructor() {
+    super("ActionFolderResult");
+  }
+
+  /**
+   * Folder updated during the operation.
+   */
+  folder<Sel extends Selection<SimpleFolderResults>>(
+    selectorFn: (s: SimpleFolderResults) => [...Sel]
+  ): $Field<"folder", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new SimpleFolderResults()),
+    };
+    return this.$_select("folder", options as any) as any;
+  }
+
+  /**
+   * Warning generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+export class SimpleFolderResults extends $Base<"SimpleFolderResults"> {
+  constructor() {
+    super("SimpleFolderResults");
+  }
+
+  /**
+   * Folder issues count
+   */
+  get issuesCount(): $Field<"issuesCount", number | null | undefined> {
+    return this.$_select("issuesCount") as any;
+  }
+
+  /**
+   * Folder name
+   */
+  get name(): $Field<"name", string | null | undefined> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * Folder path
+   */
+  get path(): $Field<"path", string | null | undefined> {
+    return this.$_select("path") as any;
+  }
+
+  /**
+   * Folder preconditions count
+   */
+  get preconditionsCount(): $Field<"preconditionsCount", number | null | undefined> {
+    return this.$_select("preconditionsCount") as any;
+  }
+
+  /**
+   * Folder tests count
+   */
+  get testsCount(): $Field<"testsCount", number | null | undefined> {
+    return this.$_select("testsCount") as any;
+  }
+}
+
+/**
+ * Test Type input
+ */
 export type UpdateTestTypeInput = {
-  /** Id of the Test Type. */
-  id: InputMaybe<Scalars["String"]["input"]>;
-  /** Name of the Test Type. */
-  name: InputMaybe<Scalars["String"]["input"]>;
+  id?: string | null | undefined;
+  name?: string | null | undefined;
 };
 
-/** Xray History Entry type */
-export type XrayHistoryEntry = {
-  __typename?: "XrayHistoryEntry";
-  /** Action performed. */
-  action: Maybe<Scalars["String"]["output"]>;
-  /** Details of the change(s). */
-  changes: Maybe<Array<Maybe<Changes>>>;
-  /** Date of change(s). */
-  date: Maybe<Scalars["String"]["output"]>;
-  /** User that performed the change(s). */
-  user: Maybe<Scalars["String"]["output"]>;
-  /** Test Version that the changes refer to (if applicable). */
-  version: Maybe<Scalars["String"]["output"]>;
+/**
+ * Create Step input
+ */
+export type CreateStepInput = {
+  action?: string | null | undefined;
+  attachments?: Readonly<Array<AttachmentInput | null | undefined>> | null | undefined;
+  callTestIssueId?: string | null | undefined;
+  customFields?: Readonly<Array<CustomStepFieldInput | null | undefined>> | null | undefined;
+  data?: string | null | undefined;
+  result?: string | null | undefined;
 };
 
-/** Xray History Results type */
-export type XrayHistoryResults = {
-  __typename?: "XrayHistoryResults";
-  /** Maximum amount of History results to be returned. The maximum is 100. */
-  limit: Maybe<Scalars["Int"]["output"]>;
-  /** Precondition issue results. */
-  results: Maybe<Array<Maybe<XrayHistoryEntry>>>;
-  /** Index of the first item to return in the page of results (page offset). */
-  start: Maybe<Scalars["Int"]["output"]>;
-  /** Total amount of issues. */
-  total: Maybe<Scalars["Int"]["output"]>;
+/**
+ * Attachment input
+ */
+export type AttachmentInput = {
+  data?: string | null | undefined;
+  filename?: string | null | undefined;
+  mimeType?: string | null | undefined;
+};
+
+/**
+ * Step Custom Field input
+ */
+export type CustomStepFieldInput = {
+  id?: string | null | undefined;
+  value?: JSON | null | undefined;
+};
+
+/**
+ * Create Test Result type
+ */
+export class CreateTestResult extends $Base<"CreateTestResult"> {
+  constructor() {
+    super("CreateTestResult");
+  }
+
+  /**
+   * Test that was created.
+   */
+  test<Sel extends Selection<Test>>(
+    selectorFn: (s: Test) => [...Sel]
+  ): $Field<"test", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Test()),
+    };
+    return this.$_select("test", options as any) as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Update Step input
+ */
+export type UpdateStepInput = {
+  action?: string | null | undefined;
+  attachments?: AttachmentOperationsInput | null | undefined;
+  customFields?: Readonly<Array<CustomStepFieldInput | null | undefined>> | null | undefined;
+  data?: string | null | undefined;
+  result?: string | null | undefined;
+};
+
+/**
+ * Attachment Operations Input
+ */
+export type AttachmentOperationsInput = {
+  add?: Readonly<Array<AttachmentInput | null | undefined>> | null | undefined;
+  removeFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+  removeIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+};
+
+/**
+ * Update Test Step Results type
+ */
+export class UpdateTestStepResult extends $Base<"UpdateTestStepResult"> {
+  constructor() {
+    super("UpdateTestStepResult");
+  }
+
+  /**
+   * List of added attachments.
+   */
+  get addedAttachments(): $Field<
+    "addedAttachments",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedAttachments") as any;
+  }
+
+  /**
+   * List of removed attachments.
+   */
+  get removedAttachments(): $Field<
+    "removedAttachments",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("removedAttachments") as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Add Preconditions Result type
+ */
+export class AddPreconditionsResult extends $Base<"AddPreconditionsResult"> {
+  constructor() {
+    super("AddPreconditionsResult");
+  }
+
+  /**
+   * Issue ids of the added Preconditions.
+   */
+  get addedPreconditions(): $Field<
+    "addedPreconditions",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedPreconditions") as any;
+  }
+
+  /**
+   * Warning generated during the operation.
+   */
+  get warning(): $Field<"warning", string | null | undefined> {
+    return this.$_select("warning") as any;
+  }
+}
+
+/**
+ * Add Test Sets Result type
+ */
+export class AddTestSetsResult extends $Base<"AddTestSetsResult"> {
+  constructor() {
+    super("AddTestSetsResult");
+  }
+
+  /**
+   * Issue ids of the added Test Set.
+   */
+  get addedTestSets(): $Field<
+    "addedTestSets",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedTestSets") as any;
+  }
+
+  /**
+   * Warning generated during the operation.
+   */
+  get warning(): $Field<"warning", string | null | undefined> {
+    return this.$_select("warning") as any;
+  }
+}
+
+/**
+ * Add Test Plans Result type
+ */
+export class AddTestPlansResult extends $Base<"AddTestPlansResult"> {
+  constructor() {
+    super("AddTestPlansResult");
+  }
+
+  /**
+   * Issue ids of the added Test Plans.
+   */
+  get addedTestPlans(): $Field<
+    "addedTestPlans",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedTestPlans") as any;
+  }
+
+  /**
+   * Warning generated during the operation.
+   */
+  get warning(): $Field<"warning", string | null | undefined> {
+    return this.$_select("warning") as any;
+  }
+}
+
+/**
+ * Add Test Executions Result type
+ */
+export class AddTestExecutionsResult extends $Base<"AddTestExecutionsResult"> {
+  constructor() {
+    super("AddTestExecutionsResult");
+  }
+
+  /**
+   * Issue ids of the added Test Executions.
+   */
+  get addedTestExecutions(): $Field<
+    "addedTestExecutions",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedTestExecutions") as any;
+  }
+
+  /**
+   * Warning generated during the operation.
+   */
+  get warning(): $Field<"warning", string | null | undefined> {
+    return this.$_select("warning") as any;
+  }
+}
+
+/**
+ * Precondition Type input
+ */
+export type UpdatePreconditionTypeInput = {
+  id?: string | null | undefined;
+  name?: string | null | undefined;
+};
+
+/**
+ * Create Precondition Response type
+ */
+export class CreatePreconditionResult extends $Base<"CreatePreconditionResult"> {
+  constructor() {
+    super("CreatePreconditionResult");
+  }
+
+  /**
+   * Precondition that was created.
+   */
+  precondition<Sel extends Selection<Precondition>>(
+    selectorFn: (s: Precondition) => [...Sel]
+  ): $Field<"precondition", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Precondition()),
+    };
+    return this.$_select("precondition", options as any) as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Update Precondition input
+ */
+export type UpdatePreconditionInput = {
+  definition?: string | null | undefined;
+  folderPath?: string | null | undefined;
+  preconditionType?: UpdatePreconditionTypeInput | null | undefined;
+};
+
+/**
+ * Add Tests Result type
+ */
+export class AddTestsResult extends $Base<"AddTestsResult"> {
+  constructor() {
+    super("AddTestsResult");
+  }
+
+  /**
+   * Issue Ids of the added Tests.
+   */
+  get addedTests(): $Field<
+    "addedTests",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedTests") as any;
+  }
+
+  /**
+   * Warning generated during the operation.
+   */
+  get warning(): $Field<"warning", string | null | undefined> {
+    return this.$_select("warning") as any;
+  }
+}
+
+/**
+ * Create Test Set Result type
+ */
+export class CreateTestSetResult extends $Base<"CreateTestSetResult"> {
+  constructor() {
+    super("CreateTestSetResult");
+  }
+
+  /**
+   * Test Set that was created.
+   */
+  testSet<Sel extends Selection<TestSet>>(
+    selectorFn: (s: TestSet) => [...Sel]
+  ): $Field<"testSet", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestSet()),
+    };
+    return this.$_select("testSet", options as any) as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Create Test Plan Result type
+ */
+export class CreateTestPlanResult extends $Base<"CreateTestPlanResult"> {
+  constructor() {
+    super("CreateTestPlanResult");
+  }
+
+  /**
+   * Test Plan that was created.
+   */
+  testPlan<Sel extends Selection<TestPlan>>(
+    selectorFn: (s: TestPlan) => [...Sel]
+  ): $Field<"testPlan", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestPlan()),
+    };
+    return this.$_select("testPlan", options as any) as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Create Test Execution Result type
+ */
+export class CreateTestExecutionResult extends $Base<"CreateTestExecutionResult"> {
+  constructor() {
+    super("CreateTestExecutionResult");
+  }
+
+  /**
+   * Test Environments that were created.
+   */
+  get createdTestEnvironments(): $Field<
+    "createdTestEnvironments",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("createdTestEnvironments") as any;
+  }
+
+  /**
+   * Test Execution that was created.
+   */
+  testExecution<Sel extends Selection<TestExecution>>(
+    selectorFn: (s: TestExecution) => [...Sel]
+  ): $Field<"testExecution", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new TestExecution()),
+    };
+    return this.$_select("testExecution", options as any) as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Add Test Environments Result type
+ */
+export class AddTestEnvironmentsResult extends $Base<"AddTestEnvironmentsResult"> {
+  constructor() {
+    super("AddTestEnvironmentsResult");
+  }
+
+  /**
+   * Test Environments that were associated.
+   */
+  get associatedTestEnvironments(): $Field<
+    "associatedTestEnvironments",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("associatedTestEnvironments") as any;
+  }
+
+  /**
+   * Test Environments that were created.
+   */
+  get createdTestEnvironments(): $Field<
+    "createdTestEnvironments",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("createdTestEnvironments") as any;
+  }
+
+  /**
+   * Warning generated during the operation.
+   */
+  get warning(): $Field<"warning", string | null | undefined> {
+    return this.$_select("warning") as any;
+  }
+}
+
+/**
+ * Custom Field Input
+ */
+export type CustomFieldInput = {
+  id?: string | null | undefined;
+  value?: JSON | null | undefined;
+};
+
+/**
+ * Update Test Run Result Type
+ */
+export class UpdateTestRunResult extends $Base<"UpdateTestRunResult"> {
+  constructor() {
+    super("UpdateTestRunResult");
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Added Defects Result Type
+ */
+export class AddDefectsResult extends $Base<"AddDefectsResult"> {
+  constructor() {
+    super("AddDefectsResult");
+  }
+
+  /**
+   * Ids of the added Defects.
+   */
+  get addedDefects(): $Field<
+    "addedDefects",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedDefects") as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Attachment Data Input
+ */
+export type AttachmentDataInput = {
+  attachmentId?: string | null | undefined;
+  data?: string | null | undefined;
+  filename?: string | null | undefined;
+  mimeType?: string | null | undefined;
+};
+
+/**
+ * Add Evidence Result Type
+ */
+export class AddEvidenceResult extends $Base<"AddEvidenceResult"> {
+  constructor() {
+    super("AddEvidenceResult");
+  }
+
+  /**
+   * Ids of the added Evidence.
+   */
+  get addedEvidence(): $Field<
+    "addedEvidence",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedEvidence") as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Remove Evidence Result Type
+ */
+export class RemoveEvidenceResult extends $Base<"RemoveEvidenceResult"> {
+  constructor() {
+    super("RemoveEvidenceResult");
+  }
+
+  /**
+   * Ids of the removed Evidence.
+   */
+  get removedEvidence(): $Field<
+    "removedEvidence",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("removedEvidence") as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Update Test Run Step Input
+ */
+export type UpdateTestRunStepInput = {
+  actualResult?: string | null | undefined;
+  comment?: string | null | undefined;
+  defects?: TestRunDefectOperationsInput | null | undefined;
+  evidence?: TestRunEvidenceOperationsInput | null | undefined;
+  status?: string | null | undefined;
+};
+
+/**
+ * Test Run Evidence Operations Input
+ */
+export type TestRunEvidenceOperationsInput = {
+  add?: Readonly<Array<AttachmentDataInput | null | undefined>> | null | undefined;
+  removeFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+  removeIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+};
+
+/**
+ * Test Run Defect Operations Input
+ */
+export type TestRunDefectOperationsInput = {
+  add?: Readonly<Array<string | null | undefined>> | null | undefined;
+  remove?: Readonly<Array<string | null | undefined>> | null | undefined;
+};
+
+/**
+ * Update Test Run Step Result Type
+ */
+export class UpdateTestRunStepResult extends $Base<"UpdateTestRunStepResult"> {
+  constructor() {
+    super("UpdateTestRunStepResult");
+  }
+
+  /**
+   * Ids of the added Defects.
+   */
+  get addedDefects(): $Field<
+    "addedDefects",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedDefects") as any;
+  }
+
+  /**
+   * Ids of the added Evidence.
+   */
+  get addedEvidence(): $Field<
+    "addedEvidence",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("addedEvidence") as any;
+  }
+
+  /**
+   * Ids of the removed Defects.
+   */
+  get removedDefects(): $Field<
+    "removedDefects",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("removedDefects") as any;
+  }
+
+  /**
+   * Ids of the removed Evidence.
+   */
+  get removedEvidence(): $Field<
+    "removedEvidence",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("removedEvidence") as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Remove defects Result Type
+ */
+export class RemoveDefectsResult extends $Base<"RemoveDefectsResult"> {
+  constructor() {
+    super("RemoveDefectsResult");
+  }
+
+  /**
+   * Ids of the removed Defects.
+   */
+  get removedDefects(): $Field<
+    "removedDefects",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("removedDefects") as any;
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Update Test Run Step Status Result Type
+ */
+export class UpdateTestRunStepStatusResult extends $Base<"UpdateTestRunStepStatusResult"> {
+  constructor() {
+    super("UpdateTestRunStepStatusResult");
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Update Test Run Example Status Result Type
+ */
+export class UpdateTestRunExampleStatusResult extends $Base<"UpdateTestRunExampleStatusResult"> {
+  constructor() {
+    super("UpdateTestRunExampleStatusResult");
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+/**
+ * Update Test Run iteration status result type
+ */
+export class UpdateIterationStatusResult extends $Base<"UpdateIterationStatusResult"> {
+  constructor() {
+    super("UpdateIterationStatusResult");
+  }
+
+  /**
+   * Warnings generated during the operation.
+   */
+  get warnings(): $Field<
+    "warnings",
+    Readonly<Array<string | null | undefined>> | null | undefined
+  > {
+    return this.$_select("warnings") as any;
+  }
+}
+
+const $Root = {
+  query: Query,
+  mutation: Mutation,
+};
+
+namespace $RootTypes {
+  export type query = Query;
+  export type mutation = Mutation;
+}
+
+export function query<Sel extends Selection<$RootTypes.query>>(
+  name: string,
+  selectFn: (q: $RootTypes.query) => [...Sel]
+): TypedDocumentNode<GetOutput<Sel>, GetVariables<Sel>>;
+export function query<Sel extends Selection<$RootTypes.query>>(
+  selectFn: (q: $RootTypes.query) => [...Sel]
+): TypedDocumentNode<GetOutput<Sel>, Simplify<GetVariables<Sel>>>;
+export function query<Sel extends Selection<$RootTypes.query>>(name: any, selectFn?: any) {
+  if (!selectFn) {
+    selectFn = name;
+    name = "";
+  }
+  let field = new $Field<"query", GetOutput<Sel>, GetVariables<Sel>>("query", {
+    selection: selectFn(new $Root.query()),
+  });
+  const str = fieldToQuery(`query ${name}`, field);
+
+  return gql(str) as any;
+}
+
+export function mutation<Sel extends Selection<$RootTypes.mutation>>(
+  name: string,
+  selectFn: (q: $RootTypes.mutation) => [...Sel]
+): TypedDocumentNode<GetOutput<Sel>, GetVariables<Sel>>;
+export function mutation<Sel extends Selection<$RootTypes.mutation>>(
+  selectFn: (q: $RootTypes.mutation) => [...Sel]
+): TypedDocumentNode<GetOutput<Sel>, Simplify<GetVariables<Sel>>>;
+export function mutation<Sel extends Selection<$RootTypes.query>>(name: any, selectFn?: any) {
+  if (!selectFn) {
+    selectFn = name;
+    name = "";
+  }
+  let field = new $Field<"mutation", GetOutput<Sel>, GetVariables<Sel>>("mutation", {
+    selection: selectFn(new $Root.mutation()),
+  });
+  const str = fieldToQuery(`mutation ${name}`, field);
+
+  return gql(str) as any;
+}
+
+const $InputTypes: { [key: string]: { [key: string]: string } } = {
+  TestTypeInput: {
+    id: "String",
+    kind: "String",
+    name: "String",
+  },
+  FolderSearchInput: {
+    includeDescendants: "Boolean",
+    path: "String!",
+    testPlanId: "String",
+  },
+  TestWithVersionInput: {
+    issueId: "String",
+    versionId: "Int",
+  },
+  PreconditionFolderSearchInput: {
+    includeDescendants: "Boolean",
+    path: "String!",
+  },
+  UpdateTestTypeInput: {
+    id: "String",
+    name: "String",
+  },
+  CreateStepInput: {
+    action: "String",
+    attachments: "[AttachmentInput]",
+    callTestIssueId: "String",
+    customFields: "[CustomStepFieldInput]",
+    data: "String",
+    result: "String",
+  },
+  AttachmentInput: {
+    data: "String",
+    filename: "String",
+    mimeType: "String",
+  },
+  CustomStepFieldInput: {
+    id: "String",
+    value: "JSON",
+  },
+  UpdateStepInput: {
+    action: "String",
+    attachments: "AttachmentOperationsInput",
+    customFields: "[CustomStepFieldInput]",
+    data: "String",
+    result: "String",
+  },
+  AttachmentOperationsInput: {
+    add: "[AttachmentInput]",
+    removeFilenames: "[String]",
+    removeIds: "[String]",
+  },
+  UpdatePreconditionTypeInput: {
+    id: "String",
+    name: "String",
+  },
+  UpdatePreconditionInput: {
+    definition: "String",
+    folderPath: "String",
+    preconditionType: "UpdatePreconditionTypeInput",
+  },
+  CustomFieldInput: {
+    id: "String",
+    value: "JSON",
+  },
+  AttachmentDataInput: {
+    attachmentId: "String",
+    data: "String",
+    filename: "String",
+    mimeType: "String",
+  },
+  UpdateTestRunStepInput: {
+    actualResult: "String",
+    comment: "String",
+    defects: "TestRunDefectOperationsInput",
+    evidence: "TestRunEvidenceOperationsInput",
+    status: "String",
+  },
+  TestRunEvidenceOperationsInput: {
+    add: "[AttachmentDataInput]",
+    removeFilenames: "[String]",
+    removeIds: "[String]",
+  },
+  TestRunDefectOperationsInput: {
+    add: "[String]",
+    remove: "[String]",
+  },
 };
