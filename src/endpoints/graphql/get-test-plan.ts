@@ -80,7 +80,7 @@ export class GetTestPlanApi {
       },
       method: "POST",
     });
-
-    return (await response.json()) as GetOutput<T>;
+    const json = (await response.json()) as { data: { getTestPlan: GetOutput<T> } };
+    return json.data.getTestPlan;
   }
 }

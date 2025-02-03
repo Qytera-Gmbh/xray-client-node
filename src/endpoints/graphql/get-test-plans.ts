@@ -119,6 +119,7 @@ export class GetTestPlansApi {
       },
       method: "POST",
     });
-    return (await response.json()) as GetOutput<T>;
+    const json = (await response.json()) as { data: { getTestPlans: GetOutput<T> } };
+    return json.data.getTestPlans;
   }
 }

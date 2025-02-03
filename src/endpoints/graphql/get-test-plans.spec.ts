@@ -32,35 +32,31 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         ]
       );
       assert.deepStrictEqual(response, {
-        data: {
-          getTestPlans: {
-            limit: 1,
-            results: [
-              {
-                issueId: "15051",
-                jira: {
-                  key: "XCN-3",
+        limit: 1,
+        results: [
+          {
+            issueId: "15051",
+            jira: {
+              key: "XCN-3",
+            },
+            tests: {
+              limit: 10,
+              results: [
+                {
+                  issueId: "15049",
+                  jira: {
+                    key: "XCN-1",
+                  },
+                  testType: {
+                    name: "Manual",
+                  },
                 },
-                tests: {
-                  limit: 10,
-                  results: [
-                    {
-                      issueId: "15049",
-                      jira: {
-                        key: "XCN-1",
-                      },
-                      testType: {
-                        name: "Manual",
-                      },
-                    },
-                  ],
-                  start: 0,
-                },
-              },
-            ],
-            start: 0,
+              ],
+              start: 0,
+            },
           },
-        },
+        ],
+        start: 0,
       });
     });
   });
