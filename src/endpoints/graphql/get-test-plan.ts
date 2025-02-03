@@ -1,6 +1,11 @@
+import { print } from "graphql";
 import type { BaseClient } from "../../client/base-client.js";
-import type { TestPlan } from "../../models/xray/graphql/__generated__/index.js";
-import type { NullHandling, QueryResponse } from "../../models/xray/graphql/graphql.js";
+import type {
+  GetOutput,
+  Selection,
+  TestPlan,
+} from "../../models/xray/graphql/__generated__/index.js";
+import { query } from "../../models/xray/graphql/__generated__/index.js";
 
 /**
  * Models the GraphQL test plan endpoints.
@@ -46,37 +51,25 @@ export class GetTestPlanApi {
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestplan.doc.html
    */
-  public async query<N extends NullHandling = "without-null">(
+  public async query<T extends Selection<TestPlan>>(
     variables: {
       /**
        * The issue id of the Test Plan issue to be returned.
        */
       issueId: string;
     },
-    resultShape: string
-  ): Promise<QueryResult<N>> {
-    const queryString = `
-      query ($issueId: String) {
-        getTestPlan(issueId: $issueId) {
-          ${resultShape}
-        }
-      }
-    `;
+    resultShape: (testPlan: TestPlan) => [...T]
+  ): Promise<GetOutput<T>> {
+    const document = query((q) => [q.getTestPlan<typeof variables, T>(variables, resultShape)]);
     const response = await this.client.send("/graphql", {
-      body: JSON.stringify({ query: queryString, variables: variables }),
+      body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
         ["Content-Type"]: "application/json",
       },
       method: "POST",
     });
-    return (await response.json()) as QueryResult<N>;
+
+    return (await response.json()) as GetOutput<T>;
   }
 }
-
-type QueryResult<N extends NullHandling> = QueryResponse<
-  {
-    getTestPlan: TestPlan;
-  },
-  N
->;

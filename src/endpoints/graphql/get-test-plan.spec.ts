@@ -8,21 +8,16 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("query", () => {
     it("returns test plan data", async () => {
       const controller = new GetTestPlanApi(XRAY_CLIENT_CLOUD);
-      const response = await controller.query(
-        { issueId: "15051" },
-        `
-          issueId
-          jira(fields: ["key"])
-          tests(limit: 100) {
-            results {
-              issueId
-              testType {
-                name
-              }
-            }              
-          }
-        `
-      );
+      const response = await controller.query({ issueId: "15051" }, (testPlan) => [
+        testPlan.issueId,
+        testPlan.jira({ fields: ["key"] }),
+        testPlan.tests({ limit: 100 }, (testResults) => [
+          testResults.results((test) => [
+            test.issueId,
+            test.testType((testType) => [testType.name]),
+          ]),
+        ]),
+      ]);
       assert.deepStrictEqual(response, {
         data: {
           getTestPlan: {
