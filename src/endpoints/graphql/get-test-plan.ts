@@ -28,21 +28,32 @@ export class GetTestPlanApi {
    * @example
    *
    * ```ts
-   * query(
-   *   { issueid: "14841" },
-   *   `
-   *     issueId
-   *     jira(fields: ["key"])
-   *     tests(limit: 100) {
-   *       results {
-   *         issueId
-   *         testType {
-   *           name
-   *         }
-   *       }
-   *     }
-   *   `
-   * );
+   * query({ issueId: "15051" }, (testPlan) => [
+   *   testPlan.issueId,
+   *   testPlan.jira({ fields: ["key"] }),
+   *   testPlan.tests({ limit: 100 }, (testResults) => [
+   *     testResults.results((test) => [
+   *       test.issueId,
+   *       test.testType((testType) => [testType.name]),
+   *     ]),
+   *   ]),
+   * ]);
+   *
+   * // Equivalent to:
+   * // {
+   * //   getTestPlan(issueId: "12345") {
+   * //     issueId
+   * //     tests(limit: 100) {
+   * //       jira(fields: ["key"])
+   * //       results {
+   * //         issueId
+   * //         testType {
+   * //           name
+   * //         }
+   * //       }
+   * //     }
+   * //   }
+   * // }
    * ```
    *
    * @param variables the query arguments

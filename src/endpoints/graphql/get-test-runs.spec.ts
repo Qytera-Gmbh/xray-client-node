@@ -10,16 +10,14 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       const controller = new GetTestRunsApi(XRAY_CLIENT_CLOUD);
       const response = await controller.query(
         { limit: 100, testExecIssueIds: ["XCN-2"] },
-        `
-          total
-          limit
-          start
-          results {
-            test {
-              jira(fields: ["key"])
-            }
-          }
-        `
+        (testRunResults) => [
+          testRunResults.total,
+          testRunResults.limit,
+          testRunResults.start,
+          testRunResults.results((testRun) => [
+            testRun.test((test) => [test.jira({ fields: ["key"] })]),
+          ]),
+        ]
       );
       assert.deepStrictEqual(response, {
         data: {
