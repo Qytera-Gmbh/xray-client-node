@@ -1,13 +1,12 @@
+import type { Xray } from "../../../index.js";
 import type { BaseClient } from "../../client/base-client.js";
-import type {
-  DatasetExportQueryCloud,
-  DatasetExportQueryServer,
-} from "../../models/xray/dataset/dataset.js";
 
 /**
  * Models the execution import endpoints.
  */
-export class DatasetApi<ExportType extends DatasetExportQueryCloud | DatasetExportQueryServer> {
+export class DatasetApi<
+  ExportType extends Xray.Dataset.ExportQueryCloud | Xray.Dataset.ExportQueryServer,
+> {
   private readonly client: BaseClient;
 
   /**

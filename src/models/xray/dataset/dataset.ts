@@ -3,7 +3,7 @@
  *
  * @see https://docs.getxray.app/display/XRAYCLOUD/Exporting+datasets+-+REST+v2
  */
-export interface DatasetExportQueryCloud {
+export interface ExportQueryCloud {
   /**
    * The id of the context issue (Test Plan or Test Execution).
    */
@@ -31,7 +31,7 @@ export interface DatasetExportQueryCloud {
  *
  * @see https://docs.getxray.app/display/XRAY/v2.0#/Dataset/get_dataset_export
  */
-export type DatasetExportQueryServer = DatasetExportQueryCloud & {
+export type ExportQueryServer = ExportQueryCloud & {
   /**
    * A test version.
    */

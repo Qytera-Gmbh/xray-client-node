@@ -7,11 +7,11 @@
  *
  * Schemes transformed into TypeScript using https://github.com/bcherny/json-schema-to-typescript.
  */
-export interface XrayTestExecutionResults {
+export interface TestExecutionResults {
   /**
    * The info object for creating new test execution issues.
    */
-  info?: XrayTestExecutionInfo;
+  info?: TestExecutionInfo;
   /**
    * The test execution key where to import the execution results.
    */
@@ -19,14 +19,14 @@ export interface XrayTestExecutionResults {
   /**
    * The test run result details.
    */
-  tests?: [XrayTest, ...XrayTest[]];
+  tests?: [Test, ...Test[]];
 }
 
 /**
  * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results#ImportExecutionResults-%22info%22object-TestExecutionissue
  * @see https://docs.getxray.app/display/XRAYCLOUD/Using+Xray+JSON+format+to+import+execution+results#UsingXrayJSONformattoimportexecutionresults-%22info%22object-TestExecutionissue
  */
-export interface XrayTestExecutionInfo {
+export interface TestExecutionInfo {
   /**
    * The description for the test execution issue.
    */
@@ -69,7 +69,7 @@ export interface XrayTestExecutionInfo {
   version?: string;
 }
 
-export interface XrayTest {
+export interface Test {
   /**
    * The user id for the assignee of the test run.
    */
@@ -81,7 +81,7 @@ export interface XrayTest {
   /**
    * An array of custom fields for the test run.
    */
-  customFields?: XrayCustomField[];
+  customFields?: CustomField[];
   /**
    * An array of defect issue keys to associate with the test run.
    */
@@ -89,7 +89,7 @@ export interface XrayTest {
   /**
    * An array of evidence items of the test run.
    */
-  evidence?: XrayEvidenceItem[];
+  evidence?: EvidenceItem[];
   /**
    * The example results for BDD tests.
    */
@@ -105,7 +105,7 @@ export interface XrayTest {
   /**
    * The iteration containing data-driven test results.
    */
-  iterations?: XrayIterationResult[];
+  iterations?: IterationResult[];
   /**
    * The start date for the test run.
    */
@@ -117,11 +117,11 @@ export interface XrayTest {
   /**
    * The step results.
    */
-  steps?: XrayManualTestStepResult[];
+  steps?: ManualTestStepResult[];
   /**
    * The test info element.
    */
-  testInfo?: XrayTestInfo;
+  testInfo?: TestInfo;
   /**
    * The test issue key.
    */
@@ -136,7 +136,7 @@ export type XrayExamplesTypeServer = "EXECUTING" | "FAIL" | "PASS" | "TODO";
  */
 export type XrayExamplesTypeCloud = "EXECUTING" | "FAILED" | "PASSED" | "TODO";
 
-export interface XrayTestInfo {
+export interface TestInfo {
   /**
    * The generic test definition.
    */
@@ -182,7 +182,7 @@ export interface XrayTestInfo {
 /**
  * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results#ImportExecutionResults-%22testInfo%22object-CreatingTestissues
  */
-export interface XrayTestInfoServer extends XrayTestInfo {
+export interface TestInfoServer extends TestInfo {
   /**
    * The description of the test issue.
    */
@@ -199,7 +199,7 @@ export interface XrayTestInfoServer extends XrayTestInfo {
 /**
  * @see https://docs.getxray.app/display/XRAYCLOUD/Using+Xray+JSON+format+to+import+execution+results#UsingXrayJSONformattoimportexecutionresults-%22testInfo%22object-CreatingTestissues
  */
-export interface XrayTestInfoCloud extends XrayTestInfo {
+export interface TestInfoCloud extends TestInfo {
   /**
    * An array of test steps (for manual tests).
    */
@@ -219,7 +219,7 @@ export interface XrayTestInfoCloud extends XrayTestInfo {
   type: string;
 }
 
-export interface XrayManualTestStepResult {
+export interface ManualTestStepResult {
   /**
    * The actual result field for the step result.
    */
@@ -237,26 +237,26 @@ export interface XrayManualTestStepResult {
    */
   status: string;
 }
-export interface XrayManualTestStepResultServer extends XrayManualTestStepResult {
+export interface ManualTestStepResultServer extends ManualTestStepResult {
   /**
    * An array of evidence items of the test run.
    */
-  evidences?: XrayEvidenceItem[];
+  evidences?: EvidenceItem[];
 }
 /**
  * @see https://docs.getxray.app/display/XRAYCLOUD/Using+Xray+JSON+format+to+import+execution+results#UsingXrayJSONformattoimportexecutionresults-%22stepresult%22object-stepresults
  */
-export interface XrayManualTestStepResultCloud extends XrayManualTestStepResult {
+export interface ManualTestStepResultCloud extends ManualTestStepResult {
   /**
    * An array of evidence items of the test run.
    */
-  evidence?: XrayEvidenceItem[];
+  evidence?: EvidenceItem[];
 }
 /**
  * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results#ImportExecutionResults-%22evidence%22object-embeddedattachments
  * @see https://docs.getxray.app/display/XRAYCLOUD/Using+Xray+JSON+format+to+import+execution+results#UsingXrayJSONformattoimportexecutionresults-%22evidence%22object-embeddedattachments
  */
-export interface XrayEvidenceItem {
+export interface EvidenceItem {
   /**
    * The Content-Type representation header is used to indicate the original
    * media type of the resource.
@@ -272,7 +272,7 @@ export interface XrayEvidenceItem {
   filename: string;
 }
 
-export interface XrayIterationResult {
+export interface IterationResult {
   /**
    * An array of parameters along with their values.
    */
@@ -289,12 +289,12 @@ export interface XrayIterationResult {
   /**
    * An array of step results (for manual tests).
    */
-  steps?: XrayManualTestStepResult[];
+  steps?: ManualTestStepResult[];
 }
 /**
  * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results#ImportExecutionResults-%22iterations%22object-Data-driventestresults
  */
-export interface XrayIterationResultServer extends XrayIterationResult {
+export interface IterationResultServer extends IterationResult {
   /**
    * An array of parameters along with their values.
    */
@@ -312,7 +312,7 @@ export interface XrayIterationResultServer extends XrayIterationResult {
 /**
  * @see https://docs.getxray.app/display/XRAYCLOUD/Using+Xray+JSON+format+to+import+execution+results#UsingXrayJSONformattoimportexecutionresults-%22iteration%22object-Data-driventestresults
  */
-export interface XrayIterationResultCloud extends XrayIterationResult {
+export interface IterationResultCloud extends IterationResult {
   /**
    * A duration for the iteration.
    */
@@ -342,7 +342,7 @@ export interface XrayIterationResultCloud extends XrayIterationResult {
 /**
  * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results#ImportExecutionResults-%22customFields%22object-storetestruncustomfields
  */
-export interface XrayCustomField {
+export interface CustomField {
   /**
    * The test run custom field ID.
    */
@@ -355,7 +355,7 @@ export interface XrayCustomField {
 /**
  * @see https://docs.getxray.app/display/XRAYCLOUD/Using+Xray+JSON+format+to+import+execution+results#UsingXrayJSONformattoimportexecutionresults-%22customField%22object-storetestruncustomfields
  */
-export interface XrayCustomFieldCloud extends XrayCustomField {
+export interface CustomFieldCloud extends CustomField {
   /**
    * The test run custom field name.
    */
@@ -368,7 +368,7 @@ export type Base64String = string;
 /**
  * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results+-+REST
  */
-export interface ImportExecutionResponseServer {
+export interface ResponseServer {
   testExecIssue: {
     id: string;
     key: string;
@@ -379,13 +379,8 @@ export interface ImportExecutionResponseServer {
 /**
  * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST
  */
-export interface ImportExecutionResponseCloud {
+export interface ResponseCloud {
   id: string;
   key: string;
   self: string;
 }
-
-/**
- * Models the Xray response after a successful JSON result import.
- */
-export type ImportResponse = ImportExecutionResponseCloud | ImportExecutionResponseServer;

@@ -1,16 +1,12 @@
+import type { Xray } from "../../../../index.js";
 import type { BaseClient } from "../../../client/base-client.js";
 import type { IssueUpdateDetails } from "../../../models/jira/__generated__/index.js";
-import type {
-  ImportExecutionResponseCloud,
-  ImportExecutionResponseServer,
-  XrayTestExecutionResults,
-} from "../../../models/xray/import/execution/import-execution.js";
 
 /**
  * Models the execution import endpoints.
  */
 export class ImportExecutionApi<
-  ImportExecutionResponseType extends ImportExecutionResponseCloud | ImportExecutionResponseServer,
+  ImportExecutionResponseType extends Xray.Import.ResponseCloud | Xray.Import.ResponseServer,
 > {
   private readonly client: BaseClient;
 
@@ -32,7 +28,9 @@ export class ImportExecutionApi<
    * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresults
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresults
    */
-  public async xray(results: XrayTestExecutionResults): Promise<ImportExecutionResponseType> {
+  public async xray(
+    results: Xray.Import.TestExecutionResults
+  ): Promise<ImportExecutionResponseType> {
     const response = await this.client.send(`/import/execution`, {
       body: JSON.stringify(results),
       expectedStatus: 200,
@@ -57,7 +55,7 @@ export class ImportExecutionApi<
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresultsMultipart
    */
   public async xrayMultipart(
-    results: XrayTestExecutionResults,
+    results: Xray.Import.TestExecutionResults,
     info: IssueUpdateDetails
   ): Promise<ImportExecutionResponseType> {
     const resultString = JSON.stringify(results);

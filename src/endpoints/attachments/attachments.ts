@@ -1,5 +1,5 @@
+import type { Xray } from "../../../index.js";
 import type { BaseClient } from "../../client/base-client.js";
-import type { AddAttachmentResponse } from "../../models/xray/attachments/attachments.js";
 import { createStreamableFile } from "../../util/form-data.js";
 
 /**
@@ -41,7 +41,7 @@ export class AttachmentsApi {
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
    */
-  public async addAttachment(file: string): Promise<AddAttachmentResponse> {
+  public async addAttachment(file: string): Promise<Xray.Attachment.AddAttachmentResponse> {
     const formData = new FormData();
     formData.append("attachment", await createStreamableFile(file));
     const response = await this.client.send(`/attachments`, {
@@ -49,6 +49,6 @@ export class AttachmentsApi {
       expectedStatus: 200,
       method: "POST",
     });
-    return (await response.json()) as AddAttachmentResponse;
+    return (await response.json()) as Xray.Attachment.AddAttachmentResponse;
   }
 }
