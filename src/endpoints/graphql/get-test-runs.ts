@@ -1,10 +1,6 @@
 import { print } from "graphql";
+import type { Xray } from "../../../index.js";
 import type { BaseClient } from "../../client/base-client.js";
-import type {
-  GetOutput,
-  Selection,
-  TestRunResults,
-} from "../../models/xray/graphql/__generated__/index.js";
 import { query } from "../../models/xray/graphql/__generated__/index.js";
 
 /**
@@ -61,7 +57,7 @@ export class GetTestRunsApi {
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
    */
-  public async query<T extends Selection<TestRunResults>>(
+  public async query<T extends Xray.GraphQL.Selection<Xray.GraphQL.TestRunResults>>(
     variables: {
       /**
        * The maximum amount of Test Runs to be returned. The maximum is 100.
@@ -88,8 +84,8 @@ export class GetTestRunsApi {
        */
       testRunAssignees?: string[];
     },
-    resultShape: (testRunResults: TestRunResults) => [...T]
-  ): Promise<GetOutput<T>> {
+    resultShape: (testRunResults: Xray.GraphQL.TestRunResults) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
     const document = query((q) => [q.getTestRuns<typeof variables, T>(variables, resultShape)]);
     const response = await this.client.send("/graphql", {
       body: JSON.stringify({ query: print(document) }),
@@ -99,7 +95,7 @@ export class GetTestRunsApi {
       },
       method: "POST",
     });
-    const json = (await response.json()) as { data: { getTestRuns: GetOutput<T> } };
+    const json = (await response.json()) as { data: { getTestRuns: Xray.GraphQL.GetOutput<T> } };
     return json.data.getTestRuns;
   }
 }

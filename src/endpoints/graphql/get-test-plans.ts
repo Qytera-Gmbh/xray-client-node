@@ -1,10 +1,6 @@
 import { print } from "graphql";
+import type { Xray } from "../../../index.js";
 import type { BaseClient } from "../../client/base-client.js";
-import type {
-  GetOutput,
-  Selection,
-  TestPlanResults,
-} from "../../models/xray/graphql/__generated__/index.js";
 import { query } from "../../models/xray/graphql/__generated__/index.js";
 
 /**
@@ -81,7 +77,7 @@ export class GetTestPlansApi {
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestplans.doc.html
    */
-  public async query<T extends Selection<TestPlanResults>>(
+  public async query<T extends Xray.GraphQL.Selection<Xray.GraphQL.TestPlanResults>>(
     variables: {
       /**
        * The IDs of the test plan issues to be returned.
@@ -108,8 +104,8 @@ export class GetTestPlansApi {
        */
       start?: number;
     },
-    resultShape: (testPlanResults: TestPlanResults) => [...T]
-  ): Promise<GetOutput<T>> {
+    resultShape: (testPlanResults: Xray.GraphQL.TestPlanResults) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
     const document = query((q) => [q.getTestPlans<typeof variables, T>(variables, resultShape)]);
     const response = await this.client.send("/graphql", {
       body: JSON.stringify({ query: print(document) }),
@@ -119,7 +115,7 @@ export class GetTestPlansApi {
       },
       method: "POST",
     });
-    const json = (await response.json()) as { data: { getTestPlans: GetOutput<T> } };
+    const json = (await response.json()) as { data: { getTestPlans: Xray.GraphQL.GetOutput<T> } };
     return json.data.getTestPlans;
   }
 }

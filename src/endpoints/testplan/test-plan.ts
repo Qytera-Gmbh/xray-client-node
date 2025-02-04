@@ -1,8 +1,5 @@
+import type { Xray } from "../../../index.js";
 import type { BaseClient } from "../../client/base-client.js";
-import type {
-  GetTestExecutionsResponse,
-  GetTestsResponse,
-} from "../../models/xray/testplan/test-plan.js";
 
 /**
  * Models the test plans endpoints in Xray server.
@@ -44,13 +41,13 @@ export class TestPlanApi {
        */
       page?: number;
     }
-  ): Promise<GetTestsResponse> {
+  ): Promise<Xray.TestPlan.GetTestsResponse> {
     const response = await this.client.send(`/testplans/${testPlanKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,
     });
-    return (await response.json()) as GetTestsResponse;
+    return (await response.json()) as Xray.TestPlan.GetTestsResponse;
   }
 
   /**
@@ -118,11 +115,13 @@ export class TestPlanApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
    */
-  public async getTestExecutions(testPlanKey: string): Promise<GetTestExecutionsResponse> {
+  public async getTestExecutions(
+    testPlanKey: string
+  ): Promise<Xray.TestPlan.GetTestExecutionsResponse> {
     const response = await this.client.send(`/testplans/${testPlanKey}/testexecution`, {
       expectedStatus: 200,
       method: "GET",
     });
-    return (await response.json()) as GetTestExecutionsResponse;
+    return (await response.json()) as Xray.TestPlan.GetTestExecutionsResponse;
   }
 }

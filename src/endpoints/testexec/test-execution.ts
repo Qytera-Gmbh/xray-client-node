@@ -1,5 +1,5 @@
+import type { Xray } from "../../../index.js";
 import type { BaseClient } from "../../client/base-client.js";
-import type { GetTestsResponse } from "../../models/xray/testexec/test-execution.js";
 
 /**
  * Models the test executions endpoints in Xray server.
@@ -45,13 +45,13 @@ export class TestExecutionApi {
        */
       page?: number;
     }
-  ): Promise<GetTestsResponse> {
+  ): Promise<Xray.TestExecution.GetTestsResponse> {
     const response = await this.client.send(`/testexec/${testExecKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,
     });
-    return (await response.json()) as GetTestsResponse;
+    return (await response.json()) as Xray.TestExecution.GetTestsResponse;
   }
 
   /**
