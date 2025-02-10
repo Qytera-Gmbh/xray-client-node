@@ -19,7 +19,7 @@ export class QueryApi {
   }
 
   /**
-   * Returns a Test Plan by issue id.
+   * Returns a test plan by issue id.
    *
    * @example
    *
