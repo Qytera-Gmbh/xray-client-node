@@ -19,22 +19,6 @@ export class ExecutionEvidenceApi {
   }
 
   /**
-   * Return a JSON that contains an array with all the execution evidence the test run has.
-   *
-   * @param testRunId the ID of the test run
-   * @returns the the execution evidence
-   *
-   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-   */
-  public async getEvidence(testRunId: string): Promise<Xray.TestRun.GetExecutionEvidenceResponse> {
-    const response = await this.client.send(`/testrun/${testRunId}/attachment`, {
-      expectedStatus: 200,
-      method: "GET",
-    });
-    return (await response.json()) as Xray.TestRun.GetExecutionEvidenceResponse;
-  }
-
-  /**
    * Add new evidence to a test run.
    *
    * @param testRunId the ID of the test run
@@ -68,6 +52,21 @@ export class ExecutionEvidenceApi {
   }
 
   /**
+   * Remove the evidence with the given attachment id.
+   *
+   * @param testRunId the ID of the test run
+   * @param attachmentId the ID of the attachment to delete
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+   */
+  public async deleteEvidenceById(testRunId: string, attachmentId: string): Promise<void> {
+    await this.client.send(`/testrun/${testRunId}/attachment/${attachmentId}`, {
+      expectedStatus: 200,
+      method: "DELETE",
+    });
+  }
+
+  /**
    * Removes all evidence with the same filename from the test run.
    *
    * @param testRunId the ID of the test run
@@ -84,17 +83,18 @@ export class ExecutionEvidenceApi {
   }
 
   /**
-   * Remove the evidence with the given attachment id.
+   * Return a JSON that contains an array with all the execution evidence the test run has.
    *
    * @param testRunId the ID of the test run
-   * @param attachmentId the ID of the attachment to delete
+   * @returns the the execution evidence
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  public async deleteEvidenceById(testRunId: string, attachmentId: string): Promise<void> {
-    await this.client.send(`/testrun/${testRunId}/attachment/${attachmentId}`, {
+  public async getEvidence(testRunId: string): Promise<Xray.TestRun.GetExecutionEvidenceResponse> {
+    const response = await this.client.send(`/testrun/${testRunId}/attachment`, {
       expectedStatus: 200,
-      method: "DELETE",
+      method: "GET",
     });
+    return (await response.json()) as Xray.TestRun.GetExecutionEvidenceResponse;
   }
 }

@@ -5,13 +5,13 @@ import { toSearchParams } from "../util/search-params.js";
  */
 export class BaseClient {
   /**
-   * The base URL of the Xray instance.
-   */
-  private readonly url: string;
-  /**
    * The value of the authorization header to use in HTTP requests.
    */
   private readonly authorizationValue: Promise<string>;
+  /**
+   * The base URL of the Xray instance.
+   */
+  private readonly url: string;
 
   /**
    * Constructs a new client based on the provided configuration.

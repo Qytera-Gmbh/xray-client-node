@@ -2,12 +2,12 @@ import assert from "node:assert";
 import path from "node:path";
 import { describe, it } from "node:test";
 import { XRAY_CLIENT_CLOUD } from "../../../test/clients.js";
-import { QueryApi } from "./query.js";
+import { GraphQLApi } from "./graphql.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getTestPlan", () => {
     it("returns test plan data", async () => {
-      const controller = new QueryApi(XRAY_CLIENT_CLOUD);
+      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
       const response = await controller.getTestPlan({ issueId: "15051" }, (testPlan) => [
         testPlan.issueId,
         testPlan.jira({ fields: ["key"] }),
@@ -39,7 +39,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
   describe("getTestPlans", () => {
     it("returns test plans data", async () => {
-      const controller = new QueryApi(XRAY_CLIENT_CLOUD);
+      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
       const response = await controller.getTestPlans(
         {
           jql: "project = XCN",
@@ -95,7 +95,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
   describe("getTestRuns", () => {
     it("returns test run data", async () => {
-      const controller = new QueryApi(XRAY_CLIENT_CLOUD);
+      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
       const response = await controller.getTestRuns(
         { limit: 100, testExecIssueIds: ["XCN-2"] },
         (testRunResults) => [

@@ -19,42 +19,6 @@ export class TestExecutionApi {
   }
 
   /**
-   * Return a list of the test associated with the test execution. Note that this endpoint may be
-   * paginated.
-   *
-   * @param testExecKey the key of the test execution
-   * @param query optional query parameters
-   * @returns the tests of the test execution
-   *
-   * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
-   */
-  public async getTests(
-    testExecKey: string,
-    query?: {
-      /**
-       * If `true` will display detailed information about the test run.
-       */
-      detailed?: boolean;
-      /**
-       * Limits the number of results per page. Should be greater or equal to 0 and lower or equal
-       * to the maximum set in the global configuration.
-       */
-      limit?: number;
-      /**
-       * Number of the page to be returned. Should be greater or equal to 1.
-       */
-      page?: number;
-    }
-  ): Promise<Xray.TestExecution.GetTestsResponse> {
-    const response = await this.client.send(`/testexec/${testExecKey}/test`, {
-      expectedStatus: 200,
-      method: "GET",
-      query: query,
-    });
-    return (await response.json()) as Xray.TestExecution.GetTestsResponse;
-  }
-
-  /**
    * Associate tests with the test execution. Return error messages, if there are any.
    *
    * @param testExecKey the key of the test execution
@@ -91,6 +55,42 @@ export class TestExecutionApi {
     }
   ): Promise<string> {
     throw new Error("Method not implemented");
+  }
+
+  /**
+   * Return a list of the test associated with the test execution. Note that this endpoint may be
+   * paginated.
+   *
+   * @param testExecKey the key of the test execution
+   * @param query optional query parameters
+   * @returns the tests of the test execution
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
+   */
+  public async getTests(
+    testExecKey: string,
+    query?: {
+      /**
+       * If `true` will display detailed information about the test run.
+       */
+      detailed?: boolean;
+      /**
+       * Limits the number of results per page. Should be greater or equal to 0 and lower or equal
+       * to the maximum set in the global configuration.
+       */
+      limit?: number;
+      /**
+       * Number of the page to be returned. Should be greater or equal to 1.
+       */
+      page?: number;
+    }
+  ): Promise<Xray.TestExecution.GetTestsResponse> {
+    const response = await this.client.send(`/testexec/${testExecKey}/test`, {
+      expectedStatus: 200,
+      method: "GET",
+      query: query,
+    });
+    return (await response.json()) as Xray.TestExecution.GetTestsResponse;
   }
 
   /**
