@@ -172,6 +172,178 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
 
 </details>
 
+<details>
+  <summary>Xray cloud roadmap</summary>
+
+---
+
+_Based on: https://docs.getxray.app/display/XRAYCLOUD/REST+API_
+
+- [v1](https://docs.getxray.app/display/XRAYCLOUD/Version+1)
+  - [Exporting Cucumber Tests](https://docs.getxray.app/display/XRAYCLOUD/Exporting+Cucumber+Tests+-+REST)
+    - [ ] GET /api/v1/export/cucumber
+  - [Import Execution Results](https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST)
+    - [x] POST /api/v1/import/execution
+    - [x] POST /api/v1/import/execution/multipart
+    - [ ] POST /api/v1/import/execution/cucumber
+    - [ ] POST /api/v1/import/execution/cucumber/multipart
+    - [ ] POST /api/v1/import/execution/junit
+    - [ ] POST /api/v1/import/execution/junit/multipart
+    - [ ] POST /api/v1/import/execution/nunit
+    - [ ] POST /api/v1/import/execution/nunit/multipart
+    - [ ] POST /api/v1/import/execution/xunit
+    - [ ] POST /api/v1/import/execution/xunit/multipart
+    - [ ] POST /api/v1/import/execution/testng
+    - [ ] POST /api/v1/import/execution/testng/multipart
+    - [ ] POST /api/v1/import/execution/robot
+    - [ ] POST /api/v1/import/execution/robot/multipart
+    - [ ] POST /api/v1/import/execution/behave
+    - [ ] POST /api/v1/import/execution/behave/multipart
+  - [Importing Tests](https://docs.getxray.app/display/XRAYCLOUD/Importing+Tests+-+REST)
+    - [ ] POST /api/v1/import/test/bulk
+    - [ ] GET /api/v1/import/test/bulk/{jobId}/status
+  - [Importing Cucumber Tests](https://docs.getxray.app/display/XRAYCLOUD/Importing+Cucumber+Tests+-+REST)
+    - [ ] POST /api/v1/import/feature
+  - [Backup](https://docs.getxray.app/display/XRAYCLOUD/Backup+-+REST)
+    - [ ] POST /api/v1/backup
+    - [ ] GET /api/v1/backup/{jobId}/status
+    - [ ] GET /api/v1/backup/file
+    - [ ] GET /api/v1/backup/file/attachment
+  - [Attachments](https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST)
+    - [x] GET /api/v1/attachments/{attachmentId}
+    - [x] POST /api/v1/attachments
+- [v2](https://docs.getxray.app/display/XRAYCLOUD/Version+2)
+  - [Exporting Cucumber Tests](https://docs.getxray.app/display/XRAYCLOUD/Exporting+Cucumber+Tests+-+REST+v2)
+    - [ ] GET /api/v2/export/cucumber
+  - [Exporting Datasets](https://docs.getxray.app/display/XRAYCLOUD/Exporting+datasets+-+REST+v2)
+    - [x] GET /api/v2/dataset/export
+  - [Import Execution Results](https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2)
+    - [x] POST /api/v2/import/execution
+    - [x] POST /api/v2/import/execution/multipart
+    - [ ] POST /api/v2/import/execution/cucumber
+    - [ ] POST /api/v2/import/execution/cucumber/multipart
+    - [ ] POST /api/v2/import/execution/junit
+    - [ ] POST /api/v2/import/execution/junit/multipart
+    - [ ] POST /api/v2/import/execution/nunit
+    - [ ] POST /api/v2/import/execution/nunit/multipart
+    - [ ] POST /api/v2/import/execution/xunit
+    - [ ] POST /api/v2/import/execution/xunit/multipart
+    - [ ] POST /api/v2/import/execution/testng
+    - [ ] POST /api/v2/import/execution/testng/multipart
+    - [ ] POST /api/v2/import/execution/robot
+    - [ ] POST /api/v2/import/execution/robot/multipart
+    - [ ] POST /api/v2/import/execution/behave
+    - [ ] POST /api/v2/import/execution/behave/multipart
+  - [Importing Tests](https://docs.getxray.app/display/XRAYCLOUD/Importing+Tests+-+REST+v2)
+    - [ ] POST /api/v2/import/test/bulk
+    - [ ] GET /api/v2/import/test/bulk/{jobId}/status
+  - [Importing Cucumber Tests](https://docs.getxray.app/display/XRAYCLOUD/Importing+Cucumber+Tests+-+REST+v2)
+    - [ ] POST /api/v2/import/feature
+  - [Backup](https://docs.getxray.app/display/XRAYCLOUD/Backup+-+REST+v2)
+    - [ ] POST /api/v2/backup
+    - [ ] GET /api/v2/backup/{jobId}/status
+    - [ ] GET /api/v2/backup/file
+    - [ ] GET /api/v2/backup/file/attachment
+  - [Attachments](https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2)
+    - [x] GET /api/v2/attachments/{attachmentId}
+    - [x] POST /api/v2/attachments
+- [GraphQL](https://us.xray.cloud.getxray.app/doc/graphql/)
+  - query
+    - [ ] [getFolder](https://us.xray.cloud.getxray.app/doc/graphql/getfolder.doc.html)
+    - [ ] [getTest](https://us.xray.cloud.getxray.app/doc/graphql/gettest.doc.html)
+    - [ ] [getTests](https://us.xray.cloud.getxray.app/doc/graphql/gettests.doc.html)
+    - [ ] [getExpandedTest](https://us.xray.cloud.getxray.app/doc/graphql/getexpandedtest.doc.html)
+    - [ ] [getExpandedTests](https://us.xray.cloud.getxray.app/doc/graphql/getexpandedtests.doc.html)
+    - [ ] [getCoverableIssue](https://us.xray.cloud.getxray.app/doc/graphql/getcoverableissue.doc.html)
+    - [ ] [getCoverableIssues](https://us.xray.cloud.getxray.app/doc/graphql/getcoverableissues.doc.html)
+    - [ ] [getPrecondition](https://us.xray.cloud.getxray.app/doc/graphql/getprecondition.doc.html)
+    - [ ] [getPreconditions](https://us.xray.cloud.getxray.app/doc/graphql/getpreconditions.doc.html)
+    - [ ] [getTestSet](https://us.xray.cloud.getxray.app/doc/graphql/gettestset.doc.html)
+    - [ ] [getTestSets](https://us.xray.cloud.getxray.app/doc/graphql/gettestsets.doc.html)
+    - [x] [getTestPlan](https://us.xray.cloud.getxray.app/doc/graphql/gettestplan.doc.html)
+    - [x] [getTestPlans](https://us.xray.cloud.getxray.app/doc/graphql/gettestplans.doc.html)
+    - [ ] [getTestExecution](https://us.xray.cloud.getxray.app/doc/graphql/gettestexecution.doc.html)
+    - [ ] [getTestExecutions](https://us.xray.cloud.getxray.app/doc/graphql/gettestexecutions.doc.html)
+    - [ ] [getTestRun](https://us.xray.cloud.getxray.app/doc/graphql/gettestrun.doc.html)
+    - [ ] [getTestRunById](https://us.xray.cloud.getxray.app/doc/graphql/gettestrunbyid.doc.html)
+    - [x] [getTestRuns](https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html)
+    - [ ] [getTestRunsById](https://us.xray.cloud.getxray.app/doc/graphql/gettestrunsbyid.doc.html)
+    - [ ] [getStatus](https://us.xray.cloud.getxray.app/doc/graphql/getstatus.doc.html)
+    - [ ] [getStatuses](https://us.xray.cloud.getxray.app/doc/graphql/getstatuses.doc.html)
+    - [ ] [getStepStatus](https://us.xray.cloud.getxray.app/doc/graphql/getstepstatus.doc.html)
+    - [ ] [getStepStatuses](https://us.xray.cloud.getxray.app/doc/graphql/getstepstatuses.doc.html)
+    - [ ] [getProjectSettings](https://us.xray.cloud.getxray.app/doc/graphql/getprojectsettings.doc.html)
+    - [ ] [getIssueLinkTypes](https://us.xray.cloud.getxray.app/doc/graphql/getissuelinktypes.doc.html)
+  - mutation
+    - [ ] [createFolder](https://us.xray.cloud.getxray.app/doc/graphql/createfolder.doc.html)
+    - [ ] [deleteFolder](https://us.xray.cloud.getxray.app/doc/graphql/deletefolder.doc.html)
+    - [ ] [renameFolder](https://us.xray.cloud.getxray.app/doc/graphql/renamefolder.doc.html)
+    - [ ] [moveFolder](https://us.xray.cloud.getxray.app/doc/graphql/movefolder.doc.html)
+    - [ ] [addTestsToFolder](https://us.xray.cloud.getxray.app/doc/graphql/addteststofolder.doc.html)
+    - [ ] [addIssuesToFolder](https://us.xray.cloud.getxray.app/doc/graphql/addissuestofolder.doc.html)
+    - [ ] [removeTestsFromFolder](https://us.xray.cloud.getxray.app/doc/graphql/removetestsfromfolder.doc.html)
+    - [ ] [removeIssuesFromFolder](https://us.xray.cloud.getxray.app/doc/graphql/removeissuesfromfolder.doc.html)
+    - [ ] [createTest](https://us.xray.cloud.getxray.app/doc/graphql/createtest.doc.html)
+    - [ ] [updateTestType](https://us.xray.cloud.getxray.app/doc/graphql/updatetesttype.doc.html)
+    - [ ] [updateUnstructuredTestDefinition](https://us.xray.cloud.getxray.app/doc/graphql/updateunstructuredtestdefinition.doc.html)
+    - [ ] [updateGherkinTestDefinition](https://us.xray.cloud.getxray.app/doc/graphql/updategherkintestdefinition.doc.html)
+    - [ ] [deleteTest](https://us.xray.cloud.getxray.app/doc/graphql/deletetest.doc.html)
+    - [ ] [addTestStep](https://us.xray.cloud.getxray.app/doc/graphql/addteststep.doc.html)
+    - [ ] [updateTestStep](https://us.xray.cloud.getxray.app/doc/graphql/updateteststep.doc.html)
+    - [ ] [removeTestStep](https://us.xray.cloud.getxray.app/doc/graphql/removeteststep.doc.html)
+    - [ ] [removeAllTestSteps](https://us.xray.cloud.getxray.app/doc/graphql/removeallteststeps.doc.html)
+    - [ ] [addPreconditionToTest](https://us.xray.cloud.getxray.app/doc/graphql/addpreconditionstotest.doc.html)
+    - [ ] [removePreconditionFromTest](https://us.xray.cloud.getxray.app/doc/graphql/removepreconditionsfromtest.doc.html)
+    - [ ] [updateTestFolder](https://us.xray.cloud.getxray.app/doc/graphql/updatetestfolder.doc.html)
+    - [ ] [updatePreconditionFolder](https://us.xray.cloud.getxray.app/doc/graphql/updatepreconditionfolder.doc.html)
+    - [ ] [addTestSetsToTest](https://us.xray.cloud.getxray.app/doc/graphql/addtestsetstotest.doc.html)
+    - [ ] [removeTestSetsFromTest](https://us.xray.cloud.getxray.app/doc/graphql/removetestsetsfromtest.doc.html)
+    - [ ] [addTestPlansToTest](https://us.xray.cloud.getxray.app/doc/graphql/addtestplanstotest.doc.html)
+    - [ ] [removeTestPlansFromTest](https://us.xray.cloud.getxray.app/doc/graphql/removetestplansfromtest.doc.html)
+    - [ ] [addTestExecutionsToTest](https://us.xray.cloud.getxray.app/doc/graphql/addtestexecutionstotest.doc.html)
+    - [ ] [removeTestExecutionsFromTest](https://us.xray.cloud.getxray.app/doc/graphql/removetestexecutionsfromtest.doc.html)
+    - [ ] [createPrecondition](https://us.xray.cloud.getxray.app/doc/graphql/createprecondition.doc.html)
+    - [ ] [updatePrecondition](https://us.xray.cloud.getxray.app/doc/graphql/updateprecondition.doc.html)
+    - [ ] [deletePrecondition](https://us.xray.cloud.getxray.app/doc/graphql/deleteprecondition.doc.html)
+    - [ ] [addTestsToPrecondition](https://us.xray.cloud.getxray.app/doc/graphql/addteststoprecondition.doc.html)
+    - [ ] [removeTestsFromPrecondition](https://us.xray.cloud.getxray.app/doc/graphql/removetestsfromprecondition.doc.html)
+    - [ ] [createTestSet](https://us.xray.cloud.getxray.app/doc/graphql/createtestset.doc.html)
+    - [ ] [deleteTestSet](https://us.xray.cloud.getxray.app/doc/graphql/deletetestset.doc.html)
+    - [ ] [addTestsToTestSet](https://us.xray.cloud.getxray.app/doc/graphql/addteststotestset.doc.html)
+    - [ ] [removeTestsFromTestSet](https://us.xray.cloud.getxray.app/doc/graphql/removetestsfromtestset.doc.html)
+    - [ ] [createTestPlan](https://us.xray.cloud.getxray.app/doc/graphql/createtestplan.doc.html)
+    - [ ] [deleteTestPlan](https://us.xray.cloud.getxray.app/doc/graphql/deletetestplan.doc.html)
+    - [ ] [addTestsToTestPlan](https://us.xray.cloud.getxray.app/doc/graphql/addteststotestplan.doc.html)
+    - [ ] [removeTestsFromTestPlan](https://us.xray.cloud.getxray.app/doc/graphql/removetestsfromtestplan.doc.html)
+    - [ ] [addTestExecutionsToTestPlan](https://us.xray.cloud.getxray.app/doc/graphql/addtestexecutionstotestplan.doc.html)
+    - [ ] [removeTestExecutionsFromTestPlan](https://us.xray.cloud.getxray.app/doc/graphql/removetestexecutionsfromtestplan.doc.html)
+    - [ ] [createTestExecution](https://us.xray.cloud.getxray.app/doc/graphql/createtestexecution.doc.html)
+    - [ ] [deleteTestExecution](https://us.xray.cloud.getxray.app/doc/graphql/deletetestexecution.doc.html)
+    - [ ] [addTestsToTestExecution](https://us.xray.cloud.getxray.app/doc/graphql/addteststotestexecution.doc.html)
+    - [ ] [removeTestsFromTestExecution](https://us.xray.cloud.getxray.app/doc/graphql/removetestsfromtestexecution.doc.html)
+    - [ ] [addTestEnvironmentsToTestExecution](https://us.xray.cloud.getxray.app/doc/graphql/addtestenvironmentstotestexecution.doc.html)
+    - [ ] [removeTestEnvironmentsFromTestExecution](https://us.xray.cloud.getxray.app/doc/graphql/removetestenvironmentsfromtestexecution.doc.html)
+    - [ ] [resetTestRun](https://us.xray.cloud.getxray.app/doc/graphql/resettestrun.doc.html)
+    - [ ] [updateTestRunStatus](https://us.xray.cloud.getxray.app/doc/graphql/updatetestrunstatus.doc.html)
+    - [ ] [updateTestRunComment](https://us.xray.cloud.getxray.app/doc/graphql/updatetestruncomment.doc.html)
+    - [ ] [updateTestRun](https://us.xray.cloud.getxray.app/doc/graphql/updatetestrun.doc.html)
+    - [ ] [addDefectsToTestRun](https://us.xray.cloud.getxray.app/doc/graphql/adddefectstotestrun.doc.html)
+    - [ ] [removeDefectsFromTestRun](https://us.xray.cloud.getxray.app/doc/graphql/removedefectsfromtestrun.doc.html)
+    - [ ] [addEvidenceToTestRun](https://us.xray.cloud.getxray.app/doc/graphql/addevidencetotestrun.doc.html)
+    - [ ] [removeEvidenceFromTestRun](https://us.xray.cloud.getxray.app/doc/graphql/removeevidencefromtestrun.doc.html)
+    - [ ] [updateTestRunStep](https://us.xray.cloud.getxray.app/doc/graphql/updatetestrunstep.doc.html)
+    - [ ] [addEvidenceToTestRunStep](https://us.xray.cloud.getxray.app/doc/graphql/addevidencetotestrunstep.doc.html)
+    - [ ] [removeEvidenceFromTestRunStep](https://us.xray.cloud.getxray.app/doc/graphql/removeevidencefromtestrunstep.doc.html)
+    - [ ] [addDefectsToTestRunStep](https://us.xray.cloud.getxray.app/doc/graphql/adddefectstotestrunstep.doc.html)
+    - [ ] [removeDefectsFromTestRunStep](https://us.xray.cloud.getxray.app/doc/graphql/removedefectsfromtestrunstep.doc.html)
+    - [ ] [updateTestRunStepComment](https://us.xray.cloud.getxray.app/doc/graphql/updatetestrunstepcomment.doc.html)
+    - [ ] [updateTestRunStepStatus](https://us.xray.cloud.getxray.app/doc/graphql/updatetestrunstepstatus.doc.html)
+    - [ ] [updateTestRunExampleStatus](https://us.xray.cloud.getxray.app/doc/graphql/updatetestrunexamplestatus.doc.html)
+    - [ ] [updateIterationStatus](https://us.xray.cloud.getxray.app/doc/graphql/updateiterationstatus.doc.html)
+    - [ ] [setTestRunTimer](https://us.xray.cloud.getxray.app/doc/graphql/settestruntimer.doc.html)
+
+</details>
+
 # Installation
 
 ```bash
