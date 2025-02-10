@@ -372,6 +372,43 @@ const csvData = await cloudClient.dataset.export({ testIssueKey: "PRJ-123" });
 // ... other endpoints
 ```
 
+The GraphQL query and mutation endpoints are also available. For example, consider the following [`getTestRuns`](https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html) query:
+
+```graphql
+{
+  getTestRuns(limit: 100, testExecIssueIds: ["XCN-2"]) {
+    total
+    limit
+    start
+    results {
+      test {
+        jira(fields: ["key"])
+      }
+    }
+  }
+}
+```
+
+It can easily be mapped to the following code snippet using the library:
+
+<!-- prettier-ignore-start -->
+```ts
+const testRuns = await cloudClient.graphql.getTestRuns(
+  { limit: 100, testExecIssueIds: ["XCN-2"] },
+  (testRunResults) => [
+    testRunResults.total,
+    testRunResults.limit,
+    testRunResults.start,
+    testRunResults.results((testRun) => [
+      testRun.test((test) => [
+        test.jira({ fields: ["key"] })
+      ])
+    ]),
+  ]
+);
+```
+<!-- prettier-ignore-end -->
+
 ## Xray Server
 
 ```ts
