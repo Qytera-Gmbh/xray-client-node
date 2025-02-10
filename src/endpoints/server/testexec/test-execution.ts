@@ -1,23 +1,12 @@
 import type { Xray } from "../../../../index.js";
-import type { BaseClient } from "../../../client/base-client.js";
+import { BaseApi } from "../../base-api.js";
 
 /**
  * Models the test executions endpoints in Xray server.
  *
  * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
  */
-export class TestExecutionApi {
-  private readonly client: BaseClient;
-
-  /**
-   * Creates a new test executions request service.
-   *
-   * @param client the client to use to perform requests
-   */
-  constructor(client: BaseClient) {
-    this.client = client;
-  }
-
+export class TestExecutionApi extends BaseApi {
   /**
    * Associate tests with the test execution. Return error messages, if there are any.
    *

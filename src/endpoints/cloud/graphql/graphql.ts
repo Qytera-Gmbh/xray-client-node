@@ -1,24 +1,13 @@
 import { print } from "graphql";
 import type { Xray } from "../../../../index.js";
-import type { BaseClient } from "../../../client/base-client.js";
 import { mutation, query } from "../../../models/xray/graphql/__generated__/index.js";
+import { BaseApi } from "../../base-api.js";
 
 /**
  * Models the GraphQL endpoints.
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export class GraphQLApi {
-  private readonly client: BaseClient;
-
-  /**
-   * Creates a new GraphQL query service.
-   *
-   * @param client the client to use to perform requests
-   */
-  constructor(client: BaseClient) {
-    this.client = client;
-  }
-
+export class GraphQLApi extends BaseApi {
   /**
    * Mutation used to add evidence to a test run.
    *

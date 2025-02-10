@@ -1,23 +1,12 @@
 import type { Xray } from "../../../../../index.js";
-import type { BaseClient } from "../../../../client/base-client.js";
+import { BaseApi } from "../../../base-api.js";
 
 /**
  * Models the execution evidence endpoints in Xray server.
  *
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
  */
-export class ExecutionEvidenceApi {
-  private readonly client: BaseClient;
-
-  /**
-   * Creates a new service.
-   *
-   * @param client the client to use to perform requests
-   */
-  constructor(client: BaseClient) {
-    this.client = client;
-  }
-
+export class ExecutionEvidenceApi extends BaseApi {
   /**
    * Add new evidence to a test run.
    *
