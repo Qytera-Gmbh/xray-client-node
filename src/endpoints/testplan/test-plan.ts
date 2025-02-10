@@ -42,7 +42,7 @@ export class TestPlanApi {
       page?: number;
     }
   ): Promise<Xray.TestPlan.GetTestsResponse> {
-    const response = await this.client.send(`/testplans/${testPlanKey}/test`, {
+    const response = await this.client.send(`/testplan/${testPlanKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,
@@ -118,7 +118,7 @@ export class TestPlanApi {
   public async getTestExecutions(
     testPlanKey: string
   ): Promise<Xray.TestPlan.GetTestExecutionsResponse> {
-    const response = await this.client.send(`/testplans/${testPlanKey}/testexecution`, {
+    const response = await this.client.send(`/testplan/${testPlanKey}/testexecution`, {
       expectedStatus: 200,
       method: "GET",
     });
