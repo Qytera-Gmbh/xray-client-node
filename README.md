@@ -12,7 +12,7 @@
 This project provides TypeScript clients to users that want to interact with the API of [Xray](https://www.getxray.app/). Supports Xray server and Xray cloud.
 
 > [!WARNING]
-> The client is at a very early stage of development and may not fully cover all Xray interactions.
+> The client is at a very early stage of development and may not cover all Xray interactions. Please refer to the roadmaps for full lists of supported endpoints.
 
 <details>
   <summary>Xray server roadmap</summary>
