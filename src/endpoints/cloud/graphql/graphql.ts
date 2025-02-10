@@ -1,7 +1,7 @@
 import { print } from "graphql";
-import type { Xray } from "../../../index.js";
-import type { BaseClient } from "../../client/base-client.js";
-import { mutation, query } from "../../models/xray/graphql/__generated__/index.js";
+import type { Xray } from "../../../../index.js";
+import type { BaseClient } from "../../../client/base-client.js";
+import { mutation, query } from "../../../models/xray/graphql/__generated__/index.js";
 
 /**
  * Models the GraphQL endpoints.

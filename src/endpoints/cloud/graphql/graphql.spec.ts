@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import path from "node:path";
 import { beforeEach, describe, it } from "node:test";
-import { XRAY_CLIENT_CLOUD } from "../../../test/clients.js";
+import { XRAY_CLIENT_CLOUD } from "../../../../test/clients.js";
 import { GraphQLApi } from "./graphql.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
