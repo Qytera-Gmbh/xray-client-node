@@ -46,7 +46,8 @@ export class ExecutionEvidenceApi {
   ): Promise<void> {
     await this.client.send(`/testrun/${testRunId}/attachment`, {
       body: JSON.stringify(body),
-      expectedStatus: 200,
+      expectedStatus: 201,
+      headers: { ["Content-Type"]: "application/json" },
       method: "POST",
     });
   }
@@ -59,9 +60,9 @@ export class ExecutionEvidenceApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  public async deleteEvidenceById(testRunId: string, attachmentId: string): Promise<void> {
-    await this.client.send(`/testrun/${testRunId}/attachment/${attachmentId}`, {
-      expectedStatus: 200,
+  public async deleteEvidenceById(testRunId: string, attachmentId: number): Promise<void> {
+    await this.client.send(`/testrun/${testRunId}/attachment/${attachmentId.toString()}`, {
+      expectedStatus: 204,
       method: "DELETE",
     });
   }
@@ -77,7 +78,8 @@ export class ExecutionEvidenceApi {
   public async deleteEvidenceByName(testRunId: string, filename: string): Promise<void> {
     await this.client.send(`/testrun/${testRunId}/attachment`, {
       body: filename,
-      expectedStatus: 200,
+      expectedStatus: 204,
+      headers: { ["Content-Type"]: "application/json" },
       method: "DELETE",
     });
   }
