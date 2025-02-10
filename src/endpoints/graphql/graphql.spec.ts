@@ -123,4 +123,27 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       });
     });
   });
+
+  describe("addEvidenceToTestRun", () => {
+    it("adds evidence to test runs", async () => {
+      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
+      const response = await controller.addEvidenceToTestRun(
+        {
+          evidence: [
+            {
+              data: "SGVsbG8gV29ybGQ=",
+              filename: "evidence.txt",
+              mimeType: "text/plain",
+            },
+          ],
+          id: "6798fab7acaa2dd62ef1fa7a",
+        },
+        (addEvidenceResult) => [addEvidenceResult.addedEvidence, addEvidenceResult.warnings]
+      );
+      assert.deepStrictEqual(response, {
+        addedEvidence: ["evidence.txt"],
+        warnings: [],
+      });
+    });
+  });
 });

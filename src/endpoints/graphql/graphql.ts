@@ -1,7 +1,7 @@
 import { print } from "graphql";
 import type { Xray } from "../../../index.js";
 import type { BaseClient } from "../../client/base-client.js";
-import { query } from "../../models/xray/graphql/__generated__/index.js";
+import { mutation, query } from "../../models/xray/graphql/__generated__/index.js";
 
 /**
  * Models the GraphQL endpoints.
@@ -20,12 +20,91 @@ export class GraphQLApi {
   }
 
   /**
+   * Mutation used to add evidence to a test run.
+   *
+   * @example
+   *
+   * ```ts
+   * addEvidenceToTestRun(
+   *   {
+   *     id: "5acc7ab0a3fe1b6fcdc3c737",
+   *     evidence: [
+   *       {
+   *         filename: "evidence.txt"
+   *         mimeType: "text/plain"
+   *         data: "SGVsbG8gV29ybGQ="
+   *       }
+   *     ]
+   *   },
+   *   (addEvidenceResult) => [
+   *     addEvidenceResult.addedEvidence,
+   *     addEvidenceResult.warnings,
+   *   ]
+   * );
+   *
+   * // Equivalent to:
+   * // mutation {
+   * //   addEvidenceToTestRun(
+   * //     id: "5acc7ab0a3fe1b6fcdc3c737",
+   * //     evidence: [
+   * //       {
+   * //         filename: "evidence.txt"
+   * //         mimeType: "text/plain"
+   * //         data: "SGVsbG8gV29ybGQ="
+   * //       }
+   * //     ]
+   * //   ) {
+   * //     addedEvidence
+   * //     warnings
+   * //   }
+   * // }
+   * ```
+   *
+   * @param variables the query arguments
+   * @param resultShape the desired shape of the result
+   * @returns the query result
+   *
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
+   */
+  public async addEvidenceToTestRun<
+    T extends Xray.GraphQL.Selection<Xray.GraphQL.AddEvidenceResult>,
+  >(
+    variables: {
+      /**
+       * The evidence to add to the test run.
+       */
+      evidence: Xray.GraphQL.AttachmentDataInput[];
+      /**
+       * The ID of the test run.
+       */
+      id: string;
+    },
+    resultShape: (addEvidenceResult: Xray.GraphQL.AddEvidenceResult) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
+    const document = mutation((m) => [
+      m.addEvidenceToTestRun<typeof variables, T>(variables, resultShape),
+    ]);
+    const response = await this.client.send("/graphql", {
+      body: JSON.stringify({ query: print(document) }),
+      expectedStatus: 200,
+      headers: {
+        ["Content-Type"]: "application/json",
+      },
+      method: "POST",
+    });
+    const json = (await response.json()) as {
+      data: { addEvidenceToTestRun: Xray.GraphQL.GetOutput<T> };
+    };
+    return json.data.addEvidenceToTestRun;
+  }
+
+  /**
    * Returns a test plan by issue id.
    *
    * @example
    *
    * ```ts
-   * query({ issueId: "15051" }, (testPlan) => [
+   * getTestPlan({ issueId: "15051" }, (testPlan) => [
    *   testPlan.issueId,
    *   testPlan.jira({ fields: ["key"] }),
    *   testPlan.tests({ limit: 100 }, (testResults) => [
@@ -87,7 +166,7 @@ export class GraphQLApi {
    * @example
    *
    * ```ts
-   * query(
+   * getTestPlans(
    *  {
    *    jql: "project = XCN",
    *    limit: 1,
@@ -188,7 +267,7 @@ export class GraphQLApi {
    * @example
    *
    * ```ts
-   * query(
+   * getTestRuns(
    *   { limit: 100, testExecIssueIds: ["XCN-2"] },
    *   (testRunResults) => [
    *     testRunResults.total,
