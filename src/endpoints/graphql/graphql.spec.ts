@@ -1,6 +1,6 @@
 import assert from "node:assert";
 import path from "node:path";
-import { describe, it } from "node:test";
+import { beforeEach, describe, it } from "node:test";
 import { XRAY_CLIENT_CLOUD } from "../../../test/clients.js";
 import { GraphQLApi } from "./graphql.js";
 
@@ -125,6 +125,20 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   });
 
   describe("addEvidenceToTestRun", () => {
+    const testRunId = "67aa31f900cff4d6104bca3b";
+    const filename = "evidence.txt";
+
+    beforeEach(async () => {
+      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
+      await controller.removeEvidenceFromTestRun(
+        {
+          evidenceFilenames: [filename],
+          id: testRunId,
+        },
+        (removeEvidenceResult) => [removeEvidenceResult.warnings]
+      );
+    });
+
     it("adds evidence to test runs", async () => {
       const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
       const response = await controller.addEvidenceToTestRun(
@@ -132,18 +146,57 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
           evidence: [
             {
               data: "SGVsbG8gV29ybGQ=",
-              filename: "evidence.txt",
+              filename: filename,
               mimeType: "text/plain",
             },
           ],
-          id: "6798fab7acaa2dd62ef1fa7a",
+          id: testRunId,
         },
         (addEvidenceResult) => [addEvidenceResult.addedEvidence, addEvidenceResult.warnings]
       );
       assert.deepStrictEqual(response, {
-        addedEvidence: ["evidence.txt"],
+        addedEvidence: [filename],
         warnings: [],
       });
+    });
+  });
+
+  describe("removeEvidenceFromTestRun", () => {
+    const testRunId = "67aa32d700cff4d6104d2f1c";
+    const filename = "evidence.txt";
+
+    beforeEach(async () => {
+      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
+      await controller.addEvidenceToTestRun(
+        {
+          evidence: [
+            {
+              data: "SGVsbG8gV29ybGQ=",
+              filename: filename,
+              mimeType: "text/plain",
+            },
+          ],
+          id: testRunId,
+        },
+        (addEvidenceResult) => [addEvidenceResult.addedEvidence, addEvidenceResult.warnings]
+      );
+    });
+
+    it("removes evidence from test runs", async () => {
+      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
+      const response = await controller.removeEvidenceFromTestRun(
+        {
+          evidenceFilenames: [filename],
+          id: testRunId,
+        },
+        (removeEvidenceResult) => [
+          removeEvidenceResult.removedEvidence,
+          removeEvidenceResult.warnings,
+        ]
+      );
+      assert.deepStrictEqual(response.warnings, []);
+      assert.strictEqual(response.removedEvidence?.length, 1);
+      assert.strictEqual(typeof response.removedEvidence[0], "string");
     });
   });
 });
