@@ -36,6 +36,9 @@ jobs:
           JIRA_SERVER_PASSWORD: ${{ secrets.JIRA_SERVER_PASSWORD }}
           JIRA_SERVER_USERNAME: ${{ secrets.JIRA_SERVER_USERNAME }}
           JIRA_SERVER_URL: ${{ secrets.JIRA_SERVER_URL }}
+          JIRA_CLOUD_TOKEN: ${{ secrets.JIRA_CLOUD_TOKEN }}
+          JIRA_CLOUD_EMAIL: ${{ secrets.JIRA_CLOUD_EMAIL }}
+          JIRA_CLOUD_URL: ${{ secrets.JIRA_CLOUD_URL }}
       - uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
