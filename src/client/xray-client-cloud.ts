@@ -11,7 +11,7 @@ export class XrayClientCloud extends BaseClient {
   dataset = new DatasetApi<Xray.Dataset.ExportQueryCloud>(this);
   graphql = new GraphQLApi(this);
   import = {
-    execution: new ImportExecutionApi<Xray.Import.ResponseCloud>(this),
+    execution: new ImportExecutionApi<Xray.Import.ResponseCloud>(this, { isServerApi: false }),
   };
 
   /**
