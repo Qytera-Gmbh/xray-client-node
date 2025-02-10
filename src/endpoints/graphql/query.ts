@@ -1,0 +1,264 @@
+import { print } from "graphql";
+import type { Xray } from "../../../index.js";
+import type { BaseClient } from "../../client/base-client.js";
+import { query } from "../../models/xray/graphql/__generated__/index.js";
+
+/**
+ * Models the GraphQL query endpoints.
+ */
+export class QueryApi {
+  private readonly client: BaseClient;
+
+  /**
+   * Creates a new GraphQL query service.
+   *
+   * @param client the client to use to perform requests
+   */
+  constructor(client: BaseClient) {
+    this.client = client;
+  }
+
+  /**
+   * Returns a Test Plan by issue id.
+   *
+   * @example
+   *
+   * ```ts
+   * query({ issueId: "15051" }, (testPlan) => [
+   *   testPlan.issueId,
+   *   testPlan.jira({ fields: ["key"] }),
+   *   testPlan.tests({ limit: 100 }, (testResults) => [
+   *     testResults.results((test) => [
+   *       test.issueId,
+   *       test.testType((testType) => [testType.name]),
+   *     ]),
+   *   ]),
+   * ]);
+   *
+   * // Equivalent to:
+   * // {
+   * //   getTestPlan(issueId: "12345") {
+   * //     issueId
+   * //     tests(limit: 100) {
+   * //       jira(fields: ["key"])
+   * //       results {
+   * //         issueId
+   * //         testType {
+   * //           name
+   * //         }
+   * //       }
+   * //     }
+   * //   }
+   * // }
+   * ```
+   *
+   * @param variables the query arguments
+   * @param resultShape the desired shape of the result
+   * @returns the query result
+   *
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestplan.doc.html
+   */
+  public async getTestPlan<T extends Xray.GraphQL.Selection<TestPlan>>(
+    variables: {
+      /**
+       * The issue id of the Test Plan issue to be returned.
+       */
+      issueId: string;
+    },
+    resultShape: (testPlan: Xray.GraphQL.TestPlan) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
+    const document = query((q) => [q.getTestPlan<typeof variables, T>(variables, resultShape)]);
+    const response = await this.client.send("/graphql", {
+      body: JSON.stringify({ query: print(document) }),
+      expectedStatus: 200,
+      headers: {
+        ["Content-Type"]: "application/json",
+      },
+      method: "POST",
+    });
+    const json = (await response.json()) as { data: { getTestPlan: Xray.GraphQL.GetOutput<T> } };
+    return json.data.getTestPlan;
+  }
+
+  /**
+   * Returns multiple test plans by JQL, issue IDs or project ID.
+   *
+   * @example
+   *
+   * ```ts
+   * query(
+   *  {
+   *    jql: "project = XCN",
+   *    limit: 1,
+   *  },
+   *  (testPlanResults) => [
+   *    testPlanResults.start,
+   *    testPlanResults.limit,
+   *    testPlanResults.results((testPlan) => [
+   *      testPlan.issueId,
+   *      testPlan.jira({ fields: ["key"] }),
+   *      testPlan.tests({ limit: 10 }, (testResults) => [
+   *        testResults.start,
+   *        testResults.limit,
+   *        testResults.results((test) => [
+   *          test.issueId,
+   *          test.jira({ fields: ["key"] }),
+   *          test.testType((testType) => [testType.name]),
+   *        ]),
+   *      ]),
+   *    ]),
+   *  ]
+   * );
+   *
+   * // Equivalent to:
+   * // {
+   * //   getTestPlans(jql: "project = XCN", limit: 1) {
+   * //     start
+   * //     limit
+   * //     results {
+   * //       issueId
+   * //       jira(fields: ["key"])
+   * //       tests(limit: 10) {
+   * //         start
+   * //         limit
+   * //         results {
+   * //           issueId
+   * //           jira(fields: ["key"])
+   * //           testType {
+   * //             name
+   * //         }
+   * //       }
+   * //     }
+   * //   }
+   * // }
+   * ```
+   *
+   * @param variables the query arguments
+   * @param resultShape the desired shape of the result
+   * @returns the query result
+   *
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestplans.doc.html
+   */
+  public async getTestPlans<T extends Xray.GraphQL.Selection<Xray.GraphQL.TestPlanResults>>(
+    variables: {
+      /**
+       * The IDs of the test plan issues to be returned.
+       */
+      issueIds?: string[];
+      /**
+       * The JQL that defines the search.
+       */
+      jql?: string;
+      /**
+       * The maximum amount of test plans to be returned. The maximum is 100.
+       */
+      limit: number;
+      /**
+       * All test plans modified after this date will be returned.
+       */
+      modifiedSince?: string;
+      /**
+       * The ID of the project of the test plan issues to be returned.
+       */
+      projectId?: string;
+      /**
+       * The index of the first item to return in the page of results (page offset).
+       */
+      start?: number;
+    },
+    resultShape: (testPlanResults: Xray.GraphQL.TestPlanResults) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
+    const document = query((q) => [q.getTestPlans<typeof variables, T>(variables, resultShape)]);
+    const response = await this.client.send("/graphql", {
+      body: JSON.stringify({ query: print(document) }),
+      expectedStatus: 200,
+      headers: {
+        ["Content-Type"]: "application/json",
+      },
+      method: "POST",
+    });
+    const json = (await response.json()) as { data: { getTestPlans: Xray.GraphQL.GetOutput<T> } };
+    return json.data.getTestPlans;
+  }
+
+  /**
+   * Returns multiple Test Runs testIssueIds and/or testExecIssueIds.
+   *
+   * @example
+   *
+   * ```ts
+   * query(
+   *   { limit: 100, testExecIssueIds: ["XCN-2"] },
+   *   (testRunResults) => [
+   *     testRunResults.total,
+   *     testRunResults.limit,
+   *     testRunResults.start,
+   *     testRunResults.results((testRun) => [
+   *       testRun.test((test) => [test.jira({ fields: ["key"] })]),
+   *     ]),
+   *   ]
+   * );
+   *
+   * // Equivalent to:
+   * // {
+   * //   getTestRuns(limit: 100, testExecIssueIds: ["XCN-2"]) {
+   * //     total
+   * //     limit
+   * //     start
+   * //     results {
+   * //       test {
+   * //         jira(fields: ["key"])
+   * //       }
+   * //     }
+   * //   }
+   * // }
+   * ```
+   *
+   * @param variables the query arguments
+   * @param resultShape the desired shape of the result
+   * @returns the query result
+   *
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
+   */
+  public async getTestRuns<T extends Xray.GraphQL.Selection<Xray.GraphQL.TestRunResults>>(
+    variables: {
+      /**
+       * The maximum amount of Test Runs to be returned. The maximum is 100.
+       */
+      limit: number;
+      /**
+       * All TestRuns modified after this date will be returned.
+       */
+      modifiedSince?: string;
+      /**
+       * The index of the first item to return in the page of results (page offset).
+       */
+      start?: number;
+      /**
+       * The issue ids of the Test Execution of the Test Runs.
+       */
+      testExecIssueIds?: string[];
+      /**
+       * The issue ids of the Test of the Test Runs.
+       */
+      testIssueIds?: string[];
+      /**
+       * The user account ids of the assignee of the Test Runs.
+       */
+      testRunAssignees?: string[];
+    },
+    resultShape: (testRunResults: Xray.GraphQL.TestRunResults) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
+    const document = query((q) => [q.getTestRuns<typeof variables, T>(variables, resultShape)]);
+    const response = await this.client.send("/graphql", {
+      body: JSON.stringify({ query: print(document) }),
+      expectedStatus: 200,
+      headers: {
+        ["Content-Type"]: "application/json",
+      },
+      method: "POST",
+    });
+    const json = (await response.json()) as { data: { getTestRuns: Xray.GraphQL.GetOutput<T> } };
+    return json.data.getTestRuns;
+  }
+}
