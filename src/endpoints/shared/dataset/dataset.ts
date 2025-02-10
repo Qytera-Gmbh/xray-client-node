@@ -5,7 +5,9 @@ import { BaseApi } from "../../base-api.js";
  * Models the execution import endpoints.
  */
 export class DatasetApi<
-  ExportType extends Xray.Dataset.ExportQueryCloud | Xray.Dataset.ExportQueryServer,
+  // See: https://github.com/typescript-eslint/typescript-eslint/issues/9961
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters
+  ExportQueryType extends Xray.Dataset.ExportQueryCloud | Xray.Dataset.ExportQueryServer,
 > extends BaseApi {
   /**
    * Retrieves a CSV file with the dataset information. The response will contain all information
@@ -24,7 +26,7 @@ export class DatasetApi<
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Dataset/get_dataset_export
    * @see https://docs.getxray.app/display/XRAYCLOUD/Exporting+datasets+-+REST+v2
    */
-  public async export(query?: ExportType): Promise<string> {
+  public async export(query?: ExportQueryType): Promise<string> {
     const response = await this.client.send("/dataset/export", {
       expectedStatus: 200,
       method: "GET",
