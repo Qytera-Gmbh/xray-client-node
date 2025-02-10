@@ -3,6 +3,7 @@ import { DatasetApi } from "../endpoints/dataset/dataset.js";
 import { ImportExecutionApi } from "../endpoints/import/execution/import-execution.js";
 import { TestExecutionApi } from "../endpoints/testexec/test-execution.js";
 import { TestPlanApi } from "../endpoints/testplan/test-plan.js";
+import { ExecutionEvidenceApi } from "../endpoints/testrun/attachment/attachment.js";
 import type { ClientConfiguration } from "./base-client.js";
 import { BaseClient } from "./base-client.js";
 
@@ -13,6 +14,9 @@ export class XrayClientServer extends BaseClient {
   };
   testExecutions = new TestExecutionApi(this);
   testPlans = new TestPlanApi(this);
+  testRun = {
+    evidence: new ExecutionEvidenceApi(this),
+  };
 
   /**
    * Constructs a new Xray server client.
