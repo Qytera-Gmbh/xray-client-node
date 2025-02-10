@@ -4,9 +4,10 @@ import type { BaseClient } from "../../client/base-client.js";
 import { query } from "../../models/xray/graphql/__generated__/index.js";
 
 /**
- * Models the GraphQL query endpoints.
+ * Models the GraphQL endpoints.
  */
-export class QueryApi {
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export class GraphQLApi {
   private readonly client: BaseClient;
 
   /**

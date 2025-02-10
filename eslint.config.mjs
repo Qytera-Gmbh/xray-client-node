@@ -58,6 +58,7 @@ export default tseslint.config(
             "@typescript-eslint/prefer-readonly": "error",
             "no-shadow": "off",
             "perfectionist/sort-array-includes": ["error", { order: "asc", type: "alphabetical" }],
+            "perfectionist/sort-classes": ["error", { order: "asc", type: "alphabetical" }],
             "perfectionist/sort-enums": ["error", { order: "asc", type: "alphabetical" }],
             "perfectionist/sort-exports": ["error", { order: "asc", type: "alphabetical" }],
             "perfectionist/sort-interfaces": ["error", { order: "asc", type: "alphabetical" }],
