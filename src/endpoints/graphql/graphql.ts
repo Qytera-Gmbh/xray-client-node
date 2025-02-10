@@ -60,9 +60,9 @@ export class GraphQLApi {
    * // }
    * ```
    *
-   * @param variables the query arguments
+   * @param variables the GraphQL variable values
    * @param resultShape the desired shape of the result
-   * @returns the query result
+   * @returns the result
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
    */
@@ -73,7 +73,7 @@ export class GraphQLApi {
       /**
        * The evidence to add to the test run.
        */
-      evidence: Xray.GraphQL.AttachmentDataInput[];
+      evidence: readonly Xray.GraphQL.AttachmentDataInput[];
       /**
        * The ID of the test run.
        */
@@ -132,9 +132,9 @@ export class GraphQLApi {
    * // }
    * ```
    *
-   * @param variables the query arguments
+   * @param variables the GraphQL variable values
    * @param resultShape the desired shape of the result
-   * @returns the query result
+   * @returns the result
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestplan.doc.html
    */
@@ -213,9 +213,9 @@ export class GraphQLApi {
    * // }
    * ```
    *
-   * @param variables the query arguments
+   * @param variables the GraphQL variable values
    * @param resultShape the desired shape of the result
-   * @returns the query result
+   * @returns the result
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestplans.doc.html
    */
@@ -224,7 +224,7 @@ export class GraphQLApi {
       /**
        * The IDs of the test plan issues to be returned.
        */
-      issueIds?: string[];
+      issueIds?: readonly string[];
       /**
        * The JQL that defines the search.
        */
@@ -294,9 +294,9 @@ export class GraphQLApi {
    * // }
    * ```
    *
-   * @param variables the query arguments
+   * @param variables the GraphQL variable values
    * @param resultShape the desired shape of the result
-   * @returns the query result
+   * @returns the result
    *
    * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
    */
@@ -317,11 +317,11 @@ export class GraphQLApi {
       /**
        * The issue ids of the Test Execution of the Test Runs.
        */
-      testExecIssueIds?: string[];
+      testExecIssueIds?: readonly string[];
       /**
        * The issue ids of the Test of the Test Runs.
        */
-      testIssueIds?: string[];
+      testIssueIds?: readonly string[];
       /**
        * The user account ids of the assignee of the Test Runs.
        */
@@ -340,5 +340,76 @@ export class GraphQLApi {
     });
     const json = (await response.json()) as { data: { getTestRuns: Xray.GraphQL.GetOutput<T> } };
     return json.data.getTestRuns;
+  }
+
+  /**
+   * Mutation used to remove evidence from a test run.
+   *
+   * @example
+   *
+   * ```ts
+   * removeEvidenceFromTestRun(
+   *   {
+   *     id: "5acc7ab0a3fe1b6fcdc3c737",
+   *     evidenceFilenames: ["evidence.txt"],
+   *   },
+   *   (removeEvidenceResult) => [
+   *     removeEvidenceResult.removedEvidence,
+   *     removeEvidenceResult.warnings,
+   *   ]
+   * );
+   *
+   * // Equivalent to:
+   * // mutation {
+   * //   removeEvidenceFromTestRun(
+   * //     id: "5acc7ab0a3fe1b6fcdc3c737",
+   * //     evidenceFilenames: ["evidence.txt"]
+   * //   ) {
+   * //     removedEvidence
+   * //     warnings
+   * //   }
+   * // }
+   * ```
+   *
+   * @param variables the GraphQL variable values
+   * @param resultShape the desired shape of the result
+   * @returns the result
+   *
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
+   */
+  public async removeEvidenceFromTestRun<
+    T extends Xray.GraphQL.Selection<Xray.GraphQL.RemoveEvidenceResult>,
+  >(
+    variables: {
+      /**
+       * The filenames of the evidence to remove from the test run.
+       */
+      evidenceFilenames?: readonly string[];
+      /**
+       * The IDs of the evidence to remove from the test run.
+       */
+      evidenceIds?: readonly string[];
+      /**
+       * The ID of the test run.
+       */
+      id: string;
+    },
+    resultShape: (removeEvidenceResult: Xray.GraphQL.RemoveEvidenceResult) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
+    const document = mutation((m) => [
+      m.removeEvidenceFromTestRun<typeof variables, T>(variables, resultShape),
+    ]);
+    const response = await this.client.send("/graphql", {
+      body: JSON.stringify({ query: print(document) }),
+      expectedStatus: 200,
+      headers: {
+        ["Content-Type"]: "application/json",
+      },
+      method: "POST",
+    });
+    const json = (await response.json()) as {
+      data: { removeEvidenceFromTestRun: Xray.GraphQL.GetOutput<T> };
+    };
+    return json.data.removeEvidenceFromTestRun;
   }
 }
