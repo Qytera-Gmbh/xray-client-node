@@ -10,7 +10,7 @@ import { BaseClient } from "./base-client.js";
 export class XrayClientServer extends BaseClient {
   dataset = new DatasetServerApi(this);
   import = {
-    execution: new ImportExecutionApi<Xray.Import.ResponseServer>(this),
+    execution: new ImportExecutionApi<Xray.Import.ResponseServer>(this, { isServerApi: true }),
   };
   testExecutions = new TestExecutionApi(this);
   testPlans = new TestPlanApi(this);

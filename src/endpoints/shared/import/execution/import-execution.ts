@@ -1,4 +1,5 @@
 import type { Xray } from "../../../../../index.js";
+import type { BaseClient } from "../../../../client/base-client.js";
 import type { IssueUpdateDetails } from "../../../../models/jira/__generated__/index.js";
 import { BaseApi } from "../../../base-api.js";
 
@@ -8,6 +9,19 @@ import { BaseApi } from "../../../base-api.js";
 export class ImportExecutionApi<
   ImportExecutionResponseType extends Xray.Import.ResponseCloud | Xray.Import.ResponseServer,
 > extends BaseApi {
+  private readonly isServerApi: boolean;
+
+  /**
+   * Creates a new API service.
+   *
+   * @param client the client to use to execute requests
+   * @param options additional API options
+   */
+  constructor(client: BaseClient, options: { isServerApi: boolean }) {
+    super(client);
+    this.isServerApi = options.isServerApi;
+  }
+
   /**
    * Uploads test results in Xray JSON format to the Xray instance.
    *
@@ -47,17 +61,16 @@ export class ImportExecutionApi<
     results: Xray.Import.TestExecutionResults,
     info: IssueUpdateDetails
   ): Promise<ImportExecutionResponseType> {
-    const resultString = JSON.stringify(results);
-    const infoString = JSON.stringify(info);
+    const resultBlob = new Blob([JSON.stringify(results)], { type: "application/json" });
+    const infoBlob = new Blob([JSON.stringify(info)], { type: "application/json" });
     const formData = new FormData();
-    formData.append("results", resultString, "results.json");
-    formData.append("info", infoString, "info.json");
+    formData.append(this.isServerApi ? "result" : "results", resultBlob, "results.json");
+    formData.append("info", infoBlob, "info.json");
     const response = await this.client.send(`/import/execution/multipart`, {
       body: formData,
       expectedStatus: 200,
       headers: {
         ["Accept"]: "application/json",
-        ["Content-Type"]: "application/json",
       },
       method: "POST",
     });
