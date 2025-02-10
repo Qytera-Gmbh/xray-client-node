@@ -32,40 +32,45 @@ export function findFiles(dir: string, filter: (filename: string) => boolean): s
  */
 export function getEnv(
   kind:
+    | "jira-cloud-email"
     | "jira-cloud-token"
-    | "jira-cloud-username"
+    | "jira-cloud-url"
     | "jira-server-password"
     | "jira-server-url"
     | "jira-server-username"
     | "xray-client-id"
     | "xray-client-secret"
 ): string {
-  let value: string | undefined;
+  let name: string | undefined;
   switch (kind) {
-    case "jira-cloud-token":
-      value = process.env.JIRA_CLOUD_TOKEN;
+    case "jira-cloud-email":
+      name = "JIRA_CLOUD_EMAIL";
       break;
-    case "jira-cloud-username":
-      value = process.env.JIRA_CLOUD_USERNAME;
+    case "jira-cloud-token":
+      name = "JIRA_CLOUD_TOKEN";
+      break;
+    case "jira-cloud-url":
+      name = "JIRA_CLOUD_URL";
       break;
     case "jira-server-password":
-      value = process.env.JIRA_SERVER_PASSWORD;
+      name = "JIRA_SERVER_PASSWORD";
       break;
     case "jira-server-url":
-      value = process.env.JIRA_SERVER_URL;
+      name = "JIRA_SERVER_URL";
       break;
     case "jira-server-username":
-      value = process.env.JIRA_SERVER_USERNAME;
+      name = "JIRA_SERVER_USERNAME";
       break;
     case "xray-client-id":
-      value = process.env.XRAY_CLIENT_ID;
+      name = "XRAY_CLIENT_ID";
       break;
     case "xray-client-secret":
-      value = process.env.XRAY_CLIENT_SECRET;
+      name = "XRAY_CLIENT_SECRET";
       break;
   }
+  const value = process.env[name];
   if (!value) {
-    throw new Error(`Environment variable is undefined: ${kind}`);
+    throw new Error(`Environment variable is undefined: ${name}`);
   }
   return value;
 }
