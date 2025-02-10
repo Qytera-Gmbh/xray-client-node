@@ -10,7 +10,7 @@ const TEST_PLAN_KEYS = {
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getTestExecutions", () => {
-    it("returns test execution content", async () => {
+    it("returns test execution data", async () => {
       const controller = new TestPlanApi(XRAY_CLIENT_SERVER);
       const content = await controller.getTestExecutions(TEST_PLAN_KEYS.immutable);
       assert.strictEqual(content.length, 2);
@@ -20,7 +20,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   });
 
   describe("getTests", () => {
-    it("adds evidence data", async () => {
+    it("returns test data", async () => {
       const controller = new TestPlanApi(XRAY_CLIENT_SERVER);
       const content = await controller.getTests(TEST_PLAN_KEYS.immutable);
       assert.strictEqual(content.length, 1);
