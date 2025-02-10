@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import path from "node:path";
 import { beforeEach, describe, it } from "node:test";
-import { XRAY_CLIENT_SERVER } from "../../../../test/clients.js";
+import { XRAY_CLIENT_SERVER } from "../../../../../test/clients.js";
 import { ExecutionEvidenceApi } from "./attachment.js";
 
 const TEST_RUN_IDS = {
