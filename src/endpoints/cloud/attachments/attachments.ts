@@ -1,3 +1,5 @@
+import { open } from "node:fs/promises";
+import { basename } from "node:path";
 import type { Xray } from "../../../../index.js";
 import { createStreamableFile } from "../../../util/form-data.js";
 import { BaseApi } from "../../base-api.js";
@@ -16,12 +18,14 @@ export class AttachmentsApi extends BaseApi {
    */
   public async addAttachment(file: string): Promise<Xray.Attachment.AddAttachmentResponse> {
     const formData = new FormData();
-    formData.append("attachment", await createStreamableFile(file));
+    const handle = await open(file);
+    formData.append("attachment", await createStreamableFile(basename(file), handle));
     const response = await this.client.send(`/attachments`, {
       body: formData,
       expectedStatus: 200,
       method: "POST",
     });
+    await handle.close();
     return (await response.json()) as Xray.Attachment.AddAttachmentResponse;
   }
 
