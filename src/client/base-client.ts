@@ -24,9 +24,9 @@ export class BaseClient {
       this.authorizationValue = Promise.resolve(`Bearer ${config.credentials.token}`);
     } else if ("username" in config.credentials) {
       this.authorizationValue = Promise.resolve(
-        Buffer.from(`${config.credentials.username}:${config.credentials.password}`).toString(
-          "base64"
-        )
+        `Basic ${Buffer.from(
+          `${config.credentials.username}:${config.credentials.password}`
+        ).toString("base64")}`
       );
     } else {
       this.authorizationValue = fetch(`${this.url}/authenticate`, {

@@ -31,24 +31,37 @@ export function findFiles(dir: string, filter: (filename: string) => boolean): s
  * @returns the value
  */
 export function getEnv(
-  kind: "jira-password" | "jira-token" | "jira-username" | "xray-client-id" | "xray-client-secret"
+  kind:
+    | "jira-cloud-token"
+    | "jira-cloud-username"
+    | "jira-server-password"
+    | "jira-server-url"
+    | "jira-server-username"
+    | "xray-client-id"
+    | "xray-client-secret"
 ): string {
   let value: string | undefined;
   switch (kind) {
+    case "jira-cloud-token":
+      value = process.env.JIRA_CLOUD_TOKEN;
+      break;
+    case "jira-cloud-username":
+      value = process.env.JIRA_CLOUD_USERNAME;
+      break;
+    case "jira-server-password":
+      value = process.env.JIRA_SERVER_PASSWORD;
+      break;
+    case "jira-server-url":
+      value = process.env.JIRA_SERVER_URL;
+      break;
+    case "jira-server-username":
+      value = process.env.JIRA_SERVER_USERNAME;
+      break;
     case "xray-client-id":
       value = process.env.XRAY_CLIENT_ID;
       break;
     case "xray-client-secret":
       value = process.env.XRAY_CLIENT_SECRET;
-      break;
-    case "jira-password":
-      value = process.env.JIRA_PASSWORD;
-      break;
-    case "jira-token":
-      value = process.env.JIRA_TOKEN;
-      break;
-    case "jira-username":
-      value = process.env.JIRA_USERNAME;
       break;
   }
   if (!value) {
