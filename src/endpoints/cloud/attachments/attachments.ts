@@ -1,6 +1,6 @@
-import type { Xray } from "../../../index.js";
-import type { BaseClient } from "../../client/base-client.js";
-import { createStreamableFile } from "../../util/form-data.js";
+import type { Xray } from "../../../../index.js";
+import type { BaseClient } from "../../../client/base-client.js";
+import { createStreamableFile } from "../../../util/form-data.js";
 
 /**
  * Models the attachment endpoints.

@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import path from "node:path";
 import { describe, it } from "node:test";
-import { XRAY_CLIENT_SERVER } from "../../../test/clients.js";
+import { XRAY_CLIENT_SERVER } from "../../../../test/clients.js";
 import { TestExecutionApi } from "./test-execution.js";
 
 const TEST_EXECUTION_KEYS = {

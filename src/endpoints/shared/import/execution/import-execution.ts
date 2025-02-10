@@ -1,6 +1,6 @@
-import type { Xray } from "../../../../index.js";
-import type { BaseClient } from "../../../client/base-client.js";
-import type { IssueUpdateDetails } from "../../../models/jira/__generated__/index.js";
+import type { Xray } from "../../../../../index.js";
+import type { BaseClient } from "../../../../client/base-client.js";
+import type { IssueUpdateDetails } from "../../../../models/jira/__generated__/index.js";
 
 /**
  * Models the execution import endpoints.
