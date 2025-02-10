@@ -12,6 +12,7 @@ export const XRAY_CLIENT_CLOUD = new XrayClientCloud({
 });
 
 export const XRAY_CLIENT_SERVER = new XrayClientServer({
+  apiVersion: "latest",
   credentials: {
     password: getEnv("jira-server-password"),
     username: getEnv("jira-server-username"),
