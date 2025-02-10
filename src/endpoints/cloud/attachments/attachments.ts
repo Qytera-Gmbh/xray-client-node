@@ -1,22 +1,11 @@
 import type { Xray } from "../../../../index.js";
-import type { BaseClient } from "../../../client/base-client.js";
 import { createStreamableFile } from "../../../util/form-data.js";
+import { BaseApi } from "../../base-api.js";
 
 /**
  * Models the attachment endpoints.
  */
-export class AttachmentsApi {
-  private readonly client: BaseClient;
-
-  /**
-   * Creates a new attachments service.
-   *
-   * @param client the client to use when dealing with attachments
-   */
-  constructor(client: BaseClient) {
-    this.client = client;
-  }
-
+export class AttachmentsApi extends BaseApi {
   /**
    * Creates an attachment.
    *

@@ -1,23 +1,12 @@
 import type { Xray } from "../../../../index.js";
-import type { BaseClient } from "../../../client/base-client.js";
+import { BaseApi } from "../../base-api.js";
 
 /**
  * Models the execution import endpoints.
  */
 export class DatasetApi<
   ExportType extends Xray.Dataset.ExportQueryCloud | Xray.Dataset.ExportQueryServer,
-> {
-  private readonly client: BaseClient;
-
-  /**
-   * Creates a new execution import service.
-   *
-   * @param client the client to use when importing executions
-   */
-  constructor(client: BaseClient) {
-    this.client = client;
-  }
-
+> extends BaseApi {
   /**
    * Retrieves a CSV file with the dataset information. The response will contain all information
    * related to the dataset, e.g., parameters and values.
