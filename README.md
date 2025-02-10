@@ -166,7 +166,7 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [ ] `POST /rest/raven/2.0/api/import/execution/multipart`
   - [Dataset](https://docs.getxray.app/display/XRAY/v2.0#/Dataset)
     - [x] `GET  /rest/raven/2.0/api/dataset/export`
-    - [ ] `POST /rest/raven/2.0/api/dataset/import`
+    - [x] `POST /rest/raven/2.0/api/dataset/import`
   - [Test Repository](https://docs.getxray.app/display/XRAY/v2.0#/Test%20Repository)
     - [ ] `GET /rest/raven/2.0/api/testrepository/{projectKey}/folders/{folderId}`
 
