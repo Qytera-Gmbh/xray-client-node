@@ -1,8 +1,8 @@
 import type { Xray } from "../../index.js";
-import { AttachmentsApi } from "../endpoints/attachments/attachments.js";
-import { DatasetApi } from "../endpoints/dataset/dataset.js";
-import { GraphQLApi } from "../endpoints/graphql/graphql.js";
-import { ImportExecutionApi } from "../endpoints/import/execution/import-execution.js";
+import { AttachmentsApi } from "../endpoints/cloud/attachments/attachments.js";
+import { GraphQLApi } from "../endpoints/cloud/graphql/graphql.js";
+import { DatasetApi } from "../endpoints/shared/dataset/dataset.js";
+import { ImportExecutionApi } from "../endpoints/shared/import/execution/import-execution.js";
 import type { ClientConfiguration } from "./base-client.js";
 import { BaseClient } from "./base-client.js";
 

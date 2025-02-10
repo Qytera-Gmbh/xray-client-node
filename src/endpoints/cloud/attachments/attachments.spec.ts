@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import path, { join } from "node:path";
 import { describe, it } from "node:test";
-import { XRAY_CLIENT_CLOUD } from "../../../test/clients.js";
+import { XRAY_CLIENT_CLOUD } from "../../../../test/clients.js";
 import { AttachmentsApi } from "./attachments.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {

@@ -1,5 +1,5 @@
-import type { Xray } from "../../../index.js";
-import type { BaseClient } from "../../client/base-client.js";
+import type { Xray } from "../../../../index.js";
+import type { BaseClient } from "../../../client/base-client.js";
 
 /**
  * Models the test executions endpoints in Xray server.
