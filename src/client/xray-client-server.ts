@@ -23,7 +23,19 @@ export class XrayClientServer extends BaseClient {
    *
    * @param config the client configuration
    */
-  constructor(config: ClientConfiguration) {
-    super({ ...config, url: `${config.url}/rest/raven/2.0/api` });
+  constructor(
+    config: ClientConfiguration & {
+      /**
+       * The Xray API version to use. For stability reasons it is usually a good idea to use the
+       * highest version available.
+       *
+       * @default "latest"
+       *
+       * @see https://docs.getxray.app/display/XRAY/REST+API
+       */
+      apiVersion?: "1.0" | "2.0" | "latest";
+    }
+  ) {
+    super({ ...config, url: `${config.url}/rest/raven/${config.apiVersion ?? "latest"}/api` });
   }
 }
