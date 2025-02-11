@@ -9,6 +9,7 @@ import {
   XRAY_CLIENT_CLOUD,
   XRAY_CLIENT_SERVER,
 } from "../../../../../test/clients.js";
+import { DATA_CLOUD, DATA_SERVER } from "../../../../../test/data.js";
 import { ImportExecutionApi } from "./import-execution.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
@@ -18,10 +19,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         isServerApi: false,
       });
       const data = await controller.xray({
-        testExecutionKey: "XCN-6",
-        tests: [{ status: "PASSED", testKey: "XCN-1" }],
+        testExecutionKey: DATA_CLOUD.testExecutions.importingXray.key,
+        tests: [
+          { status: "PASSED", testKey: DATA_CLOUD.testExecutions.importingXray.tests[0].key },
+        ],
       });
-      assert.strictEqual(data.key, "XCN-6");
+      assert.strictEqual(data.key, DATA_CLOUD.testExecutions.importingXray.key);
     });
 
     it("imports xray results in xray server", async () => {
@@ -29,10 +32,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         isServerApi: true,
       });
       const data = await controller.xray({
-        testExecutionKey: "CYPLUG-1408",
-        tests: [{ status: "EXECUTING", testKey: "CYPLUG-1403" }],
+        testExecutionKey: DATA_SERVER.testExecutions.importingXray.key,
+        tests: [
+          { status: "EXECUTING", testKey: DATA_SERVER.testExecutions.importingXray.tests[0].key },
+        ],
       });
-      assert.strictEqual(data.testExecIssue.key, "CYPLUG-1408");
+      assert.strictEqual(data.testExecIssue.key, DATA_SERVER.testExecutions.importingXray.key);
     });
   });
 
@@ -44,17 +49,22 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       });
       const data = await controller.xrayMultipart(
         {
-          testExecutionKey: "XCN-7",
-          tests: [{ status: "PASSED", testKey: "XCN-1" }],
+          testExecutionKey: DATA_CLOUD.testExecutions.importingXrayMultipart.key,
+          tests: [
+            {
+              status: "PASSED",
+              testKey: DATA_CLOUD.testExecutions.importingXrayMultipart.tests[0].key,
+            },
+          ],
         },
-        { fields: { description: description, project: { key: "XCN" } } }
+        { fields: { description: description, project: { key: DATA_CLOUD.project.key } } }
       );
-      assert.strictEqual(data.key, "XCN-7");
+      assert.strictEqual(data.key, DATA_CLOUD.testExecutions.importingXrayMultipart.key);
       assert.deepStrictEqual(
         (
           await JIRA_CLIENT_CLOUD.issues.getIssue({
             fields: ["description"],
-            issueIdOrKey: "XCN-7",
+            issueIdOrKey: DATA_CLOUD.testExecutions.importingXrayMultipart.key,
           })
         ).fields.description,
         {
@@ -82,17 +92,25 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       });
       const data = await controller.xrayMultipart(
         {
-          testExecutionKey: "CYPLUG-1409",
-          tests: [{ status: "EXECUTING", testKey: "CYPLUG-1403" }],
+          testExecutionKey: DATA_SERVER.testExecutions.importingXrayMultipart.key,
+          tests: [
+            {
+              status: "EXECUTING",
+              testKey: DATA_SERVER.testExecutions.importingXrayMultipart.tests[0].key,
+            },
+          ],
         },
-        { fields: { description: description, project: { key: "CYPLUG" } } }
+        { fields: { description: description, project: { key: DATA_SERVER.project.key } } }
       );
-      assert.strictEqual(data.testExecIssue.key, "CYPLUG-1409");
+      assert.strictEqual(
+        data.testExecIssue.key,
+        DATA_SERVER.testExecutions.importingXrayMultipart.key
+      );
       assert.strictEqual(
         (
           await JIRA_CLIENT_SERVER.issues.getIssue({
             fields: ["description"],
-            issueIdOrKey: "CYPLUG-1409",
+            issueIdOrKey: DATA_SERVER.testExecutions.importingXrayMultipart.key,
           })
         ).fields.description,
         description

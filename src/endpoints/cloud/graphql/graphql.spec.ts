@@ -2,33 +2,37 @@ import assert from "node:assert";
 import path from "node:path";
 import { beforeEach, describe, it } from "node:test";
 import { XRAY_CLIENT_CLOUD } from "../../../../test/clients.js";
+import { DATA_CLOUD } from "../../../../test/data.js";
 import { GraphQLApi } from "./graphql.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getTestPlan", () => {
     it("returns test plan data", async () => {
       const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
-      const response = await controller.getTestPlan({ issueId: "15051" }, (testPlan) => [
-        testPlan.issueId,
-        testPlan.jira({ fields: ["key"] }),
-        testPlan.tests({ limit: 100 }, (testResults) => [
-          testResults.results((test) => [
-            test.issueId,
-            test.testType((testType) => [testType.name]),
+      const response = await controller.getTestPlan(
+        { issueId: DATA_CLOUD.testPlans.immutable.issueId },
+        (testPlan) => [
+          testPlan.issueId,
+          testPlan.jira({ fields: ["key"] }),
+          testPlan.tests({ limit: 100 }, (testResults) => [
+            testResults.results((test) => [
+              test.issueId,
+              test.testType((testType) => [testType.name]),
+            ]),
           ]),
-        ]),
-      ]);
+        ]
+      );
       assert.deepStrictEqual(response, {
-        issueId: "15051",
+        issueId: DATA_CLOUD.testPlans.immutable.issueId,
         jira: {
-          key: "XCN-3",
+          key: DATA_CLOUD.testPlans.immutable.key,
         },
         tests: {
           results: [
             {
-              issueId: "15049",
+              issueId: DATA_CLOUD.tests.immutable.issueId,
               testType: {
-                name: "Manual",
+                name: DATA_CLOUD.tests.immutable.testType,
               },
             },
           ],
@@ -42,7 +46,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
       const response = await controller.getTestPlans(
         {
-          jql: "project = XCN",
+          jql: `project = ${DATA_CLOUD.project.key}`,
           limit: 1,
         },
         (testPlanResults) => [
@@ -67,20 +71,20 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         limit: 1,
         results: [
           {
-            issueId: "15051",
+            issueId: DATA_CLOUD.testPlans.immutable.issueId,
             jira: {
-              key: "XCN-3",
+              key: DATA_CLOUD.testPlans.immutable.key,
             },
             tests: {
               limit: 10,
               results: [
                 {
-                  issueId: "15049",
+                  issueId: DATA_CLOUD.tests.immutable.issueId,
                   jira: {
-                    key: "XCN-1",
+                    key: DATA_CLOUD.tests.immutable.key,
                   },
                   testType: {
-                    name: "Manual",
+                    name: DATA_CLOUD.tests.immutable.testType,
                   },
                 },
               ],
@@ -97,7 +101,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     it("returns test run data", async () => {
       const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
       const response = await controller.getTestRuns(
-        { limit: 100, testExecIssueIds: ["XCN-2"] },
+        { limit: 100, testExecIssueIds: [DATA_CLOUD.testExecutions.immutable.key] },
         (testRunResults) => [
           testRunResults.total,
           testRunResults.limit,
@@ -113,7 +117,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
           {
             test: {
               jira: {
-                key: "XCN-1",
+                key: DATA_CLOUD.tests.immutable.key,
               },
             },
           },
@@ -125,7 +129,6 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   });
 
   describe("addEvidenceToTestRun", () => {
-    const testRunId = "67aa31f900cff4d6104bca3b";
     const filename = "evidence.txt";
 
     beforeEach(async () => {
@@ -133,7 +136,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       await controller.removeEvidenceFromTestRun(
         {
           evidenceFilenames: [filename],
-          id: testRunId,
+          id: DATA_CLOUD.testExecutions.addingAttachments.testRunId,
         },
         (removeEvidenceResult) => [removeEvidenceResult.warnings]
       );
@@ -150,7 +153,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
               mimeType: "text/plain",
             },
           ],
-          id: testRunId,
+          id: DATA_CLOUD.testExecutions.addingAttachments.testRunId,
         },
         (addEvidenceResult) => [addEvidenceResult.addedEvidence, addEvidenceResult.warnings]
       );
@@ -162,7 +165,6 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   });
 
   describe("removeEvidenceFromTestRun", () => {
-    const testRunId = "67aa32d700cff4d6104d2f1c";
     const filename = "evidence.txt";
 
     beforeEach(async () => {
@@ -176,7 +178,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
               mimeType: "text/plain",
             },
           ],
-          id: testRunId,
+          id: DATA_CLOUD.testExecutions.removingAttachments.tests[0].testRunId,
         },
         (addEvidenceResult) => [addEvidenceResult.addedEvidence, addEvidenceResult.warnings]
       );
@@ -187,7 +189,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       const response = await controller.removeEvidenceFromTestRun(
         {
           evidenceFilenames: [filename],
-          id: testRunId,
+          id: DATA_CLOUD.testExecutions.removingAttachments.tests[0].testRunId,
         },
         (removeEvidenceResult) => [
           removeEvidenceResult.removedEvidence,
