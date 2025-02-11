@@ -7,10 +7,10 @@ import type { ClientConfiguration } from "./base-client.js";
 import { BaseClient } from "./base-client.js";
 
 export class XrayClientCloud extends BaseClient {
-  attachments = new AttachmentsApi(this);
-  dataset = new DatasetApi<Xray.Dataset.ExportQueryCloud>(this);
-  graphql = new GraphQLApi(this);
-  import = {
+  public attachments = new AttachmentsApi(this);
+  public dataset = new DatasetApi<Xray.Dataset.ExportQueryCloud>(this);
+  public graphql = new GraphQLApi(this);
+  public import = {
     execution: new ImportExecutionApi<Xray.Import.ResponseCloud>(this, { isServerApi: false }),
   };
 
