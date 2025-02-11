@@ -1,4 +1,12 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": ["node_modules/", "dist/", "test/", "**/*.spec.ts", "build.ts"]
+  "exclude": [
+    "node_modules/",
+    "dist/",
+    "test/",
+    "**/*.spec.ts",
+    "build.ts",
+    "src/models/xray/graphql/generate.ts",
+    "src/models/jira/codegen.ts"
+  ]
 }
