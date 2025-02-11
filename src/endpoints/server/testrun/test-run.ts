@@ -1,7 +1,4 @@
-import type {
-  GetTestRunResponse,
-  UpdateTestRunResponse,
-} from "../../../models/xray/testrun/test-run.js";
+import type { Xray } from "../../../../index.js";
 import { BaseApi } from "../../base-api.js";
 
 /**
@@ -31,7 +28,7 @@ export class TestRunApi extends BaseApi {
           testIssueKey: string;
         }
       | string
-  ): Promise<GetTestRunResponse> {
+  ): Promise<Xray.TestRun.GetTestRunResponse> {
     let response;
     if (typeof testRun === "string") {
       response = await this.client.send(`/testrun/${testRun}`, {
@@ -45,7 +42,7 @@ export class TestRunApi extends BaseApi {
         query: testRun,
       });
     }
-    return (await response.json()) as GetTestRunResponse;
+    return (await response.json()) as Xray.TestRun.GetTestRunResponse;
   }
 
   /**
@@ -153,13 +150,13 @@ export class TestRunApi extends BaseApi {
         status?: string;
       }[];
     }
-  ): Promise<UpdateTestRunResponse> {
+  ): Promise<Xray.TestRun.UpdateTestRunResponse> {
     const response = await this.client.send(`/testrun/${testRun}`, {
       body: JSON.stringify(body),
       expectedStatus: 200,
       headers: { ["Content-Type"]: "application/json" },
       method: "PUT",
     });
-    return (await response.json()) as UpdateTestRunResponse;
+    return (await response.json()) as Xray.TestRun.UpdateTestRunResponse;
   }
 }
