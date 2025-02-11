@@ -1,5 +1,9 @@
 # Changelog
 
+# `1.1.1`
+
+- Add test run endpoints to Xray server client
+
 # `1.1.0`
 
 - Add Xray server test run endpoints
