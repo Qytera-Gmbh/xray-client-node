@@ -8,12 +8,22 @@ export const DATA_SERVER = {
     immutable: { key: "XCNODE-2", tests: [{ key: "XCNODE-1", testRunId: "12466" }] },
     importingXray: { key: "XCNODE-5", tests: [{ key: "XCNODE-1" }] },
     importingXrayMultipart: { key: "XCNODE-6", tests: [{ key: "XCNODE-1" }] },
+    updateTestRun: {
+      key: "XCNODE-8",
+      tests: [
+        { key: "XCNODE-1", testRunId: "12470" },
+        { key: "XCNODE-9", testRunId: "12471" },
+      ],
+    },
   },
   testPlans: {
     immutable: { key: "XCNODE-7", testExecutions: ["XCNODE-2", "XCNODE-3"], tests: ["XCNODE-1"] },
   },
   tests: {
     immutable: {
+      key: "XCNODE-9",
+    },
+    immutableDatadriven: {
       dataset: ["name,age", "Jane,42", "John,33", ""],
       key: "XCNODE-1",
     },

@@ -18,8 +18,13 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
     it("returns csv data in xray server", async () => {
       const controller = new DatasetApi(XRAY_CLIENT_SERVER);
-      const dataset = await controller.export({ testIssueKey: DATA_SERVER.tests.immutable.key });
-      assert.deepStrictEqual(dataset.split(NEWLINE_REGEX), DATA_SERVER.tests.immutable.dataset);
+      const dataset = await controller.export({
+        testIssueKey: DATA_SERVER.tests.immutableDatadriven.key,
+      });
+      assert.deepStrictEqual(
+        dataset.split(NEWLINE_REGEX),
+        DATA_SERVER.tests.immutableDatadriven.dataset
+      );
     });
   });
 });

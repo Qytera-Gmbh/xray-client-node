@@ -59,9 +59,9 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [ ] `POST   /rest/raven/1.0/api/testexec/{testExecKey}/test`
     - [ ] `DELETE /rest/raven/1.0/api/testexec/{testExecKey}/test/{testKey}`
   - [Test Runs](https://docs.getxray.app/display/XRAY/Test+Runs+-+REST)
-    - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/`
-    - [ ] `GET    /rest/raven/1.0/api/testrun/`
-    - [ ] `PUT    /rest/raven/1.0/api/testrun/{id}/`
+    - [x] `GET    /rest/raven/1.0/api/testrun/{id}/`
+    - [x] `GET    /rest/raven/1.0/api/testrun/`
+    - [x] `PUT    /rest/raven/1.0/api/testrun/{id}/`
     - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/status`
     - [ ] `PUT    /rest/raven/1.0/api/testrun/{id}/status`
     - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/defect`
