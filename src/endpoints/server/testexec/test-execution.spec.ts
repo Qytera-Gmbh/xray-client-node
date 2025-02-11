@@ -11,7 +11,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       const controller = new TestExecutionApi(XRAY_CLIENT_SERVER);
       const content = await controller.getTests(DATA_SERVER.testExecutions.immutable.key);
       assert.strictEqual(content.length, 1);
-      assert.strictEqual(content[0].key, DATA_SERVER.tests.immutable.key);
+      assert.strictEqual(content[0].key, DATA_SERVER.tests.immutableDatadriven.key);
     });
   });
 });
