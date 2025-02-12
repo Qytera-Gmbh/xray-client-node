@@ -135,9 +135,9 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [ ] `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}/attachments`
     - [ ] `DELETE /rest/raven/2.0/api/test/{testKey}/steps/{stepId}/attachment/{attachmentId}`
   - [Test Run](https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run)
-    - [ ] `GET    /rest/raven/2.0/api/testrun`
-    - [ ] `GET    /rest/raven/2.0/api/testrun/{id}`
-    - [ ] `PUT    /rest/raven/2.0/api/testrun/{id}`
+    - [x] `GET    /rest/raven/2.0/api/testrun`
+    - [x] `GET    /rest/raven/2.0/api/testrun/{id}`
+    - [x] `PUT    /rest/raven/2.0/api/testrun/{id}`
     - [ ] `GET    /rest/raven/2.0/api/testrun/{id}/customfield/{customFieldId}`
     - [ ] `PUT    /rest/raven/2.0/api/testrun/{id}/customfield/{customFieldId}`
     - [ ] `GET    /rest/raven/2.0/api/testrun/{id}/iteration/{iterationId}`
@@ -162,8 +162,8 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
   - [External Apps](https://docs.getxray.app/display/XRAY/v2.0#/External%20Apps)
     - [ ] `GET /rest/raven/2.0/api/xraylicense`
   - [Import](https://docs.getxray.app/display/XRAY/v2.0#/Import)
-    - [ ] `POST /rest/raven/2.0/api/import/execution`
-    - [ ] `POST /rest/raven/2.0/api/import/execution/multipart`
+    - [x] `POST /rest/raven/2.0/api/import/execution`
+    - [x] `POST /rest/raven/2.0/api/import/execution/multipart`
   - [Dataset](https://docs.getxray.app/display/XRAY/v2.0#/Dataset)
     - [x] `GET  /rest/raven/2.0/api/dataset/export`
     - [x] `POST /rest/raven/2.0/api/dataset/import`
