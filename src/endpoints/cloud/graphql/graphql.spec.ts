@@ -8,8 +8,7 @@ import { GraphQLApi } from "./graphql.js";
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getTestPlan", () => {
     it("returns test plan data", async () => {
-      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
-      const response = await controller.getTestPlan(
+      const response = await XRAY_CLIENT_CLOUD.graphql.getTestPlan(
         { issueId: DATA_CLOUD.testPlans.immutable.issueId },
         (testPlan) => [
           testPlan.issueId,
@@ -43,8 +42,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
   describe("getTestPlans", () => {
     it("returns test plans data", async () => {
-      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
-      const response = await controller.getTestPlans(
+      const response = await XRAY_CLIENT_CLOUD.graphql.getTestPlans(
         {
           jql: `project = ${DATA_CLOUD.project.key}`,
           limit: 1,
@@ -99,8 +97,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
   describe("getTestRuns", () => {
     it("returns test run data", async () => {
-      const controller = new GraphQLApi(XRAY_CLIENT_CLOUD);
-      const response = await controller.getTestRuns(
+      const response = await XRAY_CLIENT_CLOUD.graphql.getTestRuns(
         { limit: 100, testExecIssueIds: [DATA_CLOUD.testExecutions.immutable.key] },
         (testRunResults) => [
           testRunResults.total,
