@@ -39,7 +39,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         DATA_SERVER.testExecutions.updateTestRun.tests[1].testRunId
       );
       assert.strictEqual(content.status, "TODO");
-      assert.strictEqual(content.steps[0].status, "TODO");
+      assert.strictEqual(content.steps?.[0].status, "TODO");
       assert.strictEqual(content.steps[1].status, "TODO");
     });
 
@@ -56,7 +56,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         DATA_SERVER.testExecutions.updateTestRun.tests[1].testRunId
       );
       assert.strictEqual(content.status, "EXECUTING");
-      assert.strictEqual(content.steps[0].status, "EXECUTING");
+      assert.strictEqual(content.steps?.[0].status, "EXECUTING");
       assert.strictEqual(content.steps[1].status, "EXECUTING");
     });
   });
