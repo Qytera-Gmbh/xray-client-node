@@ -346,13 +346,59 @@ _Based on: https://docs.getxray.app/display/XRAYCLOUD/REST+API_
 
 # Installation
 
+## Xray Server
+
 ```bash
 npm install @qytera/xray-client
 ```
 
+## Xray Cloud
+
+If you don't intend to use the [GraphQL endpoints](https://us.xray.cloud.getxray.app/doc/graphql/):
+
+```bash
+npm install @qytera/xray-client
+```
+
+With GraphQL support:
+
+```bash
+npm install @qytera/xray-client graphql graphql-tag
+```
+
 # Usage
 
-Simply create a client instance for your Xray setup and start using the fully typed endpoints available, including GraphQL in Xray cloud.
+Simply create a client instance for your Xray setup and start using the fully typed endpoints available.
+
+## Xray Server
+
+```ts
+import { XrayClientServer } from "@qytera/xray-client";
+
+// PAT authentication.
+export const serverClient = new XrayClientServer({
+  credentials: {
+    token: "jira-token",
+  },
+  url: "https://jira.company.com",
+});
+
+// Basic authentication.
+export const serverClient = new XrayClientServer({
+  credentials: {
+    username: "jira-username",
+    password: "jira-password",
+  },
+  url: "https://jira.company.com",
+});
+
+const csvData = await serverClient.dataset.export({ testIssueKey: "PRJ-123" });
+const testRun = await serverClient.testRuns.testRun.getTestRun({
+  testExecIssueKey: "PRJ-456",
+  testIssueKey: "PRJ-123",
+});
+// ... other endpoints
+```
 
 ## Xray Cloud
 
@@ -408,32 +454,6 @@ const testRuns = await cloudClient.graphql.getTestRuns(
 );
 ```
 <!-- prettier-ignore-end -->
-
-## Xray Server
-
-```ts
-import { XrayClientServer } from "@qytera/xray-client";
-
-// PAT authentication.
-export const serverClient = new XrayClientServer({
-  credentials: {
-    token: "jira-token",
-  },
-  url: "https://jira.company.com",
-});
-
-// Basic authentication.
-export const serverClient = new XrayClientServer({
-  credentials: {
-    username: "jira-username",
-    password: "jira-password",
-  },
-  url: "https://jira.company.com",
-});
-
-const csvData = await serverClient.dataset.export({ testIssueKey: "PRJ-123" });
-// ... other endpoints
-```
 
 # Credits
 
