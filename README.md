@@ -393,7 +393,7 @@ export const serverClient = new XrayClientServer({
 });
 
 const csvData = await serverClient.dataset.export({ testIssueKey: "PRJ-123" });
-const testRun = await serverClient.testRuns.testRun.getTestRun({
+const testRun = await serverClient.testRuns.getTestRun({
   testExecIssueKey: "PRJ-456",
   testIssueKey: "PRJ-123",
 });
