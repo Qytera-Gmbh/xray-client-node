@@ -36,9 +36,9 @@ try {
 }
 
 export class XrayClientCloud extends BaseClient {
-  public attachments = new AttachmentsApi(this);
-  public dataset = new DatasetApi<Xray.Dataset.ExportQueryCloud>(this);
-  public import = {
+  public readonly attachments = new AttachmentsApi(this);
+  public readonly dataset = new DatasetApi<Xray.Dataset.ExportQueryCloud>(this);
+  public readonly import = {
     execution: new ImportExecutionApi<Xray.Import.ResponseCloud>(this, { isServerApi: false }),
   };
 

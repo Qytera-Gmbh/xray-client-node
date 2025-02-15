@@ -1,5 +1,7 @@
 import type { Xray } from "../../../../index.js";
+import type { BaseClient } from "../../../client/base-client.js";
 import { BaseApi } from "../../base-api.js";
+import { ExecutionEvidenceApi } from "./attachment/attachment.js";
 
 /**
  * Models the execution evidence endpoints in Xray server.
@@ -7,6 +9,13 @@ import { BaseApi } from "../../base-api.js";
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
  */
 export class TestRunApi extends BaseApi {
+  public readonly evidence: ExecutionEvidenceApi;
+
+  constructor(client: BaseClient) {
+    super(client);
+    this.evidence = new ExecutionEvidenceApi(client);
+  }
+
   /**
    * Retrieves a Test Run given the test execution and test keys. The response will contain all
    * information related to a test run, e.g., status, created and finish dates, step results, test
