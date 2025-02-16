@@ -1,6 +1,7 @@
 import { createReadStream } from "node:fs";
 import { basename } from "node:path";
 import { blob } from "node:stream/consumers";
+import { FormData } from "undici";
 import type { Xray } from "../../../../index.js";
 import { DatasetApi } from "../../shared/dataset/dataset.js";
 
