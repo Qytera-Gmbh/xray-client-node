@@ -1,3 +1,5 @@
+import type { Dispatcher, RequestInit, Response } from "undici";
+import { fetch } from "undici";
 import { toSearchParams } from "../util/search-params.js";
 
 /**
@@ -138,6 +140,40 @@ type XrayCredentials =
  * The configuration for an Xray client.
  */
 export interface ClientConfiguration {
+  /**
+   * The dispatcher of the core API used to dispatch requests.
+   *
+   * An example configuration with custom SSL certificates:
+   *
+   * ```ts
+   * import { readFileSync } from "node:fs";
+   * import { Agent } from "undici";
+   *
+   * const configuration = {
+   *   dispatcher: new Agent({
+   *     connect: {
+   *       cert: [readFileSync("certFile1.pem"), readFileSync("certFile2.pem")]
+   *     }
+   *   }),
+   *   // ...
+   * };
+   * ```
+   *
+   * An example configuration with an authenticated proxy:
+   *
+   * ```ts
+   * import { ProxyAgent } from "undici";
+   *
+   * const configuration = {
+   *   dispatcher: new ProxyAgent({
+   *     token: Buffer.from("username:password").toString("base64"),
+   *     uri: "http://1.2.3.4:8765",
+   *   }),
+   *   // ...
+   * };
+   * ```
+   */
+  agent?: Dispatcher;
   /**
    * The credentials to use to authenticate.
    */

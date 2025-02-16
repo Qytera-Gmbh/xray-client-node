@@ -346,10 +346,13 @@ _Based on: https://docs.getxray.app/display/XRAYCLOUD/REST+API_
 
 # Installation
 
+This package is built on Node's native fetch API and, by extension, relies on the [`undici`](https://www.npmjs.com/package/undici) library.
+To enable full functionality (such as passing custom proxy agent instances) without running into version conflicts, `undici` must be installed as a peer dependency.
+
 ## Xray Server
 
 ```bash
-npm install @qytera/xray-client
+npm install @qytera/xray-client undici
 ```
 
 ## Xray Cloud
@@ -357,13 +360,13 @@ npm install @qytera/xray-client
 If you don't intend to use the [GraphQL endpoints](https://us.xray.cloud.getxray.app/doc/graphql/):
 
 ```bash
-npm install @qytera/xray-client
+npm install @qytera/xray-client undici
 ```
 
 With GraphQL support:
 
 ```bash
-npm install @qytera/xray-client graphql graphql-tag
+npm install @qytera/xray-client undici graphql graphql-tag
 ```
 
 # Usage

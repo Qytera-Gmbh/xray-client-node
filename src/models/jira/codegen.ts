@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { OpenAPI3 } from "openapi-typescript";
 import generate, { astToString, COMMENT_HEADER } from "openapi-typescript";
+import { fetch } from "undici";
 
 /**
  * Generates TypeScript models based on Jira's publically available OpenAPI documentation.
