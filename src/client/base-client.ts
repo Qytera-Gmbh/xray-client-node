@@ -11,6 +11,10 @@ export class BaseClient {
    */
   private readonly authorizationValue: Promise<string>;
   /**
+   * The dispatcher of the core API used to dispatch requests.
+   */
+  private readonly dispatcher: Dispatcher | undefined;
+  /**
    * The base URL of the Xray instance.
    */
   private readonly url: string;
@@ -21,6 +25,7 @@ export class BaseClient {
    * @param config the configuration
    */
   constructor(config: ClientConfiguration) {
+    this.dispatcher = config.dispatcher;
     this.url = config.url;
     if ("token" in config.credentials) {
       this.authorizationValue = Promise.resolve(`Bearer ${config.credentials.token}`);
@@ -36,6 +41,7 @@ export class BaseClient {
           ["client_id"]: config.credentials.clientId,
           ["client_secret"]: config.credentials.clientSecret,
         }),
+        dispatcher: this.dispatcher,
         headers: {
           ["Accept"]: "application/json",
           ["Content-Type"]: "application/json",
@@ -63,6 +69,7 @@ export class BaseClient {
     }
     const request: RequestInit = {
       body: config.body,
+      dispatcher: this.dispatcher,
       headers: {
         ["Authorization"]: await this.authorizationValue,
         ...config.headers,
@@ -141,6 +148,10 @@ type XrayCredentials =
  */
 export interface ClientConfiguration {
   /**
+   * The credentials to use to authenticate.
+   */
+  credentials: XrayCredentials;
+  /**
    * The dispatcher of the core API used to dispatch requests.
    *
    * An example configuration with custom SSL certificates:
@@ -173,11 +184,7 @@ export interface ClientConfiguration {
    * };
    * ```
    */
-  agent?: Dispatcher;
-  /**
-   * The credentials to use to authenticate.
-   */
-  credentials: XrayCredentials;
+  dispatcher?: Dispatcher;
   /**
    * The base URL of the Xray instance. For Xray server, simply provide the Jira base URL:
    *
