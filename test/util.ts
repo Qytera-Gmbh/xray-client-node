@@ -70,7 +70,7 @@ export function getEnv(
   }
   const value = process.env[name];
   if (!value) {
-    throw new Error(`Environment variable is undefined: ${name}`);
+    throw new Error(`environment variable is undefined: ${name}`);
   }
   return value;
 }

@@ -43,9 +43,7 @@ export class BaseClient {
         method: "POST",
       })
         .then((response) => response.json() as Promise<string>)
-        .then((json) => {
-          return `Bearer ${json}`;
-        });
+        .then((token) => `Bearer ${token}`);
     }
   }
 
@@ -72,7 +70,7 @@ export class BaseClient {
     const response = await fetch(url, request);
     if (config.expectedStatus && response.status !== config.expectedStatus) {
       throw new Error(
-        `Unexpected response status ${response.status.toString()}: ${await response.text()}`
+        `unexpected response status ${response.status.toString()}: ${await response.text()}`
       );
     }
     return response;

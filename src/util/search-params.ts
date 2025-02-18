@@ -26,7 +26,7 @@ export function toSearchParams(input?: object): URLSearchParams {
       params[key] = value.toString();
     } else {
       throw new Error(
-        `Cannot coerce value of query parameter ${key} to string type: ${value as string}`
+        `cannot coerce value of query parameter ${key} to string type: ${value as string}`
       );
     }
   }
