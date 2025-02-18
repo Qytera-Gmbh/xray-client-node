@@ -54,12 +54,12 @@ export class XrayClientCloud extends BaseClient {
   public get graphql(): GraphQLApi {
     if (!optionalModules.graphql) {
       throw new Error(
-        "Failed to import module graphql. Please install it to use the GraphQL endpoints"
+        "failed to import module graphql, please install it to use the GraphQL endpoints"
       );
     }
     if (!optionalModules.graphqlTag) {
       throw new Error(
-        "Failed to import module graphql-tag. Please install it to use the GraphQL endpoints"
+        "failed to import module graphql-tag, please install it to use the GraphQL endpoints"
       );
     }
     return new optionalModules.api(this);
