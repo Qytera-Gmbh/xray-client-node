@@ -47,7 +47,7 @@ export const DATA_CLOUD = {
       key: "XCN-2",
     },
     importingXray: { key: "XCN-6", tests: [{ key: "XCN-1" }] },
-    importingXrayMultipart: { key: "XCN-7", tests: [{ key: "XCN-1" }] },
+    importingXrayMultipart: { issueId: "15357", key: "XCN-7", tests: [{ key: "XCN-1" }] },
     removingAttachments: {
       key: "XCN-5",
       tests: [{ key: "XCN-1", testRunId: "67aa32d700cff4d6104d2f1c" }],
