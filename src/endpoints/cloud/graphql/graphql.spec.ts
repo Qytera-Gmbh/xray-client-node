@@ -6,6 +6,43 @@ import { DATA_CLOUD } from "../../../../test/data.js";
 import { GraphQLApi } from "./graphql.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
+  describe("getTestExecution", () => {
+    it("returns test execution data", async () => {
+      const response = await XRAY_CLIENT_CLOUD.graphql.getTestExecution(
+        {
+          issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.issueId,
+        },
+        (testExecution) => [
+          testExecution.issueId,
+          testExecution.jira({ fields: ["key"] }),
+          testExecution.tests({ limit: 100 }, (testResults) => [
+            testResults.results((test) => [
+              test.issueId,
+              test.testType((testType) => [testType.name]),
+            ]),
+          ]),
+        ]
+      );
+      assert.deepStrictEqual(response, {
+        issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.issueId,
+        jira: {
+          key: DATA_CLOUD.testExecutions.importingXrayMultipart.key,
+        },
+        tests: {
+          results: [
+            {
+              issueId: DATA_CLOUD.tests.immutable.issueId,
+              testType: {
+                name: DATA_CLOUD.tests.immutable.testType,
+              },
+            },
+          ],
+        },
+      });
+    });
+  });
+
+
   describe("getTestPlan", () => {
     it("returns test plan data", async () => {
       const response = await XRAY_CLIENT_CLOUD.graphql.getTestPlan(
