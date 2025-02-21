@@ -42,6 +42,60 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     });
   });
 
+  describe("getTestExecutions", () => {
+    it("returns test executions data", async () => {
+      const response = await XRAY_CLIENT_CLOUD.graphql.getTestExecutions(
+        {
+          jql: `project = ${DATA_CLOUD.project.key}`,
+          limit: 1,
+        },
+        (testExecutionResults) => [
+          testExecutionResults.start,
+          testExecutionResults.limit,
+          testExecutionResults.results((testExecution) => [
+            testExecution.issueId,
+            testExecution.jira({ fields: ["key"] }),
+            testExecution.tests({ limit: 10 }, (testResults) => [
+              testResults.start,
+              testResults.limit,
+              testResults.results((test) => [
+                test.issueId,
+                test.jira({ fields: ["key"] }),
+                test.testType((testType) => [testType.name]),
+              ]),
+            ]),
+          ]),
+        ]
+      );
+      assert.deepStrictEqual(response, {
+        limit: 1,
+        results: [
+          {
+            issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.issueId,
+            jira: {
+              key: DATA_CLOUD.testExecutions.importingXrayMultipart.key,
+            },
+            tests: {
+              limit: 10,
+              results: [
+                {
+                  issueId: DATA_CLOUD.tests.immutable.issueId,
+                  jira: {
+                    key: DATA_CLOUD.tests.immutable.key,
+                  },
+                  testType: {
+                    name: DATA_CLOUD.tests.immutable.testType,
+                  },
+                },
+              ],
+              start: 0,
+            },
+          },
+        ],
+        start: 0,
+      });
+    });
+  });
 
   describe("getTestPlan", () => {
     it("returns test plan data", async () => {
