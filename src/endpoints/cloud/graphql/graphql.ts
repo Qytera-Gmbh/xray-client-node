@@ -157,7 +157,115 @@ export class GraphQLApi extends BaseApi {
     return json.data.getTestExecution;
   }
 
-   * Returns a test plan by issue id.
+  /**
+   * Returns multiple test executions by JQL, issue IDs or project ID.
+   *
+   * @example
+   *
+   * ```ts
+   * getTestExecutions(
+   *  {
+   *    jql: "project = PC",
+   *    limit: 10,
+   *  },
+   *  (testExecutionResults) => [
+   *    testExecutionResults.total,
+   *    testExecutionResults.start,
+   *    testExecutionResults.limit,
+   *    testExecutionResults.results((testExecution) => [
+   *      testExecution.issueId,
+   *      testExecution.tests({ limit: 10 }, (testResults) => [
+   *        testResults.total,
+   *        testResults.start,
+   *        testResults.limit,
+   *        testResults.results((test) => [
+   *          test.issueId,
+   *          test.testType((testType) => [testType.name]),
+   *        ]),
+   *      ]),
+   *      testExecution.jira({ fields: ["key", "assignee", "reporter"] }),
+   *    ]),
+   *  ]
+   * );
+   *
+   * // Equivalent to:
+   * // {
+   * //   getTestExecutions(jql: "project = PC", limit: 10) {
+   * //     total
+   * //     start
+   * //     limit
+   * //     results {
+   * //       issueId
+   * //       tests(limit: 10) {
+   * //         total
+   * //         start
+   * //         limit
+   * //         results {
+   * //           issueId
+   * //           testType {
+   * //             name
+   * //           }
+   * //         }
+   * //       }
+   * //       jira(fields: ["key", "assignee", "reporter"])
+   * //     }
+   * //   }
+   * // }
+   * ```
+   *
+   * @param variables the GraphQL variable values
+   * @param resultShape the desired shape of the result
+   * @returns the result
+   *
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestexecutions.doc.html
+   */
+  public async getTestExecutions<
+    T extends Xray.GraphQL.Selection<Xray.GraphQL.TestExecutionResults>,
+  >(
+    variables: {
+      /**
+       * The IDs of the test execution issues to be returned.
+       */
+      issueIds?: readonly string[];
+      /**
+       * The JQL that defines the search.
+       */
+      jql?: string;
+      /**
+       * The maximum amount of test executions to be returned. The maximum is 100.
+       */
+      limit: number;
+      /**
+       * All test executions modified after this date will be returned.
+       */
+      modifiedSince?: string;
+      /**
+       * The ID of the project of the test execution issues to be returned.
+       */
+      projectId?: string;
+      /**
+       * The index of the first item to return in the page of results (page offset).
+       */
+      start?: number;
+    },
+    resultShape: (testExecutionResults: Xray.GraphQL.TestExecutionResults) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
+    const document = query((q) => [
+      q.getTestExecutions<typeof variables, T>(variables, resultShape),
+    ]);
+    const response = await this.client.send("/graphql", {
+      body: JSON.stringify({ query: print(document) }),
+      expectedStatus: 200,
+      headers: {
+        ["Content-Type"]: "application/json",
+      },
+      method: "POST",
+    });
+    const json = (await response.json()) as {
+      data: { getTestExecutions: Xray.GraphQL.GetOutput<T> };
+    };
+    return json.data.getTestExecutions;
+  }
 
   /**
    * Returns a test plan by issue ID.
