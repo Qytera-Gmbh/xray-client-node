@@ -1,5 +1,10 @@
 # Changelog
 
+# `2.1.0`
+
+- Added `getTestExecution` GraphQL query
+- Added `getTestExecutions` GraphQL query
+
 # `2.0.0`
 
 - Updated test run models of Xray server
