@@ -347,7 +347,7 @@ _Based on: https://docs.getxray.app/display/XRAYCLOUD/REST+API_
 # Installation
 
 This package is built on Node's native fetch API and, by extension, relies on the [`undici`](https://www.npmjs.com/package/undici) library.
-To enable full functionality (such as passing custom proxy agent instances) without running into version conflicts, `undici` must be installed as a peer dependency.
+To enable full functionality (such as passing custom proxy agent instances) without running into version conflicts between Node's built-in `undici` module and the user-facing typings of the client package, `undici` must be installed as a peer dependency.
 
 ## Xray Server
 
