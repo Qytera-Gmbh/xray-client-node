@@ -44,7 +44,19 @@ export const DATA_CLOUD = {
         id: "49edd0c2-7bb8-4bfc-aa16-62c090891252",
         name: "hello.txt",
       },
+      issueId: "15050",
       key: "XCN-2",
+      tests: [
+        {
+          key: "XCN-1",
+          status: {
+            color: "#95C160",
+            description: "The test run has passed",
+            name: "PASSED",
+          },
+          testRunId: "6798fab7acaa2dd62ef1fa7a",
+        },
+      ],
     },
     importingXray: { key: "XCN-6", tests: [{ key: "XCN-1" }] },
     importingXrayMultipart: { issueId: "15357", key: "XCN-7", tests: [{ key: "XCN-1" }] },

@@ -432,6 +432,79 @@ export class GraphQLApi extends BaseApi {
   }
 
   /**
+   *  Returns a test run by test issue ID and test execution issue ID.
+   *
+   * @example
+   *
+   * ```ts
+   * getTestRun(
+   *   { testIssueId: "11165", testExecIssueId: "11164" },
+   *   (testRun) => [
+   *     testRun.id,
+   *     testRun.status(status => [status.name, status.color, status.description]),
+   *     testRun.gherkin,
+   *     testRun.examples((examples) => [
+   *       examples.id,
+   *       examples.status(status => [status.name, status.color, status.description]),
+   *     ]),
+   *   ]
+   * );
+   *
+   * // Equivalent to:
+   * // {
+   * //   getTestRun(testIssueId: "11165", testExecIssueId: "11164") {
+   * //     id
+   * //     status {
+   * //       name
+   * //       color
+   * //       description
+   * //     }
+   * //     gherkin
+   * //     examples {
+   * //       id
+   * //       status {
+   * //         name
+   * //         color
+   * //         description
+   * //       }
+   * //     }
+   * //   }
+   * // }
+   * ```
+   *
+   * @param variables the GraphQL variable values
+   * @param resultShape the desired shape of the result
+   * @returns the result
+   *
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestrun.doc.html
+   */
+  public async getTestRun<T extends Xray.GraphQL.Selection<Xray.GraphQL.TestRun>>(
+    variables: {
+      /**
+       * The issue ID of the test execution of the test run.
+       */
+      testExecIssueId?: string;
+      /**
+       * The issue ID of the test of the test run.
+       */
+      testIssueId?: string;
+    },
+    resultShape: (testRun: Xray.GraphQL.TestRun) => [...T]
+  ): Promise<Xray.GraphQL.GetOutput<T>> {
+    const document = query((q) => [q.getTestRun<typeof variables, T>(variables, resultShape)]);
+    const response = await this.client.send("/graphql", {
+      body: JSON.stringify({ query: print(document) }),
+      expectedStatus: 200,
+      headers: {
+        ["Content-Type"]: "application/json",
+      },
+      method: "POST",
+    });
+    const json = (await response.json()) as { data: { getTestRun: Xray.GraphQL.GetOutput<T> } };
+    return json.data.getTestRun;
+  }
+
+  /**
    * Returns multiple test runs testIssueIds and/or testExecIssueIds.
    *
    * @example
