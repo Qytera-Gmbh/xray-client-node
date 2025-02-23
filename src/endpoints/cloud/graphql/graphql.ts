@@ -53,7 +53,7 @@ export class GraphQLApi extends BaseApi {
    * @param resultShape the desired shape of the result
    * @returns the result
    *
-   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/addevidencetotestrun.doc.html
    */
   public async addEvidenceToTestRun<
     T extends Xray.GraphQL.Selection<Xray.GraphQL.AddEvidenceResult>,
@@ -545,7 +545,7 @@ export class GraphQLApi extends BaseApi {
    * @param resultShape the desired shape of the result
    * @returns the result
    *
-   * @see https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html
+   * @see https://us.xray.cloud.getxray.app/doc/graphql/removeevidencefromtestrun.doc.html
    */
   public async removeEvidenceFromTestRun<
     T extends Xray.GraphQL.Selection<Xray.GraphQL.RemoveEvidenceResult>,
