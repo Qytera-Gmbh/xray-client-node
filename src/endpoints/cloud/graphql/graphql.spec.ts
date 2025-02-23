@@ -186,6 +186,36 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     });
   });
 
+  describe("getTestRun", () => {
+    it("returns test run data", async () => {
+      const response = await XRAY_CLIENT_CLOUD.graphql.getTestRun(
+        {
+          testExecIssueId: DATA_CLOUD.testExecutions.immutable.issueId,
+          testIssueId: DATA_CLOUD.tests.immutable.issueId,
+        },
+        (testRun) => [
+          testRun.id,
+          testRun.status((status) => [status.name, status.color, status.description]),
+          testRun.gherkin,
+          testRun.examples((examples) => [
+            examples.id,
+            examples.status((status) => [status.name, status.color, status.description]),
+          ]),
+        ]
+      );
+      assert.deepStrictEqual(response, {
+        examples: [],
+        gherkin: null,
+        id: DATA_CLOUD.testExecutions.immutable.tests[0].testRunId,
+        status: {
+          color: DATA_CLOUD.testExecutions.immutable.tests[0].status.color,
+          description: DATA_CLOUD.testExecutions.immutable.tests[0].status.description,
+          name: DATA_CLOUD.testExecutions.immutable.tests[0].status.name,
+        },
+      });
+    });
+  });
+
   describe("getTestRuns", () => {
     it("returns test run data", async () => {
       const response = await XRAY_CLIENT_CLOUD.graphql.getTestRuns(

@@ -264,7 +264,7 @@ _Based on: https://docs.getxray.app/display/XRAYCLOUD/REST+API_
     - [x] [getTestPlans](https://us.xray.cloud.getxray.app/doc/graphql/gettestplans.doc.html)
     - [x] [getTestExecution](https://us.xray.cloud.getxray.app/doc/graphql/gettestexecution.doc.html)
     - [x] [getTestExecutions](https://us.xray.cloud.getxray.app/doc/graphql/gettestexecutions.doc.html)
-    - [ ] [getTestRun](https://us.xray.cloud.getxray.app/doc/graphql/gettestrun.doc.html)
+    - [x] [getTestRun](https://us.xray.cloud.getxray.app/doc/graphql/gettestrun.doc.html)
     - [ ] [getTestRunById](https://us.xray.cloud.getxray.app/doc/graphql/gettestrunbyid.doc.html)
     - [x] [getTestRuns](https://us.xray.cloud.getxray.app/doc/graphql/gettestruns.doc.html)
     - [ ] [getTestRunsById](https://us.xray.cloud.getxray.app/doc/graphql/gettestrunsbyid.doc.html)
