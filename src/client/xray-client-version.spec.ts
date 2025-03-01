@@ -4,8 +4,8 @@ import { describe, it } from "node:test";
 import { versioned } from "./xray-client-version.js";
 
 class DummyClass {
-  public readonly v42 = 0; // for conflict creation
   private readonly versionNumber: number;
+  public readonly v42 = 0; // for conflict creation
 
   constructor(versionNumber: number) {
     this.versionNumber = versionNumber;

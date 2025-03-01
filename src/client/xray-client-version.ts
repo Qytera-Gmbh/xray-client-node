@@ -2,18 +2,8 @@
  * Models the URL paths of the different Xray server/cloud versions.
  */
 export const PATH = {
-  cloud: {
-    graphql: {
-      v1: "/api/v1/graphql",
-      v2: "/api/v2/graphql",
-    },
-    v1: "/api/v1",
-    v2: "/api/v2",
-  },
-  server: {
-    v1: "/rest/raven/1.0/api",
-    v2: "/rest/raven/2.0/api",
-  },
+  cloud: "/api",
+  server: "/rest/raven",
 } as const;
 
 /**

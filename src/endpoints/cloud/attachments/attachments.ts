@@ -5,7 +5,7 @@ import type { Xray } from "../../../../index.js";
 import { createStreamableFile } from "../../../util/form-data.js";
 import { BaseApi } from "../../base-api.js";
 
-interface AddAttachmentEndpoint {
+interface AddAttachment {
   /**
    * Creates an attachment.
    *
@@ -26,7 +26,7 @@ interface AddAttachmentEndpoint {
   v1: (file: string) => Promise<Xray.Attachment.AddAttachmentResponse>;
 }
 
-interface GetAttachmentEndpoint {
+interface GetAttachment {
   /**
    * Gets an attachment.
    *
@@ -73,30 +73,26 @@ export class AttachmentsApi extends BaseApi {
     },
   };
 
-  public addAttachment: AddAttachmentEndpoint = Object.assign(
-    async (...[file]: Parameters<AddAttachmentEndpoint>): ReturnType<AddAttachmentEndpoint> => {
-      return this.processor.addAttachment(`${this.path}/api/v2/attachments`, file);
+  public readonly addAttachment: AddAttachment = Object.assign(
+    async (...[file]: Parameters<AddAttachment>): ReturnType<AddAttachment> => {
+      return this.processor.addAttachment(`${this.path}/v2/attachments`, file);
     },
     {
-      v1: async (
-        ...[file]: Parameters<AddAttachmentEndpoint["v1"]>
-      ): ReturnType<AddAttachmentEndpoint["v1"]> => {
-        return this.processor.addAttachment(`${this.path}/api/v1/attachments`, file);
+      v1: async (...[file]: Parameters<AddAttachment["v1"]>): ReturnType<AddAttachment["v1"]> => {
+        return this.processor.addAttachment(`${this.path}/v1/attachments`, file);
       },
     }
   );
 
-  public getAttachment: GetAttachmentEndpoint = Object.assign(
-    async (
-      ...[attachmentId]: Parameters<GetAttachmentEndpoint>
-    ): ReturnType<GetAttachmentEndpoint> => {
-      return this.processor.getAttachment(`${this.path}/api/v2/attachments/${attachmentId}`);
+  public readonly getAttachment: GetAttachment = Object.assign(
+    async (...[attachmentId]: Parameters<GetAttachment>): ReturnType<GetAttachment> => {
+      return this.processor.getAttachment(`${this.path}/v2/attachments/${attachmentId}`);
     },
     {
       v1: async (
-        ...[attachmentId]: Parameters<GetAttachmentEndpoint["v1"]>
-      ): ReturnType<GetAttachmentEndpoint["v1"]> => {
-        return this.processor.getAttachment(`${this.path}/api/v1/attachments/${attachmentId}`);
+        ...[attachmentId]: Parameters<GetAttachment["v1"]>
+      ): ReturnType<GetAttachment["v1"]> => {
+        return this.processor.getAttachment(`${this.path}/v1/attachments/${attachmentId}`);
       },
     }
   );

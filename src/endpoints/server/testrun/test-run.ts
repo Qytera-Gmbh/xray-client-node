@@ -9,8 +9,8 @@ import { ExecutionEvidenceApiV1, ExecutionEvidenceApiV2 } from "./attachment/att
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
  */
 export class TestRunApi extends BaseApi {
-  public readonly evidence = versioned(new ExecutionEvidenceApiV2(this.client, PATH.server.v2), {
-    v1: new ExecutionEvidenceApiV1(this.client, PATH.server.v1),
+  public readonly evidence = versioned(new ExecutionEvidenceApiV2(this.client, PATH.server), {
+    v1: new ExecutionEvidenceApiV1(this.client, PATH.server),
   });
 
   /**

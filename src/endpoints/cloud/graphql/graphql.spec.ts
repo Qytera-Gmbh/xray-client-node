@@ -5,10 +5,7 @@ import { XRAY_CLIENT_CLOUD } from "../../../../test/clients.js";
 import { DATA_CLOUD } from "../../../../test/data.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
-  for (const [version, endpoint] of [
-    ["v1", XRAY_CLIENT_CLOUD.graphql.v1],
-    ["v2", XRAY_CLIENT_CLOUD.graphql],
-  ] as const) {
+  for (const [version, endpoint] of [["v2", XRAY_CLIENT_CLOUD.graphql]] as const) {
     describe(version, () => {
       describe("getTestExecution", () => {
         it("returns test execution data", async () => {
