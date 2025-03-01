@@ -460,13 +460,15 @@ const testRuns = await cloudClient.graphql.getTestRuns(
 
 ## Error Handling
 
-Requests may result in HTTP error responses (e.g., 400 Bad Request, 403 Forbidden, 500 Internal Server Error), depending on the request configuration.
+Requests may result in HTTP error responses (e.g. 400 Bad Request, 403 Forbidden, 500 Internal Server Error) depending on the request configuration.
+The clients always throw errors when the actual response status does not match the expected status defined internally for each endpoint.
 
 > [!NOTE]
 > Unfortunately, Xray's official documentation is not always precise about error response formats.
 > The error responses also vary between Xray server/cloud and based on the Jira/Xray versions present.
+> It is therefore impossible for the clients to directly model all error responses.
 
-It is therefore impossible for the clients to directly model all error responses, and it is up to the user to adapt them to their Xray environment:
+To handle response errors gracefully, use `isResponseError` to adapt possible outcomes to your Xray environment:
 
 ```ts
 import { isResponseError } from "@qytera/xray-client";
