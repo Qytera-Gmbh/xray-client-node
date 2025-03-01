@@ -22,14 +22,14 @@ export const DATA_SERVER = {
         key: "XCNODE-13",
         tests: [
           { key: "XCNODE-1", testRunId: "12803" },
-          { key: "XCNODE-9", testRunId: "12804" },
+          { key: "XCNODE-9", steps: [{ id: "4471" }, { id: "4472" }], testRunId: "12804" },
         ],
       },
       v2: {
         key: "XCNODE-8",
         tests: [
           { key: "XCNODE-1", testRunId: "12470" },
-          { key: "XCNODE-9", testRunId: "12471" },
+          { key: "XCNODE-9", steps: [{ id: "4423" }, { id: "4424" }], testRunId: "12471" },
         ],
       },
     },
