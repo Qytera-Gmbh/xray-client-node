@@ -103,11 +103,11 @@ export class ImportExecutionApi extends BaseApi {
 
   public readonly xray: ImportXray = Object.assign(
     async (...[results]: Parameters<ImportXray>): ReturnType<ImportXray> => {
-      return this.processor.xray(`${this.path}/v2/api/import/execution`, results);
+      return this.processor.xray("rest/raven/2.0/api/import/execution", results);
     },
     {
       v1: async (...[results]: Parameters<ImportXray["v1"]>): ReturnType<ImportXray["v1"]> => {
-        return this.processor.xray(`${this.path}/v1/import/execution`, results);
+        return this.processor.xray("rest/raven/1.0/import/execution", results);
       },
     }
   );
@@ -117,7 +117,7 @@ export class ImportExecutionApi extends BaseApi {
       ...[results, info]: Parameters<ImportXrayMultipart>
     ): ReturnType<ImportXrayMultipart> => {
       return this.processor.xrayMultipart(
-        `${this.path}/v2/api/import/execution/multipart`,
+        "rest/raven/2.0/api/import/execution/multipart",
         results,
         info
       );
@@ -127,7 +127,7 @@ export class ImportExecutionApi extends BaseApi {
         ...[results, info]: Parameters<ImportXrayMultipart["v1"]>
       ): ReturnType<ImportXrayMultipart["v1"]> => {
         return this.processor.xrayMultipart(
-          `${this.path}/v1/import/execution/multipart`,
+          "rest/raven/1.0/import/execution/multipart",
           results,
           info
         );

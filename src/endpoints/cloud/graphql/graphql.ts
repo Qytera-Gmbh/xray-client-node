@@ -73,7 +73,7 @@ export class GraphQLApi extends BaseApi {
     const document = mutation((m) => [
       m.addEvidenceToTestRun<typeof variables, T>(variables, resultShape),
     ]);
-    const response = await this.client.send(`${this.path}/v2/graphql`, {
+    const response = await this.client.send("api/v2/graphql", {
       body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
@@ -143,7 +143,7 @@ export class GraphQLApi extends BaseApi {
     const document = query((q) => [
       q.getTestExecution<typeof variables, T>(variables, resultShape),
     ]);
-    const response = await this.client.send(`${this.path}/v2/graphql`, {
+    const response = await this.client.send("api/v2/graphql", {
       body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
@@ -253,7 +253,7 @@ export class GraphQLApi extends BaseApi {
     const document = query((q) => [
       q.getTestExecutions<typeof variables, T>(variables, resultShape),
     ]);
-    const response = await this.client.send(`${this.path}/v2/graphql`, {
+    const response = await this.client.send("api/v2/graphql", {
       body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
@@ -317,7 +317,7 @@ export class GraphQLApi extends BaseApi {
     resultShape: (testPlan: Xray.GraphQL.TestPlan) => [...T]
   ): Promise<Xray.GraphQL.GetOutput<T>> {
     const document = query((q) => [q.getTestPlan<typeof variables, T>(variables, resultShape)]);
-    const response = await this.client.send(`${this.path}/v2/graphql`, {
+    const response = await this.client.send("api/v2/graphql", {
       body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
@@ -419,7 +419,7 @@ export class GraphQLApi extends BaseApi {
     resultShape: (testPlanResults: Xray.GraphQL.TestPlanResults) => [...T]
   ): Promise<Xray.GraphQL.GetOutput<T>> {
     const document = query((q) => [q.getTestPlans<typeof variables, T>(variables, resultShape)]);
-    const response = await this.client.send(`${this.path}/v2/graphql`, {
+    const response = await this.client.send("api/v2/graphql", {
       body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
@@ -492,7 +492,7 @@ export class GraphQLApi extends BaseApi {
     resultShape: (testRun: Xray.GraphQL.TestRun) => [...T]
   ): Promise<Xray.GraphQL.GetOutput<T>> {
     const document = query((q) => [q.getTestRun<typeof variables, T>(variables, resultShape)]);
-    const response = await this.client.send(`${this.path}/v2/graphql`, {
+    const response = await this.client.send("api/v2/graphql", {
       body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
@@ -573,7 +573,7 @@ export class GraphQLApi extends BaseApi {
     resultShape: (testRunResults: Xray.GraphQL.TestRunResults) => [...T]
   ): Promise<Xray.GraphQL.GetOutput<T>> {
     const document = query((q) => [q.getTestRuns<typeof variables, T>(variables, resultShape)]);
-    const response = await this.client.send(`${this.path}/v2/graphql`, {
+    const response = await this.client.send("api/v2/graphql", {
       body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {
@@ -642,7 +642,7 @@ export class GraphQLApi extends BaseApi {
     const document = mutation((m) => [
       m.removeEvidenceFromTestRun<typeof variables, T>(variables, resultShape),
     ]);
-    const response = await this.client.send(`${this.path}/v2/graphql`, {
+    const response = await this.client.send("api/v2/graphql", {
       body: JSON.stringify({ query: print(document) }),
       expectedStatus: 200,
       headers: {

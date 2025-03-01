@@ -58,10 +58,13 @@ export class TestPlanApi extends BaseApi {
   public async getTestExecutions(
     testPlanKey: string
   ): Promise<Xray.TestPlan.GetTestExecutionsResponse> {
-    const response = await this.client.send(`${this.path}/testplan/${testPlanKey}/testexecution`, {
-      expectedStatus: 200,
-      method: "GET",
-    });
+    const response = await this.client.send(
+      `rest/raven/1.0/api/testplan/${testPlanKey}/testexecution`,
+      {
+        expectedStatus: 200,
+        method: "GET",
+      }
+    );
     return (await response.json()) as Xray.TestPlan.GetTestExecutionsResponse;
   }
 
@@ -89,7 +92,7 @@ export class TestPlanApi extends BaseApi {
       page?: number;
     }
   ): Promise<Xray.TestPlan.GetTestsResponse> {
-    const response = await this.client.send(`${this.path}/testplan/${testPlanKey}/test`, {
+    const response = await this.client.send(`rest/raven/testplan/${testPlanKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,

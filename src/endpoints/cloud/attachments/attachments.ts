@@ -75,24 +75,24 @@ export class AttachmentsApi extends BaseApi {
 
   public readonly addAttachment: AddAttachment = Object.assign(
     async (...[file]: Parameters<AddAttachment>): ReturnType<AddAttachment> => {
-      return this.processor.addAttachment(`${this.path}/v2/attachments`, file);
+      return this.processor.addAttachment("api/v2/attachments", file);
     },
     {
       v1: async (...[file]: Parameters<AddAttachment["v1"]>): ReturnType<AddAttachment["v1"]> => {
-        return this.processor.addAttachment(`${this.path}/v1/attachments`, file);
+        return this.processor.addAttachment("api/v1/attachments", file);
       },
     }
   );
 
   public readonly getAttachment: GetAttachment = Object.assign(
     async (...[attachmentId]: Parameters<GetAttachment>): ReturnType<GetAttachment> => {
-      return this.processor.getAttachment(`${this.path}/v2/attachments/${attachmentId}`);
+      return this.processor.getAttachment(`api/v2/attachments/${attachmentId}`);
     },
     {
       v1: async (
         ...[attachmentId]: Parameters<GetAttachment["v1"]>
       ): ReturnType<GetAttachment["v1"]> => {
-        return this.processor.getAttachment(`${this.path}/v1/attachments/${attachmentId}`);
+        return this.processor.getAttachment(`api/v1/attachments/${attachmentId}`);
       },
     }
   );

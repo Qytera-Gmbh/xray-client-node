@@ -41,7 +41,7 @@ export class DatasetApi extends BaseApi {
      */
     testIssueKey?: string;
   }): Promise<string> {
-    const response = await this.client.send(`${this.path}/v2/dataset/export`, {
+    const response = await this.client.send("api/v2/dataset/export", {
       expectedStatus: 200,
       method: "GET",
       query: query,
