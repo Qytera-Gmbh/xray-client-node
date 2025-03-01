@@ -462,7 +462,7 @@ const testRuns = await cloudClient.graphql.getTestRuns(
 ## Version Specification
 
 Xray server and Xray cloud both have versioned API endpoints (`1.0`/`2.0` for Xray server and `v1`/`v2` for Xray cloud) with slightly different behaviour.
-By default, the clients access the latest version available for each endpoint.
+By default, the clients access the latest documented version available for each endpoint.
 
 You can switch between versions on a per-request basis:
 
