@@ -7,12 +7,12 @@ export const XRAY_CLIENT_CLOUD = new XrayClientCloud({
   credentials: {
     clientId: getEnv("xray-client-id"),
     clientSecret: getEnv("xray-client-secret"),
+    path: "/api/v2/authenticate",
   },
   url: "https://xray.cloud.getxray.app",
 });
 
 export const XRAY_CLIENT_SERVER = new XrayClientServer({
-  apiVersion: "latest",
   credentials: {
     password: getEnv("jira-server-password"),
     username: getEnv("jira-server-username"),

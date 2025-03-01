@@ -21,7 +21,7 @@ export class AttachmentsApi extends BaseApi {
     const formData = new FormData();
     const handle = await open(file);
     formData.append("attachment", await createStreamableFile(basename(file), handle));
-    const response = await this.client.send(`/attachments`, {
+    const response = await this.client.send(`${this.path}/attachments`, {
       body: formData,
       expectedStatus: 200,
       method: "POST",
@@ -39,7 +39,7 @@ export class AttachmentsApi extends BaseApi {
    * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
    */
   public async getAttachment(attachmentId: string): Promise<string> {
-    const response = await this.client.send(`/attachments/${attachmentId}`, {
+    const response = await this.client.send(`${this.path}/attachments/${attachmentId}`, {
       expectedStatus: 200,
       method: "GET",
     });

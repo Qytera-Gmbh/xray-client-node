@@ -37,7 +37,7 @@ export class BaseClient {
         ).toString("base64")}`
       );
     } else {
-      this.authorizationValue = fetch(`${this.url}/authenticate`, {
+      this.authorizationValue = fetch(this.joinUrl(config.credentials.path), {
         body: JSON.stringify({
           ["client_id"]: config.credentials.clientId,
           ["client_secret"]: config.credentials.clientSecret,
@@ -62,10 +62,7 @@ export class BaseClient {
    * @returns the response
    */
   public async send(path: string, config: RequestConfig): Promise<Response> {
-    let url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
-    if (config.query && Object.keys(config).length > 0) {
-      url = `${url}?${toSearchParams(config.query).toString()}`;
-    }
+    const url = this.joinUrl(path, config.query);
     const requestHeaders = {
       ["Authorization"]: await this.authorizationValue,
       ...config.headers,
@@ -94,6 +91,14 @@ export class BaseClient {
       });
     }
     return response;
+  }
+
+  private joinUrl(path: string, query?: RequestConfig["query"]): string {
+    let url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
+    if (query && Object.keys(query).length > 0) {
+      url = `${url}?${toSearchParams(query).toString()}`;
+    }
+    return url;
   }
 }
 
@@ -152,6 +157,13 @@ type XrayCredentials =
        * The Xray cloud client secret.
        */
       clientSecret: string;
+      /**
+       * The URL path for token retrieval.
+       *
+       * @see https://docs.getxray.app/display/XRAYCLOUD/Authentication+-+REST
+       * @see https://docs.getxray.app/display/XRAYCLOUD/Authentication+-+REST+v2
+       */
+      path: "/api/v1/authenticate" | "/api/v2/authenticate";
     };
 
 /**

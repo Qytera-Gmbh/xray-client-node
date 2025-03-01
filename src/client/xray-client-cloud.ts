@@ -1,10 +1,10 @@
 import type { Xray } from "../../index.js";
 import { AttachmentsApi } from "../endpoints/cloud/attachments/attachments.js";
+import { DatasetApi } from "../endpoints/cloud/dataset/dataset.js";
 import { type GraphQLApi } from "../endpoints/cloud/graphql/graphql.js";
-import { DatasetApi } from "../endpoints/shared/dataset/dataset.js";
 import { ImportExecutionApi } from "../endpoints/shared/import/execution/import-execution.js";
-import type { ClientConfiguration } from "./base-client.js";
 import { BaseClient } from "./base-client.js";
+import { PATH, versioned } from "./xray-client-version.js";
 
 // This section checks whether all optional GraphQL dependencies are installed.
 // We only do this so we can output helpful error messages on GraphQL access.
@@ -36,22 +36,17 @@ try {
 }
 
 export class XrayClientCloud extends BaseClient {
-  public readonly attachments = new AttachmentsApi(this);
-  public readonly dataset = new DatasetApi<Xray.Dataset.ExportQueryCloud>(this);
+  public readonly attachments = versioned(new AttachmentsApi(this, PATH.cloud.v2), {
+    v1: new AttachmentsApi(this, PATH.cloud.v1),
+  });
+  public readonly dataset = new DatasetApi(this, PATH.cloud.v2);
   public readonly import = {
-    execution: new ImportExecutionApi<Xray.Import.ResponseCloud>(this, { isServerApi: false }),
+    execution: versioned(new ImportExecutionApi<Xray.Import.ResponseCloud>(this, PATH.cloud.v2), {
+      v1: new ImportExecutionApi<Xray.Import.ResponseCloud>(this, PATH.cloud.v1),
+    }),
   };
 
-  /**
-   * Constructs a new Xray cloud client.
-   *
-   * @param config the client configuration
-   */
-  constructor(config: ClientConfiguration) {
-    super({ ...config, url: `${config.url}/api/v2` });
-  }
-
-  public get graphql(): GraphQLApi {
+  public get graphql() {
     if (!optionalModules.graphql) {
       throw new Error(
         "failed to import module graphql, please install it to use the GraphQL endpoints"
@@ -62,6 +57,8 @@ export class XrayClientCloud extends BaseClient {
         "failed to import module graphql-tag, please install it to use the GraphQL endpoints"
       );
     }
-    return new optionalModules.api(this);
+    return versioned(new optionalModules.api(this, PATH.cloud.graphql.v2), {
+      v1: new optionalModules.api(this, PATH.cloud.graphql.v1),
+    });
   }
 }
