@@ -8889,7 +8889,7 @@ mutation {
 The mutation below start the timer in Test Run.
 <pre>
 mutation {
-    <b>setTestRunTimer</b>( 
+    <b>setTestRunTimer</b>(
         testRunId: "5acc7ab0a3fe1b6fcdc3c737"
         running: true
     ) {
@@ -8901,7 +8901,7 @@ mutation {
 The mutation below stop the timer in Test Run.
 <pre>
 mutation {
-    <b>setTestRunTimer</b>( 
+    <b>setTestRunTimer</b>(
         testRunId: "5acc7ab0a3fe1b6fcdc3c737"
         reset: true
     ) {
