@@ -98,7 +98,7 @@ export class BaseClient {
 }
 
 /**
- * Models an HTTP request coation.nfigur
+ * Models an HTTP request configuration.
  */
 interface RequestConfig {
   /**
