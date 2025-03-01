@@ -47,7 +47,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         it("returns test executions data", async () => {
           const response = await endpoint.getTestExecutions(
             {
-              jql: `project = ${DATA_CLOUD.project.key}`,
+              jql: `project = ${DATA_CLOUD.project.key} ORDER BY key ASC`,
               limit: 1,
             },
             (testExecutionResults) => [
@@ -72,9 +72,9 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
             limit: 1,
             results: [
               {
-                issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.issueId,
+                issueId: DATA_CLOUD.testExecutions.immutable.issueId,
                 jira: {
-                  key: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.key,
+                  key: DATA_CLOUD.testExecutions.immutable.key,
                 },
                 tests: {
                   limit: 10,
@@ -136,7 +136,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         it("returns test plans data", async () => {
           const response = await endpoint.getTestPlans(
             {
-              jql: `project = ${DATA_CLOUD.project.key}`,
+              jql: `project = ${DATA_CLOUD.project.key} ORDER BY key ASC`,
               limit: 1,
             },
             (testPlanResults) => [

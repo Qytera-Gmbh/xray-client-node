@@ -45,8 +45,8 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
           await endpoint(issue.tests[1].testRunId, {
             status: "TODO",
             steps: [
-              { id: "4423", status: "TODO" },
-              { id: "4424", status: "TODO" },
+              { id: issue.tests[1].steps[0].id, status: "TODO" },
+              { id: issue.tests[1].steps[1].id, status: "TODO" },
             ],
           });
           const content = await XRAY_CLIENT_SERVER.testRuns.getTestRun(issue.tests[1].testRunId);
@@ -59,8 +59,8 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
           await endpoint(issue.tests[1].testRunId, {
             status: "EXECUTING",
             steps: [
-              { id: "4423", status: "EXECUTING" },
-              { id: "4424", status: "EXECUTING" },
+              { id: issue.tests[1].steps[0].id, status: "EXECUTING" },
+              { id: issue.tests[1].steps[1].id, status: "EXECUTING" },
             ],
           });
           const content = await XRAY_CLIENT_SERVER.testRuns.getTestRun(issue.tests[1].testRunId);
