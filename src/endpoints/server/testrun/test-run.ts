@@ -205,14 +205,10 @@ interface UpdateTestRun {
    *
    * @param testRunId the ID of the test run to update
    * @param body the details to update
-   * @returns the test run details
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
    */
-  v1: (
-    testRunId: string,
-    body: UpdateTestRunPayload
-  ) => Promise<Xray.TestRun.UpdateTestRunResponse>;
+  v1: (testRunId: string, body: UpdateTestRunPayload) => Promise<void>;
 }
 
 /**
@@ -250,7 +246,7 @@ export class TestRunApi extends BaseApi {
         headers: { ["Content-Type"]: "application/json" },
         method: "PUT",
       });
-      return (await response.json()) as Xray.TestRun.UpdateTestRunResponse;
+      return await response.text();
     },
   };
 
@@ -277,13 +273,15 @@ export class TestRunApi extends BaseApi {
 
   public readonly updateTestRun: UpdateTestRun = Object.assign(
     async (...[testRunId, body]: Parameters<UpdateTestRun>): ReturnType<UpdateTestRun> => {
-      return this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId}`, body);
+      return JSON.parse(
+        await this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId}`, body)
+      ) as Xray.TestRun.UpdateTestRunResponse;
     },
     {
       v1: async (
         ...[testRunId, body]: Parameters<UpdateTestRun["v1"]>
       ): ReturnType<UpdateTestRun["v1"]> => {
-        return this.processor.updateTestRun(`rest/raven/1.0/api/testrun/${testRunId}`, body);
+        await this.processor.updateTestRun(`rest/raven/1.0/api/testrun/${testRunId}`, body);
       },
     }
   );
