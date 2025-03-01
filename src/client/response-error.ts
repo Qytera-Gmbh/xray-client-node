@@ -83,11 +83,11 @@ interface RequestConfig {
   /**
    * The body of the request.
    */
-  body: RequestInit["body"];
+  body?: RequestInit["body"];
   /**
    * The headers of the request.
    */
-  headers: RequestInit["headers"];
+  headers?: RequestInit["headers"];
   /**
    * The HTTP method of the request.
    */
