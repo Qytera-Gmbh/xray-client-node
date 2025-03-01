@@ -58,7 +58,7 @@ export class TestPlanApi extends BaseApi {
   public async getTestExecutions(
     testPlanKey: string
   ): Promise<Xray.TestPlan.GetTestExecutionsResponse> {
-    const response = await this.client.send(`/testplan/${testPlanKey}/testexecution`, {
+    const response = await this.client.send(`${this.path}/testplan/${testPlanKey}/testexecution`, {
       expectedStatus: 200,
       method: "GET",
     });
@@ -89,7 +89,7 @@ export class TestPlanApi extends BaseApi {
       page?: number;
     }
   ): Promise<Xray.TestPlan.GetTestsResponse> {
-    const response = await this.client.send(`/testplan/${testPlanKey}/test`, {
+    const response = await this.client.send(`${this.path}/testplan/${testPlanKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,

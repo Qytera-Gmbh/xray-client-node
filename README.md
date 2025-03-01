@@ -459,6 +459,23 @@ const testRuns = await cloudClient.graphql.getTestRuns(
 ```
 <!-- prettier-ignore-end -->
 
+## Version Specification
+
+Xray server and Xray cloud both have versioned API endpoints (`1.0`/`2.0` for Xray server and `v1`/`v2` for Xray cloud) with slightly different behaviour.
+By default, the clients access the latest version available for each endpoint.
+
+You can switch between versions on a per-request basis:
+
+```ts
+// Xray server:
+const testExecutions = await serverClient.testPlans.getTestExecutions("PRJ-123"); // 2.0 endpoint
+const testExecutions = await serverClient.testPlans.v1.getTestExecutions("PRJ-123"); // 1.0 endpoint
+
+// Xray cloud:
+const attachment = await cloudClient.attachments.addAttachment("my-file.txt"); // v2 endpoint
+const attachment = await cloudClient.attachments.v1.addAttachment("my-file.txt"); // v1 endpoint
+```
+
 ## Error Handling
 
 Requests may result in HTTP error responses (e.g. 400 Bad Request, 403 Forbidden, 500 Internal Server Error) depending on the request configuration.

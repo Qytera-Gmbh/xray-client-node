@@ -6,7 +6,7 @@ import { BaseApi } from "../../../base-api.js";
  *
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
  */
-export class ExecutionEvidenceApi extends BaseApi {
+interface ExecutionEvidenceApi {
   /**
    * Add new evidence to a test run.
    *
@@ -15,7 +15,7 @@ export class ExecutionEvidenceApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  public async addEvidence(
+  addEvidence(
     testRunId: string,
     body: {
       /**
@@ -32,14 +32,7 @@ export class ExecutionEvidenceApi extends BaseApi {
        */
       filename: string;
     }
-  ): Promise<void> {
-    await this.client.send(`/testrun/${testRunId}/attachment`, {
-      body: JSON.stringify(body),
-      expectedStatus: 201,
-      headers: { ["Content-Type"]: "application/json" },
-      method: "POST",
-    });
-  }
+  ): Promise<void>;
 
   /**
    * Remove the evidence with the given attachment id.
@@ -49,12 +42,7 @@ export class ExecutionEvidenceApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  public async deleteEvidenceById(testRunId: string, attachmentId: number): Promise<void> {
-    await this.client.send(`/testrun/${testRunId}/attachment/${attachmentId.toString()}`, {
-      expectedStatus: 204,
-      method: "DELETE",
-    });
-  }
+  deleteEvidenceById(testRunId: string, attachmentId: number): Promise<void>;
 
   /**
    * Removes all evidence with the same filename from the test run.
@@ -64,14 +52,7 @@ export class ExecutionEvidenceApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  public async deleteEvidenceByName(testRunId: string, filename: string): Promise<void> {
-    await this.client.send(`/testrun/${testRunId}/attachment`, {
-      body: filename,
-      expectedStatus: 204,
-      headers: { ["Content-Type"]: "application/json" },
-      method: "DELETE",
-    });
-  }
+  deleteEvidenceByName(testRunId: string, filename: string): Promise<void>;
 
   /**
    * Return a JSON that contains an array with all the execution evidence the test run has.
@@ -81,8 +62,100 @@ export class ExecutionEvidenceApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  public async getEvidence(testRunId: string): Promise<Xray.TestRun.GetExecutionEvidenceResponse> {
-    const response = await this.client.send(`/testrun/${testRunId}/attachment`, {
+  getEvidence(testRunId: string): Promise<Xray.TestRun.GetExecutionEvidenceResponse>;
+}
+
+/**
+ * Models the V2 execution evidence endpoints.
+ */
+export class ExecutionEvidenceApiV1 extends BaseApi implements ExecutionEvidenceApi {
+  public async addEvidence(
+    ...[testRunId, body]: Parameters<ExecutionEvidenceApi["addEvidence"]>
+  ): Promise<void> {
+    await this.client.send(`${this.path}/testrun/${testRunId}/attachment`, {
+      body: JSON.stringify(body),
+      expectedStatus: 200,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "POST",
+    });
+  }
+
+  public async deleteEvidenceById(
+    ...[testRunId, attachmentId]: Parameters<ExecutionEvidenceApi["deleteEvidenceById"]>
+  ): Promise<void> {
+    await this.client.send(
+      `${this.path}/testrun/${testRunId}/attachment/${attachmentId.toString()}`,
+      {
+        expectedStatus: 200,
+        method: "DELETE",
+      }
+    );
+  }
+
+  public async deleteEvidenceByName(
+    ...[testRunId, filename]: Parameters<ExecutionEvidenceApi["deleteEvidenceByName"]>
+  ): Promise<void> {
+    await this.client.send(`${this.path}/testrun/${testRunId}/attachment`, {
+      body: filename,
+      expectedStatus: 200,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "DELETE",
+    });
+  }
+
+  public async getEvidence(
+    ...[testRunId]: Parameters<ExecutionEvidenceApi["getEvidence"]>
+  ): Promise<Xray.TestRun.GetExecutionEvidenceResponse> {
+    const response = await this.client.send(`${this.path}/testrun/${testRunId}/attachment`, {
+      expectedStatus: 200,
+      method: "GET",
+    });
+    return (await response.json()) as Xray.TestRun.GetExecutionEvidenceResponse;
+  }
+}
+
+/**
+ * Models the V2 execution evidence endpoints. They differ from V1 in terms of response status.
+ */
+export class ExecutionEvidenceApiV2 extends BaseApi implements ExecutionEvidenceApi {
+  public async addEvidence(
+    ...[testRunId, body]: Parameters<ExecutionEvidenceApi["addEvidence"]>
+  ): Promise<void> {
+    await this.client.send(`${this.path}/testrun/${testRunId}/attachment`, {
+      body: JSON.stringify(body),
+      expectedStatus: 201,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "POST",
+    });
+  }
+
+  public async deleteEvidenceById(
+    ...[testRunId, attachmentId]: Parameters<ExecutionEvidenceApi["deleteEvidenceById"]>
+  ): Promise<void> {
+    await this.client.send(
+      `${this.path}/testrun/${testRunId}/attachment/${attachmentId.toString()}`,
+      {
+        expectedStatus: 204,
+        method: "DELETE",
+      }
+    );
+  }
+
+  public async deleteEvidenceByName(
+    ...[testRunId, filename]: Parameters<ExecutionEvidenceApi["deleteEvidenceByName"]>
+  ): Promise<void> {
+    await this.client.send(`${this.path}/testrun/${testRunId}/attachment`, {
+      body: filename,
+      expectedStatus: 204,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "DELETE",
+    });
+  }
+
+  public async getEvidence(
+    ...[testRunId]: Parameters<ExecutionEvidenceApi["getEvidence"]>
+  ): Promise<Xray.TestRun.GetExecutionEvidenceResponse> {
+    const response = await this.client.send(`${this.path}/testrun/${testRunId}/attachment`, {
       expectedStatus: 200,
       method: "GET",
     });

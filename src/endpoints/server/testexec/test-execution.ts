@@ -74,7 +74,7 @@ export class TestExecutionApi extends BaseApi {
       page?: number;
     }
   ): Promise<Xray.TestExecution.GetTestsResponse> {
-    const response = await this.client.send(`/testexec/${testExecKey}/test`, {
+    const response = await this.client.send(`${this.path}/testexec/${testExecKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,
