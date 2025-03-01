@@ -458,6 +458,52 @@ const testRuns = await cloudClient.graphql.getTestRuns(
 ```
 <!-- prettier-ignore-end -->
 
+## Error Handling
+
+Requests may result in HTTP error responses (e.g., 400 Bad Request, 403 Forbidden, 500 Internal Server Error), depending on the request configuration.
+
+> [!NOTE]
+> Unfortunately, Xray's official documentation is not always precise about error response formats.
+> The error responses also vary between Xray server/cloud and based on the Jira/Xray versions present.
+
+It is therefore impossible for the clients to directly model all error responses, and it is up to the user to adapt them to their Xray environment:
+
+```ts
+import { isResponseError } from "@qytera/xray-client";
+
+try {
+  const data = await client.import.execution.xray(/* ... */);
+  // ...
+} catch (error: unknown) {
+  if (isResponseError(error)) {
+    // access request/response data
+    console.error("request failed:", error.request.url);
+    console.error("request failed:", error.response.json.details);
+  } else {
+    // ...
+  }
+}
+```
+
+You can also easily define your own expected response error details and distinguish between them:
+
+```ts
+import { isResponseError } from "@qytera/xray-client";
+
+try {
+  const data = await client.import.execution.xray(/* ... */);
+  // ...
+} catch (error: unknown) {
+  if (isResponseError(error, 400)) {
+    console.error("Bad Request:", error.response.text);
+  } else if (isResponseError<{ missingPermission: string }>(error, 403)) {
+    console.error("Forbidden:", error.response.json.missingPermission);
+  } else {
+    console.error("Unexpected error:", error);
+  }
+}
+```
+
 # Credits
 
 This project was heavily inspired by [jira.js](https://github.com/MrRefactoring/jira.js).
