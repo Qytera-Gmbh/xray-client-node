@@ -259,17 +259,17 @@ export class TestRunApi extends BaseApi {
   public readonly getTestRun: GetTestRun = Object.assign(
     async (...[testRun]: Parameters<GetTestRun>): ReturnType<GetTestRun> => {
       if (typeof testRun === "string") {
-        return this.processor.getTestRunById(`rest/raven/api/2.0/testrun/${testRun}`);
+        return this.processor.getTestRunById(`rest/raven/2.0/api/testrun/${testRun}`);
       } else {
-        return this.processor.getTestRunByQuery(`rest/raven/api/2.0/testrun`, testRun);
+        return this.processor.getTestRunByQuery(`rest/raven/2.0/api/testrun`, testRun);
       }
     },
     {
       v1: async (...[testRun]: Parameters<GetTestRun["v1"]>): ReturnType<GetTestRun["v1"]> => {
         if (typeof testRun === "string") {
-          return this.processor.getTestRunById(`rest/raven/api/1.0/testrun/${testRun}`);
+          return this.processor.getTestRunById(`rest/raven/1.0/api/testrun/${testRun}`);
         } else {
-          return this.processor.getTestRunByQuery(`rest/raven/api/1.0/testrun`, testRun);
+          return this.processor.getTestRunByQuery(`rest/raven/1.0/api/testrun`, testRun);
         }
       },
     }
@@ -277,13 +277,13 @@ export class TestRunApi extends BaseApi {
 
   public readonly updateTestRun: UpdateTestRun = Object.assign(
     async (...[testRunId, body]: Parameters<UpdateTestRun>): ReturnType<UpdateTestRun> => {
-      return this.processor.updateTestRun(`rest/raven/api/2.0/testrun/${testRunId}`, body);
+      return this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId}`, body);
     },
     {
       v1: async (
         ...[testRunId, body]: Parameters<UpdateTestRun["v1"]>
       ): ReturnType<UpdateTestRun["v1"]> => {
-        return this.processor.updateTestRun(`rest/raven/api/1.0/testrun/${testRunId}`, body);
+        return this.processor.updateTestRun(`rest/raven/1.0/api/testrun/${testRunId}`, body);
       },
     }
   );

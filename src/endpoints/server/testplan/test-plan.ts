@@ -92,7 +92,7 @@ export class TestPlanApi extends BaseApi {
       page?: number;
     }
   ): Promise<Xray.TestPlan.GetTestsResponse> {
-    const response = await this.client.send(`rest/raven/testplan/${testPlanKey}/test`, {
+    const response = await this.client.send(`rest/raven/1.0/api/testplan/${testPlanKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,
