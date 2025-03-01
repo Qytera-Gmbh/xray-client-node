@@ -44,19 +44,19 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
             );
           }
         });
-      });
 
-      it("adds evidence data", async () => {
-        await endpoint(issue.tests[0].testRunId, {
-          contentType: "text/plain",
-          data: Buffer.from("hello world").toString("base64"),
-          filename: "hello.txt",
+        it("adds evidence data", async () => {
+          await endpoint(issue.tests[0].testRunId, {
+            contentType: "text/plain",
+            data: Buffer.from("hello world").toString("base64"),
+            filename: "hello.txt",
+          });
+          const content = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+            issue.tests[0].testRunId
+          );
+          assert.strictEqual(content.length, 1);
+          assert.strictEqual(content[0].fileName, "hello.txt");
         });
-        const content = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
-          issue.tests[0].testRunId
-        );
-        assert.strictEqual(content.length, 1);
-        assert.strictEqual(content[0].fileName, "hello.txt");
       });
     }
   });
@@ -88,18 +88,18 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
             });
           }
         });
-      });
 
-      it("deletes evidence data", async () => {
-        for (const evidence of await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
-          issue.tests[0].testRunId
-        )) {
-          await endpoint(issue.tests[0].testRunId, evidence.fileName);
-        }
-        const evidences = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
-          issue.tests[0].testRunId
-        );
-        assert.ok(evidences.every((e) => e.fileName !== filename));
+        it("deletes evidence data", async () => {
+          for (const evidence of await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+            issue.tests[0].testRunId
+          )) {
+            await endpoint(issue.tests[0].testRunId, evidence.fileName);
+          }
+          const evidences = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+            issue.tests[0].testRunId
+          );
+          assert.ok(evidences.every((e) => e.fileName !== filename));
+        });
       });
     }
   });
@@ -131,18 +131,18 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
             });
           }
         });
-      });
 
-      it("deletes evidence data", async () => {
-        for (const evidence of await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
-          issue.tests[0].testRunId
-        )) {
-          await endpoint(issue.tests[0].testRunId, evidence.id);
-        }
-        const evidences = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
-          issue.tests[0].testRunId
-        );
-        assert.ok(evidences.every((e) => e.fileName !== filename));
+        it("deletes evidence data", async () => {
+          for (const evidence of await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+            issue.tests[0].testRunId
+          )) {
+            await endpoint(issue.tests[0].testRunId, evidence.id);
+          }
+          const evidences = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+            issue.tests[0].testRunId
+          );
+          assert.ok(evidences.every((e) => e.fileName !== filename));
+        });
       });
     }
   });
