@@ -28,38 +28,42 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   });
 
   describe("updateTestRun", () => {
-    for (const [version, endpoint] of [
-      ["v1", XRAY_CLIENT_SERVER.testRuns.updateTestRun.v1],
-      ["v2", XRAY_CLIENT_SERVER.testRuns.updateTestRun],
+    for (const [version, endpoint, issue] of [
+      [
+        "v1",
+        XRAY_CLIENT_SERVER.testRuns.updateTestRun.v1,
+        DATA_SERVER.testExecutions.updateTestRun.v1,
+      ],
+      [
+        "v2",
+        XRAY_CLIENT_SERVER.testRuns.updateTestRun,
+        DATA_SERVER.testExecutions.updateTestRun.v2,
+      ],
     ] as const) {
       describe(version, () => {
         beforeEach(async () => {
-          await endpoint(DATA_SERVER.testExecutions.updateTestRun.tests[1].testRunId, {
+          await endpoint(issue.tests[1].testRunId, {
             status: "TODO",
             steps: [
               { id: "4423", status: "TODO" },
               { id: "4424", status: "TODO" },
             ],
           });
-          const content = await XRAY_CLIENT_SERVER.testRuns.getTestRun(
-            DATA_SERVER.testExecutions.updateTestRun.tests[1].testRunId
-          );
+          const content = await XRAY_CLIENT_SERVER.testRuns.getTestRun(issue.tests[1].testRunId);
           assert.strictEqual(content.status, "TODO");
           assert.strictEqual(content.steps?.[0].status, "TODO");
           assert.strictEqual(content.steps[1].status, "TODO");
         });
 
         it("updates test run details", async () => {
-          await endpoint(DATA_SERVER.testExecutions.updateTestRun.tests[1].testRunId, {
+          await endpoint(issue.tests[1].testRunId, {
             status: "EXECUTING",
             steps: [
               { id: "4423", status: "EXECUTING" },
               { id: "4424", status: "EXECUTING" },
             ],
           });
-          const content = await XRAY_CLIENT_SERVER.testRuns.getTestRun(
-            DATA_SERVER.testExecutions.updateTestRun.tests[1].testRunId
-          );
+          const content = await XRAY_CLIENT_SERVER.testRuns.getTestRun(issue.tests[1].testRunId);
           assert.strictEqual(content.status, "EXECUTING");
           assert.strictEqual(content.steps?.[0].status, "EXECUTING");
           assert.strictEqual(content.steps[1].status, "EXECUTING");
