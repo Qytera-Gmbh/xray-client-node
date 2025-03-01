@@ -4056,12 +4056,6 @@ export interface components {
       /** @description Whether the bulk operation occurs only when the property is present on or absent from an issue. */
       hasProperty?: boolean;
     };
-    IssueLimitReportRequest: {
-      /** @description A list of fields and their respective approaching limit threshold. Required for querying issues approaching limits. Optional for querying issues breaching limits. Accepted fields are: `comment`, `worklog`, `attachment`, `remoteIssueLinks`, and `issuelinks`. Example: `{"issuesApproachingLimitParams": {"comment": 4500, "attachment": 1800}}` */
-      issuesApproachingLimitParams?: {
-        [key: string]: number;
-      };
-    };
     IssueLimitReportResponseBean: {
       /** @description A list of ids of issues approaching the limit and their field count */
       issuesApproachingLimit?: {
@@ -5080,10 +5074,14 @@ export interface components {
        * @enum {string}
        */
       statusCategory?: "TODO" | "IN_PROGRESS" | "DONE";
-      /** @description Projects and issue types where the status is used. Only available if the `usages` expand is requested. */
-      usages?: components["schemas"]["ProjectIssueTypes"][];
-      /** @description The workflows that use this status. Only available if the `workflowUsages` expand is requested. */
-      workflowUsages?: components["schemas"]["WorkflowUsages"][];
+      /** @description Deprecated. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2298) for details.
+       *
+       *     Projects and issue types where the status is used. Only available if the `usages` expand is requested. */
+      usages?: components["schemas"]["ProjectIssueTypes"][] | null;
+      /** @description Deprecated. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2298) for details.
+       *
+       *     The workflows that use this status. Only available if the `workflowUsages` expand is requested. */
+      workflowUsages?: components["schemas"]["WorkflowUsages"][] | null;
     };
     JiraTimeTrackingField: {
       timeRemaining: string;
@@ -5120,8 +5118,10 @@ export interface components {
       transitions?: components["schemas"]["WorkflowTransitions"][];
       /** @description The last edited date of the workflow. */
       updated?: string | null;
-      /** @description Use the optional `workflows.usages` expand to get additional information about the projects and issue types associated with the requested workflows. */
-      usages?: components["schemas"]["ProjectIssueTypes"][];
+      /** @description Deprecated. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2298) for details.
+       *
+       *     Use the optional `workflows.usages` expand to get additional information about the projects and issue types associated with the requested workflows. */
+      usages?: components["schemas"]["ProjectIssueTypes"][] | null;
       version?: components["schemas"]["DocumentVersion"];
     };
     /** @description Details of a status. */
@@ -5140,8 +5140,10 @@ export interface components {
       statusCategory?: "TODO" | "IN_PROGRESS" | "DONE";
       /** @description The reference of the status. */
       statusReference?: string;
-      /** @description The `statuses.usages` expand is an optional parameter that can be used when reading and updating statuses in Jira. It provides additional information about the projects and issue types associated with the requested statuses. */
-      usages?: components["schemas"]["ProjectIssueTypes"][];
+      /** @description Deprecated. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2298) for details.
+       *
+       *     The `statuses.usages` expand is an optional parameter that can be used when reading and updating statuses in Jira. It provides additional information about the projects and issue types associated with the requested statuses. */
+      usages?: components["schemas"]["ProjectIssueTypes"][] | null;
     };
     JQLCountRequestBean: {
       /** @description A [JQL](https://confluence.atlassian.com/x/egORLQ) expression. For performance reasons, this parameter requires a bounded query. A bounded query is a query with a search restriction. */
@@ -8373,12 +8375,14 @@ export interface components {
       /** @description The project and issue type mappings. */
       mappings: components["schemas"]["ProjectIssueTypeMapping"][];
     };
-    /** @description Use the optional `workflows.usages` expand to get additional information about the projects and issue types associated with the requested workflows. */
+    /** @description Deprecated. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2298) for details.
+     *
+     *     Use the optional `workflows.usages` expand to get additional information about the projects and issue types associated with the requested workflows. */
     ProjectIssueTypes: {
       /** @description IDs of the issue types */
       issueTypes?: (string | null)[] | null;
       project?: components["schemas"]["ProjectId"];
-    };
+    } | null;
     /** @description Details of an issue type hierarchy level. */
     ProjectIssueTypesHierarchyLevel: {
       /**
@@ -8531,6 +8535,18 @@ export interface components {
       readonly icon?: string;
       /** @description The key of the project type. */
       readonly key?: string;
+    };
+    /** @description The project. */
+    ProjectUsage: {
+      /** @description The project ID. */
+      id?: string;
+    };
+    /** @description A page of projects. */
+    ProjectUsagePage: {
+      /** @description Page token for the next page of project usages. */
+      nextPageToken?: string;
+      /** @description The list of projects. */
+      values?: components["schemas"]["ProjectUsage"][];
     };
     /** @description Details about data policies for a project. */
     ProjectWithDataPolicy: {
@@ -9223,14 +9239,7 @@ export interface components {
        */
       serverTime?: string;
       /** @description The default timezone of the Jira server. In a format known as Olson Time Zones, IANA Time Zones or TZ Database Time Zones. */
-      serverTimeZone?: {
-        displayName?: string;
-        /** Format: int32 */
-        dstsavings?: number;
-        id?: string;
-        /** Format: int32 */
-        rawOffset?: number;
-      };
+      serverTimeZone?: string;
       /** @description The name of the Jira instance. */
       serverTitle?: string;
       /** @description The version of Jira. */
@@ -9414,7 +9423,7 @@ export interface components {
       issueTypeIds: string[];
       /** @description The project ID for the usage. */
       projectId: string;
-    };
+    } | null;
     SimplifiedHierarchyLevel: {
       /**
        * Format: int64
@@ -9599,6 +9608,44 @@ export interface components {
     } & {
       [key: string]: unknown;
     };
+    /** @description The list of issue types. */
+    StatusProjectIssueTypeUsage: {
+      /** @description The issue type ID. */
+      id?: string;
+    };
+    /** @description The issue types using this status in a project. */
+    StatusProjectIssueTypeUsageDTO: {
+      issueTypes?: components["schemas"]["StatusProjectIssueTypeUsagePage"];
+      /** @description The project ID. */
+      projectId?: string;
+      /** @description The status ID. */
+      statusId?: string;
+    };
+    /** @description A page of issue types. */
+    StatusProjectIssueTypeUsagePage: {
+      /** @description Page token for the next page of issue type usages. */
+      nextPageToken?: string;
+      /** @description The list of issue types. */
+      values?: components["schemas"]["StatusProjectIssueTypeUsage"][];
+    };
+    /** @description The project. */
+    StatusProjectUsage: {
+      /** @description The project ID. */
+      id?: string;
+    };
+    /** @description The projects using this status. */
+    StatusProjectUsageDTO: {
+      projects?: components["schemas"]["StatusProjectUsagePage"];
+      /** @description The status ID. */
+      statusId?: string;
+    };
+    /** @description A page of projects. */
+    StatusProjectUsagePage: {
+      /** @description Page token for the next page of issue type usages. */
+      nextPageToken?: string;
+      /** @description The list of projects. */
+      values?: components["schemas"]["StatusProjectUsage"][];
+    };
     /**
      * @deprecated
      * @description The status reference and port that a transition is connected to.
@@ -9641,6 +9688,24 @@ export interface components {
     StatusUpdateRequest: {
       /** @description The list of statuses that will be updated. */
       statuses: components["schemas"]["StatusUpdate"][];
+    };
+    /** @description Workflows using the status. */
+    StatusWorkflowUsageDTO: {
+      /** @description The status ID. */
+      statusId?: string;
+      workflows?: components["schemas"]["StatusWorkflowUsagePage"];
+    };
+    /** @description A page of workflows. */
+    StatusWorkflowUsagePage: {
+      /** @description Page token for the next page of issue type usages. */
+      nextPageToken?: string;
+      /** @description The list of statuses. */
+      values?: components["schemas"]["StatusWorkflowUsageWorkflow"][];
+    };
+    /** @description The worflow. */
+    StatusWorkflowUsageWorkflow: {
+      /** @description The workflow ID. */
+      id?: string;
     };
     StreamingResponseBody: Record<string, never>;
     StringList: Record<string, never>;
@@ -10494,7 +10559,7 @@ export interface components {
        * @description The URL of the user.
        */
       readonly self?: string;
-      /** @description The time zone specified in the user's profile. Depending on the user’s privacy setting, this may be returned as null. */
+      /** @description The time zone specified in the user's profile. If the user's time zone is not visible to the current user (due to user's profile setting), or if a time zone has not been set, the instance's default time zone will be returned. */
       readonly timeZone?: string;
     };
     UserBean: {
@@ -11143,8 +11208,10 @@ export interface components {
       id: string;
       /** @description The name of the workflow. */
       name: string;
-      /** @description Use the optional `workflows.usages` expand to get additional information about the projects and issue types associated with the workflows in the workflow scheme. */
-      usage: components["schemas"]["SimpleUsage"][];
+      /** @description Deprecated. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2298) for details.
+       *
+       *     Use the optional `workflows.usages` expand to get additional information about the projects and issue types associated with the workflows in the workflow scheme. */
+      usage: components["schemas"]["SimpleUsage"][] | null;
       version: components["schemas"]["DocumentVersion"];
     };
     /** @description Operations allowed on a workflow */
@@ -11153,6 +11220,32 @@ export interface components {
       canDelete: boolean;
       /** @description Whether the workflow can be updated. */
       canEdit: boolean;
+    };
+    /** @description The issue type. */
+    WorkflowProjectIssueTypeUsage: {
+      /** @description The ID of the issue type. */
+      id?: string;
+    };
+    /** @description Issue types associated with the workflow for a project. */
+    WorkflowProjectIssueTypeUsageDTO: {
+      issueTypes?: components["schemas"]["WorkflowProjectIssueTypeUsagePage"];
+      /** @description The ID of the project. */
+      projectId?: string;
+      /** @description The ID of the workflow. */
+      workflowId?: string;
+    };
+    /** @description A page of issue types. */
+    WorkflowProjectIssueTypeUsagePage: {
+      /** @description Token for the next page of issue type usages. */
+      nextPageToken?: string;
+      /** @description The list of issue types. */
+      values?: components["schemas"]["WorkflowProjectIssueTypeUsage"][];
+    };
+    /** @description Projects using the workflow. */
+    WorkflowProjectUsageDTO: {
+      projects?: components["schemas"]["ProjectUsagePage"];
+      /** @description The workflow ID. */
+      workflowId?: string;
     };
     WorkflowReadRequest: {
       /** @description The list of projects and issue types to query. */
@@ -11302,6 +11395,12 @@ export interface components {
       /** @description The ID of the workflow scheme. If the workflow scheme ID is `null`, the operation assigns the default workflow scheme. */
       workflowSchemeId?: string;
     };
+    /** @description Projects using the workflow scheme. */
+    WorkflowSchemeProjectUsageDTO: {
+      projects?: components["schemas"]["ProjectUsagePage"];
+      /** @description The workflow scheme ID. */
+      workflowSchemeId?: string;
+    };
     /** @description The workflow scheme read request body. */
     WorkflowSchemeReadRequest: {
       /** @description The list of project IDs to query. */
@@ -11317,8 +11416,10 @@ export interface components {
       id: string;
       /** @description The name of the workflow scheme. */
       name: string;
-      /** @description The IDs of projects using the workflow scheme. */
-      projectIdsUsingScheme: string[];
+      /** @description Deprecated. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2298) for details.
+       *
+       *     The IDs of projects using the workflow scheme. */
+      projectIdsUsingScheme?: (string | null)[] | null;
       scope: components["schemas"]["WorkflowScope"];
       /** @description Indicates if there's an [asynchronous task](#async-operations) for this workflow scheme. */
       taskId?: string | null;
@@ -11364,6 +11465,24 @@ export interface components {
       statusMappingsByIssueTypes?: components["schemas"]["RequiredMappingByIssueType"][];
       /** @description The list of required status mappings by workflow. */
       statusMappingsByWorkflows?: components["schemas"]["RequiredMappingByWorkflows"][];
+    };
+    /** @description The worflow scheme. */
+    WorkflowSchemeUsage: {
+      /** @description The workflow scheme ID. */
+      id?: string;
+    };
+    /** @description Workflow schemes using the workflow. */
+    WorkflowSchemeUsageDTO: {
+      /** @description The workflow ID. */
+      workflowId?: string;
+      workflowSchemes?: components["schemas"]["WorkflowSchemeUsagePage"];
+    };
+    /** @description A page of workflow schemes. */
+    WorkflowSchemeUsagePage: {
+      /** @description Token for the next page of issue type usages. */
+      nextPageToken?: string;
+      /** @description The list of workflow schemes. */
+      values?: components["schemas"]["WorkflowSchemeUsage"][];
     };
     /** @description The scope of the workflow. */
     WorkflowScope: {
@@ -11640,13 +11759,15 @@ export interface components {
       payload: components["schemas"]["WorkflowUpdateRequest"];
       validationOptions?: components["schemas"]["ValidationOptionsForUpdate"];
     };
-    /** @description The workflows that use this status. Only available if the `workflowUsages` expand is requested. */
+    /** @description Deprecated. See the [deprecation notice](https://developer.atlassian.com/cloud/jira/platform/changelog/#CHANGE-2298) for details.
+     *
+     *     The workflows that use this status. Only available if the `workflowUsages` expand is requested. */
     WorkflowUsages: {
       /** @description Workflow ID. */
       workflowId?: string;
       /** @description Workflow name. */
       workflowName?: string;
-    };
+    } | null;
     /** @description The details about a workflow validation error. */
     WorkflowValidationError: {
       /** @description An error code. */
@@ -12097,7 +12218,6 @@ export type IssueFieldOptionScopeBean = components["schemas"]["IssueFieldOptionS
 export type IssueFilterForBulkPropertyDelete =
   components["schemas"]["IssueFilterForBulkPropertyDelete"];
 export type IssueFilterForBulkPropertySet = components["schemas"]["IssueFilterForBulkPropertySet"];
-export type IssueLimitReportRequest = components["schemas"]["IssueLimitReportRequest"];
 export type IssueLimitReportResponseBean = components["schemas"]["IssueLimitReportResponseBean"];
 export type IssueLink = components["schemas"]["IssueLink"];
 export type IssueLinkType = components["schemas"]["IssueLinkType"];
@@ -12464,6 +12584,8 @@ export type ProjectRoleGroup = components["schemas"]["ProjectRoleGroup"];
 export type ProjectRoleUser = components["schemas"]["ProjectRoleUser"];
 export type ProjectScopeBean = components["schemas"]["ProjectScopeBean"];
 export type ProjectType = components["schemas"]["ProjectType"];
+export type ProjectUsage = components["schemas"]["ProjectUsage"];
+export type ProjectUsagePage = components["schemas"]["ProjectUsagePage"];
 export type ProjectWithDataPolicy = components["schemas"]["ProjectWithDataPolicy"];
 export type PropertyKey = components["schemas"]["PropertyKey"];
 export type PropertyKeys = components["schemas"]["PropertyKeys"];
@@ -12545,10 +12667,21 @@ export type StatusMapping = components["schemas"]["StatusMapping"];
 export type StatusMappingDto = components["schemas"]["StatusMappingDTO"];
 export type StatusMetadata = components["schemas"]["StatusMetadata"];
 export type StatusMigration = components["schemas"]["StatusMigration"];
+export type StatusProjectIssueTypeUsage = components["schemas"]["StatusProjectIssueTypeUsage"];
+export type StatusProjectIssueTypeUsageDto =
+  components["schemas"]["StatusProjectIssueTypeUsageDTO"];
+export type StatusProjectIssueTypeUsagePage =
+  components["schemas"]["StatusProjectIssueTypeUsagePage"];
+export type StatusProjectUsage = components["schemas"]["StatusProjectUsage"];
+export type StatusProjectUsageDto = components["schemas"]["StatusProjectUsageDTO"];
+export type StatusProjectUsagePage = components["schemas"]["StatusProjectUsagePage"];
 export type StatusReferenceAndPort = components["schemas"]["StatusReferenceAndPort"];
 export type StatusScope = components["schemas"]["StatusScope"];
 export type StatusUpdate = components["schemas"]["StatusUpdate"];
 export type StatusUpdateRequest = components["schemas"]["StatusUpdateRequest"];
+export type StatusWorkflowUsageDto = components["schemas"]["StatusWorkflowUsageDTO"];
+export type StatusWorkflowUsagePage = components["schemas"]["StatusWorkflowUsagePage"];
+export type StatusWorkflowUsageWorkflow = components["schemas"]["StatusWorkflowUsageWorkflow"];
 export type StreamingResponseBody = components["schemas"]["StreamingResponseBody"];
 export type StringList = components["schemas"]["StringList"];
 export type SubmittedBulkOperation = components["schemas"]["SubmittedBulkOperation"];
@@ -12656,6 +12789,12 @@ export type WorkflowMetadataAndIssueTypeRestModel =
   components["schemas"]["WorkflowMetadataAndIssueTypeRestModel"];
 export type WorkflowMetadataRestModel = components["schemas"]["WorkflowMetadataRestModel"];
 export type WorkflowOperations = components["schemas"]["WorkflowOperations"];
+export type WorkflowProjectIssueTypeUsage = components["schemas"]["WorkflowProjectIssueTypeUsage"];
+export type WorkflowProjectIssueTypeUsageDto =
+  components["schemas"]["WorkflowProjectIssueTypeUsageDTO"];
+export type WorkflowProjectIssueTypeUsagePage =
+  components["schemas"]["WorkflowProjectIssueTypeUsagePage"];
+export type WorkflowProjectUsageDto = components["schemas"]["WorkflowProjectUsageDTO"];
 export type WorkflowReadRequest = components["schemas"]["WorkflowReadRequest"];
 export type WorkflowReadResponse = components["schemas"]["WorkflowReadResponse"];
 export type WorkflowReferenceStatus = components["schemas"]["WorkflowReferenceStatus"];
@@ -12669,6 +12808,7 @@ export type WorkflowSchemeAssociations = components["schemas"]["WorkflowSchemeAs
 export type WorkflowSchemeIdName = components["schemas"]["WorkflowSchemeIdName"];
 export type WorkflowSchemeProjectAssociation =
   components["schemas"]["WorkflowSchemeProjectAssociation"];
+export type WorkflowSchemeProjectUsageDto = components["schemas"]["WorkflowSchemeProjectUsageDTO"];
 export type WorkflowSchemeReadRequest = components["schemas"]["WorkflowSchemeReadRequest"];
 export type WorkflowSchemeReadResponse = components["schemas"]["WorkflowSchemeReadResponse"];
 export type WorkflowSchemeUpdateRequest = components["schemas"]["WorkflowSchemeUpdateRequest"];
@@ -12676,6 +12816,9 @@ export type WorkflowSchemeUpdateRequiredMappingsRequest =
   components["schemas"]["WorkflowSchemeUpdateRequiredMappingsRequest"];
 export type WorkflowSchemeUpdateRequiredMappingsResponse =
   components["schemas"]["WorkflowSchemeUpdateRequiredMappingsResponse"];
+export type WorkflowSchemeUsage = components["schemas"]["WorkflowSchemeUsage"];
+export type WorkflowSchemeUsageDto = components["schemas"]["WorkflowSchemeUsageDTO"];
+export type WorkflowSchemeUsagePage = components["schemas"]["WorkflowSchemeUsagePage"];
 export type WorkflowScope = components["schemas"]["WorkflowScope"];
 export type WorkflowSearchResponse = components["schemas"]["WorkflowSearchResponse"];
 export type WorkflowSimpleCondition = components["schemas"]["WorkflowSimpleCondition"];
