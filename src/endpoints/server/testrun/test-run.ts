@@ -1,32 +1,23 @@
 import type { Xray } from "../../../../index.js";
-import { PATH, versioned } from "../../../client/xray-client-version.js";
 import { BaseApi } from "../../base-api.js";
-import { ExecutionEvidenceApiV1, ExecutionEvidenceApiV2 } from "./attachment/attachment.js";
+import { ExecutionEvidenceApi } from "./attachment/attachment.js";
 
-/**
- * Models the execution evidence endpoints in Xray server.
- *
- * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
- */
-export class TestRunApi extends BaseApi {
-  public readonly evidence = versioned(new ExecutionEvidenceApiV2(this.client, PATH.server), {
-    v1: new ExecutionEvidenceApiV1(this.client, PATH.server),
-  });
-
+interface GetTestRun {
   /**
-   * Retrieves a Test Run given the test execution and test keys. The response will contain all
-   * information related to a test run, e.g., status, created and finish dates, step results, test
-   * environments, defects, test run custom fields, and so on.
+   * Retrieves a test run given the ID or test execution and test keys. The response will contain
+   * all information related to a test run, e.g., status, created and finish dates, step results,
+   * test environments, defects, test run custom fields, and so on.
    *
    * In case the test run has iterations, steps will not appear. However, if it has parameters but
    * executed one time, it will show the steps and the parameters info.
    *
-   * @param testRun the ID of the test run to return or a query specifying the test run
+   * @param testRun the query specifying the test run
    * @returns the test run details
    *
+   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/get_testrun
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/get_testrun__id_
    */
-  public async getTestRun(
+  (
     testRun:
       | {
           /**
@@ -39,23 +30,133 @@ export class TestRunApi extends BaseApi {
           testIssueKey: string;
         }
       | string
-  ): Promise<Xray.TestRun.GetTestRunResponse> {
-    let response;
-    if (typeof testRun === "string") {
-      response = await this.client.send(`${this.path}/testrun/${testRun}`, {
-        expectedStatus: 200,
-        method: "GET",
-      });
-    } else {
-      response = await this.client.send(`${this.path}/testrun`, {
-        expectedStatus: 200,
-        method: "GET",
-        query: testRun,
-      });
-    }
-    return (await response.json()) as Xray.TestRun.GetTestRunResponse;
-  }
+  ): Promise<Xray.TestRun.GetTestRunResponse>;
+  /**
+   * Retrieves a test run given the ID or test execution and test keys. The response will contain
+   * all information related to a test run, e.g., status, created and finish dates, step results,
+   * test environments, defects, test run custom fields, and so on.
+   *
+   * In case the test run has iterations, steps will not appear. However, if it has parameters but
+   * executed one time, it will show the steps and the parameters info.
+   *
+   * @param testRun the query specifying the test run
+   * @returns the test run details
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+   */
+  v1: (
+    testRun:
+      | {
+          /**
+           * The key of the test execution.
+           */
+          testExecIssueKey: string;
+          /**
+           * The key of the test issue.
+           */
+          testIssueKey: string;
+        }
+      | string
+  ) => Promise<Xray.TestRun.GetTestRunResponse>;
+}
 
+interface UpdateTestRunPayload {
+  /**
+   * @example "ampr"
+   */
+  assignee?: string;
+  /**
+   * @example "new comment"
+   */
+  comment?: string;
+  defects?: {
+    /**
+     * @example ["test-114", "appId=a364a9c7-9ac0-3183-9175-353c1331692a&issue=SDP-5"]
+     */
+    add?: string[];
+    /**
+     * @example ["DCW-9", "appId=a364a9c7-9ac0-3183-9175-353c1331692a&issue=SDP-1"]
+     */
+    remove?: string[];
+  };
+  evidences?: {
+    add?: {
+      /**
+       * @example "plain/text"
+       */
+      contentType: string;
+      /**
+       * @example "(base64 encoding...)"
+       */
+      data: string;
+      /**
+       * @example "test1.txt"
+       */
+      filename: string;
+    }[];
+    /**
+     * @example ["274", "543"]
+     */
+    remove?: string[];
+  };
+  examples?: {
+    /**
+     * @example "1379"
+     */
+    id: string;
+    /**
+     * @example "TODO"
+     */
+    status: string;
+  }[];
+  /**
+   * @example "FAIL"
+   */
+  status?: string;
+  steps?: {
+    /**
+     * @example "the comment 1"
+     */
+    comment?: string;
+    defects?: {
+      /**
+       * @example ["test-114", "test-115", "test-116", "appId=a364a9c7-9ac0-3183-9175-353c1331692a&issue=SDP-5"]
+       */
+      add: string[];
+    };
+    evidences?: {
+      add?: {
+        /**
+         * @example "plain/text"
+         */
+        contentType: string;
+        /**
+         * @example "(base64 encoding...)"
+         */
+        data: string;
+        /**
+         * @example "test1.txt"
+         */
+        filename: string;
+      }[];
+      /**
+       * @example ["274", "543"]
+       */
+      remove?: string[];
+    };
+    /**
+     * @example "730"
+     */
+    id: string;
+    /**
+     * @example "PASS"
+     */
+    status?: string;
+  }[];
+}
+
+interface UpdateTestRun {
   /**
    * Update all the values of a test run. The user can update the values of the overall status,
    * step results, assignee, test environments, add defects and evidences and so on.
@@ -91,115 +192,99 @@ export class TestRunApi extends BaseApi {
    * there are zero or one iterations. If there are multiple iterations, it is not possible to
    * update the steps through this endpoint, only the iterations.
    *
-   * @param testRun the ID of the test run to update
+   * @param testRunId the ID of the test run to update
    * @param body the details to update
    * @returns the test run details
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/put_testrun__id_
    */
-  public async updateTestRun(
-    testRun: string,
-    body: {
-      /**
-       * @example "ampr"
-       */
-      assignee?: string;
-      /**
-       * @example "new comment"
-       */
-      comment?: string;
-      defects?: {
-        /**
-         * @example ["test-114", "appId=a364a9c7-9ac0-3183-9175-353c1331692a&issue=SDP-5"]
-         */
-        add?: string[];
-        /**
-         * @example ["DCW-9", "appId=a364a9c7-9ac0-3183-9175-353c1331692a&issue=SDP-1"]
-         */
-        remove?: string[];
-      };
-      evidences?: {
-        add?: {
-          /**
-           * @example "plain/text"
-           */
-          contentType: string;
-          /**
-           * @example "(base64 encoding...)"
-           */
-          data: string;
-          /**
-           * @example "test1.txt"
-           */
-          filename: string;
-        }[];
-        /**
-         * @example ["274", "543"]
-         */
-        remove?: string[];
-      };
-      examples?: {
-        /**
-         * @example "1379"
-         */
-        id: string;
-        /**
-         * @example "TODO"
-         */
-        status: string;
-      }[];
-      /**
-       * @example "FAIL"
-       */
-      status?: string;
-      steps?: {
-        /**
-         * @example "the comment 1"
-         */
-        comment?: string;
-        defects?: {
-          /**
-           * @example ["test-114", "test-115", "test-116", "appId=a364a9c7-9ac0-3183-9175-353c1331692a&issue=SDP-5"]
-           */
-          add: string[];
-        };
-        evidences?: {
-          add?: {
-            /**
-             * @example "plain/text"
-             */
-            contentType: string;
-            /**
-             * @example "(base64 encoding...)"
-             */
-            data: string;
-            /**
-             * @example "test1.txt"
-             */
-            filename: string;
-          }[];
-          /**
-           * @example ["274", "543"]
-           */
-          remove?: string[];
-        };
-        /**
-         * @example "730"
-         */
-        id: string;
-        /**
-         * @example "PASS"
-         */
-        status?: string;
-      }[];
+  (testRunId: string, body: UpdateTestRunPayload): Promise<Xray.TestRun.UpdateTestRunResponse>;
+  /**
+   * Update the test run. The fields that can be updated on the test run are: **status, comment,
+   * assignee, defects, evidences, examples** and **steps**.
+   *
+   * @param testRunId the ID of the test run to update
+   * @param body the details to update
+   * @returns the test run details
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
+   */
+  v1: (
+    testRunId: string,
+    body: UpdateTestRunPayload
+  ) => Promise<Xray.TestRun.UpdateTestRunResponse>;
+}
+
+/**
+ * Models the test run endpoints in Xray server.
+ *
+ * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST
+ */
+export class TestRunApi extends BaseApi {
+  private readonly processor = {
+    getTestRunById: async (url: string) => {
+      const response = await this.client.send(url, {
+        expectedStatus: 200,
+        method: "GET",
+      });
+      return (await response.json()) as Xray.TestRun.GetTestRunResponse;
+    },
+    getTestRunByQuery: async (
+      url: string,
+      testRun: {
+        testExecIssueKey: string;
+        testIssueKey: string;
+      }
+    ) => {
+      const response = await this.client.send(url, {
+        expectedStatus: 200,
+        method: "GET",
+        query: testRun,
+      });
+      return (await response.json()) as Xray.TestRun.GetTestRunResponse;
+    },
+    updateTestRun: async (url: string, body: UpdateTestRunPayload) => {
+      const response = await this.client.send(url, {
+        body: JSON.stringify(body),
+        expectedStatus: 200,
+        headers: { ["Content-Type"]: "application/json" },
+        method: "PUT",
+      });
+      return (await response.json()) as Xray.TestRun.UpdateTestRunResponse;
+    },
+  };
+
+  public readonly evidence = new ExecutionEvidenceApi(this.client);
+
+  public readonly getTestRun: GetTestRun = Object.assign(
+    async (...[testRun]: Parameters<GetTestRun>): ReturnType<GetTestRun> => {
+      if (typeof testRun === "string") {
+        return this.processor.getTestRunById(`rest/raven/api/2.0/testrun/${testRun}`);
+      } else {
+        return this.processor.getTestRunByQuery(`rest/raven/api/2.0/testrun`, testRun);
+      }
+    },
+    {
+      v1: async (...[testRun]: Parameters<GetTestRun["v1"]>): ReturnType<GetTestRun["v1"]> => {
+        if (typeof testRun === "string") {
+          return this.processor.getTestRunById(`rest/raven/api/1.0/testrun/${testRun}`);
+        } else {
+          return this.processor.getTestRunByQuery(`rest/raven/api/1.0/testrun`, testRun);
+        }
+      },
     }
-  ): Promise<Xray.TestRun.UpdateTestRunResponse> {
-    const response = await this.client.send(`${this.path}/testrun/${testRun}`, {
-      body: JSON.stringify(body),
-      expectedStatus: 200,
-      headers: { ["Content-Type"]: "application/json" },
-      method: "PUT",
-    });
-    return (await response.json()) as Xray.TestRun.UpdateTestRunResponse;
-  }
+  );
+
+  public readonly updateTestRun: UpdateTestRun = Object.assign(
+    async (...[testRunId, body]: Parameters<UpdateTestRun>): ReturnType<UpdateTestRun> => {
+      return this.processor.updateTestRun(`rest/raven/api/2.0/testrun/${testRunId}`, body);
+    },
+    {
+      v1: async (
+        ...[testRunId, body]: Parameters<UpdateTestRun["v1"]>
+      ): ReturnType<UpdateTestRun["v1"]> => {
+        return this.processor.updateTestRun(`rest/raven/api/1.0/testrun/${testRunId}`, body);
+      },
+    }
+  );
 }

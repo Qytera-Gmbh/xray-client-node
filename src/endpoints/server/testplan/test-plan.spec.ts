@@ -5,27 +5,24 @@ import { XRAY_CLIENT_SERVER } from "../../../../test/clients.js";
 import { DATA_SERVER } from "../../../../test/data.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
-  for (const [version, endpoint] of [
-    ["v1", XRAY_CLIENT_SERVER.testPlans.v1],
-    ["v2", XRAY_CLIENT_SERVER.testPlans],
-  ] as const) {
-    describe(version, () => {
-      describe("getTestExecutions", () => {
-        it("returns test execution data", async () => {
-          const content = await endpoint.getTestExecutions(DATA_SERVER.testPlans.immutable.key);
-          assert.strictEqual(content.length, 2);
-          assert.strictEqual(content[0].key, DATA_SERVER.testPlans.immutable.testExecutions[0]);
-          assert.strictEqual(content[1].key, DATA_SERVER.testPlans.immutable.testExecutions[1]);
-        });
-      });
-
-      describe("getTests", () => {
-        it("returns test data", async () => {
-          const content = await endpoint.getTests(DATA_SERVER.testPlans.immutable.key);
-          assert.strictEqual(content.length, 1);
-          assert.strictEqual(content[0].key, DATA_SERVER.testPlans.immutable.tests[0]);
-        });
-      });
+  describe("getTestExecutions", () => {
+    it("returns test execution data", async () => {
+      const content = await XRAY_CLIENT_SERVER.testPlans.getTestExecutions(
+        DATA_SERVER.testPlans.immutable.key
+      );
+      assert.strictEqual(content.length, 2);
+      assert.strictEqual(content[0].key, DATA_SERVER.testPlans.immutable.testExecutions[0]);
+      assert.strictEqual(content[1].key, DATA_SERVER.testPlans.immutable.testExecutions[1]);
     });
-  }
+  });
+
+  describe("getTests", () => {
+    it("returns test data", async () => {
+      const content = await XRAY_CLIENT_SERVER.testPlans.getTests(
+        DATA_SERVER.testPlans.immutable.key
+      );
+      assert.strictEqual(content.length, 1);
+      assert.strictEqual(content[0].key, DATA_SERVER.testPlans.immutable.tests[0]);
+    });
+  });
 });
