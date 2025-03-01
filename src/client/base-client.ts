@@ -54,6 +54,14 @@ export class BaseClient {
     }
   }
 
+  private joinUrl(path: string, query?: RequestConfig["query"]): string {
+    let url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
+    if (query && Object.keys(query).length > 0) {
+      url = `${url}?${toSearchParams(query).toString()}`;
+    }
+    return url;
+  }
+
   /**
    * Sends an HTTP request to the Xray instance and optionally verifies the response status.
    *
@@ -91,14 +99,6 @@ export class BaseClient {
       });
     }
     return response;
-  }
-
-  private joinUrl(path: string, query?: RequestConfig["query"]): string {
-    let url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
-    if (query && Object.keys(query).length > 0) {
-      url = `${url}?${toSearchParams(query).toString()}`;
-    }
-    return url;
   }
 }
 
