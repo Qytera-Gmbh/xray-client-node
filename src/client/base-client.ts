@@ -1,6 +1,7 @@
 import type { Dispatcher, RequestInit, Response } from "undici";
 import { fetch } from "undici";
 import { toSearchParams } from "../util/search-params.js";
+import { ResponseError } from "./response-error.js";
 
 /**
  * The base client of all Xray clients. Contains the authorization handling.
@@ -65,27 +66,39 @@ export class BaseClient {
     if (config.query && Object.keys(config).length > 0) {
       url = `${url}?${toSearchParams(config.query).toString()}`;
     }
+    const requestHeaders = {
+      ["Authorization"]: await this.authorizationValue,
+      ...config.headers,
+    };
     const request: RequestInit = {
       body: config.body,
       dispatcher: this.dispatcher,
-      headers: {
-        ["Authorization"]: await this.authorizationValue,
-        ...config.headers,
-      },
+      headers: requestHeaders,
       method: config.method,
     };
     const response = await fetch(url, request);
-    if (config.expectedStatus && response.status !== config.expectedStatus) {
-      throw new Error(
-        `unexpected response status ${response.status.toString()}: ${await response.text()}`
-      );
+    if (response.status !== config.expectedStatus) {
+      throw new ResponseError({
+        expectedStatus: config.expectedStatus,
+        request: {
+          body: config.body,
+          headers: requestHeaders,
+          method: config.method,
+          url,
+        },
+        response: {
+          headers: response.headers,
+          status: response.status,
+          text: await response.text(),
+        },
+      });
     }
     return response;
   }
 }
 
 /**
- * Models an HTTP request configuration.
+ * Models an HTTP request coation.nfigur
  */
 interface RequestConfig {
   /**
