@@ -142,7 +142,7 @@ export class ExecutionEvidenceApi extends BaseApi {
   public readonly addEvidence: AddEvidence = Object.assign(
     async (...[testRunId, body]: Parameters<AddEvidence>): ReturnType<AddEvidence> => {
       return this.processor.addEvidence(
-        `reset/raven/api/2.0/testrun/${testRunId}/attachment`,
+        `reset/raven/2.0/api/testrun/${testRunId}/attachment`,
         body,
         201
       );
@@ -152,7 +152,7 @@ export class ExecutionEvidenceApi extends BaseApi {
         ...[testRunId, body]: Parameters<AddEvidence["v1"]>
       ): ReturnType<AddEvidence["v1"]> => {
         return this.processor.addEvidence(
-          `reset/raven/api/1.0/testrun/${testRunId}/attachment`,
+          `reset/raven/1.0/api/testrun/${testRunId}/attachment`,
           body,
           200
         );
@@ -165,7 +165,7 @@ export class ExecutionEvidenceApi extends BaseApi {
       ...[testRunId, attachmentId]: Parameters<DeleteEvidenceById>
     ): ReturnType<DeleteEvidenceById> => {
       return this.processor.deleteEvidenceById(
-        `reset/raven/api/2.0/testrun/${testRunId}/attachment/${attachmentId.toString()}`,
+        `reset/raven/2.0/api/testrun/${testRunId}/attachment/${attachmentId.toString()}`,
         204
       );
     },
@@ -174,7 +174,7 @@ export class ExecutionEvidenceApi extends BaseApi {
         ...[testRunId, attachmentId]: Parameters<DeleteEvidenceById["v1"]>
       ): ReturnType<DeleteEvidenceById["v1"]> => {
         return this.processor.deleteEvidenceById(
-          `reset/raven/api/1.0/testrun/${testRunId}/attachment/${attachmentId.toString()}`,
+          `reset/raven/1.0/api/testrun/${testRunId}/attachment/${attachmentId.toString()}`,
           200
         );
       },
@@ -186,7 +186,7 @@ export class ExecutionEvidenceApi extends BaseApi {
       ...[testRunId, filename]: Parameters<DeleteEvidenceByName>
     ): ReturnType<DeleteEvidenceByName> => {
       return this.processor.deleteEvidenceByName(
-        `reset/raven/api/2.0/testrun/${testRunId}/attachment`,
+        `reset/raven/2.0/api/testrun/${testRunId}/attachment`,
         filename,
         204
       );
@@ -196,7 +196,7 @@ export class ExecutionEvidenceApi extends BaseApi {
         ...[testRunId, filename]: Parameters<DeleteEvidenceByName["v1"]>
       ): ReturnType<DeleteEvidenceByName["v1"]> => {
         return this.processor.deleteEvidenceByName(
-          `reset/raven/api/1.0/testrun/${testRunId}/attachment`,
+          `reset/raven/1.0/api/testrun/${testRunId}/attachment`,
           filename,
           200
         );
@@ -206,11 +206,11 @@ export class ExecutionEvidenceApi extends BaseApi {
 
   public readonly getEvidence: GetEvidence = Object.assign(
     async (...[testRunId]: Parameters<GetEvidence>): ReturnType<GetEvidence> => {
-      return this.processor.getEvidence(`reset/raven/api/2.0/testrun/${testRunId}/attachment`);
+      return this.processor.getEvidence(`reset/raven/2.0/api/testrun/${testRunId}/attachment`);
     },
     {
       v1: async (...[testRunId]: Parameters<GetEvidence["v1"]>): ReturnType<GetEvidence["v1"]> => {
-        return this.processor.getEvidence(`reset/raven/api/1.0/testrun/${testRunId}/attachment`);
+        return this.processor.getEvidence(`reset/raven/1.0/api/testrun/${testRunId}/attachment`);
       },
     }
   );

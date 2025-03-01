@@ -50,7 +50,7 @@ export class DatasetApi extends BaseApi {
      */
     testVersion?: string;
   }): Promise<string> {
-    const response = await this.client.send("rest/raven/2.0/dataset/export", {
+    const response = await this.client.send("rest/raven/2.0/api/dataset/export", {
       expectedStatus: 200,
       method: "GET",
       query: query,
@@ -114,7 +114,7 @@ export class DatasetApi extends BaseApi {
     // Maybe we just need to wait until openAsBlob becomes a stable feature?
     const fileBlob = await blob(createReadStream(file));
     formData.append("file", fileBlob, basename(file));
-    await this.client.send("rest/raven/2.0/dataset/import", {
+    await this.client.send("rest/raven/2.0/api/dataset/import", {
       body: formData,
       expectedStatus: 200,
       method: "POST",
