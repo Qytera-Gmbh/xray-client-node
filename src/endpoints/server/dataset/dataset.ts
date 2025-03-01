@@ -2,13 +2,62 @@ import { createReadStream } from "node:fs";
 import { basename } from "node:path";
 import { blob } from "node:stream/consumers";
 import { FormData } from "undici";
-import type { Xray } from "../../../../index.js";
-import { DatasetApi } from "../../shared/dataset/dataset.js";
+import { BaseApi } from "../../base-api.js";
 
 /**
- * Models the execution import endpoints.
+ * Models the dataset endpoints.
  */
-export class DatasetServerApi extends DatasetApi<Xray.Dataset.ExportQueryServer> {
+export class DatasetApi extends BaseApi {
+  /**
+   * Retrieves a CSV file with the dataset information. The response will contain all information
+   * related to the dataset, e.g., parameters and values.
+   *
+   * One of `testIssueId` or `testIssueKey` is required. If both are provided, `testIssueId` is
+   * used. Both `contextIssueId` and `contextIssueKey` are optional. If both `contextIssueId` and
+   * `contextIssueKey` are provided, `contextIssueId` is used. The `resolved` flag is only relevant
+   * when requesting the dataset of a test with a context issue.
+   *
+   * The returned dataset is provided with all the iterations generated.
+   *
+   * @param query the dataset query
+   * @returns the dataset's CSV content
+   *
+   * @see https://docs.getxray.app/display/XRAY/v2.0#/Dataset/get_dataset_export
+   */
+  public async export(query?: {
+    /**
+     * The id of the context issue (Test Plan or Test Execution).
+     */
+    contextIssueId?: string;
+    /**
+     * The key of the context issue (Test Plan or Test Execution).
+     */
+    contextIssueKey?: string;
+    /**
+     * A flag indicating of the dataset must be resolved or not for a given level (true by default).
+     */
+    resolved?: boolean;
+    /**
+     * The id of the test issue.
+     */
+    testIssueId?: string;
+    /**
+     * The key of the test issue.
+     */
+    testIssueKey?: string;
+    /**
+     * A test version.
+     */
+    testVersion?: string;
+  }): Promise<string> {
+    const response = await this.client.send(`${this.path}/dataset/export`, {
+      expectedStatus: 200,
+      method: "GET",
+      query: query,
+    });
+    return await response.text();
+  }
+
   /**
    * Endpoint used to imports a dataset through a CSV file to an entity. It is only possible to
    * import dataset to the following entities:
@@ -65,7 +114,7 @@ export class DatasetServerApi extends DatasetApi<Xray.Dataset.ExportQueryServer>
     // Maybe we just need to wait until openAsBlob becomes a stable feature?
     const fileBlob = await blob(createReadStream(file));
     formData.append("file", fileBlob, basename(file));
-    await this.client.send("/dataset/import", {
+    await this.client.send(`${this.path}/dataset/import`, {
       body: formData,
       expectedStatus: 200,
       method: "POST",

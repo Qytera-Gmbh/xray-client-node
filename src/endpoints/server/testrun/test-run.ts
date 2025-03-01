@@ -1,7 +1,7 @@
 import type { Xray } from "../../../../index.js";
-import type { BaseClient } from "../../../client/base-client.js";
+import { PATH, versioned } from "../../../client/xray-client-version.js";
 import { BaseApi } from "../../base-api.js";
-import { ExecutionEvidenceApi } from "./attachment/attachment.js";
+import { ExecutionEvidenceApiV1, ExecutionEvidenceApiV2 } from "./attachment/attachment.js";
 
 /**
  * Models the execution evidence endpoints in Xray server.
@@ -9,12 +9,9 @@ import { ExecutionEvidenceApi } from "./attachment/attachment.js";
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
  */
 export class TestRunApi extends BaseApi {
-  public readonly evidence: ExecutionEvidenceApi;
-
-  constructor(client: BaseClient) {
-    super(client);
-    this.evidence = new ExecutionEvidenceApi(client);
-  }
+  public readonly evidence = versioned(new ExecutionEvidenceApiV2(this.client, PATH.server.v2), {
+    v1: new ExecutionEvidenceApiV1(this.client, PATH.server.v1),
+  });
 
   /**
    * Retrieves a Test Run given the test execution and test keys. The response will contain all
@@ -45,12 +42,12 @@ export class TestRunApi extends BaseApi {
   ): Promise<Xray.TestRun.GetTestRunResponse> {
     let response;
     if (typeof testRun === "string") {
-      response = await this.client.send(`/testrun/${testRun}`, {
+      response = await this.client.send(`${this.path}/testrun/${testRun}`, {
         expectedStatus: 200,
         method: "GET",
       });
     } else {
-      response = await this.client.send("/testrun", {
+      response = await this.client.send(`${this.path}/testrun`, {
         expectedStatus: 200,
         method: "GET",
         query: testRun,
@@ -197,7 +194,7 @@ export class TestRunApi extends BaseApi {
       }[];
     }
   ): Promise<Xray.TestRun.UpdateTestRunResponse> {
-    const response = await this.client.send(`/testrun/${testRun}`, {
+    const response = await this.client.send(`${this.path}/testrun/${testRun}`, {
       body: JSON.stringify(body),
       expectedStatus: 200,
       headers: { ["Content-Type"]: "application/json" },
