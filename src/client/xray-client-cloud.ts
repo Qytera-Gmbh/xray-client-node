@@ -36,9 +36,7 @@ try {
 }
 
 export class XrayClientCloud extends BaseClient {
-  public readonly attachments = versioned(new AttachmentsApi(this, PATH.cloud.v2), {
-    v1: new AttachmentsApi(this, PATH.cloud.v1),
-  });
+  public readonly attachments = new AttachmentsApi(this, "");
   public readonly dataset = new DatasetApi(this, PATH.cloud.v2);
   public readonly import = {
     execution: versioned(new ImportExecutionApi<Xray.Import.ResponseCloud>(this, PATH.cloud.v2), {
