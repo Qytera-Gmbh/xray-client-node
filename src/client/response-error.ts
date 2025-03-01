@@ -155,7 +155,8 @@ interface ResponseConfig<ResponseBodyType = unknown> {
  *
  * @template T the expected JSON response body type
  */
-export function isResponseError<T = unknown>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isResponseError<T = any>(
   error: unknown,
   status?: number
 ): error is ResponseError<T> {
