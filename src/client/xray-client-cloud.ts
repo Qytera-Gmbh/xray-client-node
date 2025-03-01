@@ -1,10 +1,9 @@
-import type { Xray } from "../../index.js";
 import { AttachmentsApi } from "../endpoints/cloud/attachments/attachments.js";
 import { DatasetApi } from "../endpoints/cloud/dataset/dataset.js";
 import { type GraphQLApi } from "../endpoints/cloud/graphql/graphql.js";
-import { ImportExecutionApi } from "../endpoints/shared/import/execution/import-execution.js";
+import { ImportExecutionApi } from "../endpoints/cloud/import/execution/import-execution.js";
 import { BaseClient } from "./base-client.js";
-import { PATH, versioned } from "./xray-client-version.js";
+import { PATH } from "./xray-client-version.js";
 
 // This section checks whether all optional GraphQL dependencies are installed.
 // We only do this so we can output helpful error messages on GraphQL access.
@@ -36,12 +35,10 @@ try {
 }
 
 export class XrayClientCloud extends BaseClient {
-  public readonly attachments = new AttachmentsApi(this, "");
-  public readonly dataset = new DatasetApi(this, PATH.cloud.v2);
+  public readonly attachments = new AttachmentsApi(this, PATH.cloud);
+  public readonly dataset = new DatasetApi(this, PATH.cloud);
   public readonly import = {
-    execution: versioned(new ImportExecutionApi<Xray.Import.ResponseCloud>(this, PATH.cloud.v2), {
-      v1: new ImportExecutionApi<Xray.Import.ResponseCloud>(this, PATH.cloud.v1),
-    }),
+    execution: new ImportExecutionApi(this, PATH.cloud),
   };
 
   public get graphql() {
@@ -55,8 +52,6 @@ export class XrayClientCloud extends BaseClient {
         "failed to import module graphql-tag, please install it to use the GraphQL endpoints"
       );
     }
-    return versioned(new optionalModules.api(this, PATH.cloud.graphql.v2), {
-      v1: new optionalModules.api(this, PATH.cloud.graphql.v1),
-    });
+    return new optionalModules.api(this, PATH.cloud);
   }
 }
