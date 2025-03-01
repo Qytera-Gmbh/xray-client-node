@@ -413,6 +413,7 @@ export const cloudClient = new XrayClientCloud({
   credentials: {
     clientId: "xray-client-id",
     clientSecret: "xray-client-secret",
+    path: "/api/v2/authenticate",
   },
   url: "https://xray.cloud.getxray.app",
 });
