@@ -21,7 +21,6 @@ export default tseslint.config(
     rules: {
       "@typescript-eslint/consistent-type-exports": "error",
       "@typescript-eslint/consistent-type-imports": "error",
-      "@typescript-eslint/member-ordering": "error",
       "@typescript-eslint/naming-convention": [
         "error",
         {
@@ -65,15 +64,15 @@ export default tseslint.config(
             "index-signature",
             "static-property",
             "static-block",
-            ["property", "accessor-property"],
-            ["protected-property", "protected-accessor-property"],
             ["private-property", "private-accessor-property"],
+            ["protected-property", "protected-accessor-property"],
+            ["property", "accessor-property"],
             "constructor",
             "static-method",
             ["get-method", "set-method"],
-            "method",
             "private-method",
             "protected-method",
+            "method",
             "unknown",
           ],
           order: "asc",
