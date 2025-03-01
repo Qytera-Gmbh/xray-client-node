@@ -7,50 +7,60 @@ import { DATA_CLOUD } from "../../../../../test/data.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("xray", () => {
-    for (const [version, endpoint] of [
-      ["v1", XRAY_CLIENT_CLOUD.import.execution.xray],
-      ["v2", XRAY_CLIENT_CLOUD.import.execution.xray.v1],
+    for (const [version, endpoint, issue] of [
+      [
+        "v1",
+        XRAY_CLIENT_CLOUD.import.execution.xray.v1,
+        DATA_CLOUD.testExecutions.importingXray.v1,
+      ],
+      ["v2", XRAY_CLIENT_CLOUD.import.execution.xray, DATA_CLOUD.testExecutions.importingXray.v2],
     ] as const) {
       describe(version, () => {
         it("imports xray results in xray cloud", async () => {
           const data = await endpoint({
-            testExecutionKey: DATA_CLOUD.testExecutions.importingXray.key,
-            tests: [
-              { status: "PASSED", testKey: DATA_CLOUD.testExecutions.importingXray.tests[0].key },
-            ],
+            testExecutionKey: issue.key,
+            tests: [{ status: "PASSED", testKey: issue.tests[0].key }],
           });
-          assert.strictEqual(data.key, DATA_CLOUD.testExecutions.importingXray.key);
+          assert.strictEqual(data.key, issue.key);
         });
       });
     }
   });
 
   describe("xray multipart", () => {
-    for (const [version, endpoint] of [
-      ["v1", XRAY_CLIENT_CLOUD.import.execution.xrayMultipart],
-      ["v2", XRAY_CLIENT_CLOUD.import.execution.xrayMultipart.v1],
+    for (const [version, endpoint, issue] of [
+      [
+        "v1",
+        XRAY_CLIENT_CLOUD.import.execution.xrayMultipart.v1,
+        DATA_CLOUD.testExecutions.importingXray.v1,
+      ],
+      [
+        "v2",
+        XRAY_CLIENT_CLOUD.import.execution.xrayMultipart,
+        DATA_CLOUD.testExecutions.importingXray.v2,
+      ],
     ] as const) {
       describe(version, () => {
         it("imports xray multipart results in xray cloud", async () => {
           const description = randomUUID();
           const data = await endpoint(
             {
-              testExecutionKey: DATA_CLOUD.testExecutions.importingXrayMultipart.key,
+              testExecutionKey: issue.key,
               tests: [
                 {
                   status: "PASSED",
-                  testKey: DATA_CLOUD.testExecutions.importingXrayMultipart.tests[0].key,
+                  testKey: issue.tests[0].key,
                 },
               ],
             },
             { fields: { description: description, project: { key: DATA_CLOUD.project.key } } }
           );
-          assert.strictEqual(data.key, DATA_CLOUD.testExecutions.importingXrayMultipart.key);
+          assert.strictEqual(data.key, issue.key);
           assert.deepStrictEqual(
             (
               await JIRA_CLIENT_CLOUD.issues.getIssue({
                 fields: ["description"],
-                issueIdOrKey: DATA_CLOUD.testExecutions.importingXrayMultipart.key,
+                issueIdOrKey: issue.key,
               })
             ).fields.description,
             {

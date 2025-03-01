@@ -4,16 +4,34 @@
 export const DATA_SERVER = {
   project: { key: "XCNODE" },
   testExecutions: {
-    addingAttachments: { key: "XCNODE-3", tests: [{ key: "XCNODE-1", testRunId: "12467" }] },
+    addingAttachments: {
+      v1: { key: "XCNODE-10", tests: [{ key: "XCNODE-1", testRunId: "12800" }] },
+      v2: { key: "XCNODE-3", tests: [{ key: "XCNODE-1", testRunId: "12467" }] },
+    },
     immutable: { key: "XCNODE-2", tests: [{ key: "XCNODE-1", testRunId: "12466" }] },
-    importingXray: { key: "XCNODE-5", tests: [{ key: "XCNODE-1" }] },
-    importingXrayMultipart: { key: "XCNODE-6", tests: [{ key: "XCNODE-1" }] },
+    importingXray: {
+      v1: { key: "XCNODE-11", tests: [{ key: "XCNODE-1" }] },
+      v2: { key: "XCNODE-5", tests: [{ key: "XCNODE-1" }] },
+    },
+    importingXrayMultipart: {
+      v1: { key: "XCNODE-12", tests: [{ key: "XCNODE-1" }] },
+      v2: { key: "XCNODE-6", tests: [{ key: "XCNODE-1" }] },
+    },
     updateTestRun: {
-      key: "XCNODE-8",
-      tests: [
-        { key: "XCNODE-1", testRunId: "12470" },
-        { key: "XCNODE-9", testRunId: "12471" },
-      ],
+      v1: {
+        key: "XCNODE-13",
+        tests: [
+          { key: "XCNODE-1", testRunId: "12803" },
+          { key: "XCNODE-9", testRunId: "12804" },
+        ],
+      },
+      v2: {
+        key: "XCNODE-8",
+        tests: [
+          { key: "XCNODE-1", testRunId: "12470" },
+          { key: "XCNODE-9", testRunId: "12471" },
+        ],
+      },
     },
   },
   testPlans: {
@@ -58,8 +76,14 @@ export const DATA_CLOUD = {
         },
       ],
     },
-    importingXray: { key: "XCN-6", tests: [{ key: "XCN-1" }] },
-    importingXrayMultipart: { issueId: "15357", key: "XCN-7", tests: [{ key: "XCN-1" }] },
+    importingXray: {
+      v1: { key: "XCN-9", tests: [{ key: "XCN-1" }] },
+      v2: { key: "XCN-6", tests: [{ key: "XCN-1" }] },
+    },
+    importingXrayMultipart: {
+      v1: { issueId: "15686", key: "XCN-8", tests: [{ key: "XCN-1" }] },
+      v2: { issueId: "15357", key: "XCN-7", tests: [{ key: "XCN-1" }] },
+    },
     removingAttachments: {
       key: "XCN-5",
       tests: [{ key: "XCN-1", testRunId: "67aa32d700cff4d6104d2f1c" }],

@@ -11,7 +11,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         it("returns test execution data", async () => {
           const response = await endpoint.getTestExecution(
             {
-              issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.issueId,
+              issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.issueId,
             },
             (testExecution) => [
               testExecution.issueId,
@@ -25,9 +25,9 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
             ]
           );
           assert.deepStrictEqual(response, {
-            issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.issueId,
+            issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.issueId,
             jira: {
-              key: DATA_CLOUD.testExecutions.importingXrayMultipart.key,
+              key: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.key,
             },
             tests: {
               results: [
@@ -72,9 +72,9 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
             limit: 1,
             results: [
               {
-                issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.issueId,
+                issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.issueId,
                 jira: {
-                  key: DATA_CLOUD.testExecutions.importingXrayMultipart.key,
+                  key: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.key,
                 },
                 tests: {
                   limit: 10,
