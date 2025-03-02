@@ -68,7 +68,7 @@ interface ImportResponse {
 /**
  * Models the execution import endpoints.
  */
-export class ImportExecutionApi extends BaseApi {
+export class ImportExecutionApi extends BaseApi implements ImportXray, ImportXrayMultipart {
   private readonly processor = {
     xray: async (url: string, results: Xray.Import.TestExecutionResults) => {
       const response = await this.client.send(url, {
@@ -105,13 +105,10 @@ export class ImportExecutionApi extends BaseApi {
   };
 
   public readonly v1: ImportXray["v1"] & ImportXrayMultipart["v1"] = this.bind((self) => ({
-    xray(results: Xray.Import.TestExecutionResults): Promise<ImportResponse> {
+    xray(results) {
       return self.processor.xray("api/v1/import/execution", results);
     },
-    xrayMultipart(
-      results: Xray.Import.TestExecutionResults,
-      info: IssueUpdateDetails
-    ): Promise<ImportResponse> {
+    xrayMultipart(results, info) {
       return self.processor.xrayMultipart("api/v1/import/execution/multipart", results, info);
     },
   }));
