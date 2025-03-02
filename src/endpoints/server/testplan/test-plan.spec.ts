@@ -21,7 +21,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       const content = await XRAY_CLIENT_SERVER.testPlan.getTests(
         DATA_SERVER.testPlans.immutable.key
       );
-      assert.strictEqual(content.length, 1);
+      assert.strictEqual(content.length, 2);
       assert.strictEqual(content[0].key, DATA_SERVER.testPlans.immutable.tests[0].key);
     });
   });
