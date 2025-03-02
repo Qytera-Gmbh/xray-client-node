@@ -10,14 +10,7 @@ export interface Test {
     | string;
   id: number;
   key: string;
-  precondition: {
-    assignee: string;
-    condition: string;
-    preconditionKey: string;
-    reporter: string;
-    self: string;
-    type: string;
-  }[];
+  precondition: Xray.Test.Precondition[];
   reporter: string;
   self: string;
   status: string;
@@ -40,4 +33,15 @@ export interface Step {
     raw: string;
     rendered: string;
   };
+}
+
+export interface Precondition {
+  assignee: string;
+  condition: string;
+  id: number;
+  key: string;
+  rank: number;
+  reporter: string;
+  self: string;
+  type: string;
 }

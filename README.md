@@ -26,7 +26,7 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [x] `GET /rest/raven/1.0/api/test`
     - [x] `GET /rest/raven/1.0/api/settings/teststatuses`
     - [x] `GET /rest/raven/1.0/api/test/{key}/testruns`
-    - [ ] `GET /rest/raven/1.0/api/test/{key}/preconditions`
+    - [x] `GET /rest/raven/1.0/api/test/{key}/preconditions`
     - [ ] `GET /rest/raven/1.0/api/test/{key}/testsets`
     - [ ] `GET /rest/raven/1.0/api/test/{key}/testexecutions`
     - [ ] `GET /rest/raven/1.0/api/test/{key}/testplans`

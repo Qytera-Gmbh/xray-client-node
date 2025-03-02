@@ -6,6 +6,23 @@ import { BaseApi } from "../../base-api.js";
  */
 export class TestApi extends BaseApi {
   /**
+   * To export the pre-conditions of a test, you need to specify the key of the test you wish to
+   * export the test pre-conditions from.
+   *
+   * @param key the test issue key
+   * @returns JSON with the test preconditions of a given test
+   *
+   * @see https://docs.getxray.app/display/XRAY/Tests+-+REST
+   */
+  public async getPreconditions(key: string): Promise<Xray.Test.Precondition[]> {
+    const response = await this.client.send(`rest/raven/1.0/api/test/${key}/preconditions`, {
+      expectedStatus: 200,
+      method: "GET",
+    });
+    return (await response.json()) as Xray.Test.Precondition[];
+  }
+
+  /**
    * To export the test runs of a test, you need to specify the key of the test you wish to export
    * the test runs from. You can filter the test runs by test environment.
    *
@@ -15,7 +32,7 @@ export class TestApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Tests+-+REST
    */
-  public async getTestRuns(
+  public async getRuns(
     key: string,
     query?: {
       /**
