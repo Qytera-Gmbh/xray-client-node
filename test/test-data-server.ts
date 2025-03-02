@@ -47,7 +47,7 @@ const TEST_EXECUTIONS = {
   immutable: {
     key: "XCNODE-2",
     testEnvironments: [{ name: "environmentwith,comma" }, { name: "firefox" }],
-    tests: [{ ...TESTS.immutableDatadriven, testRunId: 12466 }],
+    tests: [{ ...TESTS.immutableDatadriven, testRunId: 12466 }, { ...TESTS.immutable }],
   },
   importXray: {
     v1: { key: "XCNODE-11", tests: [{ ...TESTS.immutableDatadriven }] },
