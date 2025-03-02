@@ -1,6 +1,6 @@
 import type { Xray } from "../../../../index.js";
 import { BaseApi } from "../../base-api.js";
-import { ExecutionEvidenceApi } from "./attachment/attachment.js";
+import { ExecutionEvidenceApi } from "./execution-evidence/execution-evidence.js";
 
 interface GetTestRun {
   /**
