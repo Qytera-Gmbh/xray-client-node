@@ -16,7 +16,7 @@ interface ImportXray {
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Import/post-import-execution
    */
-  (results: Xray.Import.TestExecutionResults): Promise<Xray.Import.ResponseServer>;
+  (results: Xray.Import.TestExecutionResults): Promise<ImportResponse>;
   /**
    * Uploads test results in Xray JSON format to the Xray instance.
    *
@@ -25,7 +25,7 @@ interface ImportXray {
    *
    * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresults
    */
-  v1: (results: Xray.Import.TestExecutionResults) => Promise<Xray.Import.ResponseServer>;
+  v1: (results: Xray.Import.TestExecutionResults) => Promise<ImportResponse>;
 }
 
 interface ImportXrayMultipart {
@@ -42,10 +42,7 @@ interface ImportXrayMultipart {
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Import/post-import-execution-multipart
    */
-  (
-    results: Xray.Import.TestExecutionResults,
-    info: IssueUpdateDetails
-  ): Promise<Xray.Import.ResponseServer>;
+  (results: Xray.Import.TestExecutionResults, info: IssueUpdateDetails): Promise<ImportResponse>;
   /**
    * Uploads test results to the Xray instance while also allowing modification of arbitrary Jira
    * fields.
@@ -59,7 +56,15 @@ interface ImportXrayMultipart {
   v1: (
     results: Xray.Import.TestExecutionResults,
     info: IssueUpdateDetails
-  ) => Promise<Xray.Import.ResponseServer>;
+  ) => Promise<ImportResponse>;
+}
+
+interface ImportResponse {
+  testExecIssue: {
+    id: string;
+    key: string;
+    name: string;
+  };
 }
 
 /**
@@ -77,7 +82,7 @@ export class ImportExecutionApi extends BaseApi {
         },
         method: "POST",
       });
-      return (await response.json()) as Xray.Import.ResponseServer;
+      return (await response.json()) as ImportResponse;
     },
     xrayMultipart: async (
       url: string,
@@ -97,7 +102,7 @@ export class ImportExecutionApi extends BaseApi {
         },
         method: "POST",
       });
-      return (await response.json()) as Xray.Import.ResponseServer;
+      return (await response.json()) as ImportResponse;
     },
   };
 

@@ -1,19 +1,9 @@
-/**
- * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
- */
-export type GetExecutionEvidenceResponse = {
-  author: string;
-  created: string;
-  fileName: string;
-  fileSize: string;
-  ["fileURL"]: string;
-  id: number;
-}[];
+import type { Xray } from "../../index.js";
 
 /**
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
  */
-export interface GetTestRunResponse {
+export interface TestRun {
   assignee: string;
   color: string;
   comment: string;
@@ -24,21 +14,7 @@ export interface GetTestRunResponse {
   }[];
   defects: string[];
   duration: number;
-  evidences: {
-    author: string;
-    authorFullName: string;
-    created: string;
-    createdDate: number;
-    fileIcon: string;
-    fileIconAlt: string;
-    fileName: string;
-    filePath: string;
-    fileSize: string;
-    ["fileURL"]: string;
-    id: number;
-    mimeType: string;
-    numericalFileSize: string;
-  }[];
+  evidences: Xray.Attachment.FileAttachment[];
   executedBy: string;
   finishedOn: string;
   finishedOnIso: string;
@@ -72,44 +48,12 @@ export interface GetTestRunResponse {
     actualResult: {
       rendered: string;
     };
-    attachments: [
-      {
-        author: string;
-        authorFullName: string;
-        created: string;
-        createdDate: number;
-        fileIcon: string;
-        fileIconAlt: string;
-        fileName: string;
-        filePath: string;
-        fileSize: string;
-        ["fileURL"]: string;
-        id: number;
-        mimeType: string;
-        numericalFileSize: string;
-      },
-    ];
+    attachments: Xray.Attachment.FileAttachment[];
     comment: {
       rendered: string;
     };
     defects: string[];
-    evidences: [
-      {
-        author: string;
-        authorFullName: string;
-        created: string;
-        createdDate: number;
-        fileIcon: string;
-        fileIconAlt: string;
-        fileName: string;
-        filePath: string;
-        fileSize: string;
-        ["fileURL"]: string;
-        id: number;
-        mimeType: string;
-        numericalFileSize: string;
-      },
-    ];
+    evidences: Xray.Attachment.FileAttachment[];
     fields: {
       ["Action"]: {
         type: string;
@@ -131,14 +75,4 @@ export interface GetTestRunResponse {
   testExecKey: string;
   testKey: string;
   testVersion: string;
-}
-
-/**
- * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
- */
-export interface UpdateTestRunResponse {
-  evidenceIds: number[];
-  id: number;
-  stepResults: { evidenceIds: number[]; id: number; warnings: string[] }[];
-  warnings: string[];
 }

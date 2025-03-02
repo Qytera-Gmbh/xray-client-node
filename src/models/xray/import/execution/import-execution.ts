@@ -265,7 +265,7 @@ export interface EvidenceItem {
   /**
    * The attachment data encoded in base64.
    */
-  data: Base64String;
+  data: string;
   /**
    * The file name for the attachment.
    */
@@ -360,27 +360,4 @@ export interface CustomFieldCloud extends CustomField {
    * The test run custom field name.
    */
   name: string;
-}
-
-// Small utility type to better express meaning.
-export type Base64String = string;
-
-/**
- * @see https://docs.getxray.app/display/XRAY/Import+Execution+Results+-+REST
- */
-export interface ResponseServer {
-  testExecIssue: {
-    id: string;
-    key: string;
-    name: string;
-  };
-}
-
-/**
- * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST
- */
-export interface ResponseCloud {
-  id: string;
-  key: string;
-  self: string;
 }

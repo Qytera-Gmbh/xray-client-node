@@ -1,7 +1,7 @@
 /**
  * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
  */
-export type GetTestsResponse = {
+export interface TestExecution {
   assignee?: string;
   defects?: {
     id: number;
@@ -24,4 +24,4 @@ export type GetTestsResponse = {
   rank: number;
   startedOn?: string;
   status: string;
-}[];
+}

@@ -12,7 +12,7 @@ interface ImportXray {
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresults
    */
-  (results: Xray.Import.TestExecutionResults): Promise<Xray.Import.ResponseCloud>;
+  (results: Xray.Import.TestExecutionResults): Promise<ImportResponse>;
   /**
    * Uploads test results in Xray JSON format to the Xray instance.
    *
@@ -21,7 +21,7 @@ interface ImportXray {
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresults
    */
-  v1: (results: Xray.Import.TestExecutionResults) => Promise<Xray.Import.ResponseCloud>;
+  v1: (results: Xray.Import.TestExecutionResults) => Promise<ImportResponse>;
 }
 
 interface ImportXrayMultipart {
@@ -35,10 +35,7 @@ interface ImportXrayMultipart {
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresultsMultipart
    */
-  (
-    results: Xray.Import.TestExecutionResults,
-    info: IssueUpdateDetails
-  ): Promise<Xray.Import.ResponseCloud>;
+  (results: Xray.Import.TestExecutionResults, info: IssueUpdateDetails): Promise<ImportResponse>;
   /**
    * Uploads test results to the Xray instance while also allowing modification of arbitrary Jira
    * fields.
@@ -52,7 +49,13 @@ interface ImportXrayMultipart {
   v1: (
     results: Xray.Import.TestExecutionResults,
     info: IssueUpdateDetails
-  ) => Promise<Xray.Import.ResponseCloud>;
+  ) => Promise<ImportResponse>;
+}
+
+interface ImportResponse {
+  id: string;
+  key: string;
+  self: string;
 }
 
 /**
@@ -70,7 +73,7 @@ export class ImportExecutionApi extends BaseApi {
         },
         method: "POST",
       });
-      return (await response.json()) as Xray.Import.ResponseCloud;
+      return (await response.json()) as ImportResponse;
     },
     xrayMultipart: async (
       url: string,
@@ -90,7 +93,7 @@ export class ImportExecutionApi extends BaseApi {
         },
         method: "POST",
       });
-      return (await response.json()) as Xray.Import.ResponseCloud;
+      return (await response.json()) as ImportResponse;
     },
   };
 
