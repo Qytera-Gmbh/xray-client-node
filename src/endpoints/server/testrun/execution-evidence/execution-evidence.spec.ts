@@ -7,8 +7,8 @@ import { DATA_SERVER } from "../../../../../test/test-data-server.js";
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getEvidence", () => {
     for (const [version, endpoint] of [
-      ["v1", XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence.v1],
-      ["v2", XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence],
+      ["v1", XRAY_CLIENT_SERVER.testRun.evidence.getEvidence.v1],
+      ["v2", XRAY_CLIENT_SERVER.testRun.evidence.getEvidence],
     ] as const) {
       describe(version, () => {
         it("returns evidence content", async () => {
@@ -24,21 +24,21 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     for (const [version, endpoint, issue] of [
       [
         "v1",
-        XRAY_CLIENT_SERVER.testRuns.evidence.addEvidence.v1,
+        XRAY_CLIENT_SERVER.testRun.evidence.addEvidence.v1,
         DATA_SERVER.testExecutions.addAttachments.v1,
       ],
       [
         "v2",
-        XRAY_CLIENT_SERVER.testRuns.evidence.addEvidence,
+        XRAY_CLIENT_SERVER.testRun.evidence.addEvidence,
         DATA_SERVER.testExecutions.addAttachments.v2,
       ],
     ] as const) {
       describe(version, () => {
         beforeEach(async () => {
-          for (const evidence of await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+          for (const evidence of await XRAY_CLIENT_SERVER.testRun.evidence.getEvidence(
             issue.tests[0].testRunId
           )) {
-            await XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceByName(
+            await XRAY_CLIENT_SERVER.testRun.evidence.deleteEvidenceByName(
               issue.tests[0].testRunId,
               evidence.fileName
             );
@@ -51,7 +51,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
             data: Buffer.from("hello world").toString("base64"),
             filename: "hello.txt",
           });
-          const content = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+          const content = await XRAY_CLIENT_SERVER.testRun.evidence.getEvidence(
             issue.tests[0].testRunId
           );
           assert.strictEqual(content.length, 1);
@@ -65,23 +65,23 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     for (const [version, endpoint, issue] of [
       [
         "v1",
-        XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceByName.v1,
+        XRAY_CLIENT_SERVER.testRun.evidence.deleteEvidenceByName.v1,
         DATA_SERVER.testExecutions.addAttachments.v1,
       ],
       [
         "v2",
-        XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceByName,
+        XRAY_CLIENT_SERVER.testRun.evidence.deleteEvidenceByName,
         DATA_SERVER.testExecutions.addAttachments.v2,
       ],
     ] as const) {
       const filename = `delete-by-name-${version}.txt`;
       describe(version, () => {
         beforeEach(async () => {
-          const evidences = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+          const evidences = await XRAY_CLIENT_SERVER.testRun.evidence.getEvidence(
             issue.tests[0].testRunId
           );
           if (evidences.every((e) => e.fileName !== filename)) {
-            await XRAY_CLIENT_SERVER.testRuns.evidence.addEvidence(issue.tests[0].testRunId, {
+            await XRAY_CLIENT_SERVER.testRun.evidence.addEvidence(issue.tests[0].testRunId, {
               contentType: "text/plain",
               data: Buffer.from("hello world").toString("base64"),
               filename: filename,
@@ -90,12 +90,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         });
 
         it("deletes evidence data", async () => {
-          for (const evidence of await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+          for (const evidence of await XRAY_CLIENT_SERVER.testRun.evidence.getEvidence(
             issue.tests[0].testRunId
           )) {
             await endpoint(issue.tests[0].testRunId, evidence.fileName);
           }
-          const evidences = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+          const evidences = await XRAY_CLIENT_SERVER.testRun.evidence.getEvidence(
             issue.tests[0].testRunId
           );
           assert.ok(evidences.every((e) => e.fileName !== filename));
@@ -108,23 +108,23 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     for (const [version, endpoint, issue] of [
       [
         "v1",
-        XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceById.v1,
+        XRAY_CLIENT_SERVER.testRun.evidence.deleteEvidenceById.v1,
         DATA_SERVER.testExecutions.addAttachments.v1,
       ],
       [
         "v2",
-        XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceById,
+        XRAY_CLIENT_SERVER.testRun.evidence.deleteEvidenceById,
         DATA_SERVER.testExecutions.addAttachments.v2,
       ],
     ] as const) {
       const filename = `delete-by-id-${version}.txt`;
       describe(version, () => {
         beforeEach(async () => {
-          const evidences = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+          const evidences = await XRAY_CLIENT_SERVER.testRun.evidence.getEvidence(
             issue.tests[0].testRunId
           );
           if (evidences.every((e) => e.fileName !== filename)) {
-            await XRAY_CLIENT_SERVER.testRuns.evidence.addEvidence(issue.tests[0].testRunId, {
+            await XRAY_CLIENT_SERVER.testRun.evidence.addEvidence(issue.tests[0].testRunId, {
               contentType: "text/plain",
               data: Buffer.from("hello world").toString("base64"),
               filename: filename,
@@ -133,12 +133,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         });
 
         it("deletes evidence data", async () => {
-          for (const evidence of await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+          for (const evidence of await XRAY_CLIENT_SERVER.testRun.evidence.getEvidence(
             issue.tests[0].testRunId
           )) {
             await endpoint(issue.tests[0].testRunId, evidence.id);
           }
-          const evidences = await XRAY_CLIENT_SERVER.testRuns.evidence.getEvidence(
+          const evidences = await XRAY_CLIENT_SERVER.testRun.evidence.getEvidence(
             issue.tests[0].testRunId
           );
           assert.ok(evidences.every((e) => e.fileName !== filename));

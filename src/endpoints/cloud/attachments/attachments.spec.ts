@@ -7,8 +7,8 @@ import { DATA_CLOUD } from "../../../../test/test-data-cloud.js";
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("get attachment", () => {
     for (const [version, endpoint] of [
-      ["v1", XRAY_CLIENT_CLOUD.attachments.getAttachment.v1],
-      ["v2", XRAY_CLIENT_CLOUD.attachments.getAttachment],
+      ["v1", XRAY_CLIENT_CLOUD.attachment.getAttachment.v1],
+      ["v2", XRAY_CLIENT_CLOUD.attachment.getAttachment],
     ] as const) {
       describe(version, () => {
         it(`returns attachment content (${version})`, async () => {
@@ -20,8 +20,8 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
     describe("add attachments", () => {
       for (const [version, endpoint] of [
-        ["v1", XRAY_CLIENT_CLOUD.attachments.addAttachment.v1],
-        ["v2", XRAY_CLIENT_CLOUD.attachments.addAttachment],
+        ["v1", XRAY_CLIENT_CLOUD.attachment.addAttachment.v1],
+        ["v2", XRAY_CLIENT_CLOUD.attachment.addAttachment],
       ] as const) {
         describe(version, () => {
           it(`adds attachments (${version})`, async () => {
