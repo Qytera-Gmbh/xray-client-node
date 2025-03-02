@@ -24,9 +24,9 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     });
   });
 
-  describe("getRuns", () => {
+  describe("getTestRuns", () => {
     it("returns test runs without query parameter", async () => {
-      const testRuns = await XRAY_CLIENT_SERVER.test.getRuns(
+      const testRuns = await XRAY_CLIENT_SERVER.test.getTestRuns(
         DATA_SERVER.testExecutions.immutable.tests[0].key
       );
       const testRun = testRuns.find(
@@ -36,7 +36,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     });
 
     it("returns test runs with query parameter", async () => {
-      const testRuns = await XRAY_CLIENT_SERVER.test.getRuns(
+      const testRuns = await XRAY_CLIENT_SERVER.test.getTestRuns(
         DATA_SERVER.testExecutions.immutable.tests[0].key,
         {
           testEnvironments: DATA_SERVER.testExecutions.immutable.testEnvironments.map(
@@ -57,12 +57,18 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getPreconditions", () => {
     it("returns test preconditions", async () => {
       const preconditions = await XRAY_CLIENT_SERVER.test.getPreconditions(
-        DATA_SERVER.tests.immutable.key
+        DATA_SERVER.preconditions.immutable.tests[0].key
       );
-      assert.deepStrictEqual(
-        preconditions[0].key,
-        DATA_SERVER.tests.immutable.preconditions[0].key
+      assert.deepStrictEqual(preconditions[0].key, DATA_SERVER.preconditions.immutable.key);
+    });
+  });
+
+  describe("getTestSets", () => {
+    it("returns test sets", async () => {
+      const testSets = await XRAY_CLIENT_SERVER.test.getTestSets(
+        DATA_SERVER.testSets.immutable.tests[0].key
       );
+      assert.deepStrictEqual(testSets[0].key, DATA_SERVER.testSets.immutable.key);
     });
   });
 });
