@@ -1,9 +1,12 @@
 // ============================================================================================== //
 // TEST DATA FOR XRAY SERVER
-// In case of a fork or migration, these are all the issues you will need to update/recreate.
+// In case of a fork or migration, these are all the information you will need to update/recreate.
 // ============================================================================================== //
 export const DATA_SERVER = {
   project: { key: "XCNODE" },
+  get settings() {
+    return SETTINGS;
+  },
   get testExecutions() {
     return TEST_EXECUTIONS;
   },
@@ -69,5 +72,21 @@ const TEST_PLANS = {
     key: "XCNODE-7",
     testExecutions: [TEST_EXECUTIONS.immutable, TEST_EXECUTIONS.addAttachments.v2],
     tests: [TESTS.immutableDatadriven],
+  },
+} as const;
+// ============================================================================================== //
+// XRAY SETTINGS
+// ============================================================================================== //
+const SETTINGS = {
+  testStatuses: {
+    pass: {
+      color: "#95C160",
+      description: "The test run/iteration has passed",
+      final: true,
+      id: 0,
+      name: "PASS",
+      rank: 0,
+      requirementStatusName: "OK",
+    },
   },
 } as const;
