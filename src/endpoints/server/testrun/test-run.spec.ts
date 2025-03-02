@@ -7,17 +7,19 @@ import { DATA_SERVER } from "../../../../test/test-data-server.js";
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getTestRun", () => {
     for (const [version, endpoint] of [
-      ["v1", XRAY_CLIENT_SERVER.testRun.getTestRun.v1],
-      ["v2", XRAY_CLIENT_SERVER.testRun.getTestRun],
+      ["v1", XRAY_CLIENT_SERVER.testRun.v1],
+      ["v2", XRAY_CLIENT_SERVER.testRun],
     ] as const) {
       describe(version, () => {
         it("returns test run details by id", async () => {
-          const content = await endpoint(DATA_SERVER.testExecutions.immutable.tests[0].testRunId);
+          const content = await endpoint.getTestRun(
+            DATA_SERVER.testExecutions.immutable.tests[0].testRunId
+          );
           assert.strictEqual(content.testKey, DATA_SERVER.testExecutions.immutable.tests[0].key);
         });
 
         it("returns test run details by query", async () => {
-          const content = await endpoint({
+          const content = await endpoint.getTestRun({
             testExecIssueKey: DATA_SERVER.testExecutions.immutable.key,
             testIssueKey: DATA_SERVER.testExecutions.immutable.tests[0].key,
           });
@@ -29,16 +31,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
   describe("updateTestRun", () => {
     for (const [version, endpoint, issue] of [
-      [
-        "v1",
-        XRAY_CLIENT_SERVER.testRun.updateTestRun.v1,
-        DATA_SERVER.testExecutions.updateTestRun.v1,
-      ],
-      ["v2", XRAY_CLIENT_SERVER.testRun.updateTestRun, DATA_SERVER.testExecutions.updateTestRun.v2],
+      ["v1", XRAY_CLIENT_SERVER.testRun.v1, DATA_SERVER.testExecutions.updateTestRun.v1],
+      ["v2", XRAY_CLIENT_SERVER.testRun, DATA_SERVER.testExecutions.updateTestRun.v2],
     ] as const) {
       describe(version, () => {
         beforeEach(async () => {
-          await endpoint(issue.tests[1].testRunId, {
+          await endpoint.updateTestRun(issue.tests[1].testRunId, {
             status: "TODO",
             steps: [
               { id: issue.tests[1].steps[0].id, status: "TODO" },
@@ -52,7 +50,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         });
 
         it("updates test run details", async () => {
-          await endpoint(issue.tests[1].testRunId, {
+          await endpoint.updateTestRun(issue.tests[1].testRunId, {
             status: "EXECUTING",
             steps: [
               { id: issue.tests[1].steps[0].id, status: "EXECUTING" },
