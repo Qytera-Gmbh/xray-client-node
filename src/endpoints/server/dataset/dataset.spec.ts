@@ -3,7 +3,7 @@ import path, { join } from "node:path";
 import { cwd } from "node:process";
 import { beforeEach, describe, it } from "node:test";
 import { XRAY_CLIENT_SERVER } from "../../../../test/clients.js";
-import { DATA_SERVER } from "../../../../test/data.js";
+import { DATA_SERVER } from "../../../../test/test-data-server.js";
 
 const NEWLINE_REGEX = /\r\n?|\n/;
 
@@ -11,10 +11,10 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   beforeEach(async () => {
     const file = join(cwd(), "test", "resources", "mini-cars.csv");
     await XRAY_CLIENT_SERVER.dataset.import(file, {
-      testIssueKey: DATA_SERVER.tests.importingDatasets.key,
+      testIssueKey: DATA_SERVER.tests.importDatasets.key,
     });
     const dataset = await XRAY_CLIENT_SERVER.dataset.export({
-      testIssueKey: DATA_SERVER.tests.importingDatasets.key,
+      testIssueKey: DATA_SERVER.tests.importDatasets.key,
     });
     assert.deepStrictEqual(dataset.split(NEWLINE_REGEX), [
       "model,type",
@@ -39,10 +39,10 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       it("imports csv data", async () => {
         const file = join(cwd(), "test", "resources", "mini.csv");
         await endpoint.import(file, {
-          testIssueKey: DATA_SERVER.tests.importingDatasets.key,
+          testIssueKey: DATA_SERVER.tests.importDatasets.key,
         });
         const dataset = await endpoint.export({
-          testIssueKey: DATA_SERVER.tests.importingDatasets.key,
+          testIssueKey: DATA_SERVER.tests.importDatasets.key,
         });
         assert.deepStrictEqual(dataset.split(NEWLINE_REGEX), [
           "name,age",

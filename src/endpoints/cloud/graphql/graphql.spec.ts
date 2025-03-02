@@ -2,7 +2,7 @@ import assert from "node:assert";
 import path from "node:path";
 import { beforeEach, describe, it } from "node:test";
 import { XRAY_CLIENT_CLOUD } from "../../../../test/clients.js";
-import { DATA_CLOUD } from "../../../../test/data.js";
+import { DATA_CLOUD } from "../../../../test/test-data-cloud.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   for (const [version, endpoint] of [["v2", XRAY_CLIENT_CLOUD.graphql]] as const) {
@@ -11,7 +11,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         it("returns test execution data", async () => {
           const response = await endpoint.getTestExecution(
             {
-              issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.issueId,
+              issueId: DATA_CLOUD.testExecutions.importXrayMultipart.v2.issueId,
             },
             (testExecution) => [
               testExecution.issueId,
@@ -25,9 +25,9 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
             ]
           );
           assert.deepStrictEqual(response, {
-            issueId: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.issueId,
+            issueId: DATA_CLOUD.testExecutions.importXrayMultipart.v2.issueId,
             jira: {
-              key: DATA_CLOUD.testExecutions.importingXrayMultipart.v2.key,
+              key: DATA_CLOUD.testExecutions.importXrayMultipart.v2.key,
             },
             tests: {
               results: [
@@ -254,7 +254,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
           await endpoint.removeEvidenceFromTestRun(
             {
               evidenceFilenames: [filename],
-              id: DATA_CLOUD.testExecutions.addingAttachments.testRunId,
+              id: DATA_CLOUD.testExecutions.addAttachments.testRunId,
             },
             (removeEvidenceResult) => [removeEvidenceResult.warnings]
           );
@@ -270,7 +270,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
                   mimeType: "text/plain",
                 },
               ],
-              id: DATA_CLOUD.testExecutions.addingAttachments.testRunId,
+              id: DATA_CLOUD.testExecutions.addAttachments.testRunId,
             },
             (addEvidenceResult) => [addEvidenceResult.addedEvidence, addEvidenceResult.warnings]
           );
@@ -294,7 +294,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
                   mimeType: "text/plain",
                 },
               ],
-              id: DATA_CLOUD.testExecutions.removingAttachments.tests[0].testRunId,
+              id: DATA_CLOUD.testExecutions.removeAttachments.tests[0].testRunId,
             },
             (addEvidenceResult) => [addEvidenceResult.addedEvidence, addEvidenceResult.warnings]
           );
@@ -304,7 +304,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
           const response = await endpoint.removeEvidenceFromTestRun(
             {
               evidenceFilenames: [filename],
-              id: DATA_CLOUD.testExecutions.removingAttachments.tests[0].testRunId,
+              id: DATA_CLOUD.testExecutions.removeAttachments.tests[0].testRunId,
             },
             (removeEvidenceResult) => [
               removeEvidenceResult.removedEvidence,

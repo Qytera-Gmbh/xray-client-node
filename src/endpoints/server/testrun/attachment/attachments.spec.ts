@@ -2,7 +2,7 @@ import assert from "node:assert";
 import path from "node:path";
 import { beforeEach, describe, it } from "node:test";
 import { XRAY_CLIENT_SERVER } from "../../../../../test/clients.js";
-import { DATA_SERVER } from "../../../../../test/data.js";
+import { DATA_SERVER } from "../../../../../test/test-data-server.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getEvidence", () => {
@@ -25,12 +25,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       [
         "v1",
         XRAY_CLIENT_SERVER.testRuns.evidence.addEvidence.v1,
-        DATA_SERVER.testExecutions.addingAttachments.v1,
+        DATA_SERVER.testExecutions.addAttachments.v1,
       ],
       [
         "v2",
         XRAY_CLIENT_SERVER.testRuns.evidence.addEvidence,
-        DATA_SERVER.testExecutions.addingAttachments.v2,
+        DATA_SERVER.testExecutions.addAttachments.v2,
       ],
     ] as const) {
       describe(version, () => {
@@ -66,12 +66,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       [
         "v1",
         XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceByName.v1,
-        DATA_SERVER.testExecutions.addingAttachments.v1,
+        DATA_SERVER.testExecutions.addAttachments.v1,
       ],
       [
         "v2",
         XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceByName,
-        DATA_SERVER.testExecutions.addingAttachments.v2,
+        DATA_SERVER.testExecutions.addAttachments.v2,
       ],
     ] as const) {
       const filename = `delete-by-name-${version}.txt`;
@@ -109,12 +109,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       [
         "v1",
         XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceById.v1,
-        DATA_SERVER.testExecutions.addingAttachments.v1,
+        DATA_SERVER.testExecutions.addAttachments.v1,
       ],
       [
         "v2",
         XRAY_CLIENT_SERVER.testRuns.evidence.deleteEvidenceById,
-        DATA_SERVER.testExecutions.addingAttachments.v2,
+        DATA_SERVER.testExecutions.addAttachments.v2,
       ],
     ] as const) {
       const filename = `delete-by-id-${version}.txt`;
