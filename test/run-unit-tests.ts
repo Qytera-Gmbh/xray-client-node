@@ -20,5 +20,7 @@ const TEST_STREAM = run({
     console.log("unit tests done");
   });
 
-TEST_STREAM.compose(junit).pipe(createWriteStream("unit.xml", "utf-8"));
+if (process.env.JUNIT_REPORTER) {
+  TEST_STREAM.compose(junit).pipe(createWriteStream("unit.xml", "utf-8"));
+}
 TEST_STREAM.pipe(spec()).pipe(process.stdout);
