@@ -10,7 +10,7 @@ export class XrayClientServer extends BaseClient {
   public readonly import = {
     execution: new ImportExecutionApi(this),
   };
-  public readonly testExecutions = new TestExecutionApi(this);
-  public readonly testPlans = new TestPlanApi(this);
-  public readonly testRuns = new TestRunApi(this);
+  public readonly testExecution = new TestExecutionApi(this);
+  public readonly testPlan = new TestPlanApi(this);
+  public readonly testRun = new TestRunApi(this);
 }

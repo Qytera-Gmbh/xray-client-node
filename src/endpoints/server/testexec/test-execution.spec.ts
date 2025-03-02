@@ -7,7 +7,7 @@ import { DATA_SERVER } from "../../../../test/test-data-server.js";
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getTests", () => {
     it("returns test data", async () => {
-      const content = await XRAY_CLIENT_SERVER.testExecutions.getTests(
+      const content = await XRAY_CLIENT_SERVER.testExecution.getTests(
         DATA_SERVER.testExecutions.immutable.key
       );
       assert.strictEqual(content.length, 1);
