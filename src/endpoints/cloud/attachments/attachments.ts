@@ -53,7 +53,7 @@ interface GetAttachment {
 /**
  * Models the attachment endpoints.
  */
-export class AttachmentsApi extends BaseApi implements AddAttachment, GetAttachment {
+export class AttachmentsApi extends BaseApi {
   private readonly processor = {
     addAttachment: async (url: string, file: string) => {
       const formData = new FormData();
@@ -80,7 +80,7 @@ export class AttachmentsApi extends BaseApi implements AddAttachment, GetAttachm
     addAttachment(file: string): Promise<AddAttachmentResponse> {
       return self.processor.addAttachment("api/v1/attachments", file);
     },
-    getAttachment: (attachmentId: string): Promise<string> => {
+    getAttachment(attachmentId: string): Promise<string> {
       return self.processor.getAttachment(`api/v1/attachments/${attachmentId}`);
     },
   }));

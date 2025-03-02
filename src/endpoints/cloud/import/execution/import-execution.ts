@@ -4,6 +4,17 @@ import type { IssueUpdateDetails } from "../../../../models/jira/__generated__/i
 import { BaseApi } from "../../../base-api.js";
 
 interface ImportXray {
+  v1: {
+    /**
+     * Uploads test results in Xray JSON format to the Xray instance.
+     *
+     * @param results the test results
+     * @returns the import response
+     *
+     * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresults
+     */
+    xray(results: Xray.Import.TestExecutionResults): Promise<ImportResponse>;
+  };
   /**
    * Uploads test results in Xray JSON format to the Xray instance.
    *
@@ -12,19 +23,26 @@ interface ImportXray {
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresults
    */
-  (results: Xray.Import.TestExecutionResults): Promise<ImportResponse>;
-  /**
-   * Uploads test results in Xray JSON format to the Xray instance.
-   *
-   * @param results the test results
-   * @returns the import response
-   *
-   * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresults
-   */
-  v1: (results: Xray.Import.TestExecutionResults) => Promise<ImportResponse>;
+  xray(results: Xray.Import.TestExecutionResults): Promise<ImportResponse>;
 }
 
 interface ImportXrayMultipart {
+  v1: {
+    /**
+     * Uploads test results to the Xray instance while also allowing modification of arbitrary Jira
+     * fields.
+     *
+     * @param results the test results
+     * @param info - the Jira test execution issue information
+     * @returns the key of the test execution issue
+     *
+     * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresultsMultipart
+     */
+    xrayMultipart(
+      results: Xray.Import.TestExecutionResults,
+      info: IssueUpdateDetails
+    ): Promise<ImportResponse>;
+  };
   /**
    * Uploads test results to the Xray instance while also allowing modification of arbitrary Jira
    * fields.
@@ -35,21 +53,10 @@ interface ImportXrayMultipart {
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2#ImportExecutionResultsRESTv2-XrayJSONresultsMultipart
    */
-  (results: Xray.Import.TestExecutionResults, info: IssueUpdateDetails): Promise<ImportResponse>;
-  /**
-   * Uploads test results to the Xray instance while also allowing modification of arbitrary Jira
-   * fields.
-   *
-   * @param results the test results
-   * @param info - the Jira test execution issue information
-   * @returns the key of the test execution issue
-   *
-   * @see https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST#ImportExecutionResultsREST-XrayJSONresultsMultipart
-   */
-  v1: (
+  xrayMultipart(
     results: Xray.Import.TestExecutionResults,
     info: IssueUpdateDetails
-  ) => Promise<ImportResponse>;
+  ): Promise<ImportResponse>;
 }
 
 interface ImportResponse {
@@ -97,29 +104,26 @@ export class ImportExecutionApi extends BaseApi {
     },
   };
 
-  public xray: ImportXray = Object.assign(
-    async (...[results]: Parameters<ImportXray>): ReturnType<ImportXray> => {
-      return this.processor.xray("api/v2/import/execution", results);
+  public readonly v1: ImportXray["v1"] & ImportXrayMultipart["v1"] = this.bind((self) => ({
+    xray(results: Xray.Import.TestExecutionResults): Promise<ImportResponse> {
+      return self.processor.xray("api/v1/import/execution", results);
     },
-    {
-      v1: async (...[results]: Parameters<ImportXray["v1"]>): ReturnType<ImportXray["v1"]> => {
-        return this.processor.xray("api/v1/import/execution", results);
-      },
-    }
-  );
+    xrayMultipart(
+      results: Xray.Import.TestExecutionResults,
+      info: IssueUpdateDetails
+    ): Promise<ImportResponse> {
+      return self.processor.xrayMultipart("api/v1/import/execution/multipart", results, info);
+    },
+  }));
 
-  public xrayMultipart: ImportXrayMultipart = Object.assign(
-    async (
-      ...[results, info]: Parameters<ImportXrayMultipart>
-    ): ReturnType<ImportXrayMultipart> => {
-      return this.processor.xrayMultipart("api/v2/import/execution/multipart", results, info);
-    },
-    {
-      v1: async (
-        ...[results, info]: Parameters<ImportXrayMultipart["v1"]>
-      ): ReturnType<ImportXrayMultipart["v1"]> => {
-        return this.processor.xrayMultipart("api/v1/import/execution/multipart", results, info);
-      },
-    }
-  );
+  public async xray(results: Xray.Import.TestExecutionResults): Promise<ImportResponse> {
+    return this.processor.xray("api/v2/import/execution", results);
+  }
+
+  public async xrayMultipart(
+    results: Xray.Import.TestExecutionResults,
+    info: IssueUpdateDetails
+  ): Promise<ImportResponse> {
+    return this.processor.xrayMultipart("api/v2/import/execution/multipart", results, info);
+  }
 }
