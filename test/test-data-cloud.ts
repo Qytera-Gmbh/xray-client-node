@@ -1,6 +1,6 @@
 // ============================================================================================== //
 // TEST DATA FOR XRAY CLOUD
-// In case of a fork or migration, these are all the issues you will need to update/recreate.
+// In case of a fork or migration, these are all the information you will need to update/recreate.
 // ============================================================================================== //
 export const DATA_CLOUD = {
   project: { key: "XCN" },

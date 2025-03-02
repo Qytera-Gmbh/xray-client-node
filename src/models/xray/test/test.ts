@@ -1,11 +1,11 @@
-import type { Xray } from "../../index.js";
+import type { Xray } from "../../../../index.js";
 
 export interface Test {
   archived: boolean;
   assignee: string;
   definition:
     | {
-        steps: TestStep[];
+        steps: Step[];
       }
     | string;
   id: number;
@@ -24,7 +24,7 @@ export interface Test {
   type: string;
 }
 
-export interface TestStep {
+export interface Step {
   attachments: Xray.Attachment.FileAttachment[];
   data: {
     raw: string;
