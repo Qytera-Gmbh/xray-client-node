@@ -57,7 +57,7 @@ interface GetTestRun {
            */
           testIssueKey: string;
         }
-      | string
+      | number
   ) => Promise<Xray.TestRun.TestRun>;
 }
 
@@ -198,7 +198,7 @@ interface UpdateTestRun {
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/put_testrun__id_
    */
-  (testRunId: string, body: UpdateTestRunPayload): Promise<UpdateTestRunResponse>;
+  (testRunId: number, body: UpdateTestRunPayload): Promise<UpdateTestRunResponse>;
   /**
    * Update the test run. The fields that can be updated on the test run are: **status, comment,
    * assignee, defects, evidences, examples** and **steps**.
@@ -208,7 +208,7 @@ interface UpdateTestRun {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
    */
-  v1: (testRunId: string, body: UpdateTestRunPayload) => Promise<void>;
+  v1: (testRunId: number, body: UpdateTestRunPayload) => Promise<void>;
 }
 
 interface UpdateTestRunResponse {
@@ -269,8 +269,8 @@ export class TestRunApi extends BaseApi {
     },
     {
       v1: async (...[testRun]: Parameters<GetTestRun["v1"]>): ReturnType<GetTestRun["v1"]> => {
-        if (typeof testRun === "string") {
-          return this.processor.getTestRunById(`rest/raven/1.0/api/testrun/${testRun}`);
+        if (typeof testRun === "number") {
+          return this.processor.getTestRunById(`rest/raven/1.0/api/testrun/${testRun.toString()}`);
         } else {
           return this.processor.getTestRunByQuery(`rest/raven/1.0/api/testrun`, testRun);
         }
@@ -281,14 +281,20 @@ export class TestRunApi extends BaseApi {
   public updateTestRun: UpdateTestRun = Object.assign(
     async (...[testRunId, body]: Parameters<UpdateTestRun>): ReturnType<UpdateTestRun> => {
       return JSON.parse(
-        await this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId}`, body)
+        await this.processor.updateTestRun(
+          `rest/raven/2.0/api/testrun/${testRunId.toString()}`,
+          body
+        )
       ) as UpdateTestRunResponse;
     },
     {
       v1: async (
         ...[testRunId, body]: Parameters<UpdateTestRun["v1"]>
       ): ReturnType<UpdateTestRun["v1"]> => {
-        await this.processor.updateTestRun(`rest/raven/1.0/api/testrun/${testRunId}`, body);
+        await this.processor.updateTestRun(
+          `rest/raven/1.0/api/testrun/${testRunId.toString()}`,
+          body
+        );
       },
     }
   );
