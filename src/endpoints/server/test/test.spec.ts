@@ -23,4 +23,34 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       assert.strictEqual(tests[0].key, DATA_SERVER.tests.immutableDatadriven.key);
     });
   });
+
+  describe("getTestRuns", () => {
+    it("returns test runs without query parameter", async () => {
+      const testRuns = await XRAY_CLIENT_SERVER.test.getTestRuns(
+        DATA_SERVER.testExecutions.immutable.tests[0].key
+      );
+      const testRun = testRuns.find(
+        (r) => r.id === DATA_SERVER.testExecutions.immutable.tests[0].testRunId
+      );
+      assert.ok(testRun);
+    });
+
+    it("returns test runs with query parameter", async () => {
+      const testRuns = await XRAY_CLIENT_SERVER.test.getTestRuns(
+        DATA_SERVER.testExecutions.immutable.tests[0].key,
+        {
+          testEnvironments: DATA_SERVER.testExecutions.immutable.testEnvironments.map(
+            (e) => e.name
+          ),
+        }
+      );
+      const testRun = testRuns.find(
+        (r) => r.id === DATA_SERVER.testExecutions.immutable.tests[0].testRunId
+      );
+      assert.deepStrictEqual(
+        testRun?.testEnvironments,
+        DATA_SERVER.testExecutions.immutable.testEnvironments.map((e) => e.name)
+      );
+    });
+  });
 });
