@@ -3,17 +3,13 @@ import { randomUUID } from "node:crypto";
 import path from "node:path";
 import { describe, it } from "node:test";
 import { JIRA_CLIENT_SERVER, XRAY_CLIENT_SERVER } from "../../../../../test/clients.js";
-import { DATA_SERVER } from "../../../../../test/data.js";
+import { DATA_SERVER } from "../../../../../test/test-data-server.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("xray", () => {
     for (const [version, endpoint, issue] of [
-      [
-        "v1",
-        XRAY_CLIENT_SERVER.import.execution.xray.v1,
-        DATA_SERVER.testExecutions.importingXray.v1,
-      ],
-      ["v2", XRAY_CLIENT_SERVER.import.execution.xray, DATA_SERVER.testExecutions.importingXray.v2],
+      ["v1", XRAY_CLIENT_SERVER.import.execution.xray.v1, DATA_SERVER.testExecutions.importXray.v1],
+      ["v2", XRAY_CLIENT_SERVER.import.execution.xray, DATA_SERVER.testExecutions.importXray.v2],
     ] as const) {
       describe(version, () => {
         it("imports xray results in xray server", async () => {
@@ -37,12 +33,12 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       [
         "v1",
         XRAY_CLIENT_SERVER.import.execution.xrayMultipart.v1,
-        DATA_SERVER.testExecutions.updateTestRun.v1,
+        DATA_SERVER.testExecutions.importXrayMultipart.v1,
       ],
       [
         "v2",
         XRAY_CLIENT_SERVER.import.execution.xrayMultipart,
-        DATA_SERVER.testExecutions.updateTestRun.v2,
+        DATA_SERVER.testExecutions.importXrayMultipart.v2,
       ],
     ] as const) {
       describe(version, () => {

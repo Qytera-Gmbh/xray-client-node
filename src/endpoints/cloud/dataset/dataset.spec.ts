@@ -2,7 +2,7 @@ import assert from "node:assert";
 import path from "node:path";
 import { describe, it } from "node:test";
 import { XRAY_CLIENT_CLOUD } from "../../../../test/clients.js";
-import { DATA_CLOUD } from "../../../../test/data.js";
+import { DATA_CLOUD } from "../../../../test/test-data-cloud.js";
 
 const NEWLINE_REGEX = /\r\n?|\n/;
 
