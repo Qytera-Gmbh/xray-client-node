@@ -8,12 +8,12 @@ import { DATA_SERVER } from "../../../../../test/test-data-server.js";
 describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("xray", () => {
     for (const [version, endpoint, issue] of [
-      ["v1", XRAY_CLIENT_SERVER.import.execution.xray.v1, DATA_SERVER.testExecutions.importXray.v1],
-      ["v2", XRAY_CLIENT_SERVER.import.execution.xray, DATA_SERVER.testExecutions.importXray.v2],
+      ["v1", XRAY_CLIENT_SERVER.import.execution.v1, DATA_SERVER.testExecutions.importXray.v1],
+      ["v2", XRAY_CLIENT_SERVER.import.execution, DATA_SERVER.testExecutions.importXray.v2],
     ] as const) {
       describe(version, () => {
         it("imports xray results in xray server", async () => {
-          const data = await endpoint({
+          const data = await endpoint.xray({
             testExecutionKey: issue.key,
             tests: [
               {
@@ -32,19 +32,19 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     for (const [version, endpoint, issue] of [
       [
         "v1",
-        XRAY_CLIENT_SERVER.import.execution.xrayMultipart.v1,
+        XRAY_CLIENT_SERVER.import.execution.v1,
         DATA_SERVER.testExecutions.importXrayMultipart.v1,
       ],
       [
         "v2",
-        XRAY_CLIENT_SERVER.import.execution.xrayMultipart,
+        XRAY_CLIENT_SERVER.import.execution,
         DATA_SERVER.testExecutions.importXrayMultipart.v2,
       ],
     ] as const) {
       describe(version, () => {
         it("imports xray multipart results in xray server", async () => {
           const description = randomUUID();
-          const data = await endpoint(
+          const data = await endpoint.xrayMultipart(
             {
               testExecutionKey: issue.key,
               tests: [
