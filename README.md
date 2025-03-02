@@ -396,7 +396,7 @@ export const serverClient = new XrayClientServer({
 });
 
 const csvData = await serverClient.dataset.export({ testIssueKey: "PRJ-123" });
-const testRun = await serverClient.testRuns.getTestRun({
+const testRun = await serverClient.testRun.getTestRun({
   testExecIssueKey: "PRJ-456",
   testIssueKey: "PRJ-123",
 });
@@ -468,12 +468,12 @@ You can switch between versions on a per-request basis:
 
 ```ts
 // Xray server:
-const evidence = await serverClient.testRuns.evidence.getEvidence("12345"); // 2.0 endpoint
-const evidence = await serverClient.testRuns.evidence.v1.getEvidence("12345"); // 1.0 endpoint
+const evidence = await serverClient.testRun.evidence.getEvidence("12345"); // 2.0 endpoint
+const evidence = await serverClient.testRun.evidence.v1.getEvidence("12345"); // 1.0 endpoint
 
 // Xray cloud:
-const attachment = await cloudClient.attachments.addAttachment("my-file.txt"); // v2 endpoint
-const attachment = await cloudClient.attachments.v1.addAttachment("my-file.txt"); // v1 endpoint
+const attachment = await cloudClient.attachment.addAttachment("my-file.txt"); // v2 endpoint
+const attachment = await cloudClient.attachment.v1.addAttachment("my-file.txt"); // v1 endpoint
 ```
 
 ## Error Handling
