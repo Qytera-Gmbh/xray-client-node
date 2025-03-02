@@ -26,16 +26,18 @@ interface AddEvidence {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  (testRunId: number, body: EvidencePayload): Promise<void>;
-  /**
-   * Add new evidence to a test run.
-   *
-   * @param testRunId the ID of the test run
-   * @param body the evidence to add
-   *
-   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-   */
-  v1: (testRunId: number, body: EvidencePayload) => Promise<void>;
+  addEvidence(testRunId: number, body: EvidencePayload): Promise<void>;
+  v1: {
+    /**
+     * Add new evidence to a test run.
+     *
+     * @param testRunId the ID of the test run
+     * @param body the evidence to add
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+     */
+    addEvidence(testRunId: number, body: EvidencePayload): Promise<void>;
+  };
 }
 
 interface DeleteEvidenceById {
@@ -47,16 +49,18 @@ interface DeleteEvidenceById {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  (testRunId: number, attachmentId: number): Promise<void>;
-  /**
-   * Remove the evidence with the given attachment id.
-   *
-   * @param testRunId the ID of the test run
-   * @param attachmentId the ID of the attachment to delete
-   *
-   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-   */
-  v1: (testRunId: number, attachmentId: number) => Promise<void>;
+  deleteEvidenceById(testRunId: number, attachmentId: number): Promise<void>;
+  v1: {
+    /**
+     * Remove the evidence with the given attachment id.
+     *
+     * @param testRunId the ID of the test run
+     * @param attachmentId the ID of the attachment to delete
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+     */
+    deleteEvidenceById(testRunId: number, attachmentId: number): Promise<void>;
+  };
 }
 
 interface DeleteEvidenceByName {
@@ -68,16 +72,18 @@ interface DeleteEvidenceByName {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  (testRunId: number, filename: string): Promise<void>;
-  /**
-   * Removes all evidence with the same filename from the test run.
-   *
-   * @param testRunId the ID of the test run
-   * @param filename the file to remove from the test run evidence
-   *
-   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-   */
-  v1: (testRunId: number, filename: string) => Promise<void>;
+  deleteEvidenceByName(testRunId: number, filename: string): Promise<void>;
+  v1: {
+    /**
+     * Removes all evidence with the same filename from the test run.
+     *
+     * @param testRunId the ID of the test run
+     * @param filename the file to remove from the test run evidence
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+     */
+    deleteEvidenceByName(testRunId: number, filename: string): Promise<void>;
+  };
 }
 
 interface GetEvidence {
@@ -89,16 +95,18 @@ interface GetEvidence {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  (testRunId: number): Promise<Xray.Attachment.FileAttachment[]>;
-  /**
-   * Return a JSON that contains an array with all the execution evidence the test run has.
-   *
-   * @param testRunId the ID of the test run
-   * @returns the the execution evidence
-   *
-   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-   */
-  v1: (testRunId: number) => Promise<Xray.Attachment.FileAttachment[]>;
+  getEvidence(testRunId: number): Promise<Xray.Attachment.FileAttachment[]>;
+  v1: {
+    /**
+     * Return a JSON that contains an array with all the execution evidence the test run has.
+     *
+     * @param testRunId the ID of the test run
+     * @returns the the execution evidence
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+     */
+    getEvidence(testRunId: number): Promise<Xray.Attachment.FileAttachment[]>;
+  };
 }
 
 /**
@@ -106,7 +114,10 @@ interface GetEvidence {
  *
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
  */
-export class ExecutionEvidenceApi extends BaseApi {
+export class ExecutionEvidenceApi
+  extends BaseApi
+  implements AddEvidence, GetEvidence, DeleteEvidenceById, DeleteEvidenceByName
+{
   private readonly processor = {
     addEvidence: async (url: string, body: EvidencePayload, expectedStatus: number) => {
       await this.client.send(url, {
@@ -139,83 +150,63 @@ export class ExecutionEvidenceApi extends BaseApi {
     },
   };
 
-  public addEvidence: AddEvidence = Object.assign(
-    async (...[testRunId, body]: Parameters<AddEvidence>): ReturnType<AddEvidence> => {
-      return this.processor.addEvidence(
-        `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment`,
+  public readonly v1: AddEvidence["v1"] &
+    GetEvidence["v1"] &
+    DeleteEvidenceById["v1"] &
+    DeleteEvidenceByName["v1"] = this.bind((self) => ({
+    addEvidence(testRunId, body) {
+      return self.processor.addEvidence(
+        `rest/raven/1.0/api/testrun/${testRunId.toString()}/attachment`,
         body,
-        201
+        200
       );
     },
-    {
-      v1: async (
-        ...[testRunId, body]: Parameters<AddEvidence["v1"]>
-      ): ReturnType<AddEvidence["v1"]> => {
-        return this.processor.addEvidence(
-          `rest/raven/1.0/api/testrun/${testRunId.toString()}/attachment`,
-          body,
-          200
-        );
-      },
-    }
-  );
-
-  public deleteEvidenceById: DeleteEvidenceById = Object.assign(
-    async (
-      ...[testRunId, attachmentId]: Parameters<DeleteEvidenceById>
-    ): ReturnType<DeleteEvidenceById> => {
-      return this.processor.deleteEvidenceById(
-        `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment/${attachmentId.toString()}`,
-        204
+    deleteEvidenceById(testRunId, attachmentId) {
+      return self.processor.deleteEvidenceById(
+        `rest/raven/1.0/api/testrun/${testRunId.toString()}/attachment/${attachmentId.toString()}`,
+        200
       );
     },
-    {
-      v1: async (
-        ...[testRunId, attachmentId]: Parameters<DeleteEvidenceById["v1"]>
-      ): ReturnType<DeleteEvidenceById["v1"]> => {
-        return this.processor.deleteEvidenceById(
-          `rest/raven/1.0/api/testrun/${testRunId.toString()}/attachment/${attachmentId.toString()}`,
-          200
-        );
-      },
-    }
-  );
-
-  public deleteEvidenceByName: DeleteEvidenceByName = Object.assign(
-    async (
-      ...[testRunId, filename]: Parameters<DeleteEvidenceByName>
-    ): ReturnType<DeleteEvidenceByName> => {
-      return this.processor.deleteEvidenceByName(
-        `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment`,
+    deleteEvidenceByName(testRunId, filename) {
+      return self.processor.deleteEvidenceByName(
+        `rest/raven/1.0/api/testrun/${testRunId.toString()}/attachment`,
         filename,
-        204
+        200
       );
     },
-    {
-      v1: async (
-        ...[testRunId, filename]: Parameters<DeleteEvidenceByName["v1"]>
-      ): ReturnType<DeleteEvidenceByName["v1"]> => {
-        return this.processor.deleteEvidenceByName(
-          `rest/raven/1.0/api/testrun/${testRunId.toString()}/attachment`,
-          filename,
-          200
-        );
-      },
-    }
-  );
+    getEvidence(testRunId) {
+      return self.processor.getEvidence(
+        `rest/raven/1.0/api/testrun/${testRunId.toString()}/attachment`
+      );
+    },
+  }));
 
-  public getEvidence: GetEvidence = Object.assign(
-    async (...[testRunId]: Parameters<GetEvidence>): ReturnType<GetEvidence> => {
-      return this.processor.getEvidence(
-        `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment`
-      );
-    },
-    {
-      v1: async (...[testRunId]: Parameters<GetEvidence["v1"]>): ReturnType<GetEvidence["v1"]> => {
-        return this.processor.getEvidence(
-          `rest/raven/1.0/api/testrun/${testRunId.toString()}/attachment`
-        );
-      },
-    }
-  );
+  public async addEvidence(testRunId: number, body: EvidencePayload): Promise<void> {
+    return this.processor.addEvidence(
+      `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment`,
+      body,
+      201
+    );
+  }
+
+  public async deleteEvidenceById(testRunId: number, attachmentId: number): Promise<void> {
+    return this.processor.deleteEvidenceById(
+      `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment/${attachmentId.toString()}`,
+      204
+    );
+  }
+
+  public async deleteEvidenceByName(testRunId: number, filename: string): Promise<void> {
+    return this.processor.deleteEvidenceByName(
+      `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment`,
+      filename,
+      204
+    );
+  }
+
+  public async getEvidence(testRunId: number): Promise<Xray.Attachment.FileAttachment[]> {
+    return this.processor.getEvidence(
+      `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment`
+    );
+  }
 }

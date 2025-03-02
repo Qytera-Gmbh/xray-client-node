@@ -1,7 +1,8 @@
 import { AttachmentsApi } from "../endpoints/cloud/attachments/attachments.js";
 import { DatasetApi } from "../endpoints/cloud/dataset/dataset.js";
 import { type GraphQLApi } from "../endpoints/cloud/graphql/graphql.js";
-import { ImportExecutionApi } from "../endpoints/cloud/import/execution/import-execution.js";
+import { ImportApi } from "../endpoints/cloud/import/import.js";
+import type { ClientConfiguration } from "./base-client.js";
 import { BaseClient } from "./base-client.js";
 
 // This section checks whether all optional GraphQL dependencies are installed.
@@ -34,23 +35,33 @@ try {
 }
 
 export class XrayClientCloud extends BaseClient {
-  public attachment = new AttachmentsApi(this);
-  public dataset = new DatasetApi(this);
-  public import = {
-    execution: new ImportExecutionApi(this),
-  };
+  public readonly attachment = new AttachmentsApi(this);
+  public readonly dataset = new DatasetApi(this);
+  public readonly graphql: GraphQLApi;
+  public readonly import = new ImportApi(this);
 
-  public get graphql() {
-    if (!optionalModules.graphql) {
-      throw new Error(
-        "failed to import module graphql, please install it to use the GraphQL endpoints"
-      );
+  /**
+   * Constructs a new client based on the provided configuration.
+   *
+   * @param config the configuration
+   */
+  constructor(config: ClientConfiguration) {
+    super(config);
+    if (optionalModules.graphql && optionalModules.graphqlTag) {
+      this.graphql = new optionalModules.api(this);
+    } else {
+      this.graphql = new Proxy({} as GraphQLApi, {
+        get() {
+          if (!optionalModules.graphql) {
+            throw new Error(
+              "failed to import module graphql, please install it to use the GraphQL endpoints"
+            );
+          }
+          throw new Error(
+            "failed to import module graphql-tag, please install it to use the GraphQL endpoints"
+          );
+        },
+      });
     }
-    if (!optionalModules.graphqlTag) {
-      throw new Error(
-        "failed to import module graphql-tag, please install it to use the GraphQL endpoints"
-      );
-    }
-    return new optionalModules.api(this);
   }
 }

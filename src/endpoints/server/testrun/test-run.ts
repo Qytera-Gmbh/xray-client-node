@@ -17,7 +17,7 @@ interface GetTestRun {
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/get_testrun
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/get_testrun__id_
    */
-  (
+  getTestRun(
     testRun:
       | {
           /**
@@ -31,34 +31,36 @@ interface GetTestRun {
         }
       | number
   ): Promise<Xray.TestRun.TestRun>;
-  /**
-   * Retrieves a test run given the ID or test execution and test keys. The response will contain
-   * all information related to a test run, e.g., status, created and finish dates, step results,
-   * test environments, defects, test run custom fields, and so on.
-   *
-   * In case the test run has iterations, steps will not appear. However, if it has parameters but
-   * executed one time, it will show the steps and the parameters info.
-   *
-   * @param testRun the query specifying the test run
-   * @returns the test run details
-   *
-   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-   */
-  v1: (
-    testRun:
-      | {
-          /**
-           * The key of the test execution.
-           */
-          testExecIssueKey: string;
-          /**
-           * The key of the test issue.
-           */
-          testIssueKey: string;
-        }
-      | number
-  ) => Promise<Xray.TestRun.TestRun>;
+  v1: {
+    /**
+     * Retrieves a test run given the ID or test execution and test keys. The response will contain
+     * all information related to a test run, e.g., status, created and finish dates, step results,
+     * test environments, defects, test run custom fields, and so on.
+     *
+     * In case the test run has iterations, steps will not appear. However, if it has parameters but
+     * executed one time, it will show the steps and the parameters info.
+     *
+     * @param testRun the query specifying the test run
+     * @returns the test run details
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+     */
+    getTestRun(
+      testRun:
+        | {
+            /**
+             * The key of the test execution.
+             */
+            testExecIssueKey: string;
+            /**
+             * The key of the test issue.
+             */
+            testIssueKey: string;
+          }
+        | number
+    ): Promise<Xray.TestRun.TestRun>;
+  };
 }
 
 interface UpdateTestRunPayload {
@@ -198,17 +200,19 @@ interface UpdateTestRun {
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/put_testrun__id_
    */
-  (testRunId: number, body: UpdateTestRunPayload): Promise<UpdateTestRunResponse>;
-  /**
-   * Update the test run. The fields that can be updated on the test run are: **status, comment,
-   * assignee, defects, evidences, examples** and **steps**.
-   *
-   * @param testRunId the ID of the test run to update
-   * @param body the details to update
-   *
-   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
-   */
-  v1: (testRunId: number, body: UpdateTestRunPayload) => Promise<void>;
+  updateTestRun(testRunId: number, body: UpdateTestRunPayload): Promise<UpdateTestRunResponse>;
+  v1: {
+    /**
+     * Update the test run. The fields that can be updated on the test run are: **status, comment,
+     * assignee, defects, evidences, examples** and **steps**.
+     *
+     * @param testRunId the ID of the test run to update
+     * @param body the details to update
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
+     */
+    updateTestRun(testRunId: number, body: UpdateTestRunPayload): Promise<void>;
+  };
 }
 
 interface UpdateTestRunResponse {
@@ -223,7 +227,7 @@ interface UpdateTestRunResponse {
  *
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST
  */
-export class TestRunApi extends BaseApi {
+export class TestRunApi extends BaseApi implements GetTestRun, UpdateTestRun {
   private readonly processor = {
     getTestRunById: async (url: string) => {
       const response = await this.client.send(url, {
@@ -257,45 +261,45 @@ export class TestRunApi extends BaseApi {
     },
   };
 
-  public evidence = new ExecutionEvidenceApi(this.client);
+  public readonly evidence = new ExecutionEvidenceApi(this.client);
 
-  public getTestRun: GetTestRun = Object.assign(
-    async (...[testRun]: Parameters<GetTestRun>): ReturnType<GetTestRun> => {
+  public readonly v1: GetTestRun["v1"] & UpdateTestRun["v1"] = this.bind((self) => ({
+    getTestRun(testRun) {
       if (typeof testRun === "number") {
-        return this.processor.getTestRunById(`rest/raven/2.0/api/testrun/${testRun.toString()}`);
+        return self.processor.getTestRunById(`rest/raven/1.0/api/testrun/${testRun.toString()}`);
       } else {
-        return this.processor.getTestRunByQuery(`rest/raven/2.0/api/testrun`, testRun);
+        return self.processor.getTestRunByQuery(`rest/raven/1.0/api/testrun`, testRun);
       }
     },
-    {
-      v1: async (...[testRun]: Parameters<GetTestRun["v1"]>): ReturnType<GetTestRun["v1"]> => {
-        if (typeof testRun === "number") {
-          return this.processor.getTestRunById(`rest/raven/1.0/api/testrun/${testRun.toString()}`);
-        } else {
-          return this.processor.getTestRunByQuery(`rest/raven/1.0/api/testrun`, testRun);
-        }
-      },
-    }
-  );
-
-  public updateTestRun: UpdateTestRun = Object.assign(
-    async (...[testRunId, body]: Parameters<UpdateTestRun>): ReturnType<UpdateTestRun> => {
-      return JSON.parse(
-        await this.processor.updateTestRun(
-          `rest/raven/2.0/api/testrun/${testRunId.toString()}`,
-          body
-        )
-      ) as UpdateTestRunResponse;
+    async updateTestRun(testRunId, body) {
+      await self.processor.updateTestRun(
+        `rest/raven/1.0/api/testrun/${testRunId.toString()}`,
+        body
+      );
     },
-    {
-      v1: async (
-        ...[testRunId, body]: Parameters<UpdateTestRun["v1"]>
-      ): ReturnType<UpdateTestRun["v1"]> => {
-        await this.processor.updateTestRun(
-          `rest/raven/1.0/api/testrun/${testRunId.toString()}`,
-          body
-        );
-      },
+  }));
+
+  public async getTestRun(
+    testRun:
+      | {
+          testExecIssueKey: string;
+          testIssueKey: string;
+        }
+      | number
+  ): Promise<Xray.TestRun.TestRun> {
+    if (typeof testRun === "number") {
+      return this.processor.getTestRunById(`rest/raven/2.0/api/testrun/${testRun.toString()}`);
+    } else {
+      return this.processor.getTestRunByQuery(`rest/raven/2.0/api/testrun`, testRun);
     }
-  );
+  }
+
+  public async updateTestRun(
+    testRunId: number,
+    body: UpdateTestRunPayload
+  ): Promise<UpdateTestRunResponse> {
+    return JSON.parse(
+      await this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId.toString()}`, body)
+    ) as UpdateTestRunResponse;
+  }
 }
