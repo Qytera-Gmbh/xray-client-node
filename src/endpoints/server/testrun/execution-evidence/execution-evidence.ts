@@ -139,7 +139,7 @@ export class ExecutionEvidenceApi extends BaseApi {
     },
   };
 
-  public readonly addEvidence: AddEvidence = Object.assign(
+  public addEvidence: AddEvidence = Object.assign(
     async (...[testRunId, body]: Parameters<AddEvidence>): ReturnType<AddEvidence> => {
       return this.processor.addEvidence(
         `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment`,
@@ -160,7 +160,7 @@ export class ExecutionEvidenceApi extends BaseApi {
     }
   );
 
-  public readonly deleteEvidenceById: DeleteEvidenceById = Object.assign(
+  public deleteEvidenceById: DeleteEvidenceById = Object.assign(
     async (
       ...[testRunId, attachmentId]: Parameters<DeleteEvidenceById>
     ): ReturnType<DeleteEvidenceById> => {
@@ -181,7 +181,7 @@ export class ExecutionEvidenceApi extends BaseApi {
     }
   );
 
-  public readonly deleteEvidenceByName: DeleteEvidenceByName = Object.assign(
+  public deleteEvidenceByName: DeleteEvidenceByName = Object.assign(
     async (
       ...[testRunId, filename]: Parameters<DeleteEvidenceByName>
     ): ReturnType<DeleteEvidenceByName> => {
@@ -204,7 +204,7 @@ export class ExecutionEvidenceApi extends BaseApi {
     }
   );
 
-  public readonly getEvidence: GetEvidence = Object.assign(
+  public getEvidence: GetEvidence = Object.assign(
     async (...[testRunId]: Parameters<GetEvidence>): ReturnType<GetEvidence> => {
       return this.processor.getEvidence(
         `rest/raven/2.0/api/testrun/${testRunId.toString()}/attachment`

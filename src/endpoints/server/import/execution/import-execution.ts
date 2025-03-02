@@ -106,7 +106,7 @@ export class ImportExecutionApi extends BaseApi {
     },
   };
 
-  public readonly xray: ImportXray = Object.assign(
+  public xray: ImportXray = Object.assign(
     async (...[results]: Parameters<ImportXray>): ReturnType<ImportXray> => {
       return this.processor.xray("rest/raven/2.0/api/import/execution", results);
     },
@@ -117,7 +117,7 @@ export class ImportExecutionApi extends BaseApi {
     }
   );
 
-  public readonly xrayMultipart: ImportXrayMultipart = Object.assign(
+  public xrayMultipart: ImportXrayMultipart = Object.assign(
     async (
       ...[results, info]: Parameters<ImportXrayMultipart>
     ): ReturnType<ImportXrayMultipart> => {
