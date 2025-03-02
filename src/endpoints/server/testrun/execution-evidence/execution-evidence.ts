@@ -89,7 +89,7 @@ interface GetEvidence {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  (testRunId: string): Promise<Xray.Attachment.FileAttachment>;
+  (testRunId: string): Promise<Xray.Attachment.FileAttachment[]>;
   /**
    * Return a JSON that contains an array with all the execution evidence the test run has.
    *
@@ -98,7 +98,7 @@ interface GetEvidence {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
    */
-  v1: (testRunId: string) => Promise<Xray.Attachment.FileAttachment>;
+  v1: (testRunId: string) => Promise<Xray.Attachment.FileAttachment[]>;
 }
 
 /**
@@ -135,7 +135,7 @@ export class ExecutionEvidenceApi extends BaseApi {
         expectedStatus: 200,
         method: "GET",
       });
-      return (await response.json()) as Xray.Attachment.FileAttachment;
+      return (await response.json()) as Xray.Attachment.FileAttachment[];
     },
   };
 
