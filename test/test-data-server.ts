@@ -35,10 +35,14 @@ const TESTS = {
 // ============================================================================================== //
 const TEST_EXECUTIONS = {
   addAttachments: {
-    v1: { key: "XCNODE-10", tests: [{ ...TESTS.immutableDatadriven, testRunId: "12800" }] },
-    v2: { key: "XCNODE-3", tests: [{ ...TESTS.immutableDatadriven, testRunId: "12467" }] },
+    v1: { key: "XCNODE-10", tests: [{ ...TESTS.immutableDatadriven, testRunId: 12800 }] },
+    v2: { key: "XCNODE-3", tests: [{ ...TESTS.immutableDatadriven, testRunId: 12467 }] },
   },
-  immutable: { key: "XCNODE-2", tests: [{ ...TESTS.immutableDatadriven, testRunId: "12466" }] },
+  immutable: {
+    key: "XCNODE-2",
+    testEnvironments: [{ name: "environmentwith,comma" }, { name: "firefox" }],
+    tests: [{ ...TESTS.immutableDatadriven, testRunId: 12466 }],
+  },
   importXray: {
     v1: { key: "XCNODE-11", tests: [{ ...TESTS.immutableDatadriven }] },
     v2: { key: "XCNODE-5", tests: [{ ...TESTS.immutableDatadriven }] },
@@ -52,14 +56,14 @@ const TEST_EXECUTIONS = {
       key: "XCNODE-13",
       tests: [
         { ...TESTS.immutableDatadriven, testRunId: "12803" },
-        { ...TESTS.immutable, steps: [{ id: "4471" }, { id: "4472" }], testRunId: "12804" },
+        { ...TESTS.immutable, steps: [{ id: "4471" }, { id: "4472" }], testRunId: 12804 },
       ],
     },
     v2: {
       key: "XCNODE-8",
       tests: [
         { ...TESTS.immutableDatadriven, testRunId: "12470" },
-        { ...TESTS.immutable, steps: [{ id: "4423" }, { id: "4424" }], testRunId: "12471" },
+        { ...TESTS.immutable, steps: [{ id: "4423" }, { id: "4424" }], testRunId: 12471 },
       ],
     },
   },

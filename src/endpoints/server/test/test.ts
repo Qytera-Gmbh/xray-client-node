@@ -6,6 +6,35 @@ import { BaseApi } from "../../base-api.js";
  */
 export class TestApi extends BaseApi {
   /**
+   * To export the test runs of a test, you need to specify the key of the test you wish to export
+   * the test runs from. You can filter the test runs by test environment.
+   *
+   * @param key the test issue key
+   * @param query the query
+   * @returns JSON with the exported test runs
+   *
+   * @see https://docs.getxray.app/display/XRAY/Tests+-+REST
+   */
+  public async getTestRuns(
+    key: string,
+    query?: {
+      /**
+       * Test execution environments.
+       */
+      testEnvironments?: string[];
+    }
+  ): Promise<Xray.TestRun.TestRun[]> {
+    const response = await this.client.send(`rest/raven/1.0/api/test/${key}/testruns`, {
+      expectedStatus: 200,
+      method: "GET",
+      query: {
+        testEnvironments: query?.testEnvironments?.map((e) => e.replace(",", "\\,")).join(","),
+      },
+    });
+    return (await response.json()) as Xray.TestRun.TestRun[];
+  }
+
+  /**
    * To export tests to JSON, you need to specify the keys, the ID of the filter or JQL query of the
    * issues you want to export. At least one query parameter has to be specified, but all 3 can be
    * sent at the same time.

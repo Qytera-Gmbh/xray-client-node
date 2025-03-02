@@ -54,17 +54,14 @@ export class BaseClient {
   }
 
   /**
-   * Converts an input object to a URL search params string.
+   * Converts an key-value pairs to a URL search params string.
    *
-   * @param input the input object
+   * @param input the input key-value pairs
    * @returns the URL search params
    */
-  private static toQueryParams(input?: object): URLSearchParams {
+  private static toQueryParams(input: [string, unknown][]): URLSearchParams {
     const params: Record<string, string> = {};
-    for (const [key, value] of Object.entries(input ?? {})) {
-      if (value === undefined || value === null) {
-        continue;
-      }
+    for (const [key, value] of input) {
       if (typeof value === "string") {
         params[key] = value;
       } else if (
@@ -92,8 +89,13 @@ export class BaseClient {
    */
   private joinUrl(path: string, query?: RequestConfig["query"]): string {
     let url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
-    if (query && Object.keys(query).length > 0) {
-      url = `${url}?${BaseClient.toQueryParams(query).toString()}`;
+    if (query) {
+      const entries = Object.entries(query).filter(
+        (entry) => entry[1] !== null && entry[1] !== undefined
+      );
+      if (entries.length > 0) {
+        url = `${url}?${BaseClient.toQueryParams(entries).toString()}`;
+      }
     }
     return url;
   }

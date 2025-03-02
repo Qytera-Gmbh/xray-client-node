@@ -15,6 +15,12 @@ export interface TestRun {
   defects: string[];
   duration: number;
   evidences: Xray.Attachment.FileAttachment[];
+  examples?: {
+    id: number;
+    rank: number;
+    status: string;
+    values: string[];
+  }[];
   executedBy: string;
   finishedOn: string;
   finishedOnIso: string;
@@ -41,6 +47,7 @@ export interface TestRun {
     name: string;
     value: string;
   }[];
+  scenarioOutline?: string;
   startedOn: string;
   startedOnIso: string;
   status: string;

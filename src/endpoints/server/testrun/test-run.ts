@@ -29,7 +29,7 @@ interface GetTestRun {
            */
           testIssueKey: string;
         }
-      | string
+      | number
   ): Promise<Xray.TestRun.TestRun>;
   /**
    * Retrieves a test run given the ID or test execution and test keys. The response will contain
@@ -261,8 +261,8 @@ export class TestRunApi extends BaseApi {
 
   public readonly getTestRun: GetTestRun = Object.assign(
     async (...[testRun]: Parameters<GetTestRun>): ReturnType<GetTestRun> => {
-      if (typeof testRun === "string") {
-        return this.processor.getTestRunById(`rest/raven/2.0/api/testrun/${testRun}`);
+      if (typeof testRun === "number") {
+        return this.processor.getTestRunById(`rest/raven/2.0/api/testrun/${testRun.toString()}`);
       } else {
         return this.processor.getTestRunByQuery(`rest/raven/2.0/api/testrun`, testRun);
       }
