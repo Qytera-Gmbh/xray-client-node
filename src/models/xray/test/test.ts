@@ -53,3 +53,12 @@ export interface TestSet {
   self: string;
   summary: string;
 }
+
+export interface TestExecution {
+  archived: false;
+  id: number;
+  key: string;
+  self: string;
+  summary: string;
+  testEnvironments: string[];
+}
