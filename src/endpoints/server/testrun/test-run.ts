@@ -257,9 +257,9 @@ export class TestRunApi extends BaseApi {
     },
   };
 
-  public readonly evidence = new ExecutionEvidenceApi(this.client);
+  public evidence = new ExecutionEvidenceApi(this.client);
 
-  public readonly getTestRun: GetTestRun = Object.assign(
+  public getTestRun: GetTestRun = Object.assign(
     async (...[testRun]: Parameters<GetTestRun>): ReturnType<GetTestRun> => {
       if (typeof testRun === "number") {
         return this.processor.getTestRunById(`rest/raven/2.0/api/testrun/${testRun.toString()}`);
@@ -278,7 +278,7 @@ export class TestRunApi extends BaseApi {
     }
   );
 
-  public readonly updateTestRun: UpdateTestRun = Object.assign(
+  public updateTestRun: UpdateTestRun = Object.assign(
     async (...[testRunId, body]: Parameters<UpdateTestRun>): ReturnType<UpdateTestRun> => {
       return JSON.parse(
         await this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId}`, body)

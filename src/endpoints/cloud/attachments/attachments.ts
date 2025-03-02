@@ -91,7 +91,7 @@ export class AttachmentsApi extends BaseApi {
     },
   };
 
-  public readonly addAttachment: AddAttachment = Object.assign(
+  public addAttachment: AddAttachment = Object.assign(
     async (...[file]: Parameters<AddAttachment>): ReturnType<AddAttachment> => {
       return this.processor.addAttachment("api/v2/attachments", file);
     },
@@ -102,7 +102,7 @@ export class AttachmentsApi extends BaseApi {
     }
   );
 
-  public readonly getAttachment: GetAttachment = Object.assign(
+  public getAttachment: GetAttachment = Object.assign(
     async (...[attachmentId]: Parameters<GetAttachment>): ReturnType<GetAttachment> => {
       return this.processor.getAttachment(`api/v2/attachments/${attachmentId}`);
     },
