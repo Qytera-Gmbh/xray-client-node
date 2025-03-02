@@ -80,4 +80,13 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       assert.deepStrictEqual(testExecutions[0].key, DATA_SERVER.testExecutions.immutable.key);
     });
   });
+
+  describe("getTestPlans", () => {
+    it("returns test plans", async () => {
+      const testPlans = await XRAY_CLIENT_SERVER.test.getTestPlans(
+        DATA_SERVER.testPlans.immutable.tests[0].key
+      );
+      assert.deepStrictEqual(testPlans[0].key, DATA_SERVER.testPlans.immutable.key);
+    });
+  });
 });

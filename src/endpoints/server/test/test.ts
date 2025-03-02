@@ -40,6 +40,23 @@ export class TestApi extends BaseApi {
   }
 
   /**
+   * To export the test plans of a test, you need to specify the key of the test you wish to export
+   * the test plans from.
+   *
+   * @param key the test issue key
+   * @returns JSON with the exported test plans
+   *
+   * @see https://docs.getxray.app/display/XRAY/Tests+-+REST
+   */
+  public async getTestPlans(key: string): Promise<Xray.Test.TestPlan[]> {
+    const response = await this.client.send(`rest/raven/1.0/api/test/${key}/testplans`, {
+      expectedStatus: 200,
+      method: "GET",
+    });
+    return (await response.json()) as Xray.Test.TestPlan[];
+  }
+
+  /**
    * To export the test runs of a test, you need to specify the key of the test you wish to export
    * the test runs from. You can filter the test runs by test environment.
    *

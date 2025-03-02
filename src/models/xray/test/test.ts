@@ -62,3 +62,11 @@ export interface TestExecution {
   summary: string;
   testEnvironments: string[];
 }
+
+export interface TestPlan {
+  archived: false;
+  id: number;
+  key: string;
+  self: string;
+  summary: string;
+}
