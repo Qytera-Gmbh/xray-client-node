@@ -26,8 +26,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         ["v2", XRAY_CLIENT_CLOUD.attachment],
       ] as const) {
         describe(version, () => {
-          it(`adds attachments (${version})`, async (context) => {
-            context.mock.method(XRAY_CLIENT_CLOUD.attachment, "addAttachment");
+          it(`adds attachments (${version})`, async () => {
             const content = await endpoint.addAttachment(join("test", "resources", "mini.txt"));
             assert.ok(content.created);
             assert.ok(content.id);
