@@ -1,6 +1,5 @@
 import type { Dispatcher, RequestInit, Response } from "undici";
 import { fetch } from "undici";
-import { toSearchParams } from "../util/search-params.js";
 import { ResponseError } from "./response-error.js";
 
 /**
@@ -54,10 +53,47 @@ export class BaseClient {
     }
   }
 
+  /**
+   * Converts an input object to a URL search params string.
+   *
+   * @param input the input object
+   * @returns the URL search params
+   */
+  private static toQueryParams(input?: object): URLSearchParams {
+    const params: Record<string, string> = {};
+    for (const [key, value] of Object.entries(input ?? {})) {
+      if (value === undefined || value === null) {
+        continue;
+      }
+      if (typeof value === "string") {
+        params[key] = value;
+      } else if (
+        typeof value === "number" ||
+        typeof value === "boolean" ||
+        typeof value === "symbol" ||
+        typeof value === "bigint"
+      ) {
+        params[key] = value.toString();
+      } else {
+        throw new Error(
+          `cannot coerce value of query parameter ${key} to string type: ${value as string}`
+        );
+      }
+    }
+    return new URLSearchParams(params);
+  }
+
+  /**
+   * Constructs a full URL by joining the base URL with a given path and optional query parameters.
+   *
+   * @param path the relative path to be appended to the client's base URL
+   * @param query an optional object to be appended as URL query parameters
+   * @returns the full URL
+   */
   private joinUrl(path: string, query?: RequestConfig["query"]): string {
     let url = `${this.url}/${path.startsWith("/") ? path.slice(1) : path}`;
     if (query && Object.keys(query).length > 0) {
-      url = `${url}?${toSearchParams(query).toString()}`;
+      url = `${url}?${BaseClient.toQueryParams(query).toString()}`;
     }
     return url;
   }
