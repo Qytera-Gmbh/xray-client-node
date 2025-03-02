@@ -12,7 +12,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     ] as const) {
       describe(version, () => {
         it(`returns attachment content (${version})`, async () => {
-          const content = await endpoint.addAttachment(
+          const content = await endpoint.getAttachment(
             DATA_CLOUD.testExecutions.immutable.evidence.id
           );
           assert.strictEqual(content, DATA_CLOUD.testExecutions.immutable.evidence.content);
