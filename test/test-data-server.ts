@@ -3,6 +3,9 @@
 // In case of a fork or migration, these are all the information you will need to update/recreate.
 // ============================================================================================== //
 export const DATA_SERVER = {
+  get preconditions() {
+    return PRECONDITIONS;
+  },
   project: { key: "XCNODE" },
   get settings() {
     return SETTINGS;
@@ -16,13 +19,8 @@ export const DATA_SERVER = {
   get tests() {
     return TESTS;
   },
-} as const;
-// ============================================================================================== //
-// PRECONDITIONS
-// ============================================================================================== //
-const PRECONDITIONS = {
-  immutable: {
-    key: "XCNODE-14",
+  get testSets() {
+    return TEST_SETS;
   },
 } as const;
 // ============================================================================================== //
@@ -31,7 +29,6 @@ const PRECONDITIONS = {
 const TESTS = {
   immutable: {
     key: "XCNODE-9",
-    preconditions: [PRECONDITIONS.immutable],
   },
   immutableDatadriven: {
     dataset: ["name,age", "Jane,42", "John,33", ""],
@@ -85,6 +82,24 @@ const TEST_PLANS = {
     key: "XCNODE-7",
     testExecutions: [TEST_EXECUTIONS.immutable, TEST_EXECUTIONS.addAttachments.v2],
     tests: [TESTS.immutableDatadriven],
+  },
+} as const;
+// ============================================================================================== //
+// TEST SETS
+// ============================================================================================== //
+const TEST_SETS = {
+  immutable: {
+    key: "XCNODE-15",
+    tests: [TESTS.immutable],
+  },
+} as const;
+// ============================================================================================== //
+// PRECONDITIONS
+// ============================================================================================== //
+const PRECONDITIONS = {
+  immutable: {
+    key: "XCNODE-14",
+    tests: [TESTS.immutable],
   },
 } as const;
 // ============================================================================================== //

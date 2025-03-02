@@ -45,3 +45,11 @@ export interface Precondition {
   self: string;
   type: string;
 }
+
+export interface TestSet {
+  environments: string[];
+  id: number;
+  key: string;
+  self: string;
+  summary: string;
+}

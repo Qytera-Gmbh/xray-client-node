@@ -3,6 +3,9 @@
 // In case of a fork or migration, these are all the information you will need to update/recreate.
 // ============================================================================================== //
 export const DATA_CLOUD = {
+  get preconditions() {
+    return PRECONDITIONS;
+  },
   project: { key: "XCN" },
   get testExecutions() {
     return TEST_EXECUTIONS;
@@ -13,13 +16,8 @@ export const DATA_CLOUD = {
   get tests() {
     return TESTS;
   },
-} as const;
-// ============================================================================================== //
-// PRECONDITIONS
-// ============================================================================================== //
-const PRECONDITIONS = {
-  immutable: {
-    key: "XCN-10",
+  get testSets() {
+    return TEST_SETS;
   },
 } as const;
 // ============================================================================================== //
@@ -30,7 +28,6 @@ const TESTS = {
     dataset: ["name,age", "Jeff,25", "John,41", "Mary,-146", "Susan,19", ""],
     issueId: "15049",
     key: "XCN-1",
-    preconditions: [PRECONDITIONS.immutable],
     testType: "Manual",
   },
 } as const;
@@ -80,6 +77,24 @@ const TEST_PLANS = {
     issueId: "15051",
     key: "XCN-3",
     testExecutions: [TEST_EXECUTIONS.immutable],
+    tests: [TESTS.immutable],
+  },
+} as const;
+// ============================================================================================== //
+// TEST SETS
+// ============================================================================================== //
+const TEST_SETS = {
+  immutable: {
+    key: "XCN-11",
+    tests: [TESTS.immutable],
+  },
+} as const;
+// ============================================================================================== //
+// PRECONDITIONS
+// ============================================================================================== //
+const PRECONDITIONS = {
+  immutable: {
+    key: "XCN-10",
     tests: [TESTS.immutable],
   },
 } as const;

@@ -32,7 +32,7 @@ export class TestApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Tests+-+REST
    */
-  public async getRuns(
+  public async getTestRuns(
     key: string,
     query?: {
       /**
@@ -84,5 +84,22 @@ export class TestApi extends BaseApi {
       },
     });
     return (await response.json()) as Xray.Test.Test[];
+  }
+
+  /**
+   * To export the test sets of a test, you need to specify the key of the test you wish to export
+   * the test sets from.
+   *
+   * @param key the test issue key
+   * @returns JSON with the exported test sets
+   *
+   * @see https://docs.getxray.app/display/XRAY/Tests+-+REST
+   */
+  public async getTestSets(key: string): Promise<Xray.Test.TestSet[]> {
+    const response = await this.client.send(`rest/raven/1.0/api/test/${key}/testsets`, {
+      expectedStatus: 200,
+      method: "GET",
+    });
+    return (await response.json()) as Xray.Test.TestSet[];
   }
 }
