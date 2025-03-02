@@ -81,7 +81,7 @@ const TEST_PLANS = {
   immutable: {
     key: "XCNODE-7",
     testExecutions: [TEST_EXECUTIONS.immutable, TEST_EXECUTIONS.addAttachments.v2],
-    tests: [TESTS.immutableDatadriven],
+    tests: [TESTS.immutableDatadriven, TESTS.immutable],
   },
 } as const;
 // ============================================================================================== //
