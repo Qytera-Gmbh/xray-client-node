@@ -30,7 +30,7 @@ interface GetTestRun {
           testIssueKey: string;
         }
       | string
-  ): Promise<Xray.TestRun.GetTestRunResponse>;
+  ): Promise<Xray.TestRun.TestRun>;
   /**
    * Retrieves a test run given the ID or test execution and test keys. The response will contain
    * all information related to a test run, e.g., status, created and finish dates, step results,
@@ -58,7 +58,7 @@ interface GetTestRun {
           testIssueKey: string;
         }
       | string
-  ) => Promise<Xray.TestRun.GetTestRunResponse>;
+  ) => Promise<Xray.TestRun.TestRun>;
 }
 
 interface UpdateTestRunPayload {
@@ -198,7 +198,7 @@ interface UpdateTestRun {
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/put_testrun__id_
    */
-  (testRunId: string, body: UpdateTestRunPayload): Promise<Xray.TestRun.UpdateTestRunResponse>;
+  (testRunId: string, body: UpdateTestRunPayload): Promise<UpdateTestRunResponse>;
   /**
    * Update the test run. The fields that can be updated on the test run are: **status, comment,
    * assignee, defects, evidences, examples** and **steps**.
@@ -209,6 +209,13 @@ interface UpdateTestRun {
    * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
    */
   v1: (testRunId: string, body: UpdateTestRunPayload) => Promise<void>;
+}
+
+interface UpdateTestRunResponse {
+  evidenceIds: number[];
+  id: number;
+  stepResults: { evidenceIds: number[]; id: number; warnings: string[] }[];
+  warnings: string[];
 }
 
 /**
@@ -223,7 +230,7 @@ export class TestRunApi extends BaseApi {
         expectedStatus: 200,
         method: "GET",
       });
-      return (await response.json()) as Xray.TestRun.GetTestRunResponse;
+      return (await response.json()) as Xray.TestRun.TestRun;
     },
     getTestRunByQuery: async (
       url: string,
@@ -237,7 +244,7 @@ export class TestRunApi extends BaseApi {
         method: "GET",
         query: testRun,
       });
-      return (await response.json()) as Xray.TestRun.GetTestRunResponse;
+      return (await response.json()) as Xray.TestRun.TestRun;
     },
     updateTestRun: async (url: string, body: UpdateTestRunPayload) => {
       const response = await this.client.send(url, {
@@ -275,7 +282,7 @@ export class TestRunApi extends BaseApi {
     async (...[testRunId, body]: Parameters<UpdateTestRun>): ReturnType<UpdateTestRun> => {
       return JSON.parse(
         await this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId}`, body)
-      ) as Xray.TestRun.UpdateTestRunResponse;
+      ) as UpdateTestRunResponse;
     },
     {
       v1: async (

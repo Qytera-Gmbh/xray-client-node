@@ -55,9 +55,7 @@ export class TestPlanApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
    */
-  public async getTestExecutions(
-    testPlanKey: string
-  ): Promise<Xray.TestPlan.GetTestExecutionsResponse> {
+  public async getTestExecutions(testPlanKey: string): Promise<Xray.TestPlan.TestExecution[]> {
     const response = await this.client.send(
       `rest/raven/1.0/api/testplan/${testPlanKey}/testexecution`,
       {
@@ -65,7 +63,7 @@ export class TestPlanApi extends BaseApi {
         method: "GET",
       }
     );
-    return (await response.json()) as Xray.TestPlan.GetTestExecutionsResponse;
+    return (await response.json()) as Xray.TestPlan.TestExecution[];
   }
 
   /**
@@ -91,13 +89,13 @@ export class TestPlanApi extends BaseApi {
        */
       page?: number;
     }
-  ): Promise<Xray.TestPlan.GetTestsResponse> {
+  ): Promise<Xray.TestPlan.Test[]> {
     const response = await this.client.send(`rest/raven/1.0/api/testplan/${testPlanKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,
     });
-    return (await response.json()) as Xray.TestPlan.GetTestsResponse;
+    return (await response.json()) as Xray.TestPlan.Test[];
   }
 
   /**

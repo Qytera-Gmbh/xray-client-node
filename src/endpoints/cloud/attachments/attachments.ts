@@ -1,7 +1,6 @@
 import { open } from "node:fs/promises";
 import { basename } from "node:path";
 import { FormData } from "undici";
-import type { Xray } from "../../../../index.js";
 import { createStreamableFile } from "../../../util/form-data.js";
 import { BaseApi } from "../../base-api.js";
 
@@ -14,7 +13,7 @@ interface AddAttachment {
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
    */
-  (file: string): Promise<Xray.Attachment.AddAttachmentResponse>;
+  (file: string): Promise<AddAttachmentResponse>;
   /**
    * Creates an attachment.
    *
@@ -23,7 +22,7 @@ interface AddAttachment {
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
    */
-  v1: (file: string) => Promise<Xray.Attachment.AddAttachmentResponse>;
+  v1: (file: string) => Promise<AddAttachmentResponse>;
 }
 
 interface GetAttachment {
@@ -47,6 +46,25 @@ interface GetAttachment {
   v1: (file: string) => Promise<string>;
 }
 
+interface AddAttachmentResponse {
+  /**
+   * @example "2020-06-28T16:59:33.051Z"
+   */
+  created: string;
+  /**
+   * @example "report.pdf"
+   */
+  filename: string;
+  /**
+   * @example "7e0073ec-cc9a-44fa-a2da-9d8c163caeae"
+   */
+  id: string;
+  /**
+   * @example 123446
+   */
+  size: number;
+}
+
 /**
  * Models the attachment endpoints.
  */
@@ -62,7 +80,7 @@ export class AttachmentsApi extends BaseApi {
         method: "POST",
       });
       await handle.close();
-      return (await response.json()) as Xray.Attachment.AddAttachmentResponse;
+      return (await response.json()) as AddAttachmentResponse;
     },
     getAttachment: async (url: string) => {
       const response = await this.client.send(url, {
