@@ -1,5 +1,28 @@
 # Changelog
 
+# `3.0.0`
+
+## Breaking Changes
+
+- Changed `cloudClient.attachments` to `cloudClient.attachment`
+- Changed `serverClient.testExecutions` to `serverClient.testExecution`
+- Changed `serverClient.testPlans` to `serverClient.testPlan`
+- Changed `serverClient.testRuns` to `serverClient.testRun`
+- Added mandatory `path` property to Xray cloud client credentials
+
+## Other Changes
+
+- Added `GET /rest/raven/1.0/api/test`
+- Added `GET /rest/raven/1.0/api/settings/teststatuses`
+- Added `GET /rest/raven/1.0/api/test/{key}/testruns`
+- Added `GET /rest/raven/1.0/api/test/{key}/preconditions`
+- Added `GET /rest/raven/1.0/api/test/{key}/testsets`
+- Added `GET /rest/raven/1.0/api/test/{key}/testexecutions`
+- Added `GET /rest/raven/1.0/api/test/{key}/testplans`
+- Added `getTestRun` GraphQL query
+- Added dedicated error handling using `isResponseError`
+- Added endpoint versioning support
+
 # `2.1.0`
 
 - Added `getTestExecution` GraphQL query
