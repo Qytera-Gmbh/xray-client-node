@@ -42,7 +42,7 @@
     "tsx": "^4.19.3",
     "typed-graphql-builder": "^4.1.7",
     "typescript": "^5.8.2",
-    "typescript-eslint": "^8.25.0"
+    "typescript-eslint": "^8.26.0"
   },
   "peerDependencies": {
     "graphql": ">=14.0.0",
