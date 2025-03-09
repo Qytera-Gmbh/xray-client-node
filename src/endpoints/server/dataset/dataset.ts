@@ -26,21 +26,21 @@ export class DatasetApi extends BaseApi {
    */
   public async export(query?: {
     /**
-     * The id of the context issue (Test Plan or Test Execution).
+     * The id of the context issue (test plan or test execution).
      */
-    contextIssueId?: string;
+    contextIssueId?: number;
     /**
-     * The key of the context issue (Test Plan or Test Execution).
+     * The key of the context issue (test plan or test execution).
      */
     contextIssueKey?: string;
     /**
-     * A flag indicating of the dataset must be resolved or not for a given level (true by default).
+     * A flag indicating if the dataset must be resolved or not for a given level (true by default).
      */
     resolved?: boolean;
     /**
-     * The id of the test issue.
+     * The ID of the test issue.
      */
-    testIssueId?: string;
+    testIssueId?: number;
     /**
      * The key of the test issue.
      */

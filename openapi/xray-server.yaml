@@ -1,0 +1,237 @@
+openapi: 3.1.0
+info:
+  title: Xray Server - OpenAPI 3.1
+  description: |
+    This OpenAPI specification defines the REST API for Xray Server.
+  version: 1.0.0
+
+externalDocs:
+  description: Find out more about the Xray server API
+  url: https://docs.getxray.app/display/XRAY/REST+API_
+
+servers:
+  - url: https://your-jira-instance.com
+    description: Xray Server API
+
+tags:
+  - name: dataset
+    description: All operations for test datasets.
+
+  - name: test-run
+    description: Operations related to Test Runs
+    externalDocs:
+      description: Test Run API Documentation
+      url: https://docs.getxray.app/display/XRAY/Tests
+
+  - name: test-execution
+    description: Manage Test Executions
+    externalDocs:
+      description: Test Execution API Documentation
+      url: https://docs.getxray.app/display/XRAY/Test+Executions
+
+  - name: test-case
+    description: Manage Test Cases
+    externalDocs:
+      description: Test Case API Documentation
+      url: https://docs.getxray.app/display/XRAY/Test+Cases
+
+paths:
+  /rest/raven/2.0/api/dataset/export:
+    get:
+      tags:
+        - dataset
+      summary: export a dataset
+      description: |
+        Retrieves a CSV file with the dataset information.
+        The response will contain all information related to the dataset, e.g., parameters and values.
+
+        One of `testIssueId` or `testIssueKey` is required.
+        If both are provided, `testIssueId` is used.
+        Both `contextIssueId` and `contextIssueKey` are optional.
+        If both `contextIssueId` and `contextIssueKey` are provided, `contextIssueId` is used.
+        The `resolved` flag is only relevant when requesting the dataset of a test with a context issue.
+
+        The returned dataset is provided with all the iterations generated.
+      operationId: exportDataset
+      externalDocs:
+        url: https://docs.getxray.app/display/XRAY/v2.0#/Dataset/get_dataset_export
+      parameters:
+        - in: query
+          name: contextIssueId
+          description: >
+            The ID of the context issue (test plan or test execution).
+          schema:
+            type: integer
+          example: 12345
+        - in: query
+          name: contextIssueKey
+          description: >
+            The key of the context issue (test plan or test execution).
+          schema:
+            type: string
+          example: "PRJ-123"
+        - in: query
+          name: resolved
+          description: >
+            A flag indicating if the dataset must be resolved or not for a given level.
+          schema:
+            type: boolean
+          example: false
+        - in: query
+          name: testIssueId
+          description: >
+            The ID of the test issue.
+          schema:
+            type: integer
+          example: 12345
+        - in: query
+          name: testIssueKey
+          description: >
+            The key of the test issue.
+          schema:
+            type: string
+          example: "PRJ-123"
+        - in: query
+          name: testVersion
+          description: >
+            A test version.
+          schema:
+            type: string
+          example: "3.0.1"
+      responses:
+        200:
+          description: Successful operation
+          content:
+            text/plain:
+              schema:
+                type: string
+                examples:
+                  - |
+                    name,age
+                    Jane,36
+                    John,59
+        400:
+          description: TODO
+        404:
+          description: TODO
+        422:
+          description: TODO
+
+  /rest/raven/2.0/api/dataset/import:
+    post:
+      tags:
+        - dataset
+      summary: import a dataset
+      description: |
+        Endpoint used to imports a dataset through a CSV file to an entity.
+        It is only possible to import dataset to the following entities:
+
+        - Test
+        - Test Plan - Test
+        - Test Execution - Test (Test Run)
+
+        Please note: The file must be of type CSV.
+        On the first line are presented the parameter names and the lines below represent their values.
+        In order for a parameter to be considered combinatorial, it must contain `*` as a suffix.
+        The CSV delimiter is `,`.
+
+        ```csv
+        Browser*,Languague
+        Firefox,Portuguese
+        Chrome,English
+        ```
+      operationId: importDataset
+      externalDocs:
+        url: https://docs.getxray.app/display/XRAY/v2.0#/Dataset/post_dataset_import
+      requestBody:
+         content:
+           multipart/form-data:
+             schema:
+               type: object
+               properties:
+                 file:
+                   type: string
+                   format: binary
+      parameters:
+        - in: query
+          name: contextIssueId
+          description: >
+            The ID of the context issue (test plan or test execution).
+          schema:
+            type: integer
+          example: 12345
+        - in: query
+          name: contextIssueKey
+          description: >
+            The key of the context issue (test plan or test execution).
+          schema:
+            type: string
+          example: "PRJ-123"
+        - in: query
+          name: testIssueId
+          description: >
+            The ID of the test issue.
+          schema:
+            type: integer
+          example: 12345
+        - in: query
+          name: testIssueKey
+          description: >
+            The key of the test issue.
+          schema:
+            type: string
+          example: "PRJ-123"
+        - in: query
+          name: testVersion
+          description: >
+            A test version.
+          schema:
+            type: string
+          example: "3.0.1"
+      responses:
+        200:
+          description: Successful operation
+        400:
+          description: TODO
+        404:
+          description: TODO
+        422:
+          description: TODO
+
+components:
+  schemas:
+    Order:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  requestBodies:
+    Pet:
+      description: Pet object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Pet'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Pet'
+
+  securitySchemes:
+    jiraTokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Jira API token
+    jiraBasicAuth:
+      type: http
+      scheme: basic
+
+security:
+  - jiraTokenAuth: []
+  - jiraBasicAuth: []
