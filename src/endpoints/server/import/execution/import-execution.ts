@@ -1,4 +1,3 @@
-import { FormData } from "undici";
 import { type Xray } from "../../../../../index.js";
 import type { IssueUpdateDetails } from "../../../../models/jira/__generated__/index.js";
 import { BaseApi } from "../../../base-api.js";

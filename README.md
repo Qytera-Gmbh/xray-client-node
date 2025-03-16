@@ -346,13 +346,10 @@ _Based on: https://docs.getxray.app/display/XRAYCLOUD/REST+API_
 
 # Installation
 
-This package is built on Node's native fetch API and, by extension, relies on the [`undici`](https://www.npmjs.com/package/undici) library.
-To enable full functionality (such as passing custom proxy agent instances) without running into version conflicts between Node's built-in `undici` module and the user-facing typings of the client package, `undici` must be installed as a peer dependency.
-
 ## Xray Server
 
 ```bash
-npm install @qytera/xray-client undici
+npm install @qytera/xray-client
 ```
 
 ## Xray Cloud
@@ -360,13 +357,13 @@ npm install @qytera/xray-client undici
 If you don't intend to use the [GraphQL endpoints](https://us.xray.cloud.getxray.app/doc/graphql/):
 
 ```bash
-npm install @qytera/xray-client undici
+npm install @qytera/xray-client
 ```
 
 With GraphQL support:
 
 ```bash
-npm install @qytera/xray-client undici graphql graphql-tag
+npm install @qytera/xray-client graphql graphql-tag
 ```
 
 # Usage
@@ -474,6 +471,34 @@ const evidence = await serverClient.testRun.evidence.v1.getEvidence("12345"); //
 // Xray cloud:
 const attachment = await cloudClient.attachment.addAttachment("my-file.txt"); // v2 endpoint
 const attachment = await cloudClient.attachment.v1.addAttachment("my-file.txt"); // v1 endpoint
+```
+
+## Custom HTTP Agents
+
+The clients can use custom HTTP agents in the form of custom `fetch` implementations. The recommended approach is to use [`undici`](https://www.npmjs.com/package/undici), which is already included in Node.js [but is not exposed](https://github.com/nodejs/undici/discussions/2371).
+
+> [!NOTE]
+> Make sure to install the version of [`undici`](https://www.npmjs.com/package/undici) that comes with the installed version of Node.js to avoid version conflicts and typing issues:
+>
+> ```sh
+> npm install undici@$(node -e "console.log(process.versions.undici)")
+> ```
+
+```ts
+import { ProxyAgent, fetch } from "undici";
+
+const proxyAgent = new ProxyAgent({
+  token: Buffer.from("username:password").toString("base64"),
+  uri: "http://1.2.3.4:8765",
+});
+
+const configuration: ClientConfiguration = {
+  fetch: (url, init) => {
+    return fetch(url, { ...init, dispatcher: proxyAgent });
+  },
+  credentials: { /* ... */ },
+  url: ...
+};
 ```
 
 ## Error Handling

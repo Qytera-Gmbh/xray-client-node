@@ -1,6 +1,8 @@
-import type { Dispatcher, RequestInit, Response } from "undici";
-import { fetch } from "undici";
 import { ResponseError } from "./response-error.js";
+
+type Fetch = typeof global.fetch;
+type FetchRequestInit = Exclude<Parameters<Fetch>[1], undefined>;
+type FetchBodyInit = Exclude<FetchRequestInit["body"], undefined>;
 
 /**
  * The base client of all Xray clients. Contains the authorization handling.
@@ -11,9 +13,9 @@ export class BaseClient {
    */
   private readonly authorizationValue: Promise<string>;
   /**
-   * The dispatcher of the core API used to dispatch requests.
+   * The custom fetch implementation to use to dispatch requests.
    */
-  private readonly dispatcher: Dispatcher | undefined;
+  private readonly fetch: Fetch;
   /**
    * The base URL of the Xray instance.
    */
@@ -25,7 +27,7 @@ export class BaseClient {
    * @param config the configuration
    */
   constructor(config: ClientConfiguration) {
-    this.dispatcher = config.dispatcher;
+    this.fetch = config.fetch ?? globalThis.fetch;
     this.url = config.url;
     if ("token" in config.credentials) {
       this.authorizationValue = Promise.resolve(`Bearer ${config.credentials.token}`);
@@ -36,12 +38,11 @@ export class BaseClient {
         ).toString("base64")}`
       );
     } else {
-      this.authorizationValue = fetch(this.joinUrl(config.credentials.path), {
+      this.authorizationValue = this.fetch(this.joinUrl(config.credentials.path), {
         body: JSON.stringify({
           ["client_id"]: config.credentials.clientId,
           ["client_secret"]: config.credentials.clientSecret,
         }),
-        dispatcher: this.dispatcher,
         headers: {
           ["Accept"]: "application/json",
           ["Content-Type"]: "application/json",
@@ -54,7 +55,7 @@ export class BaseClient {
   }
 
   /**
-   * Converts an key-value pairs to a URL search params string.
+   * Converts key-value pairs to a URL search params string.
    *
    * @param input the input key-value pairs
    * @returns the URL search params
@@ -107,19 +108,18 @@ export class BaseClient {
    * @param config the request configuration
    * @returns the response
    */
-  public async send(path: string, config: RequestConfig): Promise<Response> {
+  public async send(path: string, config: RequestConfig): ReturnType<Fetch> {
     const url = this.joinUrl(path, config.query);
     const requestHeaders = {
       ["Authorization"]: await this.authorizationValue,
       ...config.headers,
     };
-    const request: RequestInit = {
+    const request: FetchRequestInit = {
       body: config.body,
-      dispatcher: this.dispatcher,
       headers: requestHeaders,
       method: config.method,
     };
-    const response = await fetch(url, request);
+    const response = await this.fetch(url, request);
     if (response.status !== config.expectedStatus) {
       throw new ResponseError({
         expectedStatus: config.expectedStatus,
@@ -147,7 +147,7 @@ interface RequestConfig {
   /**
    * The body of the request.
    */
-  body?: Exclude<RequestInit["body"], null>;
+  body?: FetchBodyInit;
   /**
    * The expected response status of the request.
    */
@@ -213,39 +213,63 @@ export interface ClientConfiguration {
    */
   credentials: XrayCredentials;
   /**
-   * The dispatcher of the core API used to dispatch requests.
+   * The fetch function for sending requests, allowing customisation of fetch behaviour such as
+   * setting default headers, using custom SSL certificates or handling proxy authentication.
    *
-   * An example configuration with custom SSL certificates:
+   * An example configuration with default headers:
    *
    * ```ts
-   * import { readFileSync } from "node:fs";
-   * import { Agent } from "undici";
-   *
-   * const configuration = {
-   *   dispatcher: new Agent({
-   *     connect: {
-   *       cert: [readFileSync("certFile1.pem"), readFileSync("certFile2.pem")]
+   * const configuration: ClientConfiguration = {
+   *   fetch: (url, init) => {
+   *     const headers = init?.headers;
+   *     if (headers instanceof Headers) {
+   *       headers.set("custom-header", "custom-header-value");
+   *     } else if (Array.isArray(headers)) {
+   *       headers.push(["custom-header", "custom-header-value"]);
+   *     } else if (typeof headers === "object") {
+   *       headers["custom-header"] = "custom-header-value";
    *     }
-   *   }),
-   *   // ...
+   *     return fetch(url, init);
+   *   },
    * };
    * ```
    *
-   * An example configuration with an authenticated proxy:
+   * An example configuration with custom SSL certificates using `undici`:
    *
    * ```ts
-   * import { ProxyAgent } from "undici";
+   * import { Agent, fetch } from "undici";
    *
-   * const configuration = {
-   *   dispatcher: new ProxyAgent({
-   *     token: Buffer.from("username:password").toString("base64"),
-   *     uri: "http://1.2.3.4:8765",
-   *   }),
-   *   // ...
+   * const dispatcher = new Agent({
+   *   connect: {
+   *     cert: [readFileSync("certFile1.pem"), readFileSync("certFile2.pem")],
+   *   },
+   * });
+   *
+   * const configuration: ClientConfiguration = {
+   *   fetch: (input, init) => {
+   *     return fetch(input, { ...init, dispatcher });
+   *   }
+   * };
+   * ```
+   *
+   * An example configuration with an authenticated proxy using `undici`:
+   *
+   * ```ts
+   * import { ProxyAgent, fetch } from "undici";
+   *
+   * const proxyAgent = new ProxyAgent({
+   *   token: Buffer.from("username:password").toString("base64"),
+   *   uri: "http://1.2.3.4:8765"
+   * });
+   *
+   * const configuration: ClientConfiguration = {
+   *   fetch: (url, init) => {
+   *     return fetch(url, { ...init, dispatcher: proxyAgent });
+   *   }
    * };
    * ```
    */
-  dispatcher?: Dispatcher;
+  fetch?: Fetch;
   /**
    * The base URL of the Xray instance. For Xray server, simply provide the Jira base URL:
    *

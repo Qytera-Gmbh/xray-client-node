@@ -27,8 +27,8 @@
   "types": "index.d.ts",
   "type": "module",
   "engines": {
-    "//": "based on undici's version requirements",
-    "node": ">=20.18.1"
+    "//": "based on https://nodejs.org/docs/latest-v18.x/api/globals.html#fetch",
+    "node": ">=18"
   },
   "devDependencies": {
     "@graphql-typed-document-node/core": "^3.2.0",
@@ -46,8 +46,7 @@
   },
   "peerDependencies": {
     "graphql": ">=14.0.0",
-    "graphql-tag": ">=2.0.0",
-    "undici": ">=7.0.0"
+    "graphql-tag": ">=2.0.0"
   },
   "peerDependenciesMeta": {
     "graphql": {

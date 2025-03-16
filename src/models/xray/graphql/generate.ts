@@ -2,7 +2,6 @@ import { execSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
 import { cwd } from "node:process";
-import { fetch } from "undici";
 import { getEnv } from "../../../../test/util.js";
 
 import "dotenv/config";
