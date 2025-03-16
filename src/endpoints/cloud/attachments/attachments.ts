@@ -1,6 +1,5 @@
 import { open } from "node:fs/promises";
 import { basename } from "node:path";
-import { FormData } from "undici";
 import { createStreamableFile } from "../../../util/form-data.js";
 import { BaseApi } from "../../base-api.js";
 

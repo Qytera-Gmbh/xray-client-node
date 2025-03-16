@@ -1,5 +1,3 @@
-import type { RequestInit, Response } from "undici";
-
 /**
  * Represents an error that occurs when an HTTP response does not meet the expected status.
  *
