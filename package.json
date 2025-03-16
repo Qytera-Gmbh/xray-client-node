@@ -1,6 +1,6 @@
 {
   "name": "@qytera/xray-client",
-  "version": "3.0.0",
+  "version": "4.0.0",
   "description": "A typesafe HTTP client for the Xray API.",
   "main": "index.js",
   "scripts": {
