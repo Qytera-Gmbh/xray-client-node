@@ -9,6 +9,21 @@
 
 ## Other Changes
 
+- Added `GET    /rest/raven/1.0/api/test/{testKey}/step`
+- Added `GET    /rest/raven/2.0/api/test/{testKey}/steps`
+- Added `GET    /rest/raven/1.0/api/test/{testKey}/step/{id}`
+- Added `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
+- Added `PUT    /rest/raven/1.0/api/test/{testKey}/step`
+- Added `POST   /rest/raven/2.0/api/test/{testKey}/steps`
+- Added `POST   /rest/raven/1.0/api/test/{testKey}/step/{id}`
+- Added `PUT    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
+- Added `DELETE /rest/raven/1.0/api/test/{testKey}/step/{id}`
+- Added `DELETE /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
+- Added `GET    /rest/raven/1.0/api/test/{testKey}/step/{id}/attachment`
+- Added `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}/attachments`
+- Added `DELETE /rest/raven/1.0/api/test/{testKey}/step/{id}/attachment/{attachmentID}`
+- Added `DELETE /rest/raven/2.0/api/test/{testKey}/steps/{stepId}/attachment/{attachmentId}`
+- Added `GET    /rest/raven/1.0/api/settings/teststepstatuses`
 - Removed undici peer dependency
 
 # `3.0.0`
