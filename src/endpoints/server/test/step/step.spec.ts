@@ -177,4 +177,144 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       });
     });
   });
+
+  describe("updateStep", () => {
+    describe("v1", () => {
+      beforeEach(async () => {
+        const attachments = await XRAY_CLIENT_SERVER.test.step.getAttachments(
+          DATA_SERVER.tests.updateTestSteps.v1.key,
+          DATA_SERVER.tests.updateTestSteps.v1.steps[0].id
+        );
+        await XRAY_CLIENT_SERVER.test.step.v1.updateStep(
+          DATA_SERVER.tests.updateTestSteps.v1.key,
+          DATA_SERVER.tests.updateTestSteps.v1.steps[0].id,
+          {
+            attachments: { remove: attachments.map((attachment) => attachment.id) },
+            data: "<dummy>",
+            result: "<dummy>",
+            step: "<dummy>",
+          }
+        );
+        const step = await XRAY_CLIENT_SERVER.test.step.v1.getStep(
+          DATA_SERVER.tests.updateTestSteps.v1.key,
+          DATA_SERVER.tests.updateTestSteps.v1.steps[0].id
+        );
+        assert.strictEqual(step.attachments.length, 0);
+      });
+
+      it("updates steps", async () => {
+        const uuid = randomUUID();
+        const content = await XRAY_CLIENT_SERVER.test.step.v1.updateStep(
+          DATA_SERVER.tests.updateTestSteps.v1.key,
+          DATA_SERVER.tests.updateTestSteps.v1.steps[0].id,
+          {
+            attachments: {
+              add: [
+                {
+                  contentType: "plain/text",
+                  data: "gsddfgdsfg...(base64)",
+                  filename: "example1.txt",
+                },
+              ],
+            },
+            data: `data-${uuid}`,
+            result: `result-${uuid}`,
+            step: `step-${uuid}`,
+          }
+        );
+        assert.strictEqual(content.id, DATA_SERVER.tests.updateTestSteps.v1.steps[0].id);
+        const step = await XRAY_CLIENT_SERVER.test.step.v1.getStep(
+          DATA_SERVER.tests.updateTestSteps.v1.key,
+          DATA_SERVER.tests.updateTestSteps.v1.steps[0].id
+        );
+        assert.deepStrictEqual(step.step, { raw: `step-${uuid}`, rendered: `<p>step-${uuid}</p>` });
+        assert.deepStrictEqual(step.data, { raw: `data-${uuid}`, rendered: `<p>data-${uuid}</p>` });
+        assert.deepStrictEqual(step.result, {
+          raw: `result-${uuid}`,
+          rendered: `<p>result-${uuid}</p>`,
+        });
+        const attachments = await XRAY_CLIENT_SERVER.test.step.getAttachments(
+          DATA_SERVER.tests.updateTestSteps.v1.key,
+          DATA_SERVER.tests.updateTestSteps.v1.steps[0].id
+        );
+        assert.strictEqual(attachments.length, 1);
+        assert.strictEqual(attachments[0].mimeType, "plain/text");
+        assert.strictEqual(attachments[0].fileName, "example1.txt");
+      });
+    });
+
+    describe("v2", () => {
+      beforeEach(async () => {
+        const attachments = await XRAY_CLIENT_SERVER.test.step.getAttachments(
+          DATA_SERVER.tests.updateTestSteps.v2.key,
+          DATA_SERVER.tests.updateTestSteps.v2.steps[0].id
+        );
+        await XRAY_CLIENT_SERVER.test.step.updateStep(
+          DATA_SERVER.tests.updateTestSteps.v2.key,
+          DATA_SERVER.tests.updateTestSteps.v2.steps[0].id,
+          {
+            attachments: { remove: attachments.map((attachment) => attachment.id) },
+            fields: { ["Action"]: "<dummy>", ["Data"]: "<dumm>", ["Expected Result"]: "<dummy>" },
+          }
+        );
+        const step = await XRAY_CLIENT_SERVER.test.step.getStep(
+          DATA_SERVER.tests.updateTestSteps.v2.key,
+          DATA_SERVER.tests.updateTestSteps.v2.steps[0].id
+        );
+        assert.strictEqual(step.step.testCallStep, false);
+        assert.strictEqual(step.step.attachments.length, 0);
+      });
+
+      it("updates steps", async () => {
+        const uuid = randomUUID();
+        const content = await XRAY_CLIENT_SERVER.test.step.updateStep(
+          DATA_SERVER.tests.updateTestSteps.v2.key,
+          DATA_SERVER.tests.updateTestSteps.v2.steps[0].id,
+          {
+            attachments: {
+              add: [
+                {
+                  contentType: "plain/text",
+                  data: "gsddfgdsfg...(base64)",
+                  filename: "example1.txt",
+                },
+              ],
+            },
+            fields: {
+              ["Action"]: `step-${uuid}`,
+              ["Data"]: `data-${uuid}`,
+              ["Expected Result"]: `result-${uuid}`,
+            },
+          }
+        );
+        assert.strictEqual(content.step.id, DATA_SERVER.tests.updateTestSteps.v2.steps[0].id);
+        const step = await XRAY_CLIENT_SERVER.test.step.getStep(
+          DATA_SERVER.tests.updateTestSteps.v2.key,
+          DATA_SERVER.tests.updateTestSteps.v2.steps[0].id
+        );
+        assert.ok("fields" in step.step);
+        assert.deepStrictEqual(step.step.fields, {
+          ["Action"]: {
+            type: "Wiki",
+            value: { raw: `step-${uuid}`, rendered: `<p>step-${uuid}</p>` },
+          },
+          ["Data"]: {
+            type: "Wiki",
+            value: { raw: `data-${uuid}`, rendered: `<p>data-${uuid}</p>` },
+          },
+          ["Expected Result"]: {
+            type: "Wiki",
+            value: { raw: `result-${uuid}`, rendered: `<p>result-${uuid}</p>` },
+          },
+        });
+        const attachments = await XRAY_CLIENT_SERVER.test.step.getAttachments(
+          DATA_SERVER.tests.updateTestSteps.v2.key,
+          DATA_SERVER.tests.updateTestSteps.v2.steps[0].id
+        );
+        assert.strictEqual(attachments.length, 1);
+        assert.strictEqual(attachments[0].mimeType, "plain/text");
+        assert.strictEqual(attachments[0].fileName, "example1.txt");
+      });
+    });
+  });
 });

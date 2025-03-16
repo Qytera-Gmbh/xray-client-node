@@ -84,6 +84,10 @@ const TESTS = {
     key: "XCNODE-1",
   },
   importDatasets: { key: "XCNODE-4" },
+  updateTestSteps: {
+    v1: { key: "XCNODE-19", steps: [{ id: 3533 }] },
+    v2: { key: "XCNODE-18", steps: [{ id: 3532 }] },
+  },
 } as const;
 // ============================================================================================== //
 // TEST EXECUTIONS
