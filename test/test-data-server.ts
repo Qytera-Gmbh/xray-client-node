@@ -31,6 +31,13 @@ const TESTS = {
     key: "XCNODE-9",
     steps: [
       {
+        attachments: [
+          {
+            fileName: "1f4222_64_64.png",
+            id: 2986,
+            mimeType: "image/png",
+          },
+        ],
         id: 3510,
         v1: {
           data: { raw: "data 1", rendered: "<p>data 1</p>" },
