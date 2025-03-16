@@ -1,10 +1,13 @@
 import type { Xray } from "../../../models/index.js";
 import { BaseApi } from "../../base-api.js";
+import { TestStepApi } from "./step/step.js";
 
 /**
  * Models the Xray server test endpoints.
  */
 export class TestApi extends BaseApi {
+  public readonly step = new TestStepApi(this.client);
+
   /**
    * To export the pre-conditions of a test, you need to specify the key of the test you wish to
    * export the test pre-conditions from.
