@@ -33,7 +33,7 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [Test Steps](https://docs.getxray.app/display/XRAY/Test+Steps+-+REST)
       - [x] `GET    /rest/raven/1.0/api/settings/teststepstatuses`
       - [x] `GET    /rest/raven/1.0/api/test/{testKey}/step`
-      - [ ] `GET    /rest/raven/1.0/api/test/{testKey}/step/{id}`
+      - [x] `GET    /rest/raven/1.0/api/test/{testKey}/step/{id}`
       - [ ] `PUT    /rest/raven/1.0/api/test/{testKey}/step`
       - [ ] `POST   /rest/raven/1.0/api/test/{testKey}/step/{id}`
       - [ ] `DELETE /rest/raven/1.0/api/test/{testKey}/step/{id}`
@@ -129,7 +129,7 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
   - [Test Step](https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step)
     - [x] `GET    /rest/raven/2.0/api/test/{testKey}/steps`
     - [ ] `POST   /rest/raven/2.0/api/test/{testKey}/steps`
-    - [ ] `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
+    - [x] `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
     - [ ] `PUT    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
     - [ ] `DELETE /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
     - [ ] `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}/attachments`
