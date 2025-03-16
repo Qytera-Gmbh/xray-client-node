@@ -27,6 +27,10 @@ export const DATA_SERVER = {
 // TESTS
 // ============================================================================================== //
 const TESTS = {
+  addTestSteps: {
+    v1: { key: "XCNODE-17" },
+    v2: { key: "XCNODE-16" },
+  },
   immutable: {
     key: "XCNODE-9",
     steps: [

@@ -24,6 +24,9 @@ export const DATA_CLOUD = {
 // TESTS
 // ============================================================================================== //
 const TESTS = {
+  addTestSteps: {
+    key: "XCN-12",
+  },
   immutable: {
     dataset: ["name,age", "Jeff,25", "John,41", "Mary,-146", "Susan,19", ""],
     issueId: "15049",
