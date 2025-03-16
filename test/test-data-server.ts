@@ -31,6 +31,10 @@ const TESTS = {
     v1: { key: "XCNODE-17" },
     v2: { key: "XCNODE-16" },
   },
+  deleteTestStepAttachments: {
+    v1: { key: "XCNODE-21", steps: [{ id: 3540 }] },
+    v2: { key: "XCNODE-20", steps: [{ id: 3541 }] },
+  },
   immutable: {
     key: "XCNODE-9",
     steps: [

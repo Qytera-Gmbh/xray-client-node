@@ -361,6 +361,31 @@ interface DeleteStep {
   };
 }
 
+interface DeleteAttachment {
+  /**
+   * Deletes a test step attachment, given the test key and step and attachment IDs.
+   *
+   * @param testKey the key of the test issue
+   * @param stepId the ID of the test step
+   * @param attachmentId the ID of the attachment
+   *
+   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step/delete_test__testKey__steps__stepId__attachment__attachmentId_
+   */
+  deleteAttachment(testKey: string, stepId: number, attachmentId: number): Promise<void>;
+  v1: {
+    /**
+     * Remove an attachment from a test step.
+     *
+     * @param testKey the key of the test issue
+     * @param stepId the ID of the test step
+     * @param attachmentId the ID of the attachment
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+     */
+    deleteAttachment(testKey: string, stepId: number, attachmentId: number): Promise<void>;
+  };
+}
+
 interface File {
   /**
    * @example "plain/text"
@@ -398,7 +423,7 @@ interface NewStepResponse {
  */
 export class TestStepApi
   extends BaseApi
-  implements GetSteps, GetStep, GetAttachments, CreateStep, DeleteStep, UpdateStep
+  implements GetSteps, GetStep, GetAttachments, CreateStep, UpdateStep, DeleteStep, DeleteAttachment
 {
   private readonly processor = {
     getAttachments: async (url: string) => {
@@ -414,8 +439,9 @@ export class TestStepApi
     GetStep["v1"] &
     GetAttachments["v1"] &
     CreateStep["v1"] &
+    UpdateStep["v1"] &
     DeleteStep["v1"] &
-    UpdateStep["v1"] = this.bind((self) => ({
+    DeleteAttachment["v1"] = this.bind((self) => ({
     async createStep(testKey, body) {
       const response = await self.client.send(`rest/raven/1.0/api/test/${testKey}/step`, {
         body: JSON.stringify(body),
@@ -424,6 +450,15 @@ export class TestStepApi
         method: "PUT",
       });
       return (await response.json()) as Awaited<ReturnType<CreateStep["v1"]["createStep"]>>;
+    },
+    async deleteAttachment(testKey, stepId, attachmentId) {
+      await self.client.send(
+        `rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}/attachment/${attachmentId.toString()}`,
+        {
+          expectedStatus: 200,
+          method: "DELETE",
+        }
+      );
     },
     async deleteStep(testKey, stepId) {
       await self.client.send(`rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}`, {
@@ -478,6 +513,18 @@ export class TestStepApi
       query,
     });
     return (await response.json()) as Awaited<ReturnType<CreateStep["createStep"]>>;
+  }
+
+  public async deleteAttachment(
+    ...[testKey, stepId, attachmentId]: Parameters<DeleteAttachment["deleteAttachment"]>
+  ): ReturnType<DeleteAttachment["deleteAttachment"]> {
+    await this.client.send(
+      `rest/raven/2.0/api/test/${testKey}/steps/${stepId.toString()}/attachment/${attachmentId.toString()}`,
+      {
+        expectedStatus: 204,
+        method: "DELETE",
+      }
+    );
   }
 
   public async deleteStep(
