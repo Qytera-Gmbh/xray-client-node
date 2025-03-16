@@ -1,11 +1,13 @@
 import type { Xray } from "../../../../index.js";
 
+export type * as Step from "./step/step.js";
+
 export interface Details {
   archived: boolean;
   assignee: string;
   definition:
     | {
-        steps: Step[];
+        steps: Xray.Test.Step.DetailsV1[];
       }
     | string;
   id: number;
@@ -15,24 +17,6 @@ export interface Details {
   self: string;
   status: string;
   type: string;
-}
-
-export interface Step {
-  attachments: Xray.Attachment.FileAttachment[];
-  data: {
-    raw: string;
-    rendered: string;
-  };
-  id: number;
-  index: number;
-  result: {
-    raw: string;
-    rendered: string;
-  };
-  step: {
-    raw: string;
-    rendered: string;
-  };
 }
 
 export interface Precondition {
