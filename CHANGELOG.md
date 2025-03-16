@@ -1,5 +1,16 @@
 # Changelog
 
+# `4.0.0`
+
+## Breaking Changes
+
+- Removed `dispatcher` client parameter
+- Added custom `fetch` implementation client parameter
+
+## Other Changes
+
+- Removed undici peer dependency
+
 # `3.0.0`
 
 ## Breaking Changes
