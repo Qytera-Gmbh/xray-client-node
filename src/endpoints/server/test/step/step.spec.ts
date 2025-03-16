@@ -1,7 +1,7 @@
 import assert from "node:assert";
 import { randomUUID } from "node:crypto";
 import path from "node:path";
-import { describe, it } from "node:test";
+import { beforeEach, describe, it } from "node:test";
 import { XRAY_CLIENT_SERVER } from "../../../../../test/clients.js";
 import { DATA_SERVER } from "../../../../../test/test-data-server.js";
 
@@ -81,8 +81,25 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     }
   });
 
-  describe("createStep", () => {
+  describe("createStep and deleteStep", () => {
     describe("v1", () => {
+      beforeEach(async () => {
+        let steps = await XRAY_CLIENT_SERVER.test.step.v1.getSteps(
+          DATA_SERVER.tests.addTestSteps.v1.key
+        );
+        await Promise.all(
+          steps
+            .map((step) => step.id)
+            .map((id) =>
+              XRAY_CLIENT_SERVER.test.step.v1.deleteStep(DATA_SERVER.tests.addTestSteps.v1.key, id)
+            )
+        );
+        steps = await XRAY_CLIENT_SERVER.test.step.v1.getSteps(
+          DATA_SERVER.tests.addTestSteps.v1.key
+        );
+        assert.strictEqual(steps.length, 0);
+      });
+
       it("creates steps", async () => {
         const uuid = randomUUID();
         const content = await XRAY_CLIENT_SERVER.test.step.v1.createStep(
@@ -110,6 +127,21 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     });
 
     describe("v2", () => {
+      beforeEach(async () => {
+        let steps = await XRAY_CLIENT_SERVER.test.step.getSteps(
+          DATA_SERVER.tests.addTestSteps.v2.key
+        );
+        await Promise.all(
+          steps.steps
+            .map((step) => step.id)
+            .map((id) =>
+              XRAY_CLIENT_SERVER.test.step.deleteStep(DATA_SERVER.tests.addTestSteps.v2.key, id)
+            )
+        );
+        steps = await XRAY_CLIENT_SERVER.test.step.getSteps(DATA_SERVER.tests.addTestSteps.v2.key);
+        assert.strictEqual(steps.steps.length, 0);
+      });
+
       it("creates steps", async () => {
         const uuid = randomUUID();
         const content = await XRAY_CLIENT_SERVER.test.step.createStep(
