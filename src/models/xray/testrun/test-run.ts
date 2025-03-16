@@ -3,7 +3,7 @@ import type { Xray } from "../../index.js";
 /**
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
  */
-export interface TestRun {
+export interface Details {
   assignee: string;
   color: string;
   comment: string;

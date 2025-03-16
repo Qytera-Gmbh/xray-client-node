@@ -1,7 +1,7 @@
 /**
  * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
  */
-export interface TestExecution {
+export interface Details {
   assignee?: string;
   defects?: {
     id: number;

@@ -30,7 +30,7 @@ interface GetTestRun {
           testIssueKey: string;
         }
       | number
-  ): Promise<Xray.TestRun.TestRun>;
+  ): Promise<Xray.TestRun.Details>;
   v1: {
     /**
      * Retrieves a test run given the ID or test execution and test keys. The response will contain
@@ -59,7 +59,7 @@ interface GetTestRun {
             testIssueKey: string;
           }
         | number
-    ): Promise<Xray.TestRun.TestRun>;
+    ): Promise<Xray.TestRun.Details>;
   };
 }
 
@@ -234,7 +234,7 @@ export class TestRunApi extends BaseApi implements GetTestRun, UpdateTestRun {
         expectedStatus: 200,
         method: "GET",
       });
-      return (await response.json()) as Xray.TestRun.TestRun;
+      return (await response.json()) as Xray.TestRun.Details;
     },
     getTestRunByQuery: async (
       url: string,
@@ -248,7 +248,7 @@ export class TestRunApi extends BaseApi implements GetTestRun, UpdateTestRun {
         method: "GET",
         query: testRun,
       });
-      return (await response.json()) as Xray.TestRun.TestRun;
+      return (await response.json()) as Xray.TestRun.Details;
     },
     updateTestRun: async (url: string, body: UpdateTestRunPayload) => {
       const response = await this.client.send(url, {
@@ -286,7 +286,7 @@ export class TestRunApi extends BaseApi implements GetTestRun, UpdateTestRun {
           testIssueKey: string;
         }
       | number
-  ): Promise<Xray.TestRun.TestRun> {
+  ): Promise<Xray.TestRun.Details> {
     if (typeof testRun === "number") {
       return this.processor.getTestRunById(`rest/raven/2.0/api/testrun/${testRun.toString()}`);
     } else {
