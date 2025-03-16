@@ -34,4 +34,26 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       );
     });
   });
+
+  describe("getTestStep", () => {
+    it("v1", async () => {
+      const content = await XRAY_CLIENT_SERVER.test.step.v1.getTestStep(
+        DATA_SERVER.tests.immutable.key,
+        DATA_SERVER.tests.immutable.steps.v1[0].id
+      );
+      assert.deepStrictEqual(content.step, DATA_SERVER.tests.immutable.steps.v1[0].step);
+      assert.deepStrictEqual(content.data, DATA_SERVER.tests.immutable.steps.v1[0].data);
+      assert.deepStrictEqual(content.result, DATA_SERVER.tests.immutable.steps.v1[0].result);
+    });
+
+    it("v2", async () => {
+      const content = await XRAY_CLIENT_SERVER.test.step.getTestStep(
+        DATA_SERVER.tests.immutable.key,
+        DATA_SERVER.tests.immutable.steps.v2[0].id
+      );
+      assert.ok("fields" in content.step);
+      assert.ok("fields" in content.step);
+      assert.deepStrictEqual(content.step.fields, DATA_SERVER.tests.immutable.steps.v2[0].fields);
+    });
+  });
 });
