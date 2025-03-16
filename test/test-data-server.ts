@@ -142,7 +142,7 @@ const PRECONDITIONS = {
 // XRAY SETTINGS
 // ============================================================================================== //
 const SETTINGS = {
-  testStatuses: {
+  testStatus: {
     pass: {
       color: "#95C160",
       description: "The test run/iteration has passed",
@@ -151,6 +151,16 @@ const SETTINGS = {
       name: "PASS",
       rank: 0,
       requirementStatusName: "OK",
+    },
+  },
+  testStepStatus: {
+    pass: {
+      color: "#95C160",
+      description: "The test step has passed",
+      id: 0,
+      name: "PASS",
+      rank: 0,
+      testStatusId: 0,
     },
   },
 } as const;

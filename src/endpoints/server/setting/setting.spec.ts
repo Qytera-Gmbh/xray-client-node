@@ -8,10 +8,18 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
   describe("getTestStatuses", () => {
     it("returns test statuses", async () => {
       const statuses = await XRAY_CLIENT_SERVER.setting.getTestStatuses();
+      const passingStatus = statuses.find((s) => s.id === DATA_SERVER.settings.testStatus.pass.id);
+      assert.deepStrictEqual(passingStatus, DATA_SERVER.settings.testStatus.pass);
+    });
+  });
+
+  describe("getTestStepStatuses", () => {
+    it("returns test step statuses", async () => {
+      const statuses = await XRAY_CLIENT_SERVER.setting.getTestStepStatuses();
       const passingStatus = statuses.find(
-        (s) => s.id === DATA_SERVER.settings.testStatuses.pass.id
+        (s) => s.id === DATA_SERVER.settings.testStepStatus.pass.id
       );
-      assert.deepStrictEqual(passingStatus, DATA_SERVER.settings.testStatuses.pass);
+      assert.deepStrictEqual(passingStatus, DATA_SERVER.settings.testStepStatus.pass);
     });
   });
 });
