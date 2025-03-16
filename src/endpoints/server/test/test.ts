@@ -74,7 +74,7 @@ export class TestApi extends BaseApi {
        */
       testEnvironments?: string[];
     }
-  ): Promise<Xray.TestRun.TestRun[]> {
+  ): Promise<Xray.TestRun.Details[]> {
     const response = await this.client.send(`rest/raven/1.0/api/test/${key}/testruns`, {
       expectedStatus: 200,
       method: "GET",
@@ -82,7 +82,7 @@ export class TestApi extends BaseApi {
         testEnvironments: query?.testEnvironments?.map((e) => e.replace(",", "\\,")).join(","),
       },
     });
-    return (await response.json()) as Xray.TestRun.TestRun[];
+    return (await response.json()) as Xray.TestRun.Details[];
   }
 
   /**
@@ -108,7 +108,7 @@ export class TestApi extends BaseApi {
      * List of keys of the tests.
      */
     keys?: string[];
-  }): Promise<Xray.Test.Test[]> {
+  }): Promise<Xray.Test.Details[]> {
     const response = await this.client.send("rest/raven/1.0/api/test", {
       expectedStatus: 200,
       method: "GET",
@@ -117,7 +117,7 @@ export class TestApi extends BaseApi {
         keys: query?.keys?.join(";"),
       },
     });
-    return (await response.json()) as Xray.Test.Test[];
+    return (await response.json()) as Xray.Test.Details[];
   }
 
   /**

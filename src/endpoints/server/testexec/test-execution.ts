@@ -73,13 +73,13 @@ export class TestExecutionApi extends BaseApi {
        */
       page?: number;
     }
-  ): Promise<Xray.TestExecution.TestExecution[]> {
+  ): Promise<Xray.TestExecution.Details[]> {
     const response = await this.client.send(`rest/raven/1.0/api/testexec/${testExecKey}/test`, {
       expectedStatus: 200,
       method: "GET",
       query: query,
     });
-    return (await response.json()) as Xray.TestExecution.TestExecution[];
+    return (await response.json()) as Xray.TestExecution.Details[];
   }
 
   /**

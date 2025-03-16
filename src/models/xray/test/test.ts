@@ -1,6 +1,6 @@
 import type { Xray } from "../../../../index.js";
 
-export interface Test {
+export interface Details {
   archived: boolean;
   assignee: string;
   definition:
