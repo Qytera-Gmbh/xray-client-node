@@ -166,7 +166,7 @@ interface CreateStep {
        */
       testVersion?: string;
     }
-  ): Promise<CreateStepResponse>;
+  ): Promise<NewStepResponse>;
   v1: {
     /**
      * Create a new test step.
@@ -194,7 +194,147 @@ interface CreateStep {
          */
         step: string;
       }
-    ): Promise<CreateStepResponse["step"]>;
+    ): Promise<NewStepResponse["step"]>;
+  };
+}
+
+interface UpdateStep {
+  /**
+   * Updates the values of an existing test step, given the test key and step id. The user can
+   * update the field values and the attachments of a step. The values should follow a specific
+   * format similar to the step creation.
+   *
+   * - **Toggle Fields** values should be `"true"`, `"false"`, `"0"` or `"1"`
+   * - **Number Fields** values should be a string containing a number, e.g. `"320"`. Decimal number
+   * are also accepted, for instance, `"320.5"`. The decimal places are always separated by a `.`
+   * - **Single Select and Radio Button Fields** values should be a single string containing the
+   * option value, e.g. `"Option A"`. The value should be a valid option for that custom field.
+   * The values are not case sensitive.
+   * - **Multiple Select Fields** values should be an array of the string of option values, e.g.
+   * `["Option A", "Option B"]`. All the selected values should be valid for that custom field. The
+   * option values are not case sensitive.
+   * - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year,
+   * _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be
+   * `"2020-05-02"`.
+   * - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_.
+   * The date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the
+   * minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value would
+   * be `"2020-05-02T10:30Z"`.
+   *
+   * The remaining field types values do not required a specific validation. For instance, for a
+   * single line custom field a valid value would be `"Perform Action B"`.
+   *
+   * If some value is not valid for a certain custom field type, an error will be return stating the
+   * field with the incorrect value. A field value can be deleted sending an empty value, such as
+   * `""` or `[]`, or by sending `null`. **It is not possible to delete the value of a required
+   * field.**
+   *
+   * @param testKey the key of the test issue
+   * @param stepId the ID of the test step
+   * @param body the new step
+   * @returns the step update result
+   *
+   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step/put_test__testKey__steps__stepId_
+   */
+  updateStep(
+    testKey: string,
+    stepId: number,
+    body: {
+      attachments?: {
+        /**
+         * @example
+         *
+         * ```ts
+         * [
+         *   {
+         *     data: "gsddfgdsfg...(base64) ",
+         *     filename: "example1.txt",
+         *     contentType: "plain/text"
+         *   },
+         *   {
+         *     data: "gsddfgdsfg...(base64) ",
+         *     filename: "example2.txt",
+         *     contentType: "plain/text"
+         *   }
+         * ]
+         * ```
+         */
+        add?: File[];
+        /**
+         * @example [141, 105]
+         */
+        remove?: number[];
+      };
+      /**
+       * @example
+       *
+       * ```ts
+       * {
+       *   Action: "Step Action",
+       *   Date: "01/Feb/2022",
+       *   Toggle: "true",
+       *   SingleSelectList: "Selected Value",
+       *   MultiSelectList: ["Option A", "Option B"]
+       * }
+       * ```
+       */
+      fields: Record<string, string | string[]>;
+    }
+  ): Promise<NewStepResponse>;
+  v1: {
+    /**
+     * Update a specific test step.
+     *
+     * @param testKey the key of the test issue
+     * @param stepId the ID of the test step
+     * @param body the new step
+     * @returns the step update result
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+     */
+    updateStep(
+      testKey: string,
+      stepId: number,
+      body: {
+        attachments?: {
+          /**
+           * @example
+           *
+           * ```ts
+           * [
+           *   {
+           *     data: "gsddfgdsfg...(base64) ",
+           *     filename: "example1.txt",
+           *     contentType: "plain/text"
+           *   },
+           *   {
+           *     data: "gsddfgdsfg...(base64) ",
+           *     filename: "example2.txt",
+           *     contentType: "plain/text"
+           *   }
+           * ]
+           * ```
+           */
+          add?: File[];
+          /**
+           * @example [141, 105]
+           */
+          remove?: number[];
+        };
+        /**
+         * @example "example data"
+         */
+        data?: string;
+        /**
+         * @example "example result"
+         */
+        result?: string;
+        /**
+         * @example "example step"
+         */
+        step?: string;
+      }
+    ): Promise<NewStepResponse["step"]>;
   };
 }
 
@@ -236,7 +376,7 @@ interface File {
   filename: string;
 }
 
-interface CreateStepResponse {
+interface NewStepResponse {
   step: {
     /**
      * @example [25737, 25738]
@@ -258,7 +398,7 @@ interface CreateStepResponse {
  */
 export class TestStepApi
   extends BaseApi
-  implements GetSteps, GetStep, GetAttachments, CreateStep, DeleteStep
+  implements GetSteps, GetStep, GetAttachments, CreateStep, DeleteStep, UpdateStep
 {
   private readonly processor = {
     getAttachments: async (url: string) => {
@@ -274,7 +414,8 @@ export class TestStepApi
     GetStep["v1"] &
     GetAttachments["v1"] &
     CreateStep["v1"] &
-    DeleteStep["v1"] = this.bind((self) => ({
+    DeleteStep["v1"] &
+    UpdateStep["v1"] = this.bind((self) => ({
     async createStep(testKey, body) {
       const response = await self.client.send(`rest/raven/1.0/api/test/${testKey}/step`, {
         body: JSON.stringify(body),
@@ -311,6 +452,18 @@ export class TestStepApi
         method: "GET",
       });
       return (await response.json()) as Awaited<ReturnType<GetSteps["v1"]["getSteps"]>>;
+    },
+    async updateStep(testKey, stepId, body) {
+      const response = await self.client.send(
+        `rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}`,
+        {
+          body: JSON.stringify(body),
+          expectedStatus: 200,
+          headers: { ["Content-Type"]: "application/json" },
+          method: "POST",
+        }
+      );
+      return (await response.json()) as Awaited<ReturnType<UpdateStep["v1"]["updateStep"]>>;
     },
   }));
 
@@ -366,5 +519,20 @@ export class TestStepApi
       query,
     });
     return (await response.json()) as Awaited<ReturnType<GetSteps["getSteps"]>>;
+  }
+
+  public async updateStep(
+    ...[testKey, stepId, body]: Parameters<UpdateStep["updateStep"]>
+  ): ReturnType<UpdateStep["updateStep"]> {
+    const response = await this.client.send(
+      `rest/raven/2.0/api/test/${testKey}/steps/${stepId.toString()}`,
+      {
+        body: JSON.stringify(body),
+        expectedStatus: 200,
+        headers: { ["Content-Type"]: "application/json" },
+        method: "PUT",
+      }
+    );
+    return (await response.json()) as Awaited<ReturnType<UpdateStep["updateStep"]>>;
   }
 }
