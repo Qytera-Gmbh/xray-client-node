@@ -29,23 +29,15 @@ export const DATA_SERVER = {
 const TESTS = {
   immutable: {
     key: "XCNODE-9",
-    steps: {
-      v1: [
-        {
+    steps: [
+      {
+        id: 3510,
+        v1: {
           data: { raw: "data 1", rendered: "<p>data 1</p>" },
-          id: 3510,
           result: { raw: "result 1", rendered: "<p>result 1</p>" },
           step: { raw: "action 1", rendered: "<p>action 1</p>" },
         },
-        {
-          data: { raw: "data 2", rendered: "<p>data 2</p>" },
-          id: 3511,
-          result: { raw: "result 2", rendered: "<p>result 2</p>" },
-          step: { raw: "action 2", rendered: "<p>action 2</p>" },
-        },
-      ],
-      v2: [
-        {
+        v2: {
           fields: {
             ["Action"]: { type: "Wiki", value: { raw: "action 1", rendered: "<p>action 1</p>" } },
             ["Data"]: { type: "Wiki", value: { raw: "data 1", rendered: "<p>data 1</p>" } },
@@ -54,9 +46,16 @@ const TESTS = {
               value: { raw: "result 1", rendered: "<p>result 1</p>" },
             },
           },
-          id: 3510,
         },
-        {
+      },
+      {
+        id: 3511,
+        v1: {
+          data: { raw: "data 2", rendered: "<p>data 2</p>" },
+          result: { raw: "result 2", rendered: "<p>result 2</p>" },
+          step: { raw: "action 2", rendered: "<p>action 2</p>" },
+        },
+        v2: {
           fields: {
             ["Action"]: { type: "Wiki", value: { raw: "action 2", rendered: "<p>action 2</p>" } },
             ["Data"]: { type: "Wiki", value: { raw: "data 2", rendered: "<p>data 2</p>" } },
@@ -65,10 +64,9 @@ const TESTS = {
               value: { raw: "result 2", rendered: "<p>result 2</p>" },
             },
           },
-          id: 3511,
         },
-      ],
-    },
+      },
+    ],
   },
   immutableDatadriven: {
     dataset: ["name,age", "Jane,42", "John,33", ""],
