@@ -212,7 +212,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
               add: [
                 {
                   contentType: "plain/text",
-                  data: "gsddfgdsfg...(base64)",
+                  data: Buffer.from("hello world").toString("base64"),
                   filename: "example1.txt",
                 },
               ],
@@ -275,7 +275,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
               add: [
                 {
                   contentType: "plain/text",
-                  data: "gsddfgdsfg...(base64)",
+                  data: Buffer.from("hello world").toString("base64"),
                   filename: "example1.txt",
                 },
               ],
@@ -314,6 +314,105 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
         assert.strictEqual(attachments.length, 1);
         assert.strictEqual(attachments[0].mimeType, "plain/text");
         assert.strictEqual(attachments[0].fileName, "example1.txt");
+      });
+    });
+  });
+
+  describe("deleteAttachment", () => {
+    describe("v1", () => {
+      beforeEach(async () => {
+        await XRAY_CLIENT_SERVER.test.step.v1.updateStep(
+          DATA_SERVER.tests.deleteTestStepAttachments.v1.key,
+          DATA_SERVER.tests.deleteTestStepAttachments.v1.steps[0].id,
+          {
+            attachments: {
+              add: [
+                {
+                  contentType: "plain/text",
+                  data: Buffer.from("hello world").toString("base64"),
+                  filename: randomUUID(),
+                },
+              ],
+            },
+          }
+        );
+        const attachments = await XRAY_CLIENT_SERVER.test.step.v1.getAttachments(
+          DATA_SERVER.tests.deleteTestStepAttachments.v1.key,
+          DATA_SERVER.tests.deleteTestStepAttachments.v1.steps[0].id
+        );
+        assert.ok(attachments.length > 0);
+      });
+
+      it("deletes attachments", async () => {
+        let attachments = await XRAY_CLIENT_SERVER.test.step.v1.getAttachments(
+          DATA_SERVER.tests.deleteTestStepAttachments.v1.key,
+          DATA_SERVER.tests.deleteTestStepAttachments.v1.steps[0].id
+        );
+        await Promise.all(
+          attachments
+            .map((attachment) => attachment.id)
+            .map((id) =>
+              XRAY_CLIENT_SERVER.test.step.v1.deleteAttachment(
+                DATA_SERVER.tests.deleteTestStepAttachments.v1.key,
+                DATA_SERVER.tests.deleteTestStepAttachments.v1.steps[0].id,
+                id
+              )
+            )
+        );
+        attachments = await XRAY_CLIENT_SERVER.test.step.v1.getAttachments(
+          DATA_SERVER.tests.deleteTestStepAttachments.v1.key,
+          DATA_SERVER.tests.deleteTestStepAttachments.v1.steps[0].id
+        );
+        assert.deepStrictEqual(attachments, []);
+      });
+    });
+
+    describe("v2", () => {
+      beforeEach(async () => {
+        await XRAY_CLIENT_SERVER.test.step.updateStep(
+          DATA_SERVER.tests.deleteTestStepAttachments.v2.key,
+          DATA_SERVER.tests.deleteTestStepAttachments.v2.steps[0].id,
+          {
+            attachments: {
+              add: [
+                {
+                  contentType: "plain/text",
+                  data: Buffer.from("hello world").toString("base64"),
+                  filename: randomUUID(),
+                },
+              ],
+            },
+            fields: { ["Action"]: "a step" },
+          }
+        );
+        const attachments = await XRAY_CLIENT_SERVER.test.step.getAttachments(
+          DATA_SERVER.tests.deleteTestStepAttachments.v2.key,
+          DATA_SERVER.tests.deleteTestStepAttachments.v2.steps[0].id
+        );
+        assert.ok(attachments.length > 0);
+      });
+
+      it("deletes attachments", async () => {
+        let attachments = await XRAY_CLIENT_SERVER.test.step.getAttachments(
+          DATA_SERVER.tests.deleteTestStepAttachments.v2.key,
+          DATA_SERVER.tests.deleteTestStepAttachments.v2.steps[0].id
+        );
+        await Promise.all(
+          attachments
+            .map((attachment) => attachment.id)
+            .map((id) =>
+              XRAY_CLIENT_SERVER.test.step.deleteAttachment(
+                DATA_SERVER.tests.deleteTestStepAttachments.v2.key,
+                DATA_SERVER.tests.deleteTestStepAttachments.v2.steps[0].id,
+                id
+              )
+            )
+        );
+        attachments = await XRAY_CLIENT_SERVER.test.step.getAttachments(
+          DATA_SERVER.tests.deleteTestStepAttachments.v2.key,
+          DATA_SERVER.tests.deleteTestStepAttachments.v2.steps[0].id
+        );
+        assert.deepStrictEqual(attachments, []);
       });
     });
   });
