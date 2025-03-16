@@ -5,9 +5,9 @@ import { XRAY_CLIENT_SERVER } from "../../../../../test/clients.js";
 import { DATA_SERVER } from "../../../../../test/test-data-server.js";
 
 describe(path.relative(process.cwd(), import.meta.filename), () => {
-  describe("getTestSteps", () => {
+  describe("getSteps", () => {
     it("v1", async () => {
-      const content = await XRAY_CLIENT_SERVER.test.step.v1.getTestSteps(
+      const content = await XRAY_CLIENT_SERVER.test.step.v1.getSteps(
         DATA_SERVER.tests.immutable.key
       );
       assert.deepStrictEqual(content[0].step, DATA_SERVER.tests.immutable.steps[0].v1.step);
@@ -19,9 +19,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     });
 
     it("v2", async () => {
-      const content = await XRAY_CLIENT_SERVER.test.step.getTestSteps(
-        DATA_SERVER.tests.immutable.key
-      );
+      const content = await XRAY_CLIENT_SERVER.test.step.getSteps(DATA_SERVER.tests.immutable.key);
       assert.ok("fields" in content.steps[0]);
       assert.ok("fields" in content.steps[1]);
       assert.deepStrictEqual(
@@ -35,9 +33,9 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     });
   });
 
-  describe("getTestStep", () => {
+  describe("getStep", () => {
     it("v1", async () => {
-      const content = await XRAY_CLIENT_SERVER.test.step.v1.getTestStep(
+      const content = await XRAY_CLIENT_SERVER.test.step.v1.getStep(
         DATA_SERVER.tests.immutable.key,
         DATA_SERVER.tests.immutable.steps[0].id
       );
@@ -47,7 +45,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
     });
 
     it("v2", async () => {
-      const content = await XRAY_CLIENT_SERVER.test.step.getTestStep(
+      const content = await XRAY_CLIENT_SERVER.test.step.getStep(
         DATA_SERVER.tests.immutable.key,
         DATA_SERVER.tests.immutable.steps[0].id
       );
@@ -55,5 +53,30 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       assert.ok("fields" in content.step);
       assert.deepStrictEqual(content.step.fields, DATA_SERVER.tests.immutable.steps[0].v2.fields);
     });
+  });
+
+  describe("getAttachments", () => {
+    for (const [version, endpoint] of [
+      ["v1", XRAY_CLIENT_SERVER.test.step.v1],
+      ["v2", XRAY_CLIENT_SERVER.test.step],
+    ] as const) {
+      describe(version, () => {
+        it("returns attachments", async () => {
+          const content = await endpoint.getAttachments(
+            DATA_SERVER.tests.immutable.key,
+            DATA_SERVER.tests.immutable.steps[0].id
+          );
+          assert.strictEqual(content[0].id, DATA_SERVER.tests.immutable.steps[0].attachments[0].id);
+          assert.strictEqual(
+            content[0].fileName,
+            DATA_SERVER.tests.immutable.steps[0].attachments[0].fileName
+          );
+          assert.strictEqual(
+            content[0].mimeType,
+            DATA_SERVER.tests.immutable.steps[0].attachments[0].mimeType
+          );
+        });
+      });
+    }
   });
 });

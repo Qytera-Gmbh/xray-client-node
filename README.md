@@ -37,7 +37,7 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
       - [ ] `PUT    /rest/raven/1.0/api/test/{testKey}/step`
       - [ ] `POST   /rest/raven/1.0/api/test/{testKey}/step/{id}`
       - [ ] `DELETE /rest/raven/1.0/api/test/{testKey}/step/{id}`
-      - [ ] `GET    /rest/raven/1.0/api/test/{testKey}/step/{id}/attachment`
+      - [x] `GET    /rest/raven/1.0/api/test/{testKey}/step/{id}/attachment`
       - [ ] `DELETE /rest/raven/1.0/api/test/{testKey}/step/{id}/attachment/{attachmentID}`
   - [Pre-Conditions](https://docs.getxray.app/display/XRAY/Pre-Conditions+-+REST)
     - [ ] `GET    /rest/raven/1.0/api/precondition/{preConditionKey}/test`
@@ -132,7 +132,7 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [x] `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
     - [ ] `PUT    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
     - [ ] `DELETE /rest/raven/2.0/api/test/{testKey}/steps/{stepId}`
-    - [ ] `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}/attachments`
+    - [x] `GET    /rest/raven/2.0/api/test/{testKey}/steps/{stepId}/attachments`
     - [ ] `DELETE /rest/raven/2.0/api/test/{testKey}/steps/{stepId}/attachment/{attachmentId}`
   - [Test Run](https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run)
     - [x] `GET    /rest/raven/2.0/api/testrun`

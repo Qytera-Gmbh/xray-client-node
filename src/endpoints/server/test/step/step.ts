@@ -1,7 +1,7 @@
 import type { Xray } from "../../../../models/index.js";
 import { BaseApi } from "../../../base-api.js";
 
-interface GetTestSteps {
+interface GetSteps {
   /**
    * Returns all the steps of a test issue given the key. The response contains for each step the
    * corresponding id, index, fields and the attachments.
@@ -19,7 +19,7 @@ interface GetTestSteps {
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step/get_test__testKey__steps
    */
-  getTestSteps(
+  getSteps(
     testKey: string,
     query?: {
       /**
@@ -39,11 +39,11 @@ interface GetTestSteps {
      *
      * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
      */
-    getTestSteps(testKey: string): Promise<Xray.Test.Step.DetailsV1[]>;
+    getSteps(testKey: string): Promise<Xray.Test.Step.DetailsV1[]>;
   };
 }
 
-interface GetTestStep {
+interface GetStep {
   /**
    * Returns the values of a single test step, given the test key and the step ID. The response
    * follows the same format as the previous endpoints, containing the step ID, index, fields and
@@ -63,7 +63,7 @@ interface GetTestStep {
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step/get_test__testKey__steps__stepId_
    */
-  getTestStep(testKey: string, stepId: number): Promise<{ step: Xray.Test.Step.DetailsV2 }>;
+  getStep(testKey: string, stepId: number): Promise<{ step: Xray.Test.Step.DetailsV2 }>;
   v1: {
     /**
      * Return JSON with the test step with the given ID.
@@ -74,7 +74,32 @@ interface GetTestStep {
      *
      * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
      */
-    getTestStep(testKey: string, id: number): Promise<Xray.Test.Step.DetailsV1>;
+    getStep(testKey: string, id: number): Promise<Xray.Test.Step.DetailsV1>;
+  };
+}
+
+interface GetAttachments {
+  /**
+   * Returns all the attachments of a test step, given the test key and step ID.
+   *
+   * @param testKey the key of the test issue
+   * @param stepId the ID of the test step
+   * @returns the test step attachments
+   *
+   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step/get_test__testKey__steps__stepId__attachments
+   */
+  getAttachments(testKey: string, stepId: number): Promise<Xray.Attachment.FileAttachment[]>;
+  v1: {
+    /**
+     * Return JSON with all the test step attachments.
+     *
+     * @param testKey the key of the test issue
+     * @param id the ID of the test step
+     * @returns the test step attachments
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+     */
+    getAttachments(testKey: string, id: number): Promise<Xray.Attachment.FileAttachment[]>;
   };
 }
 
@@ -84,9 +109,24 @@ interface GetTestStep {
  * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
  * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step
  */
-export class TestStepApi extends BaseApi implements GetTestSteps, GetTestStep {
-  public readonly v1: GetTestSteps["v1"] & GetTestStep["v1"] = this.bind((self) => ({
-    async getTestStep(testKey, id) {
+export class TestStepApi extends BaseApi implements GetSteps, GetStep, GetAttachments {
+  private readonly processor = {
+    getAttachments: async (url: string) => {
+      const response = await this.client.send(url, {
+        expectedStatus: 200,
+        method: "GET",
+      });
+      return (await response.json()) as Xray.Attachment.FileAttachment[];
+    },
+  };
+
+  public readonly v1: GetSteps["v1"] & GetStep["v1"] & GetAttachments["v1"] = this.bind((self) => ({
+    async getAttachments(testKey, id) {
+      return self.processor.getAttachments(
+        `rest/raven/1.0/api/test/${testKey}/step/${id.toString()}/attachment`
+      );
+    },
+    async getStep(testKey, id) {
       const response = await self.client.send(
         `rest/raven/1.0/api/test/${testKey}/step/${id.toString()}`,
         {
@@ -96,7 +136,7 @@ export class TestStepApi extends BaseApi implements GetTestSteps, GetTestStep {
       );
       return (await response.json()) as Xray.Test.Step.DetailsV1;
     },
-    async getTestSteps(testKey) {
+    async getSteps(testKey) {
       const response = await self.client.send(`rest/raven/1.0/api/test/${testKey}/step`, {
         expectedStatus: 200,
         method: "GET",
@@ -105,9 +145,17 @@ export class TestStepApi extends BaseApi implements GetTestSteps, GetTestStep {
     },
   }));
 
-  public async getTestStep(
-    ...[testKey, id]: Parameters<GetTestStep["getTestStep"]>
-  ): ReturnType<GetTestStep["getTestStep"]> {
+  public async getAttachments(
+    ...[testKey, id]: Parameters<GetAttachments["getAttachments"]>
+  ): ReturnType<GetAttachments["getAttachments"]> {
+    return this.processor.getAttachments(
+      `rest/raven/2.0/api/test/${testKey}/steps/${id.toString()}/attachments`
+    );
+  }
+
+  public async getStep(
+    ...[testKey, id]: Parameters<GetStep["getStep"]>
+  ): ReturnType<GetStep["getStep"]> {
     const response = await this.client.send(
       `rest/raven/2.0/api/test/${testKey}/steps/${id.toString()}`,
       {
@@ -115,17 +163,17 @@ export class TestStepApi extends BaseApi implements GetTestSteps, GetTestStep {
         method: "GET",
       }
     );
-    return (await response.json()) as Awaited<ReturnType<GetTestStep["getTestStep"]>>;
+    return (await response.json()) as Awaited<ReturnType<GetStep["getStep"]>>;
   }
 
-  public async getTestSteps(
-    ...[testKey, query]: Parameters<GetTestSteps["getTestSteps"]>
-  ): ReturnType<GetTestSteps["getTestSteps"]> {
+  public async getSteps(
+    ...[testKey, query]: Parameters<GetSteps["getSteps"]>
+  ): ReturnType<GetSteps["getSteps"]> {
     const response = await this.client.send(`rest/raven/2.0/api/test/${testKey}/steps`, {
       expectedStatus: 200,
       method: "GET",
       query,
     });
-    return (await response.json()) as Awaited<ReturnType<GetTestSteps["getTestSteps"]>>;
+    return (await response.json()) as Awaited<ReturnType<GetSteps["getSteps"]>>;
   }
 }
