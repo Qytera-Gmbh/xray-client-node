@@ -64,7 +64,7 @@ export class TestApi extends BaseApi {
    * the test runs from. You can filter the test runs by test environment.
    *
    * @param key the test issue key
-   * @param query the query
+   * @param query the query parameters
    * @returns JSON with the exported test runs
    *
    * @see https://docs.getxray.app/display/XRAY/Tests+-+REST
