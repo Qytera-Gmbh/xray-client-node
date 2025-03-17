@@ -40,7 +40,7 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
       - [x] `GET    /rest/raven/1.0/api/test/{testKey}/step/{id}/attachment`
       - [x] `DELETE /rest/raven/1.0/api/test/{testKey}/step/{id}/attachment/{attachmentID}`
   - [Pre-Conditions](https://docs.getxray.app/display/XRAY/Pre-Conditions+-+REST)
-    - [ ] `GET    /rest/raven/1.0/api/precondition/{preConditionKey}/test`
+    - [x] `GET    /rest/raven/1.0/api/precondition/{preConditionKey}/test`
     - [ ] `POST   /rest/raven/1.0/api/precondition/{preConditionKey}/test`
     - [ ] `DELETE /rest/raven/1.0/api/precondition/{preConditionKey}/test/{testKey}`
   - [Test Sets](https://docs.getxray.app/display/XRAY/Test+Sets+-+REST)

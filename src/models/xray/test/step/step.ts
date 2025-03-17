@@ -1,5 +1,8 @@
 import type { Xray } from "../../../../../index.js";
 
+/**
+ * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+ */
 export interface DetailsV1 {
   attachments: Xray.Attachment.FileAttachment[];
   data: {
@@ -42,6 +45,9 @@ export interface DetailsV1 {
   };
 }
 
+/**
+ * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step/get_test__testKey__steps__stepId_
+ */
 export type DetailsV2 =
   | {
       attachments: Xray.Attachment.FileAttachment[];
