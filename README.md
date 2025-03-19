@@ -41,8 +41,8 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
       - [x] `DELETE /rest/raven/1.0/api/test/{testKey}/step/{id}/attachment/{attachmentID}`
   - [Pre-Conditions](https://docs.getxray.app/display/XRAY/Pre-Conditions+-+REST)
     - [x] `GET    /rest/raven/1.0/api/precondition/{preConditionKey}/test`
-    - [ ] `POST   /rest/raven/1.0/api/precondition/{preConditionKey}/test`
-    - [ ] `DELETE /rest/raven/1.0/api/precondition/{preConditionKey}/test/{testKey}`
+    - [x] `POST   /rest/raven/1.0/api/precondition/{preConditionKey}/test`
+    - [x] `DELETE /rest/raven/1.0/api/precondition/{preConditionKey}/test/{testKey}`
   - [Test Sets](https://docs.getxray.app/display/XRAY/Test+Sets+-+REST)
     - [ ] `GET    /rest/raven/1.0/api/testset/{testSetKey}/test`
     - [ ] `POST   /rest/raven/1.0/api/testset/{testSetKey}/test`
