@@ -154,9 +154,15 @@ const TEST_SETS = {
 // PRECONDITIONS
 // ============================================================================================== //
 const PRECONDITIONS = {
+  addTests: {
+    key: "XCNODE-22",
+  },
   immutable: {
     key: "XCNODE-14",
     tests: [TESTS.immutable],
+  },
+  removeTests: {
+    key: "XCNODE-23",
   },
 } as const;
 // ============================================================================================== //
