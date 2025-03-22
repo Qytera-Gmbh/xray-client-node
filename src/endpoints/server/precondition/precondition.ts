@@ -69,7 +69,7 @@ export class PreconditionApi extends BaseApi {
        */
       testVersion?: string;
     }
-  ): Promise<Xray.Precondition.Test[]> {
+  ): Promise<Xray.Test.Details[]> {
     const response = await this.client.send(
       `rest/raven/1.0/api/precondition/${preconditionKey}/test`,
       {
@@ -78,7 +78,7 @@ export class PreconditionApi extends BaseApi {
         query,
       }
     );
-    return (await response.json()) as Xray.Precondition.Test[];
+    return (await response.json()) as Xray.Test.Details[];
   }
 
   /**

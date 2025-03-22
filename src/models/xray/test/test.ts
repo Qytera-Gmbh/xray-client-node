@@ -13,9 +13,55 @@ export interface Details {
   /**
    * @example "admin"
    */
-  assignee: string;
+  assignee?: string;
+  /**
+   * @example "Test definition example"
+   */
   definition:
     | {
+        /**
+         *
+         * @example
+         *
+         * ```ts
+         * [
+         *   {
+         *     attachments: [],
+         *     data: {
+         *       raw: "data1",
+         *       rendered: "<p>data1</p>"
+         *     },
+         *     id: 10940,
+         *     index: 1,
+         *     result: {
+         *       raw: "result1",
+         *       rendered: "<p>result1</p>"
+         *     },
+         *     step: {
+         *       raw: "step1",
+         *       rendered: "<p>step1</p>"
+         *     },
+         *   },
+         *   {
+         *     attachments: [],
+         *     data: {
+         *       raw: "data2",
+         *       rendered: "<p>data2</p>"
+         *     },
+         *     id: 10941,
+         *     index: 2,
+         *     result: {
+         *       raw: "result2",
+         *       rendered: "<p>result2</p>"
+         *     },
+         *     step: {
+         *       raw: "step2",
+         *       rendered: "<p>step2</p>"
+         *     }
+         *   }
+         * ]
+         * ```
+         */
         steps: Xray.Test.Step.DetailsV1[];
       }
     | string;
@@ -27,7 +73,7 @@ export interface Details {
    * @example "PER-1098"
    */
   key: string;
-  precondition: Xray.Test.Precondition[];
+  precondition: Xray.Precondition.Details[];
   /**
    * @example "admin"
    */

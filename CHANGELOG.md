@@ -1,5 +1,14 @@
 # Changelog
 
+# `Preview`
+
+- Added `GET    /rest/raven/1.0/api/precondition/{preConditionKey}/test`
+- Added `POST   /rest/raven/1.0/api/precondition/{preConditionKey}/test`
+- Added `DELETE /rest/raven/1.0/api/precondition/{preConditionKey}/test/{testKey}`
+- Added `GET    /rest/raven/1.0/api/testset/{testSetKey}/test`
+- Added `POST   /rest/raven/1.0/api/testset/{testSetKey}/test`
+- Added `DELETE /rest/raven/1.0/api/testset/{testSetKey}/test/{testKey}`
+
 # `4.0.0`
 
 ## Breaking Changes
