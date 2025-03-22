@@ -1,4 +1,4 @@
-import type { Xray } from "../../index.js";
+import type { Xray } from "../../../../index.js";
 
 /**
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
