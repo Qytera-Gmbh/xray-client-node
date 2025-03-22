@@ -1,4 +1,4 @@
-import type { Xray } from "../../../models/index.js";
+import type { Xray } from "../../../../index.js";
 import { BaseApi } from "../../base-api.js";
 import { TestStepApi } from "./step/step.js";
 

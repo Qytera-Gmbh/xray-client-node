@@ -1,5 +1,4 @@
-import { type Xray } from "../../../../../index.js";
-import type { IssueUpdateDetails } from "../../../../models/jira/__generated__/index.js";
+import type { Jira, Xray } from "../../../../../index.js";
 import { BaseApi } from "../../../base-api.js";
 
 interface ImportXray {
@@ -43,7 +42,7 @@ interface ImportXrayMultipart {
      */
     xrayMultipart(
       results: Xray.Import.TestExecutionResults,
-      info: IssueUpdateDetails
+      info: Jira.IssueUpdateDetails
     ): Promise<ImportResponse>;
   };
   /**
@@ -61,7 +60,7 @@ interface ImportXrayMultipart {
    */
   xrayMultipart(
     results: Xray.Import.TestExecutionResults,
-    info: IssueUpdateDetails
+    info: Jira.IssueUpdateDetails
   ): Promise<ImportResponse>;
 }
 
@@ -93,7 +92,7 @@ export class ImportExecutionApi extends BaseApi implements ImportXray, ImportXra
     xrayMultipart: async (
       url: string,
       results: Xray.Import.TestExecutionResults,
-      info: IssueUpdateDetails
+      info: Jira.IssueUpdateDetails
     ) => {
       const resultBlob = new Blob([JSON.stringify(results)], { type: "application/json" });
       const infoBlob = new Blob([JSON.stringify(info)], { type: "application/json" });
@@ -131,7 +130,7 @@ export class ImportExecutionApi extends BaseApi implements ImportXray, ImportXra
 
   public async xrayMultipart(
     results: Xray.Import.TestExecutionResults,
-    info: IssueUpdateDetails
+    info: Jira.IssueUpdateDetails
   ): Promise<ImportResponse> {
     return this.processor.xrayMultipart(
       "rest/raven/2.0/api/import/execution/multipart",
