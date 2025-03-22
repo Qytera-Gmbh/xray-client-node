@@ -2,48 +2,44 @@ import type { Xray } from "../../../../index.js";
 import { BaseApi } from "../../base-api.js";
 
 /**
- * Models the test plans endpoints in Xray server.
+ * Models the test plan endpoints in Xray server.
  *
  * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
  */
 export class TestPlanApi extends BaseApi {
   /**
-   * Associate tests with the test plan. Return error messages, if there are any.
+   * Associate tests with the test plan.
    *
    * @param testPlanKey the key of the test plan
-   * @param body the tests to associate with or remove from the test plan
+   * @param body the request body
    * @returns error message if there are any
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
    */
-  public associateTests(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async associateTests(
     testPlanKey: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     body: {
       /**
        * Tests to associate with the test plan.
        *
-       * @example
-       *
-       * ```ts
-       * ["CALC-14", "CALC-29"]
-       * ```
+       * @example ["CALC-14", "CALC-29"]
        */
-      add: string[];
+      add?: string[];
       /**
        * Tests to remove from the test plan.
        *
-       * @example
-       *
-       * ```ts
-       * ["CALC-15", "CALC-50"]
-       * ```
+       * @example["CALC-15", "CALC-50"]
        */
-      remove: string[];
+      remove?: string[];
     }
-  ): Promise<string> {
-    throw new Error("Method not implemented");
+  ): Promise<string[]> {
+    const response = await this.client.send(`rest/raven/1.0/api/testplan/${testPlanKey}/test`, {
+      body: JSON.stringify(body),
+      expectedStatus: 200,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "POST",
+    });
+    return (await response.json()) as string[];
   }
 
   /**
@@ -106,12 +102,10 @@ export class TestPlanApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
    */
-  public removeTest(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    testPlanKey: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    testKey: string
-  ): Promise<void> {
-    throw new Error("Method not implemented");
+  public async removeTest(testPlanKey: string, testKey: string): Promise<void> {
+    await this.client.send(`rest/raven/1.0/api/testplan/${testPlanKey}/test/${testKey}`, {
+      expectedStatus: 200,
+      method: "DELETE",
+    });
   }
 }

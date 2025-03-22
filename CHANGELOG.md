@@ -8,6 +8,8 @@
 - Added `GET    /rest/raven/1.0/api/testset/{testSetKey}/test`
 - Added `POST   /rest/raven/1.0/api/testset/{testSetKey}/test`
 - Added `DELETE /rest/raven/1.0/api/testset/{testSetKey}/test/{testKey}`
+- Added `POST   /rest/raven/1.0/api/testplan/{testPlanKey}/test`
+- Added `DELETE /rest/raven/1.0/api/testplan/{testPlanKey}/test/{testKey}`
 
 # `4.0.0`
 
