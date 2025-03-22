@@ -8,7 +8,7 @@ import { BaseApi } from "../../base-api.js";
  */
 export class TestExecutionApi extends BaseApi {
   /**
-   * Associate tests with the test execution. Return error messages, if there are any.
+   * Associate tests with the test execution.
    *
    * @param testExecKey the key of the test execution
    * @param body the tests to associate with or remove from the test execution
@@ -16,34 +16,30 @@ export class TestExecutionApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
    */
-  public associateTests(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  public async associateTests(
     testExecKey: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     body: {
       /**
        * Tests to associate with the test execution.
        *
-       * @example
-       *
-       * ```ts
-       * ["CALC-33", "CALC-75"]
-       * ```
+       * @example ["CALC-33", "CALC-75"]
        */
-      add: string[];
+      add?: string[];
       /**
        * Tests to remove from the test execution.
        *
-       * @example
-       *
-       * ```ts
-       * ["CALC-25", "CALC-45"]
-       * ```
+       * @example ["CALC-25", "CALC-45"]
        */
-      remove: string[];
+      remove?: string[];
     }
-  ): Promise<string> {
-    throw new Error("Method not implemented");
+  ): Promise<string[]> {
+    const response = await this.client.send(`rest/raven/1.0/api/testexec/${testExecKey}/test`, {
+      body: JSON.stringify(body),
+      expectedStatus: 200,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "POST",
+    });
+    return (await response.json()) as string[];
   }
 
   /**
@@ -90,12 +86,10 @@ export class TestExecutionApi extends BaseApi {
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
    */
-  public removeTest(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    testExecKey: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    testKey: string
-  ): Promise<void> {
-    throw new Error("Method not implemented");
+  public async removeTest(testExecKey: string, testKey: string): Promise<void> {
+    await this.client.send(`rest/raven/1.0/api/testexec/${testExecKey}/test/${testKey}`, {
+      expectedStatus: 200,
+      method: "DELETE",
+    });
   }
 }
