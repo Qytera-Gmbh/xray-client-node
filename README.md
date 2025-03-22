@@ -44,9 +44,9 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [x] `POST   /rest/raven/1.0/api/precondition/{preConditionKey}/test`
     - [x] `DELETE /rest/raven/1.0/api/precondition/{preConditionKey}/test/{testKey}`
   - [Test Sets](https://docs.getxray.app/display/XRAY/Test+Sets+-+REST)
-    - [ ] `GET    /rest/raven/1.0/api/testset/{testSetKey}/test`
-    - [ ] `POST   /rest/raven/1.0/api/testset/{testSetKey}/test`
-    - [ ] `DELETE /rest/raven/1.0/api/testset/{testSetKey}/test/{testKey}`
+    - [x] `GET    /rest/raven/1.0/api/testset/{testSetKey}/test`
+    - [x] `POST   /rest/raven/1.0/api/testset/{testSetKey}/test`
+    - [x] `DELETE /rest/raven/1.0/api/testset/{testSetKey}/test/{testKey}`
   - [Test Plans](https://docs.getxray.app/display/XRAY/Test+Plans+-+REST)
     - [x] `GET    /rest/raven/1.0/api/testplan/{testPlanKey}/test`
     - [ ] `POST   /rest/raven/1.0/api/testplan/{testPlanKey}/test`

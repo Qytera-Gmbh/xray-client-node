@@ -9,6 +9,7 @@ import type * as Test from "./test/test.js";
 import type * as TestExecution from "./testexec/test-execution.js";
 import type * as TestPlan from "./testplan/test-plan.js";
 import type * as TestRun from "./testrun/test-run.js";
+import type * as TestSet from "./testset/test-set.js";
 
 export type {
   Attachment,
@@ -20,4 +21,5 @@ export type {
   TestExecution,
   TestPlan,
   TestRun,
+  TestSet,
 };

@@ -145,9 +145,15 @@ const TEST_PLANS = {
 // TEST SETS
 // ============================================================================================== //
 const TEST_SETS = {
+  addTests: {
+    key: "XCNODE-24",
+  },
   immutable: {
     key: "XCNODE-15",
     tests: [TESTS.immutable],
+  },
+  removeTests: {
+    key: "XCNODE-25",
   },
 } as const;
 // ============================================================================================== //
