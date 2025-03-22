@@ -101,6 +101,9 @@ const TEST_EXECUTIONS = {
     v1: { key: "XCNODE-10", tests: [{ ...TESTS.immutableDatadriven, testRunId: 12800 }] },
     v2: { key: "XCNODE-3", tests: [{ ...TESTS.immutableDatadriven, testRunId: 12467 }] },
   },
+  addTests: {
+    key: "XCNODE-30",
+  },
   immutable: {
     key: "XCNODE-2",
     testEnvironments: [{ name: "environmentwith,comma" }, { name: "firefox" }],
@@ -113,6 +116,9 @@ const TEST_EXECUTIONS = {
   importXrayMultipart: {
     v1: { key: "XCNODE-12", tests: [{ ...TESTS.immutableDatadriven }] },
     v2: { key: "XCNODE-6", tests: [{ ...TESTS.immutableDatadriven }] },
+  },
+  removeTests: {
+    key: "XCNODE-31",
   },
   updateTestRun: {
     v1: {
