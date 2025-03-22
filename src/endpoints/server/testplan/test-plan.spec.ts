@@ -28,18 +28,15 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
   describe("associateTests", () => {
     beforeEach(async () => {
-      await XRAY_CLIENT_SERVER.testPlan.associateTests(
-        DATA_SERVER.testPlans.addTestsAndExecutions.key,
-        {
-          add: [DATA_SERVER.tests.updateTestSteps.v2.key],
-          remove: [DATA_SERVER.tests.updateTestSteps.v1.key],
-        }
-      );
+      await XRAY_CLIENT_SERVER.testPlan.associateTests(DATA_SERVER.testPlans.addTests.key, {
+        add: [DATA_SERVER.tests.updateTestSteps.v2.key],
+        remove: [DATA_SERVER.tests.updateTestSteps.v1.key],
+      });
     });
 
     it("associates tests with the test plan", async () => {
       const warnings = await XRAY_CLIENT_SERVER.testPlan.associateTests(
-        DATA_SERVER.testPlans.addTestsAndExecutions.key,
+        DATA_SERVER.testPlans.addTests.key,
         {
           add: [DATA_SERVER.tests.updateTestSteps.v1.key],
           remove: [DATA_SERVER.tests.updateTestSteps.v2.key],
@@ -47,7 +44,7 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
       );
       assert.strictEqual(warnings.length, 0);
       const content = await XRAY_CLIENT_SERVER.testPlan.getTests(
-        DATA_SERVER.testPlans.addTestsAndExecutions.key
+        DATA_SERVER.testPlans.addTests.key
       );
       assert.deepStrictEqual(
         content.map((test) => test.key),
@@ -58,21 +55,70 @@ describe(path.relative(process.cwd(), import.meta.filename), () => {
 
   describe("removeTests", () => {
     beforeEach(async () => {
-      await XRAY_CLIENT_SERVER.testPlan.associateTests(
-        DATA_SERVER.testPlans.removeTestsAndExecutions.key,
+      await XRAY_CLIENT_SERVER.testPlan.associateTests(DATA_SERVER.testPlans.removeTests.key, {
+        add: [DATA_SERVER.tests.updateTestSteps.v1.key],
+      });
+    });
+
+    it("removes tests from test plans", async () => {
+      await XRAY_CLIENT_SERVER.testPlan.removeTest(
+        DATA_SERVER.testPlans.removeTests.key,
+        DATA_SERVER.tests.updateTestSteps.v1.key
+      );
+      const content = await XRAY_CLIENT_SERVER.testPlan.getTests(
+        DATA_SERVER.testPlans.removeTests.key
+      );
+      assert.strictEqual(content.length, 0);
+    });
+  });
+
+  describe("associateTestExecutions", () => {
+    beforeEach(async () => {
+      await XRAY_CLIENT_SERVER.testPlan.associateTestExecutions(
+        DATA_SERVER.testPlans.addTestExecutions.key,
         {
-          add: [DATA_SERVER.tests.updateTestSteps.v1.key],
+          add: [DATA_SERVER.testExecutions.importXray.v2.key],
+          remove: [DATA_SERVER.testExecutions.importXray.v1.key],
+        }
+      );
+    });
+
+    it("associates tests with the test plan", async () => {
+      const warnings = await XRAY_CLIENT_SERVER.testPlan.associateTestExecutions(
+        DATA_SERVER.testPlans.addTestExecutions.key,
+        {
+          add: [DATA_SERVER.testExecutions.importXray.v1.key],
+          remove: [DATA_SERVER.testExecutions.importXray.v2.key],
+        }
+      );
+      assert.strictEqual(warnings.length, 0);
+      const content = await XRAY_CLIENT_SERVER.testPlan.getTestExecutions(
+        DATA_SERVER.testPlans.addTestExecutions.key
+      );
+      assert.deepStrictEqual(
+        content.map((testExecution) => testExecution.key),
+        [DATA_SERVER.testExecutions.importXray.v1.key]
+      );
+    });
+  });
+
+  describe("removeTestExecution", () => {
+    beforeEach(async () => {
+      await XRAY_CLIENT_SERVER.testPlan.associateTestExecutions(
+        DATA_SERVER.testPlans.removeTestExecutions.key,
+        {
+          add: [DATA_SERVER.testExecutions.importXray.v1.key],
         }
       );
     });
 
     it("removes tests from test plans", async () => {
-      await XRAY_CLIENT_SERVER.testPlan.removeTest(
-        DATA_SERVER.testPlans.removeTestsAndExecutions.key,
-        DATA_SERVER.tests.updateTestSteps.v1.key
+      await XRAY_CLIENT_SERVER.testPlan.removeTestExecution(
+        DATA_SERVER.testPlans.removeTestExecutions.key,
+        DATA_SERVER.testExecutions.importXray.v1.key
       );
-      const content = await XRAY_CLIENT_SERVER.testPlan.getTests(
-        DATA_SERVER.testPlans.removeTestsAndExecutions.key
+      const content = await XRAY_CLIENT_SERVER.testPlan.getTestExecutions(
+        DATA_SERVER.testPlans.removeTestExecutions.key
       );
       assert.strictEqual(content.length, 0);
     });

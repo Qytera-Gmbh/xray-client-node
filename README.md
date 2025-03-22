@@ -52,8 +52,8 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [x] `POST   /rest/raven/1.0/api/testplan/{testPlanKey}/test`
     - [x] `DELETE /rest/raven/1.0/api/testplan/{testPlanKey}/test/{testKey}`
     - [x] `GET    /rest/raven/1.0/api/testplan/{testPlanKey}/testexecution`
-    - [ ] `POST   /rest/raven/1.0/api/testplan/{testPlanKey}/testexecution`
-    - [ ] `DELETE /rest/raven/1.0/api/testplan/{testPlanKey}/testexecution/{testExecKey}`
+    - [x] `POST   /rest/raven/1.0/api/testplan/{testPlanKey}/testexecution`
+    - [x] `DELETE /rest/raven/1.0/api/testplan/{testPlanKey}/testexecution/{testExecKey}`
   - [Test Executions](https://docs.getxray.app/display/XRAY/Test+Executions+-+REST)
     - [x] `GET    /rest/raven/1.0/api/testexec/{testExecKey}/test`
     - [ ] `POST   /rest/raven/1.0/api/testexec/{testExecKey}/test`

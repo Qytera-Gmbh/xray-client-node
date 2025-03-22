@@ -10,6 +10,8 @@
 - Added `DELETE /rest/raven/1.0/api/testset/{testSetKey}/test/{testKey}`
 - Added `POST   /rest/raven/1.0/api/testplan/{testPlanKey}/test`
 - Added `DELETE /rest/raven/1.0/api/testplan/{testPlanKey}/test/{testKey}`
+- Added `POST   /rest/raven/1.0/api/testplan/{testPlanKey}/testexecution`
+- Added `DELETE /rest/raven/1.0/api/testplan/{testPlanKey}/testexecution/{testExecKey}`
 
 # `4.0.0`
 

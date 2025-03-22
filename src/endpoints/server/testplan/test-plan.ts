@@ -8,6 +8,51 @@ import { BaseApi } from "../../base-api.js";
  */
 export class TestPlanApi extends BaseApi {
   /**
+   * Associate test executions with the test plan.
+   *
+   * It's possible to specify if the tests in the test execution should be added to the test plan
+   * using the `addTestsToPlan` property in the body. If the setting is empty in the body, the
+   * config in the Xray miscellaneous settings will be used instead.
+   *
+   * @param testPlanKey the key of the test plan
+   * @param body the request body
+   * @returns error message if there are any
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
+   */
+  public async associateTestExecutions(
+    testPlanKey: string,
+    body: {
+      /**
+       * Tests to associate with the test plan.
+       *
+       * @example ["CALC-14", "CALC-29"]
+       */
+      add?: string[];
+      /**
+       * `true` to add the tests contained in the test executions to the test plan, too.
+       */
+      addTestsToPlan?: boolean;
+      /**
+       * Tests to remove from the test plan.
+       *
+       * @example ["CALC-15", "CALC-50"]
+       */
+      remove?: string[];
+    }
+  ): Promise<string[]> {
+    const response = await this.client.send(
+      `rest/raven/1.0/api/testplan/${testPlanKey}/testexecution`,
+      {
+        body: JSON.stringify(body),
+        expectedStatus: 200,
+        headers: { ["Content-Type"]: "application/json" },
+        method: "POST",
+      }
+    );
+    return (await response.json()) as string[];
+  }
+  /**
    * Associate tests with the test plan.
    *
    * @param testPlanKey the key of the test plan
@@ -28,7 +73,7 @@ export class TestPlanApi extends BaseApi {
       /**
        * Tests to remove from the test plan.
        *
-       * @example["CALC-15", "CALC-50"]
+       * @example ["CALC-15", "CALC-50"]
        */
       remove?: string[];
     }
@@ -107,5 +152,23 @@ export class TestPlanApi extends BaseApi {
       expectedStatus: 200,
       method: "DELETE",
     });
+  }
+
+  /**
+   * Remove a test execution from a test plan.
+   *
+   * @param testPlanKey the key of the test plan
+   * @param testExecKey the key of the test execution
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST
+   */
+  public async removeTestExecution(testPlanKey: string, testExecKey: string): Promise<void> {
+    await this.client.send(
+      `rest/raven/1.0/api/testplan/${testPlanKey}/testexecution/${testExecKey}`,
+      {
+        expectedStatus: 200,
+        method: "DELETE",
+      }
+    );
   }
 }

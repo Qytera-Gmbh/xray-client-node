@@ -135,7 +135,10 @@ const TEST_EXECUTIONS = {
 // TEST PLANS
 // ============================================================================================== //
 const TEST_PLANS = {
-  addTestsAndExecutions: {
+  addTestExecutions: {
+    key: "XCNODE-28",
+  },
+  addTests: {
     key: "XCNODE-26",
   },
   immutable: {
@@ -143,7 +146,10 @@ const TEST_PLANS = {
     testExecutions: [TEST_EXECUTIONS.immutable, TEST_EXECUTIONS.addAttachments.v2],
     tests: [TESTS.immutableDatadriven, TESTS.immutable],
   },
-  removeTestsAndExecutions: {
+  removeTestExecutions: {
+    key: "XCNODE-29",
+  },
+  removeTests: {
     key: "XCNODE-27",
   },
 } as const;
