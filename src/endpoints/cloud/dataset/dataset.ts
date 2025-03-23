@@ -14,7 +14,7 @@ export class DatasetApi extends BaseApi {
    *
    * The returned dataset is provided with all the iterations generated.
    *
-   * @param query the dataset query
+   * @param query the query parameters
    * @returns the dataset's CSV content
    *
    * @see https://docs.getxray.app/display/XRAYCLOUD/Exporting+datasets+-+REST+v2

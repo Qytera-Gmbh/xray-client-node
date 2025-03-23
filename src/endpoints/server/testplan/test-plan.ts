@@ -112,7 +112,7 @@ export class TestPlanApi extends BaseApi {
    * paginated.
    *
    * @param testPlanKey the key of the test plan
-   * @param query optional query parameters
+   * @param query the query parameters
    * @returns the tests of the test plan
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Plans+-+REST

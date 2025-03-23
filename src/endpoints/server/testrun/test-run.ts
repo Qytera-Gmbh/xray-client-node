@@ -1,6 +1,10 @@
 import type { Xray } from "../../../../index.js";
 import { BaseApi } from "../../base-api.js";
+import { CommentApi } from "./comment/comment.js";
+import { ExampleApi } from "./example/example.js";
+import { ExecutionDefectApi } from "./execution-defect/execution-defect.js";
 import { ExecutionEvidenceApi } from "./execution-evidence/execution-evidence.js";
+import { StatusApi } from "./status/status.js";
 
 /**
  * Models the test run endpoints in Xray server.
@@ -8,7 +12,11 @@ import { ExecutionEvidenceApi } from "./execution-evidence/execution-evidence.js
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST
  */
 export class TestRunApi extends BaseApi {
+  public readonly comment = new CommentApi(this.client);
+  public readonly defect = new ExecutionDefectApi(this.client);
   public readonly evidence = new ExecutionEvidenceApi(this.client);
+  public readonly example = new ExampleApi(this.client);
+  public readonly status = new StatusApi(this.client);
   public readonly v1 = new TestRunApiV1(this.client);
 
   /**

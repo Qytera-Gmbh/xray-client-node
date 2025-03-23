@@ -93,7 +93,7 @@ export class TestApi extends BaseApi {
    * issues you want to export. At least one query parameter has to be specified, but all 3 can be
    * sent at the same time.
    *
-   * @param query the query
+   * @param query the query parameters
    * @returns JSON with the exported tests
    *
    * @see https://docs.getxray.app/display/XRAY/Tests+-+REST
