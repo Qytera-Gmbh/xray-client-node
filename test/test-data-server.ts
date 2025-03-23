@@ -150,6 +150,23 @@ const TEST_EXECUTIONS = {
       ],
     },
   },
+  updateTestRunDefects: {
+    key: "XCNODE-34",
+    testRuns: {
+      addDefects: {
+        defects: [DEFECTS.immutable],
+        status: "FAIL",
+        test: TESTS.immutable,
+        testRunId: 13251,
+      },
+      removeDefects: {
+        defects: [DEFECTS.immutable],
+        status: "FAIL",
+        test: TESTS.immutableDatadriven,
+        testRunId: 13252,
+      },
+    },
+  },
   updateTestRunStatuses: {
     key: "XCNODE-32",
     tests: [
