@@ -8,95 +8,8 @@ import { ExecutionEvidenceApi } from "./execution-evidence/execution-evidence.js
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST
  */
 export class TestRunApi extends BaseApi {
-  private readonly processor = {
-    getTestRunById: async (url: string) => {
-      const response = await this.client.send(url, {
-        expectedStatus: 200,
-        method: "GET",
-      });
-      return (await response.json()) as Xray.TestRun.Details;
-    },
-    getTestRunByQuery: async (
-      url: string,
-      testRun: {
-        testExecIssueKey: string;
-        testIssueKey: string;
-      }
-    ) => {
-      const response = await this.client.send(url, {
-        expectedStatus: 200,
-        method: "GET",
-        query: testRun,
-      });
-      return (await response.json()) as Xray.TestRun.Details;
-    },
-    updateTestRun: async (url: string, body: UpdateTestRunPayload) => {
-      const response = await this.client.send(url, {
-        body: JSON.stringify(body),
-        expectedStatus: 200,
-        headers: { ["Content-Type"]: "application/json" },
-        method: "PUT",
-      });
-      return await response.text();
-    },
-  };
-
   public readonly evidence = new ExecutionEvidenceApi(this.client);
-
-  public readonly v1 = {
-    /**
-     * Retrieves a test run given the ID or test execution and test keys. The response will contain
-     * all information related to a test run, e.g., status, created and finish dates, step results,
-     * test environments, defects, test run custom fields, and so on.
-     *
-     * In case the test run has iterations, steps will not appear. However, if it has parameters but
-     * executed one time, it will show the steps and the parameters info.
-     *
-     * @param testRun the query specifying the test run
-     * @returns the test run details
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
-     */
-    getTestRun: async (
-      testRun:
-        | {
-            /**
-             * The key of the test execution.
-             */
-            testExecIssueKey: string;
-            /**
-             * The key of the test issue.
-             */
-            testIssueKey: string;
-          }
-        | number
-    ): Promise<Xray.TestRun.Details> => {
-      if (typeof testRun === "number") {
-        return await this.processor.getTestRunById(
-          `rest/raven/1.0/api/testrun/${testRun.toString()}`
-        );
-      } else {
-        return await this.processor.getTestRunByQuery(`rest/raven/1.0/api/testrun`, testRun);
-      }
-    },
-
-    /**
-     * Update the test run. The fields that can be updated on the test run are: **status, comment,
-     * assignee, defects, evidences, examples** and **steps**.
-     *
-     * @param testRunId the ID of the test run to update
-     * @param body the details to update
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
-     */
-    updateTestRun: async (testRunId: number, body: UpdateTestRunPayload): Promise<void> => {
-      await this.processor.updateTestRun(
-        `rest/raven/1.0/api/testrun/${testRunId.toString()}`,
-        body
-      );
-    },
-  };
+  public readonly v1 = new TestRunApiV1(this.client);
 
   /**
    * Retrieves a test run given the ID or test execution and test keys. The response will contain
@@ -127,11 +40,18 @@ export class TestRunApi extends BaseApi {
       | number
   ): Promise<Xray.TestRun.Details> {
     if (typeof testRun === "number") {
-      return await this.processor.getTestRunById(
-        `rest/raven/2.0/api/testrun/${testRun.toString()}`
-      );
+      const response = await this.client.send(`rest/raven/2.0/api/testrun/${testRun.toString()}`, {
+        expectedStatus: 200,
+        method: "GET",
+      });
+      return (await response.json()) as Xray.TestRun.Details;
     } else {
-      return await this.processor.getTestRunByQuery(`rest/raven/2.0/api/testrun`, testRun);
+      const response = await this.client.send(`rest/raven/2.0/api/testrun`, {
+        expectedStatus: 200,
+        method: "GET",
+        query: testRun,
+      });
+      return (await response.json()) as Xray.TestRun.Details;
     }
   }
 
@@ -180,9 +100,77 @@ export class TestRunApi extends BaseApi {
     testRunId: number,
     body: UpdateTestRunPayload
   ): Promise<UpdateTestRunResponse> {
-    return JSON.parse(
-      await this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId.toString()}`, body)
-    ) as UpdateTestRunResponse;
+    const response = await this.client.send(`rest/raven/2.0/api/testrun/${testRunId.toString()}`, {
+      body: JSON.stringify(body),
+      expectedStatus: 200,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "PUT",
+    });
+    return (await response.json()) as UpdateTestRunResponse;
+  }
+}
+
+class TestRunApiV1 extends BaseApi {
+  /**
+   * Retrieves a test run given the ID or test execution and test keys. The response will contain
+   * all information related to a test run, e.g., status, created and finish dates, step results,
+   * test environments, defects, test run custom fields, and so on.
+   *
+   * In case the test run has iterations, steps will not appear. However, if it has parameters but
+   * executed one time, it will show the steps and the parameters info.
+   *
+   * @param testRun the query specifying the test run
+   * @returns the test run details
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
+   */
+  public async getTestRun(
+    testRun:
+      | {
+          /**
+           * The key of the test execution.
+           */
+          testExecIssueKey: string;
+          /**
+           * The key of the test issue.
+           */
+          testIssueKey: string;
+        }
+      | number
+  ): Promise<Xray.TestRun.Details> {
+    if (typeof testRun === "number") {
+      const response = await this.client.send(`rest/raven/1.0/api/testrun/${testRun.toString()}`, {
+        expectedStatus: 200,
+        method: "GET",
+      });
+      return (await response.json()) as Xray.TestRun.Details;
+    } else {
+      const response = await this.client.send(`rest/raven/1.0/api/testrun`, {
+        expectedStatus: 200,
+        method: "GET",
+        query: testRun,
+      });
+      return (await response.json()) as Xray.TestRun.Details;
+    }
+  }
+
+  /**
+   * Update the test run. The fields that can be updated on the test run are: **status, comment,
+   * assignee, defects, evidences, examples** and **steps**.
+   *
+   * @param testRunId the ID of the test run to update
+   * @param body the details to update
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
+   */
+  public async updateTestRun(testRunId: number, body: UpdateTestRunPayload): Promise<void> {
+    await this.client.send(`rest/raven/1.0/api/testrun/${testRunId.toString()}`, {
+      body: JSON.stringify(body),
+      expectedStatus: 200,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "PUT",
+    });
   }
 }
 

@@ -7,53 +7,7 @@ import { BaseApi } from "../../base-api.js";
  * Models the attachment endpoints.
  */
 export class AttachmentsApi extends BaseApi {
-  private readonly processor = {
-    addAttachment: async (url: string, file: string) => {
-      const formData = new FormData();
-      const handle = await open(file);
-      formData.append("attachment", await createStreamableFile(basename(file), handle));
-      const response = await this.client.send(url, {
-        body: formData,
-        expectedStatus: 200,
-        method: "POST",
-      });
-      await handle.close();
-      return (await response.json()) as AddAttachmentResponse;
-    },
-    getAttachment: async (url: string) => {
-      const response = await this.client.send(url, {
-        expectedStatus: 200,
-        method: "GET",
-      });
-      return await response.text();
-    },
-  };
-
-  public readonly v1 = {
-    /**
-     * Creates an attachment.
-     *
-     * @param file the path to the file
-     * @returns the attachment data
-     *
-     * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
-     */
-    addAttachment: async (file: string): Promise<AddAttachmentResponse> => {
-      return await this.processor.addAttachment("api/v1/attachments", file);
-    },
-
-    /**
-     * Gets an attachment.
-     *
-     * @param attachmentId ID of the attachment to get
-     * @returns the attachment data
-     *
-     * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
-     */
-    getAttachment: async (attachmentId: string): Promise<string> => {
-      return await this.processor.getAttachment(`api/v1/attachments/${attachmentId}`);
-    },
-  };
+  public readonly v1 = new AttachmentsApiV1(this.client);
 
   /**
    * Creates an attachment.
@@ -64,7 +18,16 @@ export class AttachmentsApi extends BaseApi {
    * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
    */
   public async addAttachment(file: string): Promise<AddAttachmentResponse> {
-    return await this.processor.addAttachment("api/v2/attachments", file);
+    const formData = new FormData();
+    const handle = await open(file);
+    formData.append("attachment", await createStreamableFile(basename(file), handle));
+    const response = await this.client.send("api/v2/attachments", {
+      body: formData,
+      expectedStatus: 200,
+      method: "POST",
+    });
+    await handle.close();
+    return (await response.json()) as AddAttachmentResponse;
   }
 
   /**
@@ -76,7 +39,50 @@ export class AttachmentsApi extends BaseApi {
    * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
    */
   public async getAttachment(attachmentId: string): Promise<string> {
-    return await this.processor.getAttachment(`api/v2/attachments/${attachmentId}`);
+    const response = await this.client.send(`api/v2/attachments/${attachmentId}`, {
+      expectedStatus: 200,
+      method: "GET",
+    });
+    return await response.text();
+  }
+}
+
+class AttachmentsApiV1 extends BaseApi {
+  /**
+   * Creates an attachment.
+   *
+   * @param file the path to the file
+   * @returns the attachment data
+   *
+   * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
+   */
+  public async addAttachment(file: string): Promise<AddAttachmentResponse> {
+    const formData = new FormData();
+    const handle = await open(file);
+    formData.append("attachment", await createStreamableFile(basename(file), handle));
+    const response = await this.client.send("api/v1/attachments", {
+      body: formData,
+      expectedStatus: 200,
+      method: "POST",
+    });
+    await handle.close();
+    return (await response.json()) as AddAttachmentResponse;
+  }
+
+  /**
+   * Gets an attachment.
+   *
+   * @param attachmentId ID of the attachment to get
+   * @returns the attachment data
+   *
+   * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
+   */
+  public async getAttachment(attachmentId: string): Promise<string> {
+    const response = await this.client.send(`api/v1/attachments/${attachmentId}`, {
+      expectedStatus: 200,
+      method: "GET",
+    });
+    return await response.text();
   }
 }
 

@@ -8,210 +8,7 @@ import { BaseApi } from "../../../base-api.js";
  * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Step
  */
 export class TestStepApi extends BaseApi {
-  private readonly processor = {
-    getAttachments: async (url: string) => {
-      const response = await this.client.send(url, {
-        expectedStatus: 200,
-        method: "GET",
-      });
-      return (await response.json()) as Xray.Attachment.FileAttachment[];
-    },
-  };
-
-  public readonly v1 = {
-    /**
-     * Create a new test step.
-     *
-     * @param testKey the key of the test issue
-     * @param body the new step
-     * @returns the step creation result
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
-     */
-    createStep: async (
-      testKey: string,
-      body: {
-        attachments?: File[];
-        /**
-         * @example "example data"
-         */
-        data?: string;
-        /**
-         * @example "example result"
-         */
-        result?: string;
-        /**
-         * @example "example step"
-         */
-        step: string;
-      }
-    ): Promise<NewStepResponse["step"]> => {
-      const response = await this.client.send(`rest/raven/1.0/api/test/${testKey}/step`, {
-        body: JSON.stringify(body),
-        expectedStatus: 200,
-        headers: { ["Content-Type"]: "application/json" },
-        method: "PUT",
-      });
-      return (await response.json()) as NewStepResponse["step"];
-    },
-
-    /**
-     * Remove an attachment from a test step.
-     *
-     * @param testKey the key of the test issue
-     * @param stepId the ID of the test step
-     * @param attachmentId the ID of the attachment
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
-     */
-    deleteAttachment: async (
-      testKey: string,
-      stepId: number,
-      attachmentId: number
-    ): Promise<void> => {
-      await this.client.send(
-        `rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}/attachment/${attachmentId.toString()}`,
-        {
-          expectedStatus: 200,
-          method: "DELETE",
-        }
-      );
-    },
-
-    /**
-     * Remove a test step from a test.
-     *
-     * @param testKey the key of the test issue
-     * @param stepId the ID of the test step
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
-     */
-    deleteStep: async (testKey: string, stepId: number): Promise<void> => {
-      await this.client.send(`rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}`, {
-        expectedStatus: 200,
-        method: "DELETE",
-      });
-    },
-
-    /**
-     * Return JSON with all the test step attachments.
-     *
-     * @param testKey the key of the test issue
-     * @param id the ID of the test step
-     * @returns the test step attachments
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
-     */
-    getAttachments: async (
-      testKey: string,
-      id: number
-    ): Promise<Xray.Attachment.FileAttachment[]> => {
-      return await this.processor.getAttachments(
-        `rest/raven/1.0/api/test/${testKey}/step/${id.toString()}/attachment`
-      );
-    },
-
-    /**
-     * Return JSON with the test step with the given ID.
-     *
-     * @param testKey the key of the test issue
-     * @param id the ID of the test step
-     * @returns the test step details
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
-     */
-    getStep: async (testKey: string, id: number): Promise<Xray.Test.Step.DetailsV1> => {
-      const response = await this.client.send(
-        `rest/raven/1.0/api/test/${testKey}/step/${id.toString()}`,
-        {
-          expectedStatus: 200,
-          method: "GET",
-        }
-      );
-      return (await response.json()) as Promise<Xray.Test.Step.DetailsV1>;
-    },
-
-    /**
-     * Return JSON with the test steps of a given test.
-     *
-     * @param testKey the key of the test issue
-     * @returns the test step details
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
-     */
-    getSteps: async (testKey: string): Promise<Xray.Test.Step.DetailsV1[]> => {
-      const response = await this.client.send(`rest/raven/1.0/api/test/${testKey}/step`, {
-        expectedStatus: 200,
-        method: "GET",
-      });
-      return (await response.json()) as Promise<Xray.Test.Step.DetailsV1[]>;
-    },
-
-    /**
-     * Update a specific test step.
-     *
-     * @param testKey the key of the test issue
-     * @param stepId the ID of the test step
-     * @param body the new step
-     * @returns the step update result
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
-     */
-    updateStep: async (
-      testKey: string,
-      stepId: number,
-      body: {
-        attachments?: {
-          /**
-           * @example
-           *
-           * ```ts
-           * [
-           *   {
-           *     data: "gsddfgdsfg...(base64) ",
-           *     filename: "example1.txt",
-           *     contentType: "plain/text"
-           *   },
-           *   {
-           *     data: "gsddfgdsfg...(base64) ",
-           *     filename: "example2.txt",
-           *     contentType: "plain/text"
-           *   }
-           * ]
-           * ```
-           */
-          add?: File[];
-          /**
-           * @example [141, 105]
-           */
-          remove?: number[];
-        };
-        /**
-         * @example "example data"
-         */
-        data?: string;
-        /**
-         * @example "example result"
-         */
-        result?: string;
-        /**
-         * @example "example step"
-         */
-        step?: string;
-      }
-    ): Promise<NewStepResponse["step"]> => {
-      const response = await this.client.send(
-        `rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}`,
-        {
-          body: JSON.stringify(body),
-          expectedStatus: 200,
-          headers: { ["Content-Type"]: "application/json" },
-          method: "POST",
-        }
-      );
-      return (await response.json()) as NewStepResponse["step"];
-    },
-  };
+  public readonly v1 = new TestStepApiV1(this.client);
 
   /**
    * Create a new test step. All step fields values are listed under fields and identified by the
@@ -336,9 +133,14 @@ export class TestStepApi extends BaseApi {
     testKey: string,
     stepId: number
   ): Promise<Xray.Attachment.FileAttachment[]> {
-    return this.processor.getAttachments(
-      `rest/raven/2.0/api/test/${testKey}/steps/${stepId.toString()}/attachments`
+    const response = await this.client.send(
+      `rest/raven/2.0/api/test/${testKey}/steps/${stepId.toString()}/attachments`,
+      {
+        expectedStatus: 200,
+        method: "GET",
+      }
     );
+    return (await response.json()) as Xray.Attachment.FileAttachment[];
   }
 
   /**
@@ -503,6 +305,206 @@ export class TestStepApi extends BaseApi {
       }
     );
     return (await response.json()) as NewStepResponse;
+  }
+}
+
+class TestStepApiV1 extends BaseApi {
+  /**
+   * Create a new test step.
+   *
+   * @param testKey the key of the test issue
+   * @param body the new step
+   * @returns the step creation result
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+   */
+  public async createStep(
+    testKey: string,
+    body: {
+      attachments?: File[];
+      /**
+       * @example "example data"
+       */
+      data?: string;
+      /**
+       * @example "example result"
+       */
+      result?: string;
+      /**
+       * @example "example step"
+       */
+      step: string;
+    }
+  ): Promise<NewStepResponse["step"]> {
+    const response = await this.client.send(`rest/raven/1.0/api/test/${testKey}/step`, {
+      body: JSON.stringify(body),
+      expectedStatus: 200,
+      headers: { ["Content-Type"]: "application/json" },
+      method: "PUT",
+    });
+    return (await response.json()) as NewStepResponse["step"];
+  }
+
+  /**
+   * Remove an attachment from a test step.
+   *
+   * @param testKey the key of the test issue
+   * @param stepId the ID of the test step
+   * @param attachmentId the ID of the attachment
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+   */
+  public async deleteAttachment(
+    testKey: string,
+    stepId: number,
+    attachmentId: number
+  ): Promise<void> {
+    await this.client.send(
+      `rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}/attachment/${attachmentId.toString()}`,
+      {
+        expectedStatus: 200,
+        method: "DELETE",
+      }
+    );
+  }
+
+  /**
+   * Remove a test step from a test.
+   *
+   * @param testKey the key of the test issue
+   * @param stepId the ID of the test step
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+   */
+  public async deleteStep(testKey: string, stepId: number): Promise<void> {
+    await this.client.send(`rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}`, {
+      expectedStatus: 200,
+      method: "DELETE",
+    });
+  }
+
+  /**
+   * Return JSON with all the test step attachments.
+   *
+   * @param testKey the key of the test issue
+   * @param id the ID of the test step
+   * @returns the test step attachments
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+   */
+  public async getAttachments(
+    testKey: string,
+    id: number
+  ): Promise<Xray.Attachment.FileAttachment[]> {
+    const response = await this.client.send(
+      `rest/raven/1.0/api/test/${testKey}/step/${id.toString()}/attachment`,
+      {
+        expectedStatus: 200,
+        method: "GET",
+      }
+    );
+    return (await response.json()) as Xray.Attachment.FileAttachment[];
+  }
+
+  /**
+   * Return JSON with the test step with the given ID.
+   *
+   * @param testKey the key of the test issue
+   * @param id the ID of the test step
+   * @returns the test step details
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+   */
+  public async getStep(testKey: string, id: number): Promise<Xray.Test.Step.DetailsV1> {
+    const response = await this.client.send(
+      `rest/raven/1.0/api/test/${testKey}/step/${id.toString()}`,
+      {
+        expectedStatus: 200,
+        method: "GET",
+      }
+    );
+    return (await response.json()) as Promise<Xray.Test.Step.DetailsV1>;
+  }
+
+  /**
+   * Return JSON with the test steps of a given test.
+   *
+   * @param testKey the key of the test issue
+   * @returns the test step details
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+   */
+  public async getSteps(testKey: string): Promise<Xray.Test.Step.DetailsV1[]> {
+    const response = await this.client.send(`rest/raven/1.0/api/test/${testKey}/step`, {
+      expectedStatus: 200,
+      method: "GET",
+    });
+    return (await response.json()) as Promise<Xray.Test.Step.DetailsV1[]>;
+  }
+
+  /**
+   * Update a specific test step.
+   *
+   * @param testKey the key of the test issue
+   * @param stepId the ID of the test step
+   * @param body the new step
+   * @returns the step update result
+   *
+   * @see https://docs.getxray.app/display/XRAY/Test+Steps+-+REST
+   */
+  public async updateStep(
+    testKey: string,
+    stepId: number,
+    body: {
+      attachments?: {
+        /**
+         * @example
+         *
+         * ```ts
+         * [
+         *   {
+         *     data: "gsddfgdsfg...(base64) ",
+         *     filename: "example1.txt",
+         *     contentType: "plain/text"
+         *   },
+         *   {
+         *     data: "gsddfgdsfg...(base64) ",
+         *     filename: "example2.txt",
+         *     contentType: "plain/text"
+         *   }
+         * ]
+         * ```
+         */
+        add?: File[];
+        /**
+         * @example [141, 105]
+         */
+        remove?: number[];
+      };
+      /**
+       * @example "example data"
+       */
+      data?: string;
+      /**
+       * @example "example result"
+       */
+      result?: string;
+      /**
+       * @example "example step"
+       */
+      step?: string;
+    }
+  ): Promise<NewStepResponse["step"]> {
+    const response = await this.client.send(
+      `rest/raven/1.0/api/test/${testKey}/step/${stepId.toString()}`,
+      {
+        body: JSON.stringify(body),
+        expectedStatus: 200,
+        headers: { ["Content-Type"]: "application/json" },
+        method: "POST",
+      }
+    );
+    return (await response.json()) as NewStepResponse["step"];
   }
 }
 
