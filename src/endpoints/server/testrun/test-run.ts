@@ -2,36 +2,48 @@ import type { Xray } from "../../../../index.js";
 import { BaseApi } from "../../base-api.js";
 import { ExecutionEvidenceApi } from "./execution-evidence/execution-evidence.js";
 
-interface GetTestRun {
-  /**
-   * Retrieves a test run given the ID or test execution and test keys. The response will contain
-   * all information related to a test run, e.g., status, created and finish dates, step results,
-   * test environments, defects, test run custom fields, and so on.
-   *
-   * In case the test run has iterations, steps will not appear. However, if it has parameters but
-   * executed one time, it will show the steps and the parameters info.
-   *
-   * @param testRun the query specifying the test run
-   * @returns the test run details
-   *
-   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/get_testrun
-   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/get_testrun__id_
-   */
-  getTestRun(
-    testRun:
-      | {
-          /**
-           * The key of the test execution.
-           */
-          testExecIssueKey: string;
-          /**
-           * The key of the test issue.
-           */
-          testIssueKey: string;
-        }
-      | number
-  ): Promise<Xray.TestRun.Details>;
-  v1: {
+/**
+ * Models the test run endpoints in Xray server.
+ *
+ * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST
+ */
+export class TestRunApi extends BaseApi {
+  private readonly processor = {
+    getTestRunById: async (url: string) => {
+      const response = await this.client.send(url, {
+        expectedStatus: 200,
+        method: "GET",
+      });
+      return (await response.json()) as Xray.TestRun.Details;
+    },
+    getTestRunByQuery: async (
+      url: string,
+      testRun: {
+        testExecIssueKey: string;
+        testIssueKey: string;
+      }
+    ) => {
+      const response = await this.client.send(url, {
+        expectedStatus: 200,
+        method: "GET",
+        query: testRun,
+      });
+      return (await response.json()) as Xray.TestRun.Details;
+    },
+    updateTestRun: async (url: string, body: UpdateTestRunPayload) => {
+      const response = await this.client.send(url, {
+        body: JSON.stringify(body),
+        expectedStatus: 200,
+        headers: { ["Content-Type"]: "application/json" },
+        method: "PUT",
+      });
+      return await response.text();
+    },
+  };
+
+  public readonly evidence = new ExecutionEvidenceApi(this.client);
+
+  public readonly v1 = {
     /**
      * Retrieves a test run given the ID or test execution and test keys. The response will contain
      * all information related to a test run, e.g., status, created and finish dates, step results,
@@ -46,7 +58,7 @@ interface GetTestRun {
      * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
      * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-ExecutionEvidence
      */
-    getTestRun(
+    getTestRun: async (
       testRun:
         | {
             /**
@@ -59,8 +71,119 @@ interface GetTestRun {
             testIssueKey: string;
           }
         | number
-    ): Promise<Xray.TestRun.Details>;
+    ): Promise<Xray.TestRun.Details> => {
+      if (typeof testRun === "number") {
+        return await this.processor.getTestRunById(
+          `rest/raven/1.0/api/testrun/${testRun.toString()}`
+        );
+      } else {
+        return await this.processor.getTestRunByQuery(`rest/raven/1.0/api/testrun`, testRun);
+      }
+    },
+
+    /**
+     * Update the test run. The fields that can be updated on the test run are: **status, comment,
+     * assignee, defects, evidences, examples** and **steps**.
+     *
+     * @param testRunId the ID of the test run to update
+     * @param body the details to update
+     *
+     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
+     */
+    updateTestRun: async (testRunId: number, body: UpdateTestRunPayload): Promise<void> => {
+      await this.processor.updateTestRun(
+        `rest/raven/1.0/api/testrun/${testRunId.toString()}`,
+        body
+      );
+    },
   };
+
+  /**
+   * Retrieves a test run given the ID or test execution and test keys. The response will contain
+   * all information related to a test run, e.g., status, created and finish dates, step results,
+   * test environments, defects, test run custom fields, and so on.
+   *
+   * In case the test run has iterations, steps will not appear. However, if it has parameters but
+   * executed one time, it will show the steps and the parameters info.
+   *
+   * @param testRun the query specifying the test run
+   * @returns the test run details
+   *
+   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/get_testrun
+   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/get_testrun__id_
+   */
+  public async getTestRun(
+    testRun:
+      | {
+          /**
+           * The key of the test execution.
+           */
+          testExecIssueKey: string;
+          /**
+           * The key of the test issue.
+           */
+          testIssueKey: string;
+        }
+      | number
+  ): Promise<Xray.TestRun.Details> {
+    if (typeof testRun === "number") {
+      return await this.processor.getTestRunById(
+        `rest/raven/2.0/api/testrun/${testRun.toString()}`
+      );
+    } else {
+      return await this.processor.getTestRunByQuery(`rest/raven/2.0/api/testrun`, testRun);
+    }
+  }
+
+  /**
+   * Update all the values of a test run. The user can update the values of the overall status,
+   * step results, assignee, test environments, add defects and evidences and so on.
+   *
+   * To update the value of a Test Run custom field, the id of the field must be provided as well as
+   * a valid value for that custom field type.
+   *
+   * - **Toggle Fields** values should be _"true"_, _"false"_, _"0"_ or _"1"_
+   * - **Number Fields** values should be a string containing a number, e.g. _"320"_. Decimal number
+   *   are also accepted,for instance, "320.5". The decimal places are always separated by a _"."_
+   * - **Single Select and Radio Button Fields** values should be a single string containing the
+   *   option value, e.g. _"Option A"_. The value should be a valid option for that custom field.
+   *   The values are not case sensitive.
+   * - **Multiple Select Fields** values should be an array of the string of option values, e.g.
+   *   _["Option A", "Option B"]_. All the selected values should be valid for that custom field.
+   *   The option values are not case sensitive.
+   * - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year,
+   *   _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be
+   *   _"2020-05-02"_.
+   * - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The
+   *   date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the
+   *   minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value
+   *   would be _"2020-05-02T10:30Z"_.
+   *
+   * An error will be returned when there are invalid custom field values. It is also possible to
+   * delete a test run custom field value by providing a null or empty value (e.g., _""_ or _[]_).
+   * **It is not possible to delete a value of a required test run custom field value.**
+   *
+   * Also, **it is not possible to change the test run to a final status when there are required
+   * test run custom fields with empty values.**
+   *
+   * In the case of a test run of a manual test type, it is possible to update the steps only if
+   * there are zero or one iterations. If there are multiple iterations, it is not possible to
+   * update the steps through this endpoint, only the iterations.
+   *
+   * @param testRunId the ID of the test run to update
+   * @param body the details to update
+   * @returns the test run details
+   *
+   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/put_testrun__id_
+   */
+  public async updateTestRun(
+    testRunId: number,
+    body: UpdateTestRunPayload
+  ): Promise<UpdateTestRunResponse> {
+    return JSON.parse(
+      await this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId.toString()}`, body)
+    ) as UpdateTestRunResponse;
+  }
 }
 
 interface UpdateTestRunPayload {
@@ -158,148 +281,9 @@ interface UpdateTestRunPayload {
   }[];
 }
 
-interface UpdateTestRun {
-  /**
-   * Update all the values of a test run. The user can update the values of the overall status,
-   * step results, assignee, test environments, add defects and evidences and so on.
-   *
-   * To update the value of a Test Run custom field, the id of the field must be provided as well as
-   * a valid value for that custom field type.
-   *
-   * - **Toggle Fields** values should be _"true"_, _"false"_, _"0"_ or _"1"_
-   * - **Number Fields** values should be a string containing a number, e.g. _"320"_. Decimal number
-   *   are also accepted,for instance, "320.5". The decimal places are always separated by a _"."_
-   * - **Single Select and Radio Button Fields** values should be a single string containing the
-   *   option value, e.g. _"Option A"_. The value should be a valid option for that custom field.
-   *   The values are not case sensitive.
-   * - **Multiple Select Fields** values should be an array of the string of option values, e.g.
-   *   _["Option A", "Option B"]_. All the selected values should be valid for that custom field.
-   *   The option values are not case sensitive.
-   * - **Date Fields** should follow the ISO format _yyyy-MM-dd_, where _yyyy_ represents the year,
-   *   _MM_ the month in year and _dd_ the day in the month. For instance, a valid value would be
-   *   _"2020-05-02"_.
-   * - **Date Time fields** should be in UTC following the ISO format _yyyy-MM-dd'T'HH:mm'Z'_. The
-   *   date part follows the same date format, while _HH_ represents the hours (0-24), _mm_ the
-   *   minutes in hour and _Z_ indicates the hour in UTC. For instance, a valid date time value
-   *   would be _"2020-05-02T10:30Z"_.
-   *
-   * An error will be returned when there are invalid custom field values. It is also possible to
-   * delete a test run custom field value by providing a null or empty value (e.g., _""_ or _[]_).
-   * **It is not possible to delete a value of a required test run custom field value.**
-   *
-   * Also, **it is not possible to change the test run to a final status when there are required
-   * test run custom fields with empty values.**
-   *
-   * In the case of a test run of a manual test type, it is possible to update the steps only if
-   * there are zero or one iterations. If there are multiple iterations, it is not possible to
-   * update the steps through this endpoint, only the iterations.
-   *
-   * @param testRunId the ID of the test run to update
-   * @param body the details to update
-   * @returns the test run details
-   *
-   * @see https://docs.getxray.app/display/XRAY/v2.0#/Test%20Run/put_testrun__id_
-   */
-  updateTestRun(testRunId: number, body: UpdateTestRunPayload): Promise<UpdateTestRunResponse>;
-  v1: {
-    /**
-     * Update the test run. The fields that can be updated on the test run are: **status, comment,
-     * assignee, defects, evidences, examples** and **steps**.
-     *
-     * @param testRunId the ID of the test run to update
-     * @param body the details to update
-     *
-     * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-TestRun
-     */
-    updateTestRun(testRunId: number, body: UpdateTestRunPayload): Promise<void>;
-  };
-}
-
 interface UpdateTestRunResponse {
   evidenceIds: number[];
   id: number;
   stepResults: { evidenceIds: number[]; id: number; warnings: string[] }[];
   warnings: string[];
-}
-
-/**
- * Models the test run endpoints in Xray server.
- *
- * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST
- */
-export class TestRunApi extends BaseApi implements GetTestRun, UpdateTestRun {
-  private readonly processor = {
-    getTestRunById: async (url: string) => {
-      const response = await this.client.send(url, {
-        expectedStatus: 200,
-        method: "GET",
-      });
-      return (await response.json()) as Xray.TestRun.Details;
-    },
-    getTestRunByQuery: async (
-      url: string,
-      testRun: {
-        testExecIssueKey: string;
-        testIssueKey: string;
-      }
-    ) => {
-      const response = await this.client.send(url, {
-        expectedStatus: 200,
-        method: "GET",
-        query: testRun,
-      });
-      return (await response.json()) as Xray.TestRun.Details;
-    },
-    updateTestRun: async (url: string, body: UpdateTestRunPayload) => {
-      const response = await this.client.send(url, {
-        body: JSON.stringify(body),
-        expectedStatus: 200,
-        headers: { ["Content-Type"]: "application/json" },
-        method: "PUT",
-      });
-      return await response.text();
-    },
-  };
-
-  public readonly evidence = new ExecutionEvidenceApi(this.client);
-
-  public readonly v1: GetTestRun["v1"] & UpdateTestRun["v1"] = this.bind((self) => ({
-    getTestRun(testRun) {
-      if (typeof testRun === "number") {
-        return self.processor.getTestRunById(`rest/raven/1.0/api/testrun/${testRun.toString()}`);
-      } else {
-        return self.processor.getTestRunByQuery(`rest/raven/1.0/api/testrun`, testRun);
-      }
-    },
-    async updateTestRun(testRunId, body) {
-      await self.processor.updateTestRun(
-        `rest/raven/1.0/api/testrun/${testRunId.toString()}`,
-        body
-      );
-    },
-  }));
-
-  public async getTestRun(
-    testRun:
-      | {
-          testExecIssueKey: string;
-          testIssueKey: string;
-        }
-      | number
-  ): Promise<Xray.TestRun.Details> {
-    if (typeof testRun === "number") {
-      return this.processor.getTestRunById(`rest/raven/2.0/api/testrun/${testRun.toString()}`);
-    } else {
-      return this.processor.getTestRunByQuery(`rest/raven/2.0/api/testrun`, testRun);
-    }
-  }
-
-  public async updateTestRun(
-    testRunId: number,
-    body: UpdateTestRunPayload
-  ): Promise<UpdateTestRunResponse> {
-    return JSON.parse(
-      await this.processor.updateTestRun(`rest/raven/2.0/api/testrun/${testRunId.toString()}`, body)
-    ) as UpdateTestRunResponse;
-  }
 }

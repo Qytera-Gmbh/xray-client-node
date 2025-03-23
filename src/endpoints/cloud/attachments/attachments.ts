@@ -3,56 +3,10 @@ import { basename } from "node:path";
 import { createStreamableFile } from "../../../util/form-data.js";
 import { BaseApi } from "../../base-api.js";
 
-interface AddAttachment {
-  /**
-   * Creates an attachment.
-   *
-   * @param file the path to the file
-   * @returns the attachment data
-   *
-   * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
-   */
-  addAttachment(file: string): Promise<AddAttachmentResponse>;
-  v1: {
-    /**
-     * Creates an attachment.
-     *
-     * @param file the path to the file
-     * @returns the attachment data
-     *
-     * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
-     */
-    addAttachment(file: string): Promise<AddAttachmentResponse>;
-  };
-}
-
-interface GetAttachment {
-  /**
-   * Gets an attachment.
-   *
-   * @param attachmentId ID of the attachment to get
-   * @returns the attachment data
-   *
-   * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
-   */
-  getAttachment(file: string): Promise<string>;
-  v1: {
-    /**
-     * Gets an attachment.
-     *
-     * @param attachmentId ID of the attachment to get
-     * @returns the attachment data
-     *
-     * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
-     */
-    getAttachment(file: string): Promise<string>;
-  };
-}
-
 /**
  * Models the attachment endpoints.
  */
-export class AttachmentsApi extends BaseApi implements AddAttachment, GetAttachment {
+export class AttachmentsApi extends BaseApi {
   private readonly processor = {
     addAttachment: async (url: string, file: string) => {
       const formData = new FormData();
@@ -75,21 +29,54 @@ export class AttachmentsApi extends BaseApi implements AddAttachment, GetAttachm
     },
   };
 
-  public readonly v1: AddAttachment["v1"] & GetAttachment["v1"] = this.bind((self) => ({
-    addAttachment(file) {
-      return self.processor.addAttachment("api/v1/attachments", file);
+  public readonly v1 = {
+    /**
+     * Creates an attachment.
+     *
+     * @param file the path to the file
+     * @returns the attachment data
+     *
+     * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
+     */
+    addAttachment: async (file: string): Promise<AddAttachmentResponse> => {
+      return await this.processor.addAttachment("api/v1/attachments", file);
     },
-    getAttachment(attachmentId) {
-      return self.processor.getAttachment(`api/v1/attachments/${attachmentId}`);
-    },
-  }));
 
+    /**
+     * Gets an attachment.
+     *
+     * @param attachmentId ID of the attachment to get
+     * @returns the attachment data
+     *
+     * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST
+     */
+    getAttachment: async (attachmentId: string): Promise<string> => {
+      return await this.processor.getAttachment(`api/v1/attachments/${attachmentId}`);
+    },
+  };
+
+  /**
+   * Creates an attachment.
+   *
+   * @param file the path to the file
+   * @returns the attachment data
+   *
+   * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
+   */
   public async addAttachment(file: string): Promise<AddAttachmentResponse> {
-    return this.processor.addAttachment("api/v2/attachments", file);
+    return await this.processor.addAttachment("api/v2/attachments", file);
   }
 
+  /**
+   * Gets an attachment.
+   *
+   * @param attachmentId ID of the attachment to get
+   * @returns the attachment data
+   *
+   * @see https://docs.getxray.app/display/XRAYCLOUD/Attachments+-+REST+v2
+   */
   public async getAttachment(attachmentId: string): Promise<string> {
-    return this.processor.getAttachment(`api/v2/attachments/${attachmentId}`);
+    return await this.processor.getAttachment(`api/v2/attachments/${attachmentId}`);
   }
 }
 
