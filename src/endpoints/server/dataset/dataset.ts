@@ -18,7 +18,7 @@ export class DatasetApi extends BaseApi {
    *
    * The returned dataset is provided with all the iterations generated.
    *
-   * @param query the dataset query
+   * @param query the query parameters
    * @returns the dataset's CSV content
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Dataset/get_dataset_export
@@ -79,7 +79,7 @@ export class DatasetApi extends BaseApi {
    * https://jira.getxray.app/browse/XRAYCLOUD-3972).
    *
    * @param file the dataset CSV file
-   * @param query the dataset query
+   * @param query the query parameters
    *
    * @see https://docs.getxray.app/display/XRAY/v2.0#/Dataset/post_dataset_import
    */

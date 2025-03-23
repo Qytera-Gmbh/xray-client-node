@@ -86,6 +86,9 @@ const TESTS = {
       },
     ],
   },
+  immutableCucumber: {
+    key: "XCNODE-36",
+  },
   immutableDatadriven: {
     dataset: ["name,age", "Jane,42", "John,33", ""],
     key: "XCNODE-1",
@@ -128,6 +131,23 @@ const TEST_EXECUTIONS = {
       { ...TESTS.immutable, defects: [DEFECTS.immutable], status: "FAIL", testRunId: 12805 },
     ],
   },
+  immutableCucumber: {
+    key: "XCNODE-37",
+    tests: [
+      {
+        ...TESTS.immutableCucumber,
+        examples: [
+          { id: 10043 },
+          { id: 10044, values: ["20", "30", "add", "50"] },
+          { id: 10045, values: ["2", "5", "add", "7"] },
+          { id: 10046, values: ["0", "40", "add", "40"] },
+          { id: 10047, values: ["4", "50", "add", "54"] },
+          { id: 10048, values: ["5", "50", "add", "55"] },
+        ],
+        testRunId: 13255,
+      },
+    ],
+  },
   importXray: {
     v1: { key: "XCNODE-11", tests: [{ ...TESTS.immutableDatadriven }] },
     v2: { key: "XCNODE-5", tests: [{ ...TESTS.immutableDatadriven }] },
@@ -138,6 +158,17 @@ const TEST_EXECUTIONS = {
   },
   removeTests: {
     key: "XCNODE-31",
+  },
+  updateCucumberExamples: {
+    key: "XCNODE-38",
+    tests: [
+      {
+        ...TESTS.immutableCucumber,
+        initialStatuses: ["PASS"],
+        testRunId: 13256,
+        updatedStatuses: ["FAIL"],
+      },
+    ],
   },
   updateTestRun: {
     v1: {
@@ -203,7 +234,7 @@ const TEST_PLANS = {
   immutable: {
     key: "XCNODE-7",
     testExecutions: [TEST_EXECUTIONS.immutable, TEST_EXECUTIONS.addAttachments.v2],
-    tests: [TESTS.immutableDatadriven, TESTS.immutable],
+    tests: [TESTS.immutableDatadriven, TESTS.immutable, TESTS.immutableCucumber],
   },
   removeTestExecutions: {
     key: "XCNODE-29",

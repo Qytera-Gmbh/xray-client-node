@@ -97,3 +97,70 @@ export interface Comment {
   raw: string;
   rendered: string;
 }
+
+/**
+ * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-Examples
+ */
+export interface CucumberExample {
+  backgrounds: CucumberElement[];
+  /**
+   * @example "0 millisec"
+   */
+  duration: string;
+  hooks: CucumberElement[];
+  /**
+   * @example 5068
+   */
+  id: number;
+  /**
+   * @example 1
+   */
+  rank: number;
+  /**
+   * @example "PASS"
+   */
+  status: string;
+  steps: CucumberElement[];
+  /**
+   * @example ["1", "factorial", "1"]
+   */
+  values: string[];
+}
+
+/**
+ * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST#TestRunsREST-Examples
+ */
+export interface CucumberElement {
+  /**
+   * @example "0 millisec"
+   */
+  duration: string;
+  /**
+   * @example 1337
+   */
+  id: number;
+  /**
+   * @example "Given "
+   */
+  keyword: string;
+  /**
+   * @example "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal: 123 !== 456"
+   */
+  logError?: string;
+  /**
+   * @example "a calculator I just turned on"
+   */
+  name: string;
+  /**
+   * @example 1
+   */
+  rank: number;
+  /**
+   * @example "PASS"
+   */
+  status: string;
+  /**
+   * @example "background"
+   */
+  type: string;
+}

@@ -73,13 +73,13 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [x] `DELETE /rest/raven/1.0/api/testrun/{id}/attachment/{attachmentid}`
     - [x] `GET    /rest/raven/1.0/api/testrun/{id}/comment`
     - [x] `PUT    /rest/raven/1.0/api/testrun/{id}/comment`
-    - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/example`
+    - [x] `GET    /rest/raven/1.0/api/testrun/{id}/example`
     - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/step`
     - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/assignee`
     - [ ] `PUT    /rest/raven/1.0/api/testrun/{id}/assignee`
     - [Test Examples](https://docs.getxray.app/display/XRAY/Test+Examples+-+REST)
-      - [ ] `GET /rest/raven/1.0/api/testrun/{id}/example/{exampleIndex}`
-      - [ ] `PUT /rest/raven/1.0/api/testrun/{id}/example/{exampleIndex}`
+      - [x] `GET /rest/raven/1.0/api/testrun/{id}/example/{exampleIndex}`
+      - [x] `PUT /rest/raven/1.0/api/testrun/{id}/example/{exampleIndex}`
     - [Test Step Results](https://docs.getxray.app/display/XRAY/Test+Step+Results+-+REST)
       - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/step/{stepResultId}/`
       - [ ] `PUT    /rest/raven/1.0/api/testrun/{id}/step/{stepResultId}/`
@@ -461,7 +461,7 @@ const testRuns = await cloudClient.graphql.getTestRuns(
 Xray server and Xray cloud both have [versioned API endpoints](https://docs.getxray.app/display/XRAY/Clarifications+on+APIs+usage#ClarificationsonAPIsusage-AvailableAPIs) with slightly different behaviour.
 By default, the clients access the latest documented version available for each endpoint.
 
-You can switch between versions on an endpoint basis:
+You can switch between versions if there are multiple versions of the same endpoint:
 
 ```ts
 // Xray server:

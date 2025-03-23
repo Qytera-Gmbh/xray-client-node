@@ -47,7 +47,7 @@ export class TestExecutionApi extends BaseApi {
    * paginated.
    *
    * @param testExecKey the key of the test execution
-   * @param query optional query parameters
+   * @param query the query parameters
    * @returns the tests of the test execution
    *
    * @see https://docs.getxray.app/display/XRAY/Test+Executions+-+REST
