@@ -107,7 +107,10 @@ const TEST_EXECUTIONS = {
   immutable: {
     key: "XCNODE-2",
     testEnvironments: [{ name: "environmentwith,comma" }, { name: "firefox" }],
-    tests: [{ ...TESTS.immutableDatadriven, testRunId: 12466 }, { ...TESTS.immutable }],
+    tests: [
+      { ...TESTS.immutableDatadriven, status: "PASS", testRunId: 12466 },
+      { ...TESTS.immutable },
+    ],
   },
   importXray: {
     v1: { key: "XCNODE-11", tests: [{ ...TESTS.immutableDatadriven }] },
@@ -135,6 +138,12 @@ const TEST_EXECUTIONS = {
         { ...TESTS.immutable, steps: [{ id: "4423" }, { id: "4424" }], testRunId: 12471 },
       ],
     },
+  },
+  updateTestRunStatuses: {
+    key: "XCNODE-32",
+    tests: [
+      { ...TESTS.immutable, initialStatus: "TODO", testRunId: 13250, updatedStatus: "EXECUTING" },
+    ],
   },
 } as const;
 // ============================================================================================== //

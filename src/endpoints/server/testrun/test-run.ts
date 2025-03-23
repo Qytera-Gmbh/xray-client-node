@@ -1,6 +1,7 @@
 import type { Xray } from "../../../../index.js";
 import { BaseApi } from "../../base-api.js";
 import { ExecutionEvidenceApi } from "./execution-evidence/execution-evidence.js";
+import { StatusApi } from "./status/status.js";
 
 /**
  * Models the test run endpoints in Xray server.
@@ -9,6 +10,7 @@ import { ExecutionEvidenceApi } from "./execution-evidence/execution-evidence.js
  */
 export class TestRunApi extends BaseApi {
   public readonly evidence = new ExecutionEvidenceApi(this.client);
+  public readonly status = new StatusApi(this.client);
   public readonly v1 = new TestRunApiV1(this.client);
 
   /**
