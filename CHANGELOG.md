@@ -19,6 +19,8 @@
 - Added `GET    /rest/raven/1.0/api/testrun/{id}/defect`
 - Added `POST   /rest/raven/1.0/api/testrun/{id}/defect`
 - Added `DELETE /rest/raven/1.0/api/testrun/{id}/defect/{issueIdOrKey}`
+- Added `GET    /rest/raven/1.0/api/testrun/{id}/comment`
+- Added `PUT    /rest/raven/1.0/api/testrun/{id}/comment`
 
 # `4.0.0`
 

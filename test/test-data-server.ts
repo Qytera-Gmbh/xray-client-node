@@ -119,7 +119,12 @@ const TEST_EXECUTIONS = {
     key: "XCNODE-2",
     testEnvironments: [{ name: "environmentwith,comma" }, { name: "firefox" }],
     tests: [
-      { ...TESTS.immutableDatadriven, status: "PASS", testRunId: 12466 },
+      {
+        ...TESTS.immutableDatadriven,
+        comment: { raw: "no errors", rendered: "<p>no errors</p>" },
+        status: "PASS",
+        testRunId: 12466,
+      },
       { ...TESTS.immutable, defects: [DEFECTS.immutable], status: "FAIL", testRunId: 12805 },
     ],
   },
@@ -149,6 +154,17 @@ const TEST_EXECUTIONS = {
         { ...TESTS.immutable, steps: [{ id: "4423" }, { id: "4424" }], testRunId: 12471 },
       ],
     },
+  },
+  updateTestRunComments: {
+    key: "XCNODE-35",
+    tests: [
+      {
+        ...TESTS.immutable,
+        initialComment: { raw: "initial comment", rendered: "<p>initial comment</p>" },
+        testRunId: 13253,
+        updatedComment: { raw: "updated comment", rendered: "<p>updated comment</p>" },
+      },
+    ],
   },
   updateTestRunDefects: {
     key: "XCNODE-34",

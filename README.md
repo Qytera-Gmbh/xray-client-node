@@ -71,8 +71,8 @@ _Based on: https://docs.getxray.app/display/XRAY/REST+API_
     - [x] `POST   /rest/raven/1.0/api/testrun/{id}/attachment`
     - [x] `DELETE /rest/raven/1.0/api/testrun/{id}/attachment`
     - [x] `DELETE /rest/raven/1.0/api/testrun/{id}/attachment/{attachmentid}`
-    - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/comment`
-    - [ ] `PUT    /rest/raven/1.0/api/testrun/{id}/comment`
+    - [x] `GET    /rest/raven/1.0/api/testrun/{id}/comment`
+    - [x] `PUT    /rest/raven/1.0/api/testrun/{id}/comment`
     - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/example`
     - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/step`
     - [ ] `GET    /rest/raven/1.0/api/testrun/{id}/assignee`

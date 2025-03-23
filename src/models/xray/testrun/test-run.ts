@@ -92,3 +92,8 @@ export interface Defect {
   statusColor: string;
   summary: string;
 }
+
+export interface Comment {
+  raw: string;
+  rendered: string;
+}
