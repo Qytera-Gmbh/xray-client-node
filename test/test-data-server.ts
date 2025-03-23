@@ -3,6 +3,9 @@
 // In case of a fork or migration, these are all the information you will need to update/recreate.
 // ============================================================================================== //
 export const DATA_SERVER = {
+  get defects() {
+    return DEFECTS;
+  },
   get preconditions() {
     return PRECONDITIONS;
   },
@@ -94,6 +97,14 @@ const TESTS = {
   },
 } as const;
 // ============================================================================================== //
+// DEFECTS
+// ============================================================================================== //
+const DEFECTS = {
+  immutable: {
+    key: "XCNODE-33",
+  },
+} as const;
+// ============================================================================================== //
 // TEST EXECUTIONS
 // ============================================================================================== //
 const TEST_EXECUTIONS = {
@@ -109,7 +120,7 @@ const TEST_EXECUTIONS = {
     testEnvironments: [{ name: "environmentwith,comma" }, { name: "firefox" }],
     tests: [
       { ...TESTS.immutableDatadriven, status: "PASS", testRunId: 12466 },
-      { ...TESTS.immutable },
+      { ...TESTS.immutable, defects: [DEFECTS.immutable], status: "FAIL", testRunId: 12805 },
     ],
   },
   importXray: {

@@ -12,7 +12,7 @@ export interface Details {
     name: string;
     value: string;
   }[];
-  defects: string[];
+  defects: Xray.TestRun.Defect[];
   duration: number;
   evidences: Xray.Attachment.FileAttachment[];
   examples?: {
@@ -82,4 +82,13 @@ export interface Details {
   testExecKey: string;
   testKey: string;
   testVersion: string;
+}
+
+export interface Defect {
+  iconUrl: string;
+  id: number;
+  key: string;
+  status: string;
+  statusColor: string;
+  summary: string;
 }

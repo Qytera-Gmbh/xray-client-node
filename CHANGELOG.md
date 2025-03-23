@@ -14,6 +14,9 @@
 - Added `DELETE /rest/raven/1.0/api/testplan/{testPlanKey}/testexecution/{testExecKey}`
 - Added `POST   /rest/raven/1.0/api/testexec/{testExecKey}/test`
 - Added `DELETE /rest/raven/1.0/api/testexec/{testExecKey}/test/{testKey}`
+- Added `GET    /rest/raven/1.0/api/testrun/{id}/status`
+- Added `PUT    /rest/raven/1.0/api/testrun/{id}/status`
+- Added `GET    /rest/raven/1.0/api/testrun/{id}/defect`
 
 # `4.0.0`
 

@@ -1,5 +1,6 @@
 import type { Xray } from "../../../../index.js";
 import { BaseApi } from "../../base-api.js";
+import { ExecutionDefectApi } from "./execution-defect/execution-defect.js";
 import { ExecutionEvidenceApi } from "./execution-evidence/execution-evidence.js";
 import { StatusApi } from "./status/status.js";
 
@@ -9,6 +10,7 @@ import { StatusApi } from "./status/status.js";
  * @see https://docs.getxray.app/display/XRAY/Test+Runs+-+REST
  */
 export class TestRunApi extends BaseApi {
+  public readonly defect = new ExecutionDefectApi(this.client);
   public readonly evidence = new ExecutionEvidenceApi(this.client);
   public readonly status = new StatusApi(this.client);
   public readonly v1 = new TestRunApiV1(this.client);
