@@ -83,6 +83,9 @@ const TESTS = {
       },
     ],
   },
+  immutableCucumber: {
+    key: "XCNODE-36",
+  },
   immutableDatadriven: {
     dataset: ["name,age", "Jane,42", "John,33", ""],
     key: "XCNODE-1",
@@ -150,7 +153,7 @@ const TEST_PLANS = {
   immutable: {
     key: "XCNODE-7",
     testExecutions: [TEST_EXECUTIONS.immutable, TEST_EXECUTIONS.addAttachments.v2],
-    tests: [TESTS.immutableDatadriven, TESTS.immutable],
+    tests: [TESTS.immutableDatadriven, TESTS.immutable, TESTS.immutableCucumber],
   },
   removeTestExecutions: {
     key: "XCNODE-29",
