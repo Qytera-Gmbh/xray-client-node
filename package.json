@@ -40,7 +40,7 @@
     "openapi-typescript": "^7.6.0",
     "prettier": "^3.5.2",
     "tsx": "^4.19.3",
-    "typed-graphql-builder": "^4.1.7",
+    "typed-graphql-builder": "^5.0.0",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.0"
   },

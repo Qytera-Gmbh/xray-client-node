@@ -208,11 +208,9 @@ export type GetOutput<X extends Selection<any>> = Simplify<
     >
 >;
 
-type PossiblyOptionalVar<VName extends string, VType> = undefined extends VType
+type PossiblyOptionalVar<VName extends string, VType> = null extends VType
   ? { [key in VName]?: VType }
-  : null extends VType
-    ? { [key in VName]?: VType }
-    : { [key in VName]: VType };
+  : { [key in VName]: VType };
 
 type ExtractInputVariables<Inputs> =
   Inputs extends Variable<infer VType, infer VName>
@@ -392,7 +390,7 @@ export type OutputTypeOf<T> =
     : T extends $Union<infer Subtypes, any>
       ? { [K in keyof Subtypes]: OutputTypeOf<Subtypes[K]> }[keyof Subtypes]
       : T extends $Base<any>
-        ? { [K in keyof T]?: OutputTypeOf<T[K]> }
+        ? { [K in keyof T]?: OutputTypeOf<T[K]> | null }
         : [T] extends [$Field<any, infer FieldType, any>]
           ? FieldType
           : [T] extends [(selFn: (arg: infer Inner) => any) => any]
@@ -447,6 +445,7 @@ export function all<I extends $Base<any>>(instance: I) {
 // We use a dummy conditional type that involves GenericType to defer the compiler's inference of
 // any possible variables nested in this type. This addresses a problem where variables are
 // inferred with type unknown
+// @ts-ignore
 type ExactArgNames<GenericType, Constraint> = GenericType extends never
   ? never
   : [Constraint] extends [$Atomic | CustomScalar<any>]
@@ -512,7 +511,7 @@ The query below returns the Coverable Issue with issue id **12345**.
       }
     >,
     selectorFn: (s: CoverableIssue) => [...Sel]
-  ): $Field<"getCoverableIssue", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getCoverableIssue", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -550,24 +549,24 @@ The query below returns 10 coverable issues that match the provided jql.
  */
   getCoverableIssues<
     Args extends VariabledInput<{
-      jql?: string | null | undefined;
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      jql?: string | null;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<CoverableIssueResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        jql?: string | null | undefined;
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        jql?: string | null;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: CoverableIssueResults) => [...Sel]
-  ): $Field<"getCoverableIssues", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getCoverableIssues", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         jql: "String",
@@ -580,6 +579,129 @@ The query below returns 10 coverable issues that match the provided jql.
       selection: selectorFn(new CoverableIssueResults()),
     };
     return this.$_select("getCoverableIssues", options as any) as any;
+  }
+
+  /**
+ * Returns a Dataset by its testIssueId.
+===
+The Query below returns a Dataset.
+<pre>
+{
+    <b>getDataset</b>(testIssueId: "12345") {
+        id
+        parameters {
+            name
+            type
+            listValues
+        }
+        rows {
+          order
+          Values
+        }
+    }
+}
+</pre>
+===
+ */
+  getDataset<
+    Args extends VariabledInput<{
+      testIssueId: string;
+      testExecIssueId?: string | null;
+      testPlanIssueId?: string | null;
+      callTestIssueId?: string | null;
+    }>,
+    Sel extends Selection<Dataset>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testIssueId: string;
+        testExecIssueId?: string | null;
+        testPlanIssueId?: string | null;
+        callTestIssueId?: string | null;
+      }
+    >,
+    selectorFn: (s: Dataset) => [...Sel]
+  ): $Field<"getDataset", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
+    const options = {
+      argTypes: {
+        testIssueId: "String!",
+        testExecIssueId: "String",
+        testPlanIssueId: "String",
+        callTestIssueId: "String",
+      },
+      args,
+
+      selection: selectorFn(new Dataset()),
+    };
+    return this.$_select("getDataset", options as any) as any;
+  }
+
+  /**
+ * Returns multiple Datasets based on optional filters.
+===
+The Query below demonstrates how to retrieve multiple Datasets, including their metadata, parameters
+<pre>
+{
+    <b>getDatasets</b>(
+        testIssueIds: ["30000", "40000"],
+    )
+      {
+        id
+        testIssueId
+        testExecIssueId
+        testPlanIssueId
+        parameters {
+            name
+            type
+            listValues
+        }
+        rows {
+          order
+          Values
+        }
+      }
+}
+</pre>
+===
+ */
+  getDatasets<
+    Args extends VariabledInput<{
+      testIssueIds?: Readonly<Array<string | null>> | null;
+      testExecIssueIds?: Readonly<Array<string | null>> | null;
+      testPlanIssueIds?: Readonly<Array<string | null>> | null;
+    }>,
+    Sel extends Selection<Dataset>,
+  >(
+    args: ExactArgNames<
+      Args,
+      {
+        testIssueIds?: Readonly<Array<string | null>> | null;
+        testExecIssueIds?: Readonly<Array<string | null>> | null;
+        testPlanIssueIds?: Readonly<Array<string | null>> | null;
+      }
+    >,
+    selectorFn: (s: Dataset) => [...Sel]
+  ): $Field<"getDatasets", Array<GetOutput<Sel> | null> | null, GetVariables<Sel, Args>>;
+  getDatasets<Sel extends Selection<Dataset>>(
+    selectorFn: (s: Dataset) => [...Sel]
+  ): $Field<"getDatasets", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>>;
+  getDatasets(arg1: any, arg2?: any) {
+    const { args, selectorFn } = !arg2
+      ? { args: {}, selectorFn: arg1 }
+      : { args: arg1, selectorFn: arg2 };
+
+    const options = {
+      argTypes: {
+        testIssueIds: "[String]",
+        testExecIssueIds: "[String]",
+        testPlanIssueIds: "[String]",
+      },
+      args,
+
+      selection: selectorFn(new Dataset()),
+    };
+    return this.$_select("getDatasets", options as any) as any;
   }
 
   /**
@@ -615,7 +737,7 @@ The query below returns the test version 2 of the test with the id "12345".
   getExpandedTest<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
+      versionId?: number | null;
     }>,
     Sel extends Selection<ExpandedTest>,
   >(
@@ -623,11 +745,11 @@ The query below returns the test version 2 of the test with the id "12345".
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
+        versionId?: number | null;
       }
     >,
     selectorFn: (s: ExpandedTest) => [...Sel]
-  ): $Field<"getExpandedTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getExpandedTest", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -723,34 +845,34 @@ The query below returns the tests of each test version.
  */
   getExpandedTests<
     Args extends VariabledInput<{
-      jql?: string | null | undefined;
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
-      projectId?: string | null | undefined;
-      testType?: TestTypeInput | null | undefined;
-      modifiedSince?: string | null | undefined;
+      jql?: string | null;
+      issueIds?: Readonly<Array<string | null>> | null;
+      tests?: Readonly<Array<TestWithVersionInput | null>> | null;
+      projectId?: string | null;
+      testType?: TestTypeInput | null;
+      modifiedSince?: string | null;
       limit: number;
-      start?: number | null | undefined;
-      folder?: FolderSearchInput | null | undefined;
+      start?: number | null;
+      folder?: FolderSearchInput | null;
     }>,
     Sel extends Selection<ExpandedTestResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        jql?: string | null | undefined;
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
-        projectId?: string | null | undefined;
-        testType?: TestTypeInput | null | undefined;
-        modifiedSince?: string | null | undefined;
+        jql?: string | null;
+        issueIds?: Readonly<Array<string | null>> | null;
+        tests?: Readonly<Array<TestWithVersionInput | null>> | null;
+        projectId?: string | null;
+        testType?: TestTypeInput | null;
+        modifiedSince?: string | null;
         limit: number;
-        start?: number | null | undefined;
-        folder?: FolderSearchInput | null | undefined;
+        start?: number | null;
+        folder?: FolderSearchInput | null;
       }
     >,
     selectorFn: (s: ExpandedTestResults) => [...Sel]
-  ): $Field<"getExpandedTests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getExpandedTests", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         jql: "String",
@@ -801,8 +923,8 @@ The query below returns the folder with path "/generic" and all its child folder
  */
   getFolder<
     Args extends VariabledInput<{
-      projectId?: string | null | undefined;
-      testPlanId?: string | null | undefined;
+      projectId?: string | null;
+      testPlanId?: string | null;
       path: string;
     }>,
     Sel extends Selection<FolderResults>,
@@ -810,13 +932,13 @@ The query below returns the folder with path "/generic" and all its child folder
     args: ExactArgNames<
       Args,
       {
-        projectId?: string | null | undefined;
-        testPlanId?: string | null | undefined;
+        projectId?: string | null;
+        testPlanId?: string | null;
         path: string;
       }
     >,
     selectorFn: (s: FolderResults) => [...Sel]
-  ): $Field<"getFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getFolder", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         projectId: "String",
@@ -848,7 +970,7 @@ The Query below returns all Issue Link Types
  */
   getIssueLinkTypes<Sel extends Selection<IssueLinkType>>(
     selectorFn: (s: IssueLinkType) => [...Sel]
-  ): $Field<"getIssueLinkTypes", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"getIssueLinkTypes", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new IssueLinkType()),
     };
@@ -886,21 +1008,21 @@ The Query below returns the Precondition with issue id **12345**
  */
   getPrecondition<
     Args extends VariabledInput<{
-      issueId?: string | null | undefined;
+      issueId?: string | null;
     }>,
     Sel extends Selection<Precondition>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueId?: string | null | undefined;
+        issueId?: string | null;
       }
     >,
     selectorFn: (s: Precondition) => [...Sel]
-  ): $Field<"getPrecondition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getPrecondition", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getPrecondition<Sel extends Selection<Precondition>>(
     selectorFn: (s: Precondition) => [...Sel]
-  ): $Field<"getPrecondition", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getPrecondition", GetOutput<Sel> | null, GetVariables<Sel>>;
   getPrecondition(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -961,32 +1083,32 @@ The Query below returns 10 Preconditions that match the provided jql
  */
   getPreconditions<
     Args extends VariabledInput<{
-      jql?: string | null | undefined;
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      projectId?: string | null | undefined;
-      preconditionType?: TestTypeInput | null | undefined;
+      jql?: string | null;
+      issueIds?: Readonly<Array<string | null>> | null;
+      projectId?: string | null;
+      preconditionType?: TestTypeInput | null;
       limit: number;
-      start?: number | null | undefined;
-      modifiedSince?: string | null | undefined;
-      folder?: PreconditionFolderSearchInput | null | undefined;
+      start?: number | null;
+      modifiedSince?: string | null;
+      folder?: PreconditionFolderSearchInput | null;
     }>,
     Sel extends Selection<PreconditionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        jql?: string | null | undefined;
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        projectId?: string | null | undefined;
-        preconditionType?: TestTypeInput | null | undefined;
+        jql?: string | null;
+        issueIds?: Readonly<Array<string | null>> | null;
+        projectId?: string | null;
+        preconditionType?: TestTypeInput | null;
         limit: number;
-        start?: number | null | undefined;
-        modifiedSince?: string | null | undefined;
-        folder?: PreconditionFolderSearchInput | null | undefined;
+        start?: number | null;
+        modifiedSince?: string | null;
+        folder?: PreconditionFolderSearchInput | null;
       }
     >,
     selectorFn: (s: PreconditionResults) => [...Sel]
-  ): $Field<"getPreconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getPreconditions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         jql: "String",
@@ -1037,21 +1159,21 @@ The Query below returns multiple Status
  */
   getProjectSettings<
     Args extends VariabledInput<{
-      projectIdOrKey?: string | null | undefined;
+      projectIdOrKey?: string | null;
     }>,
     Sel extends Selection<ProjectSettings>,
   >(
     args: ExactArgNames<
       Args,
       {
-        projectIdOrKey?: string | null | undefined;
+        projectIdOrKey?: string | null;
       }
     >,
     selectorFn: (s: ProjectSettings) => [...Sel]
-  ): $Field<"getProjectSettings", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getProjectSettings", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getProjectSettings<Sel extends Selection<ProjectSettings>>(
     selectorFn: (s: ProjectSettings) => [...Sel]
-  ): $Field<"getProjectSettings", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getProjectSettings", GetOutput<Sel> | null, GetVariables<Sel>>;
   getProjectSettings(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -1086,21 +1208,21 @@ The Query below returns a Status
  */
   getStatus<
     Args extends VariabledInput<{
-      name?: string | null | undefined;
+      name?: string | null;
     }>,
     Sel extends Selection<Status>,
   >(
     args: ExactArgNames<
       Args,
       {
-        name?: string | null | undefined;
+        name?: string | null;
       }
     >,
     selectorFn: (s: Status) => [...Sel]
-  ): $Field<"getStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getStatus", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getStatus<Sel extends Selection<Status>>(
     selectorFn: (s: Status) => [...Sel]
-  ): $Field<"getStatus", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getStatus", GetOutput<Sel> | null, GetVariables<Sel>>;
   getStatus(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -1135,7 +1257,7 @@ The Query below returns multiple Status
  */
   getStatuses<Sel extends Selection<Status>>(
     selectorFn: (s: Status) => [...Sel]
-  ): $Field<"getStatuses", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"getStatuses", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Status()),
     };
@@ -1159,21 +1281,21 @@ The Query below returns a Status
  */
   getStepStatus<
     Args extends VariabledInput<{
-      name?: string | null | undefined;
+      name?: string | null;
     }>,
     Sel extends Selection<StepStatus>,
   >(
     args: ExactArgNames<
       Args,
       {
-        name?: string | null | undefined;
+        name?: string | null;
       }
     >,
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"getStepStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getStepStatus", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getStepStatus<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"getStepStatus", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getStepStatus", GetOutput<Sel> | null, GetVariables<Sel>>;
   getStepStatus(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -1207,7 +1329,7 @@ The Query below returns multiple Status
  */
   getStepStatuses<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"getStepStatuses", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"getStepStatuses", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new StepStatus()),
     };
@@ -1255,21 +1377,21 @@ The query below returns the Test with issue id **12345**.
  */
   getTest<
     Args extends VariabledInput<{
-      issueId?: string | null | undefined;
+      issueId?: string | null;
     }>,
     Sel extends Selection<Test>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueId?: string | null | undefined;
+        issueId?: string | null;
       }
     >,
     selectorFn: (s: Test) => [...Sel]
-  ): $Field<"getTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getTest", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getTest<Sel extends Selection<Test>>(
     selectorFn: (s: Test) => [...Sel]
-  ): $Field<"getTest", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getTest", GetOutput<Sel> | null, GetVariables<Sel>>;
   getTest(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -1324,21 +1446,21 @@ The Query below returns the Test Execution with issue id **12345**.
  */
   getTestExecution<
     Args extends VariabledInput<{
-      issueId?: string | null | undefined;
+      issueId?: string | null;
     }>,
     Sel extends Selection<TestExecution>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueId?: string | null | undefined;
+        issueId?: string | null;
       }
     >,
     selectorFn: (s: TestExecution) => [...Sel]
-  ): $Field<"getTestExecution", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getTestExecution", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getTestExecution<Sel extends Selection<TestExecution>>(
     selectorFn: (s: TestExecution) => [...Sel]
-  ): $Field<"getTestExecution", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getTestExecution", GetOutput<Sel> | null, GetVariables<Sel>>;
   getTestExecution(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -1404,28 +1526,28 @@ The Query below returns 10 Test Executions that match the provided jql.
  */
   getTestExecutions<
     Args extends VariabledInput<{
-      jql?: string | null | undefined;
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      projectId?: string | null | undefined;
+      jql?: string | null;
+      issueIds?: Readonly<Array<string | null>> | null;
+      projectId?: string | null;
       limit: number;
-      start?: number | null | undefined;
-      modifiedSince?: string | null | undefined;
+      start?: number | null;
+      modifiedSince?: string | null;
     }>,
     Sel extends Selection<TestExecutionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        jql?: string | null | undefined;
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        projectId?: string | null | undefined;
+        jql?: string | null;
+        issueIds?: Readonly<Array<string | null>> | null;
+        projectId?: string | null;
         limit: number;
-        start?: number | null | undefined;
-        modifiedSince?: string | null | undefined;
+        start?: number | null;
+        modifiedSince?: string | null;
       }
     >,
     selectorFn: (s: TestExecutionResults) => [...Sel]
-  ): $Field<"getTestExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getTestExecutions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         jql: "String",
@@ -1477,21 +1599,21 @@ The Query below returns the Test Plan with issue id **12345**
  */
   getTestPlan<
     Args extends VariabledInput<{
-      issueId?: string | null | undefined;
+      issueId?: string | null;
     }>,
     Sel extends Selection<TestPlan>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueId?: string | null | undefined;
+        issueId?: string | null;
       }
     >,
     selectorFn: (s: TestPlan) => [...Sel]
-  ): $Field<"getTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getTestPlan", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getTestPlan<Sel extends Selection<TestPlan>>(
     selectorFn: (s: TestPlan) => [...Sel]
-  ): $Field<"getTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getTestPlan", GetOutput<Sel> | null, GetVariables<Sel>>;
   getTestPlan(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -1557,28 +1679,28 @@ The Query below returns 10 Test Plans that match the provided jql.
  */
   getTestPlans<
     Args extends VariabledInput<{
-      jql?: string | null | undefined;
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      projectId?: string | null | undefined;
+      jql?: string | null;
+      issueIds?: Readonly<Array<string | null>> | null;
+      projectId?: string | null;
       limit: number;
-      start?: number | null | undefined;
-      modifiedSince?: string | null | undefined;
+      start?: number | null;
+      modifiedSince?: string | null;
     }>,
     Sel extends Selection<TestPlanResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        jql?: string | null | undefined;
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        projectId?: string | null | undefined;
+        jql?: string | null;
+        issueIds?: Readonly<Array<string | null>> | null;
+        projectId?: string | null;
         limit: number;
-        start?: number | null | undefined;
-        modifiedSince?: string | null | undefined;
+        start?: number | null;
+        modifiedSince?: string | null;
       }
     >,
     selectorFn: (s: TestPlanResults) => [...Sel]
-  ): $Field<"getTestPlans", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getTestPlans", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         jql: "String",
@@ -1624,23 +1746,23 @@ The Query below returns a Test Run
  */
   getTestRun<
     Args extends VariabledInput<{
-      testIssueId?: string | null | undefined;
-      testExecIssueId?: string | null | undefined;
+      testIssueId?: string | null;
+      testExecIssueId?: string | null;
     }>,
     Sel extends Selection<TestRun>,
   >(
     args: ExactArgNames<
       Args,
       {
-        testIssueId?: string | null | undefined;
-        testExecIssueId?: string | null | undefined;
+        testIssueId?: string | null;
+        testExecIssueId?: string | null;
       }
     >,
     selectorFn: (s: TestRun) => [...Sel]
-  ): $Field<"getTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getTestRun", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getTestRun<Sel extends Selection<TestRun>>(
     selectorFn: (s: TestRun) => [...Sel]
-  ): $Field<"getTestRun", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getTestRun", GetOutput<Sel> | null, GetVariables<Sel>>;
   getTestRun(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -1691,21 +1813,21 @@ The Query below returns a Test Run.
  */
   getTestRunById<
     Args extends VariabledInput<{
-      id?: string | null | undefined;
+      id?: string | null;
     }>,
     Sel extends Selection<TestRun>,
   >(
     args: ExactArgNames<
       Args,
       {
-        id?: string | null | undefined;
+        id?: string | null;
       }
     >,
     selectorFn: (s: TestRun) => [...Sel]
-  ): $Field<"getTestRunById", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getTestRunById", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getTestRunById<Sel extends Selection<TestRun>>(
     selectorFn: (s: TestRun) => [...Sel]
-  ): $Field<"getTestRunById", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getTestRunById", GetOutput<Sel> | null, GetVariables<Sel>>;
   getTestRunById(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -1800,28 +1922,28 @@ The query below returns the first 100 Test Runs that match the given ids.
  */
   getTestRuns<
     Args extends VariabledInput<{
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      testExecIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      testRunAssignees?: Readonly<Array<string | null | undefined>> | null | undefined;
+      testIssueIds?: Readonly<Array<string | null>> | null;
+      testExecIssueIds?: Readonly<Array<string | null>> | null;
+      testRunAssignees?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
-      modifiedSince?: string | null | undefined;
+      start?: number | null;
+      modifiedSince?: string | null;
     }>,
     Sel extends Selection<TestRunResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        testExecIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        testRunAssignees?: Readonly<Array<string | null | undefined>> | null | undefined;
+        testIssueIds?: Readonly<Array<string | null>> | null;
+        testExecIssueIds?: Readonly<Array<string | null>> | null;
+        testRunAssignees?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
-        modifiedSince?: string | null | undefined;
+        start?: number | null;
+        modifiedSince?: string | null;
       }
     >,
     selectorFn: (s: TestRunResults) => [...Sel]
-  ): $Field<"getTestRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getTestRuns", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testIssueIds: "[String]",
@@ -1878,22 +2000,22 @@ The query below returns the first 100 Test Runs that match the given ids.
  */
   getTestRunsById<
     Args extends VariabledInput<{
-      ids?: Readonly<Array<string | null | undefined>> | null | undefined;
+      ids?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestRunResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        ids?: Readonly<Array<string | null | undefined>> | null | undefined;
+        ids?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestRunResults) => [...Sel]
-  ): $Field<"getTestRunsById", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getTestRunsById", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         ids: "[String]",
@@ -1942,21 +2064,21 @@ The query below returns the test set with issue id **12345**
  */
   getTestSet<
     Args extends VariabledInput<{
-      issueId?: string | null | undefined;
+      issueId?: string | null;
     }>,
     Sel extends Selection<TestSet>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueId?: string | null | undefined;
+        issueId?: string | null;
       }
     >,
     selectorFn: (s: TestSet) => [...Sel]
-  ): $Field<"getTestSet", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"getTestSet", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   getTestSet<Sel extends Selection<TestSet>>(
     selectorFn: (s: TestSet) => [...Sel]
-  ): $Field<"getTestSet", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"getTestSet", GetOutput<Sel> | null, GetVariables<Sel>>;
   getTestSet(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -2019,28 +2141,28 @@ The query below returns 10 Test Sets that match the provided jql.
  */
   getTestSets<
     Args extends VariabledInput<{
-      jql?: string | null | undefined;
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      projectId?: string | null | undefined;
+      jql?: string | null;
+      issueIds?: Readonly<Array<string | null>> | null;
+      projectId?: string | null;
       limit: number;
-      start?: number | null | undefined;
-      modifiedSince?: string | null | undefined;
+      start?: number | null;
+      modifiedSince?: string | null;
     }>,
     Sel extends Selection<TestSetResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        jql?: string | null | undefined;
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        projectId?: string | null | undefined;
+        jql?: string | null;
+        issueIds?: Readonly<Array<string | null>> | null;
+        projectId?: string | null;
         limit: number;
-        start?: number | null | undefined;
-        modifiedSince?: string | null | undefined;
+        start?: number | null;
+        modifiedSince?: string | null;
       }
     >,
     selectorFn: (s: TestSetResults) => [...Sel]
-  ): $Field<"getTestSets", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getTestSets", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         jql: "String",
@@ -2117,32 +2239,32 @@ The query below returns 10 tests that match the provided jql.
  */
   getTests<
     Args extends VariabledInput<{
-      jql?: string | null | undefined;
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      projectId?: string | null | undefined;
-      testType?: TestTypeInput | null | undefined;
-      modifiedSince?: string | null | undefined;
+      jql?: string | null;
+      issueIds?: Readonly<Array<string | null>> | null;
+      projectId?: string | null;
+      testType?: TestTypeInput | null;
+      modifiedSince?: string | null;
       limit: number;
-      start?: number | null | undefined;
-      folder?: FolderSearchInput | null | undefined;
+      start?: number | null;
+      folder?: FolderSearchInput | null;
     }>,
     Sel extends Selection<TestResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        jql?: string | null | undefined;
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        projectId?: string | null | undefined;
-        testType?: TestTypeInput | null | undefined;
-        modifiedSince?: string | null | undefined;
+        jql?: string | null;
+        issueIds?: Readonly<Array<string | null>> | null;
+        projectId?: string | null;
+        testType?: TestTypeInput | null;
+        modifiedSince?: string | null;
         limit: number;
-        start?: number | null | undefined;
-        folder?: FolderSearchInput | null | undefined;
+        start?: number | null;
+        folder?: FolderSearchInput | null;
       }
     >,
     selectorFn: (s: TestResults) => [...Sel]
-  ): $Field<"getTests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"getTests", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         jql: "String",
@@ -2170,42 +2292,42 @@ export class FolderResults extends $Base<"FolderResults"> {
   /**
    * Folder children
    */
-  get folders(): $Field<"folders", JSON | null | undefined> {
+  get folders(): $Field<"folders", JSON | null> {
     return this.$_select("folders") as any;
   }
 
   /**
    * Folder issues count
    */
-  get issuesCount(): $Field<"issuesCount", number | null | undefined> {
+  get issuesCount(): $Field<"issuesCount", number | null> {
     return this.$_select("issuesCount") as any;
   }
 
   /**
    * Folder name
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
   /**
    * Folder path
    */
-  get path(): $Field<"path", string | null | undefined> {
+  get path(): $Field<"path", string | null> {
     return this.$_select("path") as any;
   }
 
   /**
    * Folder preconditions count
    */
-  get preconditionsCount(): $Field<"preconditionsCount", number | null | undefined> {
+  get preconditionsCount(): $Field<"preconditionsCount", number | null> {
     return this.$_select("preconditionsCount") as any;
   }
 
   /**
    * Folder tests count
    */
-  get testsCount(): $Field<"testsCount", number | null | undefined> {
+  get testsCount(): $Field<"testsCount", number | null> {
     return this.$_select("testsCount") as any;
   }
 }
@@ -2214,6 +2336,151 @@ export class FolderResults extends $Base<"FolderResults"> {
  * The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
  */
 export type JSON = Record<string, any>;
+
+/**
+ * Dataset type
+Represents a single Dataset entity with its metadata, parameters, and associated dataset rows.
+ */
+export class Dataset extends $Base<"Dataset"> {
+  constructor() {
+    super("Dataset");
+  }
+
+  /**
+   * The ID of the call test issue (only for test step datasets).
+   */
+  get callTestIssueId(): $Field<"callTestIssueId", string | null> {
+    return this.$_select("callTestIssueId") as any;
+  }
+
+  /**
+   * Unique identifier of the Dataset.
+   */
+  get id(): $Field<"id", string | null> {
+    return this.$_select("id") as any;
+  }
+
+  /**
+   * Parameters of the Dataset, represented as an array of key-value pairs.
+   */
+  parameters<Sel extends Selection<Parameter>>(
+    selectorFn: (s: Parameter) => [...Sel]
+  ): $Field<"parameters", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Parameter()),
+    };
+    return this.$_select("parameters", options as any) as any;
+  }
+
+  /**
+   * The rows of the Dataset, representing combinatorial data.
+   */
+  rows<Sel extends Selection<DatasetRow>>(
+    selectorFn: (s: DatasetRow) => [...Sel]
+  ): $Field<"rows", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new DatasetRow()),
+    };
+    return this.$_select("rows", options as any) as any;
+  }
+
+  /**
+   * The ID of the test execution issue associated with the Dataset.
+   */
+  get testExecIssueId(): $Field<"testExecIssueId", string | null> {
+    return this.$_select("testExecIssueId") as any;
+  }
+
+  /**
+   * The ID of the test issue associated with the Dataset.
+   */
+  get testIssueId(): $Field<"testIssueId", string | null> {
+    return this.$_select("testIssueId") as any;
+  }
+
+  /**
+   * The ID of the test plan issue associated with the Dataset.
+   */
+  get testPlanIssueId(): $Field<"testPlanIssueId", string | null> {
+    return this.$_select("testPlanIssueId") as any;
+  }
+
+  /**
+   * The ID of the test step associated with the Dataset (only for test step datasets).
+   */
+  get testStepId(): $Field<"testStepId", string | null> {
+    return this.$_select("testStepId") as any;
+  }
+}
+
+/**
+ * Parameter type
+Represents a single parameter in the Dataset.
+ */
+export class Parameter extends $Base<"Parameter"> {
+  constructor() {
+    super("Parameter");
+  }
+
+  /**
+   * Indicates whether the parameter supports combinations.
+   */
+  get combinations(): $Field<"combinations", boolean | null> {
+    return this.$_select("combinations") as any;
+  }
+
+  /**
+   * The list of values for the parameter.
+   */
+  get listValues(): $Field<"listValues", Readonly<Array<string | null>> | null> {
+    return this.$_select("listValues") as any;
+  }
+
+  /**
+   * The name of the parameter.
+   */
+  get name(): $Field<"name", string | null> {
+    return this.$_select("name") as any;
+  }
+
+  /**
+   * The ID of the project list associated with the parameter.
+   */
+  get projectListId(): $Field<"projectListId", string | null> {
+    return this.$_select("projectListId") as any;
+  }
+
+  /**
+   * The type of the parameter.
+   */
+  get type(): $Field<"type", string | null> {
+    return this.$_select("type") as any;
+  }
+}
+
+/**
+ * DatasetRow type
+Represents a single row in the Dataset, containing combinatorial data.
+ */
+export class DatasetRow extends $Base<"DatasetRow"> {
+  constructor() {
+    super("DatasetRow");
+  }
+
+  /**
+   * The values of the row, stored String array.
+   */
+  get Values(): $Field<"Values", Readonly<Array<string | null>> | null> {
+    return this.$_select("Values") as any;
+  }
+
+  /**
+   * The order of the row in the Dataset.
+   */
+  get order(): $Field<"order", number | null> {
+    return this.$_select("order") as any;
+  }
+}
 
 /**
  * Test issue type
@@ -2228,22 +2495,22 @@ export class Test extends $Base<"Test"> {
    */
   coverableIssues<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<CoverableIssueResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: CoverableIssueResults) => [...Sel]
-  ): $Field<"coverableIssues", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"coverableIssues", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -2258,11 +2525,23 @@ export class Test extends $Base<"Test"> {
   }
 
   /**
+   * Dataset linked to the Test issue.
+   */
+  dataset<Sel extends Selection<Dataset>>(
+    selectorFn: (s: Dataset) => [...Sel]
+  ): $Field<"dataset", GetOutput<Sel> | null, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Dataset()),
+    };
+    return this.$_select("dataset", options as any) as any;
+  }
+
+  /**
    * Test Repository folder of the Test.
    */
   folder<Sel extends Selection<Folder>>(
     selectorFn: (s: Folder) => [...Sel]
-  ): $Field<"folder", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"folder", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Folder()),
     };
@@ -2272,7 +2551,7 @@ export class Test extends $Base<"Test"> {
   /**
    * Gherkin definition of the Test issue.
    */
-  get gherkin(): $Field<"gherkin", string | null | undefined> {
+  get gherkin(): $Field<"gherkin", string | null> {
     return this.$_select("gherkin") as any;
   }
 
@@ -2282,7 +2561,7 @@ export class Test extends $Base<"Test"> {
   history<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<XrayHistoryResults>,
   >(
@@ -2290,11 +2569,11 @@ export class Test extends $Base<"Test"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: XrayHistoryResults) => [...Sel]
-  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"history", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -2310,7 +2589,7 @@ export class Test extends $Base<"Test"> {
   /**
    * Issue id of the Test issue.
    */
-  get issueId(): $Field<"issueId", string | null | undefined> {
+  get issueId(): $Field<"issueId", string | null> {
     return this.$_select("issueId") as any;
   }
 
@@ -2319,13 +2598,13 @@ export class Test extends $Base<"Test"> {
    */
   jira<
     Args extends VariabledInput<{
-      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      fields?: Readonly<Array<string | null>> | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+        fields?: Readonly<Array<string | null>> | null;
       }
     >
   ): $Field<"jira", JSON, GetVariables<[], Args>> {
@@ -2341,7 +2620,7 @@ export class Test extends $Base<"Test"> {
   /**
    * Date when the test was last modified.
    */
-  get lastModified(): $Field<"lastModified", string | null | undefined> {
+  get lastModified(): $Field<"lastModified", string | null> {
     return this.$_select("lastModified") as any;
   }
 
@@ -2350,22 +2629,22 @@ export class Test extends $Base<"Test"> {
    */
   preconditions<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<PreconditionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: PreconditionResults) => [...Sel]
-  ): $Field<"preconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"preconditions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -2382,7 +2661,7 @@ export class Test extends $Base<"Test"> {
   /**
    * Project id of the Test issue.
    */
-  get projectId(): $Field<"projectId", string | null | undefined> {
+  get projectId(): $Field<"projectId", string | null> {
     return this.$_select("projectId") as any;
   }
 
@@ -2390,7 +2669,7 @@ export class Test extends $Base<"Test"> {
  * Gherkin type of the Test issue.
 Possible values: 'scenario' or 'scenario_outline'.
  */
-  get scenarioType(): $Field<"scenarioType", string | null | undefined> {
+  get scenarioType(): $Field<"scenarioType", string | null> {
     return this.$_select("scenarioType") as any;
   }
 
@@ -2399,27 +2678,27 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   status<
     Args extends VariabledInput<{
-      environment?: string | null | undefined;
-      isFinal?: boolean | null | undefined;
-      version?: string | null | undefined;
-      testPlan?: string | null | undefined;
+      environment?: string | null;
+      isFinal?: boolean | null;
+      version?: string | null;
+      testPlan?: string | null;
     }>,
     Sel extends Selection<TestStatusType>,
   >(
     args: ExactArgNames<
       Args,
       {
-        environment?: string | null | undefined;
-        isFinal?: boolean | null | undefined;
-        version?: string | null | undefined;
-        testPlan?: string | null | undefined;
+        environment?: string | null;
+        isFinal?: boolean | null;
+        version?: string | null;
+        testPlan?: string | null;
       }
     >,
     selectorFn: (s: TestStatusType) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   status<Sel extends Selection<TestStatusType>>(
     selectorFn: (s: TestStatusType) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>>;
   status(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -2444,7 +2723,7 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   steps<Sel extends Selection<Step>>(
     selectorFn: (s: Step) => [...Sel]
-  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"steps", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Step()),
     };
@@ -2456,22 +2735,22 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testExecutions<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestExecutionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestExecutionResults) => [...Sel]
-  ): $Field<"testExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testExecutions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -2490,22 +2769,22 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testPlans<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestPlanResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestPlanResults) => [...Sel]
-  ): $Field<"testPlans", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testPlans", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -2525,7 +2804,7 @@ Possible values: 'scenario' or 'scenario_outline'.
   testRuns<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestRunResults>,
   >(
@@ -2533,11 +2812,11 @@ Possible values: 'scenario' or 'scenario_outline'.
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestRunResults) => [...Sel]
-  ): $Field<"testRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testRuns", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -2555,22 +2834,22 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testSets<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestSetResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestSetResults) => [...Sel]
-  ): $Field<"testSets", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testSets", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -2589,7 +2868,7 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testType<Sel extends Selection<TestType>>(
     selectorFn: (s: TestType) => [...Sel]
-  ): $Field<"testType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testType", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestType()),
     };
@@ -2602,9 +2881,9 @@ Possible values: 'scenario' or 'scenario_outline'.
   testVersions<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
-      archived?: boolean | null | undefined;
-      testTypeId?: string | null | undefined;
+      start?: number | null;
+      archived?: boolean | null;
+      testTypeId?: string | null;
     }>,
     Sel extends Selection<TestVersionResults>,
   >(
@@ -2612,13 +2891,13 @@ Possible values: 'scenario' or 'scenario_outline'.
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
-        archived?: boolean | null | undefined;
-        testTypeId?: string | null | undefined;
+        start?: number | null;
+        archived?: boolean | null;
+        testTypeId?: string | null;
       }
     >,
     selectorFn: (s: TestVersionResults) => [...Sel]
-  ): $Field<"testVersions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testVersions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -2636,7 +2915,7 @@ Possible values: 'scenario' or 'scenario_outline'.
   /**
    * Unstructured definition of the Test issue.
    */
-  get unstructured(): $Field<"unstructured", string | null | undefined> {
+  get unstructured(): $Field<"unstructured", string | null> {
     return this.$_select("unstructured") as any;
   }
 }
@@ -2652,7 +2931,7 @@ export class TestType extends $Base<"TestType"> {
   /**
    * Id of the Test Type.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
@@ -2660,14 +2939,14 @@ export class TestType extends $Base<"TestType"> {
  * Kind of the Test Type.
 Possible values are "Gherkin", "Steps" or "Unstructured".
  */
-  get kind(): $Field<"kind", string | null | undefined> {
+  get kind(): $Field<"kind", string | null> {
     return this.$_select("kind") as any;
   }
 
   /**
    * Name of the Test Type.
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 }
@@ -2683,7 +2962,7 @@ export class Step extends $Base<"Step"> {
   /**
    * Action of the Step.
    */
-  get action(): $Field<"action", string | null | undefined> {
+  get action(): $Field<"action", string | null> {
     return this.$_select("action") as any;
   }
 
@@ -2692,7 +2971,7 @@ export class Step extends $Base<"Step"> {
    */
   attachments<Sel extends Selection<Attachment>>(
     selectorFn: (s: Attachment) => [...Sel]
-  ): $Field<"attachments", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"attachments", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Attachment()),
     };
@@ -2702,7 +2981,7 @@ export class Step extends $Base<"Step"> {
   /**
    * The issue id of the test being called in the step.
    */
-  get callTestIssueId(): $Field<"callTestIssueId", string | null | undefined> {
+  get callTestIssueId(): $Field<"callTestIssueId", string | null> {
     return this.$_select("callTestIssueId") as any;
   }
 
@@ -2711,7 +2990,7 @@ export class Step extends $Base<"Step"> {
    */
   customFields<Sel extends Selection<CustomStepField>>(
     selectorFn: (s: CustomStepField) => [...Sel]
-  ): $Field<"customFields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"customFields", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new CustomStepField()),
     };
@@ -2721,21 +3000,21 @@ export class Step extends $Base<"Step"> {
   /**
    * Data of the Step.
    */
-  get data(): $Field<"data", string | null | undefined> {
+  get data(): $Field<"data", string | null> {
     return this.$_select("data") as any;
   }
 
   /**
    * Id of the Step.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * Result of the Step.
    */
-  get result(): $Field<"result", string | null | undefined> {
+  get result(): $Field<"result", string | null> {
     return this.$_select("result") as any;
   }
 }
@@ -2751,28 +3030,28 @@ export class Attachment extends $Base<"Attachment"> {
   /**
    * Download link of the attachment.
    */
-  get downloadLink(): $Field<"downloadLink", string | null | undefined> {
+  get downloadLink(): $Field<"downloadLink", string | null> {
     return this.$_select("downloadLink") as any;
   }
 
   /**
    * Filename of the attachment.
    */
-  get filename(): $Field<"filename", string | null | undefined> {
+  get filename(): $Field<"filename", string | null> {
     return this.$_select("filename") as any;
   }
 
   /**
    * Id of the attachment.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * If the file is stored in Jira.
    */
-  get storedInJira(): $Field<"storedInJira", boolean | null | undefined> {
+  get storedInJira(): $Field<"storedInJira", boolean | null> {
     return this.$_select("storedInJira") as any;
   }
 }
@@ -2788,21 +3067,21 @@ export class CustomStepField extends $Base<"CustomStepField"> {
   /**
    * Id of the Custom Field.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * Name of the Custom Field.
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
   /**
    * Value of the Custom Field.
    */
-  get value(): $Field<"value", JSON | null | undefined> {
+  get value(): $Field<"value", JSON | null> {
     return this.$_select("value") as any;
   }
 }
@@ -2818,14 +3097,14 @@ export class Folder extends $Base<"Folder"> {
   /**
    * Folder name
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
   /**
    * Folder path
    */
-  get path(): $Field<"path", string | null | undefined> {
+  get path(): $Field<"path", string | null> {
     return this.$_select("path") as any;
   }
 }
@@ -2841,7 +3120,7 @@ export class PreconditionResults extends $Base<"PreconditionResults"> {
   /**
    * Maximum amount of Preconditions to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -2850,7 +3129,7 @@ export class PreconditionResults extends $Base<"PreconditionResults"> {
    */
   results<Sel extends Selection<Precondition>>(
     selectorFn: (s: Precondition) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Precondition()),
     };
@@ -2860,14 +3139,14 @@ export class PreconditionResults extends $Base<"PreconditionResults"> {
   /**
    * Index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of issues.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -2883,7 +3162,7 @@ export class Precondition extends $Base<"Precondition"> {
   /**
    * Definition of the Precondition issue.
    */
-  get definition(): $Field<"definition", string | null | undefined> {
+  get definition(): $Field<"definition", string | null> {
     return this.$_select("definition") as any;
   }
 
@@ -2892,7 +3171,7 @@ export class Precondition extends $Base<"Precondition"> {
    */
   folder<Sel extends Selection<Folder>>(
     selectorFn: (s: Folder) => [...Sel]
-  ): $Field<"folder", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"folder", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Folder()),
     };
@@ -2905,7 +3184,7 @@ export class Precondition extends $Base<"Precondition"> {
   history<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<XrayHistoryResults>,
   >(
@@ -2913,11 +3192,11 @@ export class Precondition extends $Base<"Precondition"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: XrayHistoryResults) => [...Sel]
-  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"history", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -2933,7 +3212,7 @@ export class Precondition extends $Base<"Precondition"> {
   /**
    * Id of the Precondition issue.
    */
-  get issueId(): $Field<"issueId", string | null | undefined> {
+  get issueId(): $Field<"issueId", string | null> {
     return this.$_select("issueId") as any;
   }
 
@@ -2942,16 +3221,16 @@ export class Precondition extends $Base<"Precondition"> {
    */
   jira<
     Args extends VariabledInput<{
-      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      fields?: Readonly<Array<string | null>> | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+        fields?: Readonly<Array<string | null>> | null;
       }
     >
-  ): $Field<"jira", JSON | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"jira", JSON | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         fields: "[String]",
@@ -2964,7 +3243,7 @@ export class Precondition extends $Base<"Precondition"> {
   /**
    * Date when the precondition was last modified.
    */
-  get lastModified(): $Field<"lastModified", string | null | undefined> {
+  get lastModified(): $Field<"lastModified", string | null> {
     return this.$_select("lastModified") as any;
   }
 
@@ -2973,7 +3252,7 @@ export class Precondition extends $Base<"Precondition"> {
    */
   preconditionType<Sel extends Selection<TestType>>(
     selectorFn: (s: TestType) => [...Sel]
-  ): $Field<"preconditionType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"preconditionType", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestType()),
     };
@@ -2983,7 +3262,7 @@ export class Precondition extends $Base<"Precondition"> {
   /**
    * Project id of the Precondition issue.
    */
-  get projectId(): $Field<"projectId", string | null | undefined> {
+  get projectId(): $Field<"projectId", string | null> {
     return this.$_select("projectId") as any;
   }
 
@@ -2993,9 +3272,9 @@ export class Precondition extends $Base<"Precondition"> {
   testVersions<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
-      archived?: boolean | null | undefined;
-      testTypeId?: string | null | undefined;
+      start?: number | null;
+      archived?: boolean | null;
+      testTypeId?: string | null;
     }>,
     Sel extends Selection<TestVersionResults>,
   >(
@@ -3003,13 +3282,13 @@ export class Precondition extends $Base<"Precondition"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
-        archived?: boolean | null | undefined;
-        testTypeId?: string | null | undefined;
+        start?: number | null;
+        archived?: boolean | null;
+        testTypeId?: string | null;
       }
     >,
     selectorFn: (s: TestVersionResults) => [...Sel]
-  ): $Field<"testVersions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testVersions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -3029,22 +3308,22 @@ export class Precondition extends $Base<"Precondition"> {
    */
   tests<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestResults) => [...Sel]
-  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"tests", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -3070,7 +3349,7 @@ export class TestResults extends $Base<"TestResults"> {
   /**
    * The maximum amount of Tests to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -3079,7 +3358,7 @@ export class TestResults extends $Base<"TestResults"> {
    */
   results<Sel extends Selection<Test>>(
     selectorFn: (s: Test) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Test()),
     };
@@ -3089,24 +3368,21 @@ export class TestResults extends $Base<"TestResults"> {
   /**
    * The index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of issues.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 
   /**
    * Warnings generated if you have a invalid Test
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -3122,7 +3398,7 @@ export class TestVersionResults extends $Base<"TestVersionResults"> {
   /**
    * The maximum amount of Test versions to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -3131,7 +3407,7 @@ export class TestVersionResults extends $Base<"TestVersionResults"> {
    */
   results<Sel extends Selection<TestVersion>>(
     selectorFn: (s: TestVersion) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestVersion()),
     };
@@ -3141,14 +3417,14 @@ export class TestVersionResults extends $Base<"TestVersionResults"> {
   /**
    * The index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of Test versions.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -3175,7 +3451,7 @@ export class TestVersion extends $Base<"TestVersion"> {
   /**
    * Gherkin definition of the Test version.
    */
-  get gherkin(): $Field<"gherkin", string | null | undefined> {
+  get gherkin(): $Field<"gherkin", string | null> {
     return this.$_select("gherkin") as any;
   }
 
@@ -3189,7 +3465,7 @@ export class TestVersion extends $Base<"TestVersion"> {
   /**
    * Date when the Test version was last modified.
    */
-  get lastModified(): $Field<"lastModified", string | null | undefined> {
+  get lastModified(): $Field<"lastModified", string | null> {
     return this.$_select("lastModified") as any;
   }
 
@@ -3202,22 +3478,22 @@ export class TestVersion extends $Base<"TestVersion"> {
 
   preconditions<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<PreconditionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: PreconditionResults) => [...Sel]
-  ): $Field<"preconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"preconditions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -3235,7 +3511,7 @@ export class TestVersion extends $Base<"TestVersion"> {
  * Gherkin type of the Test version.
 Possible values: 'scenario' or 'scenario_outline'.
  */
-  get scenarioType(): $Field<"scenarioType", string | null | undefined> {
+  get scenarioType(): $Field<"scenarioType", string | null> {
     return this.$_select("scenarioType") as any;
   }
 
@@ -3244,7 +3520,7 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   steps<Sel extends Selection<Step>>(
     selectorFn: (s: Step) => [...Sel]
-  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"steps", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Step()),
     };
@@ -3265,22 +3541,22 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testExecutions<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestExecutionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestExecutionResults) => [...Sel]
-  ): $Field<"testExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testExecutions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -3297,7 +3573,7 @@ Possible values: 'scenario' or 'scenario_outline'.
   testRuns<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestRunResults>,
   >(
@@ -3305,11 +3581,11 @@ Possible values: 'scenario' or 'scenario_outline'.
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestRunResults) => [...Sel]
-  ): $Field<"testRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testRuns", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -3327,7 +3603,7 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testType<Sel extends Selection<TestType>>(
     selectorFn: (s: TestType) => [...Sel]
-  ): $Field<"testType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testType", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestType()),
     };
@@ -3337,7 +3613,7 @@ Possible values: 'scenario' or 'scenario_outline'.
   /**
    * Unstructured definition of the Test version.
    */
-  get unstructured(): $Field<"unstructured", string | null | undefined> {
+  get unstructured(): $Field<"unstructured", string | null> {
     return this.$_select("unstructured") as any;
   }
 }
@@ -3353,7 +3629,7 @@ export class TestExecutionResults extends $Base<"TestExecutionResults"> {
   /**
    * Maximum amount of Test Executions to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -3362,7 +3638,7 @@ export class TestExecutionResults extends $Base<"TestExecutionResults"> {
    */
   results<Sel extends Selection<TestExecution>>(
     selectorFn: (s: TestExecution) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestExecution()),
     };
@@ -3372,14 +3648,14 @@ export class TestExecutionResults extends $Base<"TestExecutionResults"> {
   /**
    * Index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of issues.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -3398,7 +3674,7 @@ export class TestExecution extends $Base<"TestExecution"> {
   history<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<XrayHistoryResults>,
   >(
@@ -3406,11 +3682,11 @@ export class TestExecution extends $Base<"TestExecution"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: XrayHistoryResults) => [...Sel]
-  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"history", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -3426,7 +3702,7 @@ export class TestExecution extends $Base<"TestExecution"> {
   /**
    * Id of the Test Execution issue.
    */
-  get issueId(): $Field<"issueId", string | null | undefined> {
+  get issueId(): $Field<"issueId", string | null> {
     return this.$_select("issueId") as any;
   }
 
@@ -3435,16 +3711,16 @@ export class TestExecution extends $Base<"TestExecution"> {
    */
   jira<
     Args extends VariabledInput<{
-      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      fields?: Readonly<Array<string | null>> | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+        fields?: Readonly<Array<string | null>> | null;
       }
     >
-  ): $Field<"jira", JSON | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"jira", JSON | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         fields: "[String]",
@@ -3457,24 +3733,21 @@ export class TestExecution extends $Base<"TestExecution"> {
   /**
    * Date when the test exec was last modified.
    */
-  get lastModified(): $Field<"lastModified", string | null | undefined> {
+  get lastModified(): $Field<"lastModified", string | null> {
     return this.$_select("lastModified") as any;
   }
 
   /**
    * Project id of the Test Execution issue.
    */
-  get projectId(): $Field<"projectId", string | null | undefined> {
+  get projectId(): $Field<"projectId", string | null> {
     return this.$_select("projectId") as any;
   }
 
   /**
    * Test Environments of the Test Execution.
    */
-  get testEnvironments(): $Field<
-    "testEnvironments",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get testEnvironments(): $Field<"testEnvironments", Readonly<Array<string | null>> | null> {
     return this.$_select("testEnvironments") as any;
   }
 
@@ -3483,22 +3756,22 @@ export class TestExecution extends $Base<"TestExecution"> {
    */
   testPlans<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestPlanResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestPlanResults) => [...Sel]
-  ): $Field<"testPlans", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testPlans", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -3518,7 +3791,7 @@ export class TestExecution extends $Base<"TestExecution"> {
   testRuns<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestRunResults>,
   >(
@@ -3526,11 +3799,11 @@ export class TestExecution extends $Base<"TestExecution"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestRunResults) => [...Sel]
-  ): $Field<"testRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testRuns", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -3548,22 +3821,22 @@ export class TestExecution extends $Base<"TestExecution"> {
    */
   tests<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestResults) => [...Sel]
-  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"tests", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -3589,7 +3862,7 @@ export class TestPlanResults extends $Base<"TestPlanResults"> {
   /**
    * Maximum amount of Test Plans to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -3598,7 +3871,7 @@ export class TestPlanResults extends $Base<"TestPlanResults"> {
    */
   results<Sel extends Selection<TestPlan>>(
     selectorFn: (s: TestPlan) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestPlan()),
     };
@@ -3608,24 +3881,21 @@ export class TestPlanResults extends $Base<"TestPlanResults"> {
   /**
    * Index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of issues.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -3643,7 +3913,7 @@ export class TestPlan extends $Base<"TestPlan"> {
    */
   folders<Sel extends Selection<FolderResults>>(
     selectorFn: (s: FolderResults) => [...Sel]
-  ): $Field<"folders", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"folders", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new FolderResults()),
     };
@@ -3656,7 +3926,7 @@ export class TestPlan extends $Base<"TestPlan"> {
   history<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<XrayHistoryResults>,
   >(
@@ -3664,11 +3934,11 @@ export class TestPlan extends $Base<"TestPlan"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: XrayHistoryResults) => [...Sel]
-  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"history", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -3684,7 +3954,7 @@ export class TestPlan extends $Base<"TestPlan"> {
   /**
    * Id of the Test Plan issue.
    */
-  get issueId(): $Field<"issueId", string | null | undefined> {
+  get issueId(): $Field<"issueId", string | null> {
     return this.$_select("issueId") as any;
   }
 
@@ -3693,16 +3963,16 @@ export class TestPlan extends $Base<"TestPlan"> {
    */
   jira<
     Args extends VariabledInput<{
-      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      fields?: Readonly<Array<string | null>> | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+        fields?: Readonly<Array<string | null>> | null;
       }
     >
-  ): $Field<"jira", JSON | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"jira", JSON | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         fields: "[String]",
@@ -3715,14 +3985,14 @@ export class TestPlan extends $Base<"TestPlan"> {
   /**
    * Date when the test plan was last modified.
    */
-  get lastModified(): $Field<"lastModified", string | null | undefined> {
+  get lastModified(): $Field<"lastModified", string | null> {
     return this.$_select("lastModified") as any;
   }
 
   /**
    * Project id of the Test Plan issue.
    */
-  get projectId(): $Field<"projectId", string | null | undefined> {
+  get projectId(): $Field<"projectId", string | null> {
     return this.$_select("projectId") as any;
   }
 
@@ -3731,22 +4001,22 @@ export class TestPlan extends $Base<"TestPlan"> {
    */
   testExecutions<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestExecutionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestExecutionResults) => [...Sel]
-  ): $Field<"testExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testExecutions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -3765,22 +4035,22 @@ export class TestPlan extends $Base<"TestPlan"> {
    */
   tests<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestResults) => [...Sel]
-  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"tests", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -3806,7 +4076,7 @@ export class XrayHistoryResults extends $Base<"XrayHistoryResults"> {
   /**
    * Maximum amount of History results to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -3815,7 +4085,7 @@ export class XrayHistoryResults extends $Base<"XrayHistoryResults"> {
    */
   results<Sel extends Selection<XrayHistoryEntry>>(
     selectorFn: (s: XrayHistoryEntry) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new XrayHistoryEntry()),
     };
@@ -3825,14 +4095,14 @@ export class XrayHistoryResults extends $Base<"XrayHistoryResults"> {
   /**
    * Index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of issues.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -3848,7 +4118,7 @@ export class XrayHistoryEntry extends $Base<"XrayHistoryEntry"> {
   /**
    * Action performed.
    */
-  get action(): $Field<"action", string | null | undefined> {
+  get action(): $Field<"action", string | null> {
     return this.$_select("action") as any;
   }
 
@@ -3857,7 +4127,7 @@ export class XrayHistoryEntry extends $Base<"XrayHistoryEntry"> {
    */
   changes<Sel extends Selection<Changes>>(
     selectorFn: (s: Changes) => [...Sel]
-  ): $Field<"changes", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"changes", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Changes()),
     };
@@ -3867,21 +4137,21 @@ export class XrayHistoryEntry extends $Base<"XrayHistoryEntry"> {
   /**
    * Date of change(s).
    */
-  get date(): $Field<"date", string | null | undefined> {
+  get date(): $Field<"date", string | null> {
     return this.$_select("date") as any;
   }
 
   /**
    * User that performed the change(s).
    */
-  get user(): $Field<"user", string | null | undefined> {
+  get user(): $Field<"user", string | null> {
     return this.$_select("user") as any;
   }
 
   /**
    * Test Version that the changes refer to (if applicable).
    */
-  get version(): $Field<"version", string | null | undefined> {
+  get version(): $Field<"version", string | null> {
     return this.$_select("version") as any;
   }
 }
@@ -3897,14 +4167,14 @@ export class Changes extends $Base<"Changes"> {
   /**
    * Change details.
    */
-  get change(): $Field<"change", string | null | undefined> {
+  get change(): $Field<"change", string | null> {
     return this.$_select("change") as any;
   }
 
   /**
    * Field the change refers to.
    */
-  get field(): $Field<"field", string | null | undefined> {
+  get field(): $Field<"field", string | null> {
     return this.$_select("field") as any;
   }
 }
@@ -3920,7 +4190,7 @@ export class TestRunResults extends $Base<"TestRunResults"> {
   /**
    * The maximum amount of Test Runs to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -3929,7 +4199,7 @@ export class TestRunResults extends $Base<"TestRunResults"> {
    */
   results<Sel extends Selection<TestRun>>(
     selectorFn: (s: TestRun) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRun()),
     };
@@ -3939,14 +4209,14 @@ export class TestRunResults extends $Base<"TestRunResults"> {
   /**
    * The index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of Test Runs.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -3962,14 +4232,14 @@ export class TestRun extends $Base<"TestRun"> {
   /**
    * User's account id assigned to the Test Run. This is user assigned to the Test Run, not taking into account the assignee of the test execution.
    */
-  get assigneeId(): $Field<"assigneeId", string | null | undefined> {
+  get assigneeId(): $Field<"assigneeId", string | null> {
     return this.$_select("assigneeId") as any;
   }
 
   /**
    * Comment definition of the Test Run.
    */
-  get comment(): $Field<"comment", string | null | undefined> {
+  get comment(): $Field<"comment", string | null> {
     return this.$_select("comment") as any;
   }
 
@@ -3978,7 +4248,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   customFields<Sel extends Selection<TestRunCustomFieldValue>>(
     selectorFn: (s: TestRunCustomFieldValue) => [...Sel]
-  ): $Field<"customFields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"customFields", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRunCustomFieldValue()),
     };
@@ -3988,7 +4258,7 @@ export class TestRun extends $Base<"TestRun"> {
   /**
    * Defects of the Test Run.
    */
-  get defects(): $Field<"defects", Readonly<Array<string | null | undefined>> | null | undefined> {
+  get defects(): $Field<"defects", Readonly<Array<string | null>> | null> {
     return this.$_select("defects") as any;
   }
 
@@ -3997,7 +4267,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   evidence<Sel extends Selection<Evidence>>(
     selectorFn: (s: Evidence) => [...Sel]
-  ): $Field<"evidence", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"evidence", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Evidence()),
     };
@@ -4009,7 +4279,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   examples<Sel extends Selection<Example>>(
     selectorFn: (s: Example) => [...Sel]
-  ): $Field<"examples", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"examples", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Example()),
     };
@@ -4019,28 +4289,28 @@ export class TestRun extends $Base<"TestRun"> {
   /**
    * User's account id that executed the Test Run.
    */
-  get executedById(): $Field<"executedById", string | null | undefined> {
+  get executedById(): $Field<"executedById", string | null> {
     return this.$_select("executedById") as any;
   }
 
   /**
    * Finished On date of the Test Run.
    */
-  get finishedOn(): $Field<"finishedOn", string | null | undefined> {
+  get finishedOn(): $Field<"finishedOn", string | null> {
     return this.$_select("finishedOn") as any;
   }
 
   /**
    * Cucumber definition of the Test issue.
    */
-  get gherkin(): $Field<"gherkin", string | null | undefined> {
+  get gherkin(): $Field<"gherkin", string | null> {
     return this.$_select("gherkin") as any;
   }
 
   /**
    * Id of the Test Run.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
@@ -4050,7 +4320,7 @@ export class TestRun extends $Base<"TestRun"> {
   iterations<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestRunIterationResults>,
   >(
@@ -4058,11 +4328,11 @@ export class TestRun extends $Base<"TestRun"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestRunIterationResults) => [...Sel]
-  ): $Field<"iterations", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"iterations", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -4078,7 +4348,7 @@ export class TestRun extends $Base<"TestRun"> {
   /**
    * Date when the test run was last modified.
    */
-  get lastModified(): $Field<"lastModified", string | null | undefined> {
+  get lastModified(): $Field<"lastModified", string | null> {
     return this.$_select("lastModified") as any;
   }
 
@@ -4087,7 +4357,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   parameters<Sel extends Selection<TestRunParameter>>(
     selectorFn: (s: TestRunParameter) => [...Sel]
-  ): $Field<"parameters", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"parameters", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRunParameter()),
     };
@@ -4100,7 +4370,7 @@ export class TestRun extends $Base<"TestRun"> {
   preconditions<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestRunPreconditionResults>,
   >(
@@ -4108,11 +4378,11 @@ export class TestRun extends $Base<"TestRun"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestRunPreconditionResults) => [...Sel]
-  ): $Field<"preconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"preconditions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -4130,7 +4400,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   results<Sel extends Selection<Result>>(
     selectorFn: (s: Result) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Result()),
     };
@@ -4140,14 +4410,14 @@ export class TestRun extends $Base<"TestRun"> {
   /**
    * Cucumber Type definition of the Test Run.
    */
-  get scenarioType(): $Field<"scenarioType", string | null | undefined> {
+  get scenarioType(): $Field<"scenarioType", string | null> {
     return this.$_select("scenarioType") as any;
   }
 
   /**
    * Started On date of the Test Run.
    */
-  get startedOn(): $Field<"startedOn", string | null | undefined> {
+  get startedOn(): $Field<"startedOn", string | null> {
     return this.$_select("startedOn") as any;
   }
 
@@ -4156,7 +4426,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   status<Sel extends Selection<Status>>(
     selectorFn: (s: Status) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Status()),
     };
@@ -4168,7 +4438,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   steps<Sel extends Selection<TestRunStep>>(
     selectorFn: (s: TestRunStep) => [...Sel]
-  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"steps", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRunStep()),
     };
@@ -4180,7 +4450,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   test<Sel extends Selection<Test>>(
     selectorFn: (s: Test) => [...Sel]
-  ): $Field<"test", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"test", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Test()),
     };
@@ -4192,7 +4462,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   testExecution<Sel extends Selection<TestExecution>>(
     selectorFn: (s: TestExecution) => [...Sel]
-  ): $Field<"testExecution", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testExecution", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestExecution()),
     };
@@ -4204,7 +4474,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   testType<Sel extends Selection<TestType>>(
     selectorFn: (s: TestType) => [...Sel]
-  ): $Field<"testType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testType", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestType()),
     };
@@ -4216,7 +4486,7 @@ export class TestRun extends $Base<"TestRun"> {
    */
   testVersion<Sel extends Selection<TestVersion>>(
     selectorFn: (s: TestVersion) => [...Sel]
-  ): $Field<"testVersion", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testVersion", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestVersion()),
     };
@@ -4226,7 +4496,7 @@ export class TestRun extends $Base<"TestRun"> {
   /**
    * Generic definition of the Test issue.
    */
-  get unstructured(): $Field<"unstructured", string | null | undefined> {
+  get unstructured(): $Field<"unstructured", string | null> {
     return this.$_select("unstructured") as any;
   }
 }
@@ -4242,35 +4512,35 @@ export class Status extends $Base<"Status"> {
   /**
    * Color of the Status.
    */
-  get color(): $Field<"color", string | null | undefined> {
+  get color(): $Field<"color", string | null> {
     return this.$_select("color") as any;
   }
 
   /**
    * Coverage mapping of the Status.
    */
-  get coverageStatus(): $Field<"coverageStatus", string | null | undefined> {
+  get coverageStatus(): $Field<"coverageStatus", string | null> {
     return this.$_select("coverageStatus") as any;
   }
 
   /**
    * Description of the Status.
    */
-  get description(): $Field<"description", string | null | undefined> {
+  get description(): $Field<"description", string | null> {
     return this.$_select("description") as any;
   }
 
   /**
    * Whether the Status is final or not.
    */
-  get final(): $Field<"final", boolean | null | undefined> {
+  get final(): $Field<"final", boolean | null> {
     return this.$_select("final") as any;
   }
 
   /**
    * Name of the Status.
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 }
@@ -4286,42 +4556,42 @@ export class Evidence extends $Base<"Evidence"> {
   /**
    * Evidence creation timestamp.
    */
-  get createdOn(): $Field<"createdOn", string | null | undefined> {
+  get createdOn(): $Field<"createdOn", string | null> {
     return this.$_select("createdOn") as any;
   }
 
   /**
    * Download link of the Evidence.
    */
-  get downloadLink(): $Field<"downloadLink", string | null | undefined> {
+  get downloadLink(): $Field<"downloadLink", string | null> {
     return this.$_select("downloadLink") as any;
   }
 
   /**
    * Filename of the Evidence.
    */
-  get filename(): $Field<"filename", string | null | undefined> {
+  get filename(): $Field<"filename", string | null> {
     return this.$_select("filename") as any;
   }
 
   /**
    * Id of the Evidence.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * File size in bytes.
    */
-  get size(): $Field<"size", number | null | undefined> {
+  get size(): $Field<"size", number | null> {
     return this.$_select("size") as any;
   }
 
   /**
    * If file is stored in Jira
    */
-  get storedInJira(): $Field<"storedInJira", boolean | null | undefined> {
+  get storedInJira(): $Field<"storedInJira", boolean | null> {
     return this.$_select("storedInJira") as any;
   }
 }
@@ -4337,14 +4607,14 @@ export class TestRunStep extends $Base<"TestRunStep"> {
   /**
    * Action of the Test Run Step.
    */
-  get action(): $Field<"action", string | null | undefined> {
+  get action(): $Field<"action", string | null> {
     return this.$_select("action") as any;
   }
 
   /**
    * Actual Result of the Test Run Step.
    */
-  get actualResult(): $Field<"actualResult", string | null | undefined> {
+  get actualResult(): $Field<"actualResult", string | null> {
     return this.$_select("actualResult") as any;
   }
 
@@ -4353,7 +4623,7 @@ export class TestRunStep extends $Base<"TestRunStep"> {
    */
   attachments<Sel extends Selection<Attachment>>(
     selectorFn: (s: Attachment) => [...Sel]
-  ): $Field<"attachments", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"attachments", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Attachment()),
     };
@@ -4363,7 +4633,7 @@ export class TestRunStep extends $Base<"TestRunStep"> {
   /**
    * Comment of the Test Run Step.
    */
-  get comment(): $Field<"comment", string | null | undefined> {
+  get comment(): $Field<"comment", string | null> {
     return this.$_select("comment") as any;
   }
 
@@ -4372,7 +4642,7 @@ export class TestRunStep extends $Base<"TestRunStep"> {
    */
   customFields<Sel extends Selection<TestRunCustomStepField>>(
     selectorFn: (s: TestRunCustomStepField) => [...Sel]
-  ): $Field<"customFields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"customFields", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRunCustomStepField()),
     };
@@ -4382,14 +4652,14 @@ export class TestRunStep extends $Base<"TestRunStep"> {
   /**
    * Data of the Test Run Step.
    */
-  get data(): $Field<"data", string | null | undefined> {
+  get data(): $Field<"data", string | null> {
     return this.$_select("data") as any;
   }
 
   /**
    * Defects of the Test Run Step.
    */
-  get defects(): $Field<"defects", Readonly<Array<string | null | undefined>> | null | undefined> {
+  get defects(): $Field<"defects", Readonly<Array<string | null>> | null> {
     return this.$_select("defects") as any;
   }
 
@@ -4398,7 +4668,7 @@ export class TestRunStep extends $Base<"TestRunStep"> {
    */
   evidence<Sel extends Selection<Evidence>>(
     selectorFn: (s: Evidence) => [...Sel]
-  ): $Field<"evidence", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"evidence", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Evidence()),
     };
@@ -4408,14 +4678,14 @@ export class TestRunStep extends $Base<"TestRunStep"> {
   /**
    * Id of the Test Run Step.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * Result of the Test Run Step.
    */
-  get result(): $Field<"result", string | null | undefined> {
+  get result(): $Field<"result", string | null> {
     return this.$_select("result") as any;
   }
 
@@ -4424,7 +4694,7 @@ export class TestRunStep extends $Base<"TestRunStep"> {
    */
   status<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new StepStatus()),
     };
@@ -4443,21 +4713,21 @@ export class StepStatus extends $Base<"StepStatus"> {
   /**
    * Color of the Status.
    */
-  get color(): $Field<"color", string | null | undefined> {
+  get color(): $Field<"color", string | null> {
     return this.$_select("color") as any;
   }
 
   /**
    * Description of the Status.
    */
-  get description(): $Field<"description", string | null | undefined> {
+  get description(): $Field<"description", string | null> {
     return this.$_select("description") as any;
   }
 
   /**
    * Name of the Status.
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
@@ -4466,7 +4736,7 @@ export class StepStatus extends $Base<"StepStatus"> {
    */
   testStatus<Sel extends Selection<Status>>(
     selectorFn: (s: Status) => [...Sel]
-  ): $Field<"testStatus", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testStatus", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Status()),
     };
@@ -4485,21 +4755,21 @@ export class TestRunCustomStepField extends $Base<"TestRunCustomStepField"> {
   /**
    * Id of the Custom Field.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * Name of the Custom Field.
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
   /**
    * Value of the Custom Field.
    */
-  get value(): $Field<"value", JSON | null | undefined> {
+  get value(): $Field<"value", JSON | null> {
     return this.$_select("value") as any;
   }
 }
@@ -4515,14 +4785,14 @@ export class Example extends $Base<"Example"> {
   /**
    * Duration of the Example.
    */
-  get duration(): $Field<"duration", number | null | undefined> {
+  get duration(): $Field<"duration", number | null> {
     return this.$_select("duration") as any;
   }
 
   /**
    * Id of the Example.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
@@ -4531,7 +4801,7 @@ export class Example extends $Base<"Example"> {
    */
   status<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new StepStatus()),
     };
@@ -4552,7 +4822,7 @@ export class Result extends $Base<"Result"> {
    */
   backgrounds<Sel extends Selection<ResultsStep>>(
     selectorFn: (s: ResultsStep) => [...Sel]
-  ): $Field<"backgrounds", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"backgrounds", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ResultsStep()),
     };
@@ -4562,7 +4832,7 @@ export class Result extends $Base<"Result"> {
   /**
    * Duration of the Result.
    */
-  get duration(): $Field<"duration", number | null | undefined> {
+  get duration(): $Field<"duration", number | null> {
     return this.$_select("duration") as any;
   }
 
@@ -4571,7 +4841,7 @@ export class Result extends $Base<"Result"> {
    */
   examples<Sel extends Selection<ResultsExample>>(
     selectorFn: (s: ResultsExample) => [...Sel]
-  ): $Field<"examples", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"examples", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ResultsExample()),
     };
@@ -4583,7 +4853,7 @@ export class Result extends $Base<"Result"> {
    */
   hooks<Sel extends Selection<ResultsStep>>(
     selectorFn: (s: ResultsStep) => [...Sel]
-  ): $Field<"hooks", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"hooks", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ResultsStep()),
     };
@@ -4593,14 +4863,14 @@ export class Result extends $Base<"Result"> {
   /**
    * Output if exist an error or a failure (JUNIT, XUNIT, NUNIT, TESTNG)
    */
-  get log(): $Field<"log", string | null | undefined> {
+  get log(): $Field<"log", string | null> {
     return this.$_select("log") as any;
   }
 
   /**
    * Name of the Result.
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
@@ -4609,7 +4879,7 @@ export class Result extends $Base<"Result"> {
    */
   status<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new StepStatus()),
     };
@@ -4621,7 +4891,7 @@ export class Result extends $Base<"Result"> {
    */
   steps<Sel extends Selection<ResultsStep>>(
     selectorFn: (s: ResultsStep) => [...Sel]
-  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"steps", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ResultsStep()),
     };
@@ -4631,7 +4901,7 @@ export class Result extends $Base<"Result"> {
   /**
    * Whether or not the Result was imported.
    */
-  get wasImported(): $Field<"wasImported", string | null | undefined> {
+  get wasImported(): $Field<"wasImported", string | null> {
     return this.$_select("wasImported") as any;
   }
 }
@@ -4649,7 +4919,7 @@ export class ResultsExample extends $Base<"ResultsExample"> {
    */
   backgrounds<Sel extends Selection<ResultsStep>>(
     selectorFn: (s: ResultsStep) => [...Sel]
-  ): $Field<"backgrounds", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"backgrounds", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ResultsStep()),
     };
@@ -4659,7 +4929,7 @@ export class ResultsExample extends $Base<"ResultsExample"> {
   /**
    * Duration of the Result.
    */
-  get duration(): $Field<"duration", number | null | undefined> {
+  get duration(): $Field<"duration", number | null> {
     return this.$_select("duration") as any;
   }
 
@@ -4668,7 +4938,7 @@ export class ResultsExample extends $Base<"ResultsExample"> {
    */
   hooks<Sel extends Selection<ResultsStep>>(
     selectorFn: (s: ResultsStep) => [...Sel]
-  ): $Field<"hooks", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"hooks", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ResultsStep()),
     };
@@ -4680,7 +4950,7 @@ export class ResultsExample extends $Base<"ResultsExample"> {
    */
   status<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new StepStatus()),
     };
@@ -4692,7 +4962,7 @@ export class ResultsExample extends $Base<"ResultsExample"> {
    */
   steps<Sel extends Selection<ResultsStep>>(
     selectorFn: (s: ResultsStep) => [...Sel]
-  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"steps", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ResultsStep()),
     };
@@ -4702,7 +4972,7 @@ export class ResultsExample extends $Base<"ResultsExample"> {
   /**
    * Whether or not the Result was imported.
    */
-  get wasImported(): $Field<"wasImported", string | null | undefined> {
+  get wasImported(): $Field<"wasImported", string | null> {
     return this.$_select("wasImported") as any;
   }
 }
@@ -4718,7 +4988,7 @@ export class ResultsStep extends $Base<"ResultsStep"> {
   /**
    * Duration of the step.
    */
-  get duration(): $Field<"duration", number | null | undefined> {
+  get duration(): $Field<"duration", number | null> {
     return this.$_select("duration") as any;
   }
 
@@ -4727,7 +4997,7 @@ export class ResultsStep extends $Base<"ResultsStep"> {
    */
   embeddings<Sel extends Selection<ResultsEmbedding>>(
     selectorFn: (s: ResultsEmbedding) => [...Sel]
-  ): $Field<"embeddings", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"embeddings", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ResultsEmbedding()),
     };
@@ -4737,28 +5007,28 @@ export class ResultsStep extends $Base<"ResultsStep"> {
   /**
    * Error of the step.
    */
-  get error(): $Field<"error", string | null | undefined> {
+  get error(): $Field<"error", string | null> {
     return this.$_select("error") as any;
   }
 
   /**
    * If a gherkin step, keyword of the gherkin step.
    */
-  get keyword(): $Field<"keyword", string | null | undefined> {
+  get keyword(): $Field<"keyword", string | null> {
     return this.$_select("keyword") as any;
   }
 
   /**
    * If a Robot step, output of the Robot step.
    */
-  get log(): $Field<"log", string | null | undefined> {
+  get log(): $Field<"log", string | null> {
     return this.$_select("log") as any;
   }
 
   /**
    * Name of the step.
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
@@ -4767,7 +5037,7 @@ export class ResultsStep extends $Base<"ResultsStep"> {
    */
   status<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new StepStatus()),
     };
@@ -4786,28 +5056,28 @@ export class ResultsEmbedding extends $Base<"ResultsEmbedding"> {
   /**
    * Data of the Embedding. Base64 format.
    */
-  get data(): $Field<"data", string | null | undefined> {
+  get data(): $Field<"data", string | null> {
     return this.$_select("data") as any;
   }
 
   /**
    * Link to download the embedding if no data is present
    */
-  get downloadLink(): $Field<"downloadLink", string | null | undefined> {
+  get downloadLink(): $Field<"downloadLink", string | null> {
     return this.$_select("downloadLink") as any;
   }
 
   /**
    * Filename of the Embedding.
    */
-  get filename(): $Field<"filename", string | null | undefined> {
+  get filename(): $Field<"filename", string | null> {
     return this.$_select("filename") as any;
   }
 
   /**
    * Mime Type of the Embedding.
    */
-  get mimeType(): $Field<"mimeType", string | null | undefined> {
+  get mimeType(): $Field<"mimeType", string | null> {
     return this.$_select("mimeType") as any;
   }
 }
@@ -4823,7 +5093,7 @@ export class TestRunPreconditionResults extends $Base<"TestRunPreconditionResult
   /**
    * Maximum amount of Preconditions to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -4832,7 +5102,7 @@ export class TestRunPreconditionResults extends $Base<"TestRunPreconditionResult
    */
   results<Sel extends Selection<TestRunPrecondition>>(
     selectorFn: (s: TestRunPrecondition) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRunPrecondition()),
     };
@@ -4842,14 +5112,14 @@ export class TestRunPreconditionResults extends $Base<"TestRunPreconditionResult
   /**
    * Index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of preconditions.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -4865,7 +5135,7 @@ export class TestRunPrecondition extends $Base<"TestRunPrecondition"> {
   /**
    * Precondition definition.
    */
-  get definition(): $Field<"definition", string | null | undefined> {
+  get definition(): $Field<"definition", string | null> {
     return this.$_select("definition") as any;
   }
 
@@ -4874,7 +5144,7 @@ export class TestRunPrecondition extends $Base<"TestRunPrecondition"> {
    */
   preconditionRef<Sel extends Selection<Precondition>>(
     selectorFn: (s: Precondition) => [...Sel]
-  ): $Field<"preconditionRef", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"preconditionRef", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Precondition()),
     };
@@ -4890,15 +5160,15 @@ export class TestRunCustomFieldValue extends $Base<"TestRunCustomFieldValue"> {
     super("TestRunCustomFieldValue");
   }
 
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
-  get values(): $Field<"values", JSON | null | undefined> {
+  get values(): $Field<"values", JSON | null> {
     return this.$_select("values") as any;
   }
 }
@@ -4911,11 +5181,11 @@ export class TestRunParameter extends $Base<"TestRunParameter"> {
     super("TestRunParameter");
   }
 
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
-  get value(): $Field<"value", string | null | undefined> {
+  get value(): $Field<"value", string | null> {
     return this.$_select("value") as any;
   }
 }
@@ -4931,7 +5201,7 @@ export class TestRunIterationResults extends $Base<"TestRunIterationResults"> {
   /**
    * Maximum amount of iterations to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -4940,7 +5210,7 @@ export class TestRunIterationResults extends $Base<"TestRunIterationResults"> {
    */
   results<Sel extends Selection<TestRunIteration>>(
     selectorFn: (s: TestRunIteration) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRunIteration()),
     };
@@ -4950,14 +5220,14 @@ export class TestRunIterationResults extends $Base<"TestRunIterationResults"> {
   /**
    * Index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of iterations.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -4975,7 +5245,7 @@ export class TestRunIteration extends $Base<"TestRunIteration"> {
    */
   parameters<Sel extends Selection<TestRunParameter>>(
     selectorFn: (s: TestRunParameter) => [...Sel]
-  ): $Field<"parameters", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"parameters", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRunParameter()),
     };
@@ -4985,7 +5255,7 @@ export class TestRunIteration extends $Base<"TestRunIteration"> {
   /**
    * Rank of the iteration.
    */
-  get rank(): $Field<"rank", string | null | undefined> {
+  get rank(): $Field<"rank", string | null> {
     return this.$_select("rank") as any;
   }
 
@@ -4994,7 +5264,7 @@ export class TestRunIteration extends $Base<"TestRunIteration"> {
    */
   status<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new StepStatus()),
     };
@@ -5007,7 +5277,7 @@ export class TestRunIteration extends $Base<"TestRunIteration"> {
   stepResults<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestRunIterationStepResults>,
   >(
@@ -5015,11 +5285,11 @@ export class TestRunIteration extends $Base<"TestRunIteration"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestRunIterationStepResults) => [...Sel]
-  ): $Field<"stepResults", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"stepResults", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -5044,7 +5314,7 @@ export class TestRunIterationStepResults extends $Base<"TestRunIterationStepResu
   /**
    * Maximum amount of step results to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -5053,7 +5323,7 @@ export class TestRunIterationStepResults extends $Base<"TestRunIterationStepResu
    */
   results<Sel extends Selection<TestRunIterationStepResult>>(
     selectorFn: (s: TestRunIterationStepResult) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestRunIterationStepResult()),
     };
@@ -5063,14 +5333,14 @@ export class TestRunIterationStepResults extends $Base<"TestRunIterationStepResu
   /**
    * Index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of steps.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -5086,21 +5356,21 @@ export class TestRunIterationStepResult extends $Base<"TestRunIterationStepResul
   /**
    * Actual Result of the Test Run step.
    */
-  get actualResult(): $Field<"actualResult", string | null | undefined> {
+  get actualResult(): $Field<"actualResult", string | null> {
     return this.$_select("actualResult") as any;
   }
 
   /**
    * Comment of the Test Run step.
    */
-  get comment(): $Field<"comment", string | null | undefined> {
+  get comment(): $Field<"comment", string | null> {
     return this.$_select("comment") as any;
   }
 
   /**
    * Defects of the Test Run step.
    */
-  get defects(): $Field<"defects", Readonly<Array<string | null | undefined>> | null | undefined> {
+  get defects(): $Field<"defects", Readonly<Array<string | null>> | null> {
     return this.$_select("defects") as any;
   }
 
@@ -5109,7 +5379,7 @@ export class TestRunIterationStepResult extends $Base<"TestRunIterationStepResul
    */
   evidence<Sel extends Selection<Evidence>>(
     selectorFn: (s: Evidence) => [...Sel]
-  ): $Field<"evidence", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"evidence", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Evidence()),
     };
@@ -5119,7 +5389,7 @@ export class TestRunIterationStepResult extends $Base<"TestRunIterationStepResul
   /**
    * Id of the Test Run step.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
@@ -5128,7 +5398,7 @@ export class TestRunIterationStepResult extends $Base<"TestRunIterationStepResul
    */
   status<Sel extends Selection<StepStatus>>(
     selectorFn: (s: StepStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new StepStatus()),
     };
@@ -5147,7 +5417,7 @@ export class TestSetResults extends $Base<"TestSetResults"> {
   /**
    * Maximum amount of test sets to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -5156,7 +5426,7 @@ export class TestSetResults extends $Base<"TestSetResults"> {
    */
   results<Sel extends Selection<TestSet>>(
     selectorFn: (s: TestSet) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestSet()),
     };
@@ -5166,14 +5436,14 @@ export class TestSetResults extends $Base<"TestSetResults"> {
   /**
    * Index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of issues.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -5192,7 +5462,7 @@ export class TestSet extends $Base<"TestSet"> {
   history<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<XrayHistoryResults>,
   >(
@@ -5200,11 +5470,11 @@ export class TestSet extends $Base<"TestSet"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: XrayHistoryResults) => [...Sel]
-  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"history", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -5220,7 +5490,7 @@ export class TestSet extends $Base<"TestSet"> {
   /**
    * Issue id of the Test Set Issue.
    */
-  get issueId(): $Field<"issueId", string | null | undefined> {
+  get issueId(): $Field<"issueId", string | null> {
     return this.$_select("issueId") as any;
   }
 
@@ -5229,16 +5499,16 @@ export class TestSet extends $Base<"TestSet"> {
    */
   jira<
     Args extends VariabledInput<{
-      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      fields?: Readonly<Array<string | null>> | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+        fields?: Readonly<Array<string | null>> | null;
       }
     >
-  ): $Field<"jira", JSON | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"jira", JSON | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         fields: "[String]",
@@ -5251,14 +5521,14 @@ export class TestSet extends $Base<"TestSet"> {
   /**
    * Date when the test set was last modified.
    */
-  get lastModified(): $Field<"lastModified", string | null | undefined> {
+  get lastModified(): $Field<"lastModified", string | null> {
     return this.$_select("lastModified") as any;
   }
 
   /**
    * Project id of the Test Set Issue.
    */
-  get projectId(): $Field<"projectId", string | null | undefined> {
+  get projectId(): $Field<"projectId", string | null> {
     return this.$_select("projectId") as any;
   }
 
@@ -5267,22 +5537,22 @@ export class TestSet extends $Base<"TestSet"> {
    */
   tests<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestResults) => [...Sel]
-  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"tests", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -5308,7 +5578,7 @@ export class CoverableIssueResults extends $Base<"CoverableIssueResults"> {
   /**
    * The maximum amount of Coverable Issues to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -5317,7 +5587,7 @@ export class CoverableIssueResults extends $Base<"CoverableIssueResults"> {
    */
   results<Sel extends Selection<CoverableIssue>>(
     selectorFn: (s: CoverableIssue) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new CoverableIssue()),
     };
@@ -5327,24 +5597,21 @@ export class CoverableIssueResults extends $Base<"CoverableIssueResults"> {
   /**
    * The index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of issues.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 
   /**
    * Warnings generated if you have a invalid Coverable Issue
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -5357,7 +5624,7 @@ export class CoverableIssue extends $Base<"CoverableIssue"> {
   /**
    * Issue id of the Coverable Issue Issue.
    */
-  get issueId(): $Field<"issueId", string | null | undefined> {
+  get issueId(): $Field<"issueId", string | null> {
     return this.$_select("issueId") as any;
   }
 
@@ -5369,13 +5636,13 @@ fields: List of the fields to be displayed.
  */
   jira<
     Args extends VariabledInput<{
-      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      fields?: Readonly<Array<string | null>> | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+        fields?: Readonly<Array<string | null>> | null;
       }
     >
   ): $Field<"jira", JSON, GetVariables<[], Args>> {
@@ -5399,27 +5666,27 @@ testPlan: the Test Plan issue id for which to calculate the status for.
  */
   status<
     Args extends VariabledInput<{
-      environment?: string | null | undefined;
-      isFinal?: boolean | null | undefined;
-      version?: string | null | undefined;
-      testPlan?: string | null | undefined;
+      environment?: string | null;
+      isFinal?: boolean | null;
+      version?: string | null;
+      testPlan?: string | null;
     }>,
     Sel extends Selection<CoverageStatus>,
   >(
     args: ExactArgNames<
       Args,
       {
-        environment?: string | null | undefined;
-        isFinal?: boolean | null | undefined;
-        version?: string | null | undefined;
-        testPlan?: string | null | undefined;
+        environment?: string | null;
+        isFinal?: boolean | null;
+        version?: string | null;
+        testPlan?: string | null;
       }
     >,
     selectorFn: (s: CoverageStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   status<Sel extends Selection<CoverageStatus>>(
     selectorFn: (s: CoverageStatus) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>>;
   status(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -5449,22 +5716,22 @@ start: the index of the first item to return in the page of results (page offset
  */
   tests<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestResults) => [...Sel]
-  ): $Field<"tests", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"tests", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -5487,21 +5754,21 @@ export class CoverageStatus extends $Base<"CoverageStatus"> {
   /**
    * Color of the Coverage Status
    */
-  get color(): $Field<"color", string | null | undefined> {
+  get color(): $Field<"color", string | null> {
     return this.$_select("color") as any;
   }
 
   /**
    * Description of the Coverage Status
    */
-  get description(): $Field<"description", string | null | undefined> {
+  get description(): $Field<"description", string | null> {
     return this.$_select("description") as any;
   }
 
   /**
    * Name of the Coverage Status
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 }
@@ -5517,28 +5784,28 @@ export class TestStatusType extends $Base<"TestStatusType"> {
   /**
    * Color of the Test Status.
    */
-  get color(): $Field<"color", string | null | undefined> {
+  get color(): $Field<"color", string | null> {
     return this.$_select("color") as any;
   }
 
   /**
    * Description of the Test Status.
    */
-  get description(): $Field<"description", string | null | undefined> {
+  get description(): $Field<"description", string | null> {
     return this.$_select("description") as any;
   }
 
   /**
    * Whether the status is final or not.
    */
-  get final(): $Field<"final", boolean | null | undefined> {
+  get final(): $Field<"final", boolean | null> {
     return this.$_select("final") as any;
   }
 
   /**
    * Name of the Test Status.
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 }
@@ -5547,18 +5814,18 @@ export class TestStatusType extends $Base<"TestStatusType"> {
  * Test Type input
  */
 export type TestTypeInput = {
-  id?: string | null | undefined;
-  kind?: string | null | undefined;
-  name?: string | null | undefined;
+  id?: string | null;
+  kind?: string | null;
+  name?: string | null;
 };
 
 /**
  * Folder Search input
  */
 export type FolderSearchInput = {
-  includeDescendants?: boolean | null | undefined;
+  includeDescendants?: boolean | null;
   path: string;
-  testPlanId?: string | null | undefined;
+  testPlanId?: string | null;
 };
 
 /**
@@ -5574,22 +5841,22 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
    */
   coverableIssues<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<CoverableIssueResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: CoverableIssueResults) => [...Sel]
-  ): $Field<"coverableIssues", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"coverableIssues", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -5604,11 +5871,23 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
   }
 
   /**
+   * Dataset linked to the Test issue.
+   */
+  dataset<Sel extends Selection<Dataset>>(
+    selectorFn: (s: Dataset) => [...Sel]
+  ): $Field<"dataset", GetOutput<Sel> | null, GetVariables<Sel>> {
+    const options = {
+      selection: selectorFn(new Dataset()),
+    };
+    return this.$_select("dataset", options as any) as any;
+  }
+
+  /**
    * Test Repository folder of the Test.
    */
   folder<Sel extends Selection<Folder>>(
     selectorFn: (s: Folder) => [...Sel]
-  ): $Field<"folder", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"folder", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Folder()),
     };
@@ -5618,7 +5897,7 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
   /**
    * Gherkin definition of the Test issue.
    */
-  get gherkin(): $Field<"gherkin", string | null | undefined> {
+  get gherkin(): $Field<"gherkin", string | null> {
     return this.$_select("gherkin") as any;
   }
 
@@ -5628,7 +5907,7 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
   history<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<XrayHistoryResults>,
   >(
@@ -5636,11 +5915,11 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: XrayHistoryResults) => [...Sel]
-  ): $Field<"history", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"history", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -5656,7 +5935,7 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
   /**
    * Issue id of the Test issue.
    */
-  get issueId(): $Field<"issueId", string | null | undefined> {
+  get issueId(): $Field<"issueId", string | null> {
     return this.$_select("issueId") as any;
   }
 
@@ -5665,13 +5944,13 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
    */
   jira<
     Args extends VariabledInput<{
-      fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+      fields?: Readonly<Array<string | null>> | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        fields?: Readonly<Array<string | null | undefined>> | null | undefined;
+        fields?: Readonly<Array<string | null>> | null;
       }
     >
   ): $Field<"jira", JSON, GetVariables<[], Args>> {
@@ -5687,7 +5966,7 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
   /**
    * Date when the test was last modified.
    */
-  get lastModified(): $Field<"lastModified", string | null | undefined> {
+  get lastModified(): $Field<"lastModified", string | null> {
     return this.$_select("lastModified") as any;
   }
 
@@ -5696,22 +5975,22 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
    */
   preconditions<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<PreconditionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: PreconditionResults) => [...Sel]
-  ): $Field<"preconditions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"preconditions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -5728,7 +6007,7 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
   /**
    * Project id of the Test issue.
    */
-  get projectId(): $Field<"projectId", string | null | undefined> {
+  get projectId(): $Field<"projectId", string | null> {
     return this.$_select("projectId") as any;
   }
 
@@ -5736,7 +6015,7 @@ export class ExpandedTest extends $Base<"ExpandedTest"> {
  * Gherkin type of the Test issue.
 Possible values: 'scenario' or 'scenario_outline'.
  */
-  get scenarioType(): $Field<"scenarioType", string | null | undefined> {
+  get scenarioType(): $Field<"scenarioType", string | null> {
     return this.$_select("scenarioType") as any;
   }
 
@@ -5745,27 +6024,27 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   status<
     Args extends VariabledInput<{
-      environment?: string | null | undefined;
-      isFinal?: boolean | null | undefined;
-      version?: string | null | undefined;
-      testPlan?: string | null | undefined;
+      environment?: string | null;
+      isFinal?: boolean | null;
+      version?: string | null;
+      testPlan?: string | null;
     }>,
     Sel extends Selection<TestStatusType>,
   >(
     args: ExactArgNames<
       Args,
       {
-        environment?: string | null | undefined;
-        isFinal?: boolean | null | undefined;
-        version?: string | null | undefined;
-        testPlan?: string | null | undefined;
+        environment?: string | null;
+        isFinal?: boolean | null;
+        version?: string | null;
+        testPlan?: string | null;
       }
     >,
     selectorFn: (s: TestStatusType) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel, Args>>;
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel, Args>>;
   status<Sel extends Selection<TestStatusType>>(
     selectorFn: (s: TestStatusType) => [...Sel]
-  ): $Field<"status", GetOutput<Sel> | undefined, GetVariables<Sel>>;
+  ): $Field<"status", GetOutput<Sel> | null, GetVariables<Sel>>;
   status(arg1: any, arg2?: any) {
     const { args, selectorFn } = !arg2
       ? { args: {}, selectorFn: arg1 }
@@ -5790,7 +6069,7 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   steps<Sel extends Selection<ExpandedStep>>(
     selectorFn: (s: ExpandedStep) => [...Sel]
-  ): $Field<"steps", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"steps", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ExpandedStep()),
     };
@@ -5802,22 +6081,22 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testExecutions<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestExecutionResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestExecutionResults) => [...Sel]
-  ): $Field<"testExecutions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testExecutions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -5836,22 +6115,22 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testPlans<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestPlanResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestPlanResults) => [...Sel]
-  ): $Field<"testPlans", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testPlans", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -5871,7 +6150,7 @@ Possible values: 'scenario' or 'scenario_outline'.
   testRuns<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestRunResults>,
   >(
@@ -5879,11 +6158,11 @@ Possible values: 'scenario' or 'scenario_outline'.
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestRunResults) => [...Sel]
-  ): $Field<"testRuns", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testRuns", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -5901,22 +6180,22 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testSets<
     Args extends VariabledInput<{
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      issueIds?: Readonly<Array<string | null>> | null;
       limit: number;
-      start?: number | null | undefined;
+      start?: number | null;
     }>,
     Sel extends Selection<TestSetResults>,
   >(
     args: ExactArgNames<
       Args,
       {
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        issueIds?: Readonly<Array<string | null>> | null;
         limit: number;
-        start?: number | null | undefined;
+        start?: number | null;
       }
     >,
     selectorFn: (s: TestSetResults) => [...Sel]
-  ): $Field<"testSets", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testSets", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueIds: "[String]",
@@ -5935,7 +6214,7 @@ Possible values: 'scenario' or 'scenario_outline'.
    */
   testType<Sel extends Selection<TestType>>(
     selectorFn: (s: TestType) => [...Sel]
-  ): $Field<"testType", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testType", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestType()),
     };
@@ -5948,9 +6227,9 @@ Possible values: 'scenario' or 'scenario_outline'.
   testVersions<
     Args extends VariabledInput<{
       limit: number;
-      start?: number | null | undefined;
-      archived?: boolean | null | undefined;
-      testTypeId?: string | null | undefined;
+      start?: number | null;
+      archived?: boolean | null;
+      testTypeId?: string | null;
     }>,
     Sel extends Selection<TestVersionResults>,
   >(
@@ -5958,13 +6237,13 @@ Possible values: 'scenario' or 'scenario_outline'.
       Args,
       {
         limit: number;
-        start?: number | null | undefined;
-        archived?: boolean | null | undefined;
-        testTypeId?: string | null | undefined;
+        start?: number | null;
+        archived?: boolean | null;
+        testTypeId?: string | null;
       }
     >,
     selectorFn: (s: TestVersionResults) => [...Sel]
-  ): $Field<"testVersions", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"testVersions", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         limit: "Int!",
@@ -5982,24 +6261,21 @@ Possible values: 'scenario' or 'scenario_outline'.
   /**
    * Unstructured definition of the Test issue.
    */
-  get unstructured(): $Field<"unstructured", string | null | undefined> {
+  get unstructured(): $Field<"unstructured", string | null> {
     return this.$_select("unstructured") as any;
   }
 
   /**
    * Version id of the Test issue.
    */
-  get versionId(): $Field<"versionId", number | null | undefined> {
+  get versionId(): $Field<"versionId", number | null> {
     return this.$_select("versionId") as any;
   }
 
   /**
    * Warnings generated while expanding the test steps.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -6015,7 +6291,7 @@ export class ExpandedStep extends $Base<"ExpandedStep"> {
   /**
    * Action of the Step.
    */
-  get action(): $Field<"action", string | null | undefined> {
+  get action(): $Field<"action", string | null> {
     return this.$_select("action") as any;
   }
 
@@ -6024,7 +6300,7 @@ export class ExpandedStep extends $Base<"ExpandedStep"> {
    */
   attachments<Sel extends Selection<Attachment>>(
     selectorFn: (s: Attachment) => [...Sel]
-  ): $Field<"attachments", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"attachments", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Attachment()),
     };
@@ -6034,7 +6310,7 @@ export class ExpandedStep extends $Base<"ExpandedStep"> {
   /**
    * The issue id of the called test with the step
    */
-  get calledTestIssueId(): $Field<"calledTestIssueId", string | null | undefined> {
+  get calledTestIssueId(): $Field<"calledTestIssueId", string | null> {
     return this.$_select("calledTestIssueId") as any;
   }
 
@@ -6043,7 +6319,7 @@ export class ExpandedStep extends $Base<"ExpandedStep"> {
    */
   customFields<Sel extends Selection<CustomStepField>>(
     selectorFn: (s: CustomStepField) => [...Sel]
-  ): $Field<"customFields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"customFields", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new CustomStepField()),
     };
@@ -6053,28 +6329,28 @@ export class ExpandedStep extends $Base<"ExpandedStep"> {
   /**
    * Data of the Step.
    */
-  get data(): $Field<"data", string | null | undefined> {
+  get data(): $Field<"data", string | null> {
     return this.$_select("data") as any;
   }
 
   /**
    * Id of the Step.
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * The issue id of the test calling the step
    */
-  get parentTestIssueId(): $Field<"parentTestIssueId", string | null | undefined> {
+  get parentTestIssueId(): $Field<"parentTestIssueId", string | null> {
     return this.$_select("parentTestIssueId") as any;
   }
 
   /**
    * Result of the Step.
    */
-  get result(): $Field<"result", string | null | undefined> {
+  get result(): $Field<"result", string | null> {
     return this.$_select("result") as any;
   }
 }
@@ -6083,8 +6359,8 @@ export class ExpandedStep extends $Base<"ExpandedStep"> {
  * Test with Version input
  */
 export type TestWithVersionInput = {
-  issueId?: string | null | undefined;
-  versionId?: number | null | undefined;
+  issueId?: string | null;
+  versionId?: number | null;
 };
 
 /**
@@ -6098,7 +6374,7 @@ export class ExpandedTestResults extends $Base<"ExpandedTestResults"> {
   /**
    * The maximum amount of Tests to be returned. The maximum is 100.
    */
-  get limit(): $Field<"limit", number | null | undefined> {
+  get limit(): $Field<"limit", number | null> {
     return this.$_select("limit") as any;
   }
 
@@ -6107,7 +6383,7 @@ export class ExpandedTestResults extends $Base<"ExpandedTestResults"> {
    */
   results<Sel extends Selection<ExpandedTest>>(
     selectorFn: (s: ExpandedTest) => [...Sel]
-  ): $Field<"results", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"results", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ExpandedTest()),
     };
@@ -6117,14 +6393,14 @@ export class ExpandedTestResults extends $Base<"ExpandedTestResults"> {
   /**
    * The index of the first item to return in the page of results (page offset).
    */
-  get start(): $Field<"start", number | null | undefined> {
+  get start(): $Field<"start", number | null> {
     return this.$_select("start") as any;
   }
 
   /**
    * Total amount of issues.
    */
-  get total(): $Field<"total", number | null | undefined> {
+  get total(): $Field<"total", number | null> {
     return this.$_select("total") as any;
   }
 }
@@ -6133,7 +6409,7 @@ export class ExpandedTestResults extends $Base<"ExpandedTestResults"> {
  * Folder Search input
  */
 export type PreconditionFolderSearchInput = {
-  includeDescendants?: boolean | null | undefined;
+  includeDescendants?: boolean | null;
   path: string;
 };
 
@@ -6148,17 +6424,14 @@ export class ProjectSettings extends $Base<"ProjectSettings"> {
   /**
    * Defect Issue Types.
    */
-  get defectIssueTypes(): $Field<
-    "defectIssueTypes",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get defectIssueTypes(): $Field<"defectIssueTypes", Readonly<Array<string | null>> | null> {
     return this.$_select("defectIssueTypes") as any;
   }
 
   /**
    * Project id.
    */
-  get projectId(): $Field<"projectId", string | null | undefined> {
+  get projectId(): $Field<"projectId", string | null> {
     return this.$_select("projectId") as any;
   }
 
@@ -6167,7 +6440,7 @@ export class ProjectSettings extends $Base<"ProjectSettings"> {
    */
   testCoverageSettings<Sel extends Selection<ProjectSettingsTestCoverage>>(
     selectorFn: (s: ProjectSettingsTestCoverage) => [...Sel]
-  ): $Field<"testCoverageSettings", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testCoverageSettings", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ProjectSettingsTestCoverage()),
     };
@@ -6177,10 +6450,7 @@ export class ProjectSettings extends $Base<"ProjectSettings"> {
   /**
    * Test Environments.
    */
-  get testEnvironments(): $Field<
-    "testEnvironments",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get testEnvironments(): $Field<"testEnvironments", Readonly<Array<string | null>> | null> {
     return this.$_select("testEnvironments") as any;
   }
 
@@ -6189,7 +6459,7 @@ export class ProjectSettings extends $Base<"ProjectSettings"> {
    */
   testRunCustomFieldSettings<Sel extends Selection<ProjectSettingsTestRunCustomFields>>(
     selectorFn: (s: ProjectSettingsTestRunCustomFields) => [...Sel]
-  ): $Field<"testRunCustomFieldSettings", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testRunCustomFieldSettings", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ProjectSettingsTestRunCustomFields()),
     };
@@ -6201,7 +6471,7 @@ export class ProjectSettings extends $Base<"ProjectSettings"> {
    */
   testStepSettings<Sel extends Selection<ProjectSettingsTestStepSettings>>(
     selectorFn: (s: ProjectSettingsTestStepSettings) => [...Sel]
-  ): $Field<"testStepSettings", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testStepSettings", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ProjectSettingsTestStepSettings()),
     };
@@ -6213,7 +6483,7 @@ export class ProjectSettings extends $Base<"ProjectSettings"> {
    */
   testTypeSettings<Sel extends Selection<ProjectSettingsTestType>>(
     selectorFn: (s: ProjectSettingsTestType) => [...Sel]
-  ): $Field<"testTypeSettings", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testTypeSettings", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ProjectSettingsTestType()),
     };
@@ -6234,7 +6504,7 @@ export class ProjectSettingsTestCoverage extends $Base<"ProjectSettingsTestCover
    */
   get coverableIssueTypeIds(): $Field<
     "coverableIssueTypeIds",
-    Readonly<Array<string | null | undefined>> | null | undefined
+    Readonly<Array<string | null>> | null
   > {
     return this.$_select("coverableIssueTypeIds") as any;
   }
@@ -6242,28 +6512,28 @@ export class ProjectSettingsTestCoverage extends $Base<"ProjectSettingsTestCover
   /**
    * Epic - Issues(Stories) relation
    */
-  get epicIssuesRelation(): $Field<"epicIssuesRelation", boolean | null | undefined> {
+  get epicIssuesRelation(): $Field<"epicIssuesRelation", boolean | null> {
     return this.$_select("epicIssuesRelation") as any;
   }
 
   /**
    * Issue Link Type Direction
    */
-  get issueLinkTypeDirection(): $Field<"issueLinkTypeDirection", string | null | undefined> {
+  get issueLinkTypeDirection(): $Field<"issueLinkTypeDirection", string | null> {
     return this.$_select("issueLinkTypeDirection") as any;
   }
 
   /**
    * Issue Link Type Id
    */
-  get issueLinkTypeId(): $Field<"issueLinkTypeId", string | null | undefined> {
+  get issueLinkTypeId(): $Field<"issueLinkTypeId", string | null> {
     return this.$_select("issueLinkTypeId") as any;
   }
 
   /**
    * Issue - Sub-tasks relation
    */
-  get issueSubTasksRelation(): $Field<"issueSubTasksRelation", boolean | null | undefined> {
+  get issueSubTasksRelation(): $Field<"issueSubTasksRelation", boolean | null> {
     return this.$_select("issueSubTasksRelation") as any;
   }
 }
@@ -6279,7 +6549,7 @@ export class ProjectSettingsTestType extends $Base<"ProjectSettingsTestType"> {
   /**
    * Default Test Type Id
    */
-  get defaultTestTypeId(): $Field<"defaultTestTypeId", string | null | undefined> {
+  get defaultTestTypeId(): $Field<"defaultTestTypeId", string | null> {
     return this.$_select("defaultTestTypeId") as any;
   }
 
@@ -6288,7 +6558,7 @@ export class ProjectSettingsTestType extends $Base<"ProjectSettingsTestType"> {
    */
   testTypes<Sel extends Selection<TestType>>(
     selectorFn: (s: TestType) => [...Sel]
-  ): $Field<"testTypes", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"testTypes", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestType()),
     };
@@ -6309,7 +6579,7 @@ export class ProjectSettingsTestStepSettings extends $Base<"ProjectSettingsTestS
    */
   fields<Sel extends Selection<ProjectSettingsTestStepField>>(
     selectorFn: (s: ProjectSettingsTestStepField) => [...Sel]
-  ): $Field<"fields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"fields", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ProjectSettingsTestStepField()),
     };
@@ -6328,42 +6598,42 @@ export class ProjectSettingsTestStepField extends $Base<"ProjectSettingsTestStep
   /**
    * Is the field disabled
    */
-  get disabled(): $Field<"disabled", boolean | null | undefined> {
+  get disabled(): $Field<"disabled", boolean | null> {
     return this.$_select("disabled") as any;
   }
 
   /**
    * Id
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * Name
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
   /**
    * Is the field required
    */
-  get required(): $Field<"required", boolean | null | undefined> {
+  get required(): $Field<"required", boolean | null> {
     return this.$_select("required") as any;
   }
 
   /**
    * Type
    */
-  get type(): $Field<"type", string | null | undefined> {
+  get type(): $Field<"type", string | null> {
     return this.$_select("type") as any;
   }
 
   /**
    * Values
    */
-  get values(): $Field<"values", Readonly<Array<string | null | undefined>> | null | undefined> {
+  get values(): $Field<"values", Readonly<Array<string | null>> | null> {
     return this.$_select("values") as any;
   }
 }
@@ -6381,7 +6651,7 @@ export class ProjectSettingsTestRunCustomFields extends $Base<"ProjectSettingsTe
    */
   fields<Sel extends Selection<ProjectSettingsTestRunCustomField>>(
     selectorFn: (s: ProjectSettingsTestRunCustomField) => [...Sel]
-  ): $Field<"fields", Array<GetOutput<Sel> | undefined> | undefined, GetVariables<Sel>> {
+  ): $Field<"fields", Array<GetOutput<Sel> | null> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new ProjectSettingsTestRunCustomField()),
     };
@@ -6400,35 +6670,35 @@ export class ProjectSettingsTestRunCustomField extends $Base<"ProjectSettingsTes
   /**
    * Id
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * Name
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
   /**
    * Is the field required
    */
-  get required(): $Field<"required", boolean | null | undefined> {
+  get required(): $Field<"required", boolean | null> {
     return this.$_select("required") as any;
   }
 
   /**
    * Type
    */
-  get type(): $Field<"type", string | null | undefined> {
+  get type(): $Field<"type", string | null> {
     return this.$_select("type") as any;
   }
 
   /**
    * Values
    */
-  get values(): $Field<"values", Readonly<Array<string | null | undefined>> | null | undefined> {
+  get values(): $Field<"values", Readonly<Array<string | null>> | null> {
     return this.$_select("values") as any;
   }
 }
@@ -6444,14 +6714,14 @@ export class IssueLinkType extends $Base<"IssueLinkType"> {
   /**
    * Id of Issue Link Type
    */
-  get id(): $Field<"id", string | null | undefined> {
+  get id(): $Field<"id", string | null> {
     return this.$_select("id") as any;
   }
 
   /**
    * Name of Issue Link Type
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 }
@@ -6478,7 +6748,7 @@ mutation {
   addDefectsToTestRun<
     Args extends VariabledInput<{
       id: string;
-      issues: Readonly<Array<string | null | undefined>>;
+      issues: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddDefectsResult>,
   >(
@@ -6486,11 +6756,11 @@ mutation {
       Args,
       {
         id: string;
-        issues: Readonly<Array<string | null | undefined>>;
+        issues: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddDefectsResult) => [...Sel]
-  ): $Field<"addDefectsToTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addDefectsToTestRun", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         id: "String!",
@@ -6525,8 +6795,8 @@ mutation {
     Args extends VariabledInput<{
       testRunId: string;
       stepId: string;
-      issues?: Readonly<Array<string | null | undefined>> | null | undefined;
-      iterationRank?: string | null | undefined;
+      issues?: Readonly<Array<string | null>> | null;
+      iterationRank?: string | null;
     }>,
     Sel extends Selection<AddDefectsResult>,
   >(
@@ -6535,12 +6805,12 @@ mutation {
       {
         testRunId: string;
         stepId: string;
-        issues?: Readonly<Array<string | null | undefined>> | null | undefined;
-        iterationRank?: string | null | undefined;
+        issues?: Readonly<Array<string | null>> | null;
+        iterationRank?: string | null;
       }
     >,
     selectorFn: (s: AddDefectsResult) => [...Sel]
-  ): $Field<"addDefectsToTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addDefectsToTestRunStep", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -6581,7 +6851,7 @@ mutation {
   addEvidenceToTestRun<
     Args extends VariabledInput<{
       id: string;
-      evidence: Readonly<Array<AttachmentDataInput | null | undefined>>;
+      evidence: Readonly<Array<AttachmentDataInput | null>>;
     }>,
     Sel extends Selection<AddEvidenceResult>,
   >(
@@ -6589,11 +6859,11 @@ mutation {
       Args,
       {
         id: string;
-        evidence: Readonly<Array<AttachmentDataInput | null | undefined>>;
+        evidence: Readonly<Array<AttachmentDataInput | null>>;
       }
     >,
     selectorFn: (s: AddEvidenceResult) => [...Sel]
-  ): $Field<"addEvidenceToTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addEvidenceToTestRun", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         id: "String!",
@@ -6634,8 +6904,8 @@ mutation {
     Args extends VariabledInput<{
       testRunId: string;
       stepId: string;
-      evidence?: Readonly<Array<AttachmentDataInput | null | undefined>> | null | undefined;
-      iterationRank?: string | null | undefined;
+      evidence?: Readonly<Array<AttachmentDataInput | null>> | null;
+      iterationRank?: string | null;
     }>,
     Sel extends Selection<AddEvidenceResult>,
   >(
@@ -6644,12 +6914,12 @@ mutation {
       {
         testRunId: string;
         stepId: string;
-        evidence?: Readonly<Array<AttachmentDataInput | null | undefined>> | null | undefined;
-        iterationRank?: string | null | undefined;
+        evidence?: Readonly<Array<AttachmentDataInput | null>> | null;
+        iterationRank?: string | null;
       }
     >,
     selectorFn: (s: AddEvidenceResult) => [...Sel]
-  ): $Field<"addEvidenceToTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addEvidenceToTestRunStep", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -6690,8 +6960,8 @@ mutation {
     Args extends VariabledInput<{
       projectId: string;
       path: string;
-      issueIds: Readonly<Array<string | null | undefined>>;
-      index?: number | null | undefined;
+      issueIds: Readonly<Array<string | null>>;
+      index?: number | null;
     }>,
     Sel extends Selection<ActionFolderResult>,
   >(
@@ -6700,12 +6970,12 @@ mutation {
       {
         projectId: string;
         path: string;
-        issueIds: Readonly<Array<string | null | undefined>>;
-        index?: number | null | undefined;
+        issueIds: Readonly<Array<string | null>>;
+        index?: number | null;
       }
     >,
     selectorFn: (s: ActionFolderResult) => [...Sel]
-  ): $Field<"addIssuesToFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addIssuesToFolder", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         projectId: "String!",
@@ -6756,8 +7026,8 @@ mutation {
   addPreconditionsToTest<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
-      preconditionIssueIds: Readonly<Array<string | null | undefined>>;
+      versionId?: number | null;
+      preconditionIssueIds: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddPreconditionsResult>,
   >(
@@ -6765,12 +7035,12 @@ mutation {
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
-        preconditionIssueIds: Readonly<Array<string | null | undefined>>;
+        versionId?: number | null;
+        preconditionIssueIds: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddPreconditionsResult) => [...Sel]
-  ): $Field<"addPreconditionsToTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addPreconditionsToTest", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -6805,7 +7075,7 @@ mutation {
   addTestEnvironmentsToTestExecution<
     Args extends VariabledInput<{
       issueId: string;
-      testEnvironments: Readonly<Array<string | null | undefined>>;
+      testEnvironments: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddTestEnvironmentsResult>,
   >(
@@ -6813,15 +7083,11 @@ mutation {
       Args,
       {
         issueId: string;
-        testEnvironments: Readonly<Array<string | null | undefined>>;
+        testEnvironments: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddTestEnvironmentsResult) => [...Sel]
-  ): $Field<
-    "addTestEnvironmentsToTestExecution",
-    GetOutput<Sel> | undefined,
-    GetVariables<Sel, Args>
-  > {
+  ): $Field<"addTestEnvironmentsToTestExecution", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -6869,8 +7135,8 @@ mutation {
   addTestExecutionsToTest<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
-      testExecIssueIds: Readonly<Array<string | null | undefined>>;
+      versionId?: number | null;
+      testExecIssueIds: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddTestExecutionsResult>,
   >(
@@ -6878,12 +7144,12 @@ mutation {
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
-        testExecIssueIds: Readonly<Array<string | null | undefined>>;
+        versionId?: number | null;
+        testExecIssueIds: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddTestExecutionsResult) => [...Sel]
-  ): $Field<"addTestExecutionsToTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestExecutionsToTest", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -6917,7 +7183,7 @@ mutation {
   addTestExecutionsToTestPlan<
     Args extends VariabledInput<{
       issueId: string;
-      testExecIssueIds: Readonly<Array<string | null | undefined>>;
+      testExecIssueIds: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddTestExecutionsResult>,
   >(
@@ -6925,11 +7191,11 @@ mutation {
       Args,
       {
         issueId: string;
-        testExecIssueIds: Readonly<Array<string | null | undefined>>;
+        testExecIssueIds: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddTestExecutionsResult) => [...Sel]
-  ): $Field<"addTestExecutionsToTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestExecutionsToTestPlan", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -6962,7 +7228,7 @@ mutation {
   addTestPlansToTest<
     Args extends VariabledInput<{
       issueId: string;
-      testPlanIssueIds: Readonly<Array<string | null | undefined>>;
+      testPlanIssueIds: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddTestPlansResult>,
   >(
@@ -6970,11 +7236,11 @@ mutation {
       Args,
       {
         issueId: string;
-        testPlanIssueIds: Readonly<Array<string | null | undefined>>;
+        testPlanIssueIds: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddTestPlansResult) => [...Sel]
-  ): $Field<"addTestPlansToTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestPlansToTest", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7007,7 +7273,7 @@ mutation {
   addTestSetsToTest<
     Args extends VariabledInput<{
       issueId: string;
-      testSetIssueIds: Readonly<Array<string | null | undefined>>;
+      testSetIssueIds: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddTestSetsResult>,
   >(
@@ -7015,11 +7281,11 @@ mutation {
       Args,
       {
         issueId: string;
-        testSetIssueIds: Readonly<Array<string | null | undefined>>;
+        testSetIssueIds: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddTestSetsResult) => [...Sel]
-  ): $Field<"addTestSetsToTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestSetsToTest", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7079,7 +7345,7 @@ mutation {
   addTestStep<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
+      versionId?: number | null;
       step: CreateStepInput;
     }>,
     Sel extends Selection<Step>,
@@ -7088,12 +7354,12 @@ mutation {
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
+        versionId?: number | null;
         step: CreateStepInput;
       }
     >,
     selectorFn: (s: Step) => [...Sel]
-  ): $Field<"addTestStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestStep", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7131,26 +7397,26 @@ mutation {
  */
   addTestsToFolder<
     Args extends VariabledInput<{
-      projectId?: string | null | undefined;
-      testPlanId?: string | null | undefined;
+      projectId?: string | null;
+      testPlanId?: string | null;
       path: string;
-      testIssueIds: Readonly<Array<string | null | undefined>>;
-      index?: number | null | undefined;
+      testIssueIds: Readonly<Array<string | null>>;
+      index?: number | null;
     }>,
     Sel extends Selection<ActionFolderResult>,
   >(
     args: ExactArgNames<
       Args,
       {
-        projectId?: string | null | undefined;
-        testPlanId?: string | null | undefined;
+        projectId?: string | null;
+        testPlanId?: string | null;
         path: string;
-        testIssueIds: Readonly<Array<string | null | undefined>>;
-        index?: number | null | undefined;
+        testIssueIds: Readonly<Array<string | null>>;
+        index?: number | null;
       }
     >,
     selectorFn: (s: ActionFolderResult) => [...Sel]
-  ): $Field<"addTestsToFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestsToFolder", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         projectId: "String",
@@ -7201,8 +7467,8 @@ mutation {
   addTestsToPrecondition<
     Args extends VariabledInput<{
       issueId: string;
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      testIssueIds?: Readonly<Array<string | null>> | null;
+      tests?: Readonly<Array<TestWithVersionInput | null>> | null;
     }>,
     Sel extends Selection<AddTestsResult>,
   >(
@@ -7210,12 +7476,12 @@ mutation {
       Args,
       {
         issueId: string;
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+        testIssueIds?: Readonly<Array<string | null>> | null;
+        tests?: Readonly<Array<TestWithVersionInput | null>> | null;
       }
     >,
     selectorFn: (s: AddTestsResult) => [...Sel]
-  ): $Field<"addTestsToPrecondition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestsToPrecondition", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7249,8 +7515,8 @@ mutation {
   addTestsToTestExecution<
     Args extends VariabledInput<{
       issueId: string;
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      testIssueIds?: Readonly<Array<string | null>> | null;
+      tests?: Readonly<Array<TestWithVersionInput | null>> | null;
     }>,
     Sel extends Selection<AddTestsResult>,
   >(
@@ -7258,12 +7524,12 @@ mutation {
       Args,
       {
         issueId: string;
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+        testIssueIds?: Readonly<Array<string | null>> | null;
+        tests?: Readonly<Array<TestWithVersionInput | null>> | null;
       }
     >,
     selectorFn: (s: AddTestsResult) => [...Sel]
-  ): $Field<"addTestsToTestExecution", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestsToTestExecution", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7297,7 +7563,7 @@ mutation {
   addTestsToTestPlan<
     Args extends VariabledInput<{
       issueId: string;
-      testIssueIds: Readonly<Array<string | null | undefined>>;
+      testIssueIds: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddTestsResult>,
   >(
@@ -7305,11 +7571,11 @@ mutation {
       Args,
       {
         issueId: string;
-        testIssueIds: Readonly<Array<string | null | undefined>>;
+        testIssueIds: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddTestsResult) => [...Sel]
-  ): $Field<"addTestsToTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestsToTestPlan", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7342,7 +7608,7 @@ mutation {
   addTestsToTestSet<
     Args extends VariabledInput<{
       issueId: string;
-      testIssueIds: Readonly<Array<string | null | undefined>>;
+      testIssueIds: Readonly<Array<string | null>>;
     }>,
     Sel extends Selection<AddTestsResult>,
   >(
@@ -7350,11 +7616,11 @@ mutation {
       Args,
       {
         issueId: string;
-        testIssueIds: Readonly<Array<string | null | undefined>>;
+        testIssueIds: Readonly<Array<string | null>>;
       }
     >,
     selectorFn: (s: AddTestsResult) => [...Sel]
-  ): $Field<"addTestsToTestSet", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"addTestsToTestSet", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7432,26 +7698,26 @@ OR with <b>issueIds</b> (which can be eiter Test ids and/or Precondition ids), b
  */
   createFolder<
     Args extends VariabledInput<{
-      projectId?: string | null | undefined;
-      testPlanId?: string | null | undefined;
+      projectId?: string | null;
+      testPlanId?: string | null;
       path: string;
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      testIssueIds?: Readonly<Array<string | null>> | null;
+      issueIds?: Readonly<Array<string | null>> | null;
     }>,
     Sel extends Selection<ActionFolderResult>,
   >(
     args: ExactArgNames<
       Args,
       {
-        projectId?: string | null | undefined;
-        testPlanId?: string | null | undefined;
+        projectId?: string | null;
+        testPlanId?: string | null;
         path: string;
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        issueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        testIssueIds?: Readonly<Array<string | null>> | null;
+        issueIds?: Readonly<Array<string | null>> | null;
       }
     >,
     selectorFn: (s: ActionFolderResult) => [...Sel]
-  ): $Field<"createFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"createFolder", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         projectId: "String",
@@ -7496,11 +7762,11 @@ mutation {
  */
   createPrecondition<
     Args extends VariabledInput<{
-      preconditionType?: UpdatePreconditionTypeInput | null | undefined;
-      definition?: string | null | undefined;
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
-      folderPath?: string | null | undefined;
+      preconditionType?: UpdatePreconditionTypeInput | null;
+      definition?: string | null;
+      testIssueIds?: Readonly<Array<string | null>> | null;
+      tests?: Readonly<Array<TestWithVersionInput | null>> | null;
+      folderPath?: string | null;
       jira: JSON;
     }>,
     Sel extends Selection<CreatePreconditionResult>,
@@ -7508,16 +7774,16 @@ mutation {
     args: ExactArgNames<
       Args,
       {
-        preconditionType?: UpdatePreconditionTypeInput | null | undefined;
-        definition?: string | null | undefined;
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
-        folderPath?: string | null | undefined;
+        preconditionType?: UpdatePreconditionTypeInput | null;
+        definition?: string | null;
+        testIssueIds?: Readonly<Array<string | null>> | null;
+        tests?: Readonly<Array<TestWithVersionInput | null>> | null;
+        folderPath?: string | null;
         jira: JSON;
       }
     >,
     selectorFn: (s: CreatePreconditionResult) => [...Sel]
-  ): $Field<"createPrecondition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"createPrecondition", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         preconditionType: "UpdatePreconditionTypeInput",
@@ -7600,12 +7866,12 @@ mutation {
  */
   createTest<
     Args extends VariabledInput<{
-      testType?: UpdateTestTypeInput | null | undefined;
-      steps?: Readonly<Array<CreateStepInput | null | undefined>> | null | undefined;
-      unstructured?: string | null | undefined;
-      gherkin?: string | null | undefined;
-      preconditionIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      folderPath?: string | null | undefined;
+      testType?: UpdateTestTypeInput | null;
+      steps?: Readonly<Array<CreateStepInput | null>> | null;
+      unstructured?: string | null;
+      gherkin?: string | null;
+      preconditionIssueIds?: Readonly<Array<string | null>> | null;
+      folderPath?: string | null;
       jira: JSON;
     }>,
     Sel extends Selection<CreateTestResult>,
@@ -7613,17 +7879,17 @@ mutation {
     args: ExactArgNames<
       Args,
       {
-        testType?: UpdateTestTypeInput | null | undefined;
-        steps?: Readonly<Array<CreateStepInput | null | undefined>> | null | undefined;
-        unstructured?: string | null | undefined;
-        gherkin?: string | null | undefined;
-        preconditionIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        folderPath?: string | null | undefined;
+        testType?: UpdateTestTypeInput | null;
+        steps?: Readonly<Array<CreateStepInput | null>> | null;
+        unstructured?: string | null;
+        gherkin?: string | null;
+        preconditionIssueIds?: Readonly<Array<string | null>> | null;
+        folderPath?: string | null;
         jira: JSON;
       }
     >,
     selectorFn: (s: CreateTestResult) => [...Sel]
-  ): $Field<"createTest", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"createTest", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testType: "UpdateTestTypeInput",
@@ -7667,9 +7933,9 @@ mutation {
  */
   createTestExecution<
     Args extends VariabledInput<{
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
-      testEnvironments?: Readonly<Array<string | null | undefined>> | null | undefined;
+      testIssueIds?: Readonly<Array<string | null>> | null;
+      tests?: Readonly<Array<TestWithVersionInput | null>> | null;
+      testEnvironments?: Readonly<Array<string | null>> | null;
       jira: JSON;
     }>,
     Sel extends Selection<CreateTestExecutionResult>,
@@ -7677,14 +7943,14 @@ mutation {
     args: ExactArgNames<
       Args,
       {
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
-        testEnvironments?: Readonly<Array<string | null | undefined>> | null | undefined;
+        testIssueIds?: Readonly<Array<string | null>> | null;
+        tests?: Readonly<Array<TestWithVersionInput | null>> | null;
+        testEnvironments?: Readonly<Array<string | null>> | null;
         jira: JSON;
       }
     >,
     selectorFn: (s: CreateTestExecutionResult) => [...Sel]
-  ): $Field<"createTestExecution", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"createTestExecution", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testIssueIds: "[String]",
@@ -7723,8 +7989,8 @@ mutation {
  */
   createTestPlan<
     Args extends VariabledInput<{
-      savedFilter?: string | null | undefined;
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      savedFilter?: string | null;
+      testIssueIds?: Readonly<Array<string | null>> | null;
       jira: JSON;
     }>,
     Sel extends Selection<CreateTestPlanResult>,
@@ -7732,13 +7998,13 @@ mutation {
     args: ExactArgNames<
       Args,
       {
-        savedFilter?: string | null | undefined;
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        savedFilter?: string | null;
+        testIssueIds?: Readonly<Array<string | null>> | null;
         jira: JSON;
       }
     >,
     selectorFn: (s: CreateTestPlanResult) => [...Sel]
-  ): $Field<"createTestPlan", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"createTestPlan", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         savedFilter: "String",
@@ -7776,7 +8042,7 @@ mutation {
  */
   createTestSet<
     Args extends VariabledInput<{
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+      testIssueIds?: Readonly<Array<string | null>> | null;
       jira: JSON;
     }>,
     Sel extends Selection<CreateTestSetResult>,
@@ -7784,12 +8050,12 @@ mutation {
     args: ExactArgNames<
       Args,
       {
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+        testIssueIds?: Readonly<Array<string | null>> | null;
         jira: JSON;
       }
     >,
     selectorFn: (s: CreateTestSetResult) => [...Sel]
-  ): $Field<"createTestSet", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"createTestSet", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testIssueIds: "[String]",
@@ -7818,20 +8084,20 @@ mutation {
  */
   deleteFolder<
     Args extends VariabledInput<{
-      projectId?: string | null | undefined;
-      testPlanId?: string | null | undefined;
+      projectId?: string | null;
+      testPlanId?: string | null;
       path: string;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        projectId?: string | null | undefined;
-        testPlanId?: string | null | undefined;
+        projectId?: string | null;
+        testPlanId?: string | null;
         path: string;
       }
     >
-  ): $Field<"deleteFolder", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"deleteFolder", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         projectId: "String",
@@ -7865,7 +8131,7 @@ mutation {
         issueId: string;
       }
     >
-  ): $Field<"deletePrecondition", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"deletePrecondition", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7897,7 +8163,7 @@ mutation {
         issueId: string;
       }
     >
-  ): $Field<"deleteTest", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"deleteTest", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7929,7 +8195,7 @@ mutation {
         issueId: string;
       }
     >
-  ): $Field<"deleteTestExecution", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"deleteTestExecution", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7961,7 +8227,7 @@ mutation {
         issueId: string;
       }
     >
-  ): $Field<"deleteTestPlan", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"deleteTestPlan", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -7993,7 +8259,7 @@ mutation {
         issueId: string;
       }
     >
-  ): $Field<"deleteTestSet", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"deleteTestSet", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8027,26 +8293,26 @@ mutation {
  */
   moveFolder<
     Args extends VariabledInput<{
-      projectId?: string | null | undefined;
-      testPlanId?: string | null | undefined;
+      projectId?: string | null;
+      testPlanId?: string | null;
       path: string;
       destinationPath: string;
-      index?: number | null | undefined;
+      index?: number | null;
     }>,
     Sel extends Selection<ActionFolderResult>,
   >(
     args: ExactArgNames<
       Args,
       {
-        projectId?: string | null | undefined;
-        testPlanId?: string | null | undefined;
+        projectId?: string | null;
+        testPlanId?: string | null;
         path: string;
         destinationPath: string;
-        index?: number | null | undefined;
+        index?: number | null;
       }
     >,
     selectorFn: (s: ActionFolderResult) => [...Sel]
-  ): $Field<"moveFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"moveFolder", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         projectId: "String",
@@ -8089,17 +8355,17 @@ mutation {
   removeAllTestSteps<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
+      versionId?: number | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
+        versionId?: number | null;
       }
     >
-  ): $Field<"removeAllTestSteps", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeAllTestSteps", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8124,17 +8390,17 @@ mutation {
   removeDefectsFromTestRun<
     Args extends VariabledInput<{
       id: string;
-      issues: Readonly<Array<string | null | undefined>>;
+      issues: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         id: string;
-        issues: Readonly<Array<string | null | undefined>>;
+        issues: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeDefectsFromTestRun", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeDefectsFromTestRun", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         id: "String!",
@@ -8167,8 +8433,8 @@ mutation {
     Args extends VariabledInput<{
       testRunId: string;
       stepId: string;
-      issues: Readonly<Array<string | null | undefined>>;
-      iterationRank?: string | null | undefined;
+      issues: Readonly<Array<string | null>>;
+      iterationRank?: string | null;
     }>,
     Sel extends Selection<RemoveDefectsResult>,
   >(
@@ -8177,12 +8443,12 @@ mutation {
       {
         testRunId: string;
         stepId: string;
-        issues: Readonly<Array<string | null | undefined>>;
-        iterationRank?: string | null | undefined;
+        issues: Readonly<Array<string | null>>;
+        iterationRank?: string | null;
       }
     >,
     selectorFn: (s: RemoveDefectsResult) => [...Sel]
-  ): $Field<"removeDefectsFromTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"removeDefectsFromTestRunStep", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -8217,8 +8483,8 @@ mutation {
   removeEvidenceFromTestRun<
     Args extends VariabledInput<{
       id: string;
-      evidenceIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      evidenceFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+      evidenceIds?: Readonly<Array<string | null>> | null;
+      evidenceFilenames?: Readonly<Array<string | null>> | null;
     }>,
     Sel extends Selection<RemoveEvidenceResult>,
   >(
@@ -8226,12 +8492,12 @@ mutation {
       Args,
       {
         id: string;
-        evidenceIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        evidenceFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+        evidenceIds?: Readonly<Array<string | null>> | null;
+        evidenceFilenames?: Readonly<Array<string | null>> | null;
       }
     >,
     selectorFn: (s: RemoveEvidenceResult) => [...Sel]
-  ): $Field<"removeEvidenceFromTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"removeEvidenceFromTestRun", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         id: "String!",
@@ -8267,9 +8533,9 @@ mutation {
     Args extends VariabledInput<{
       testRunId: string;
       stepId: string;
-      iterationRank?: string | null | undefined;
-      evidenceIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      evidenceFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+      iterationRank?: string | null;
+      evidenceIds?: Readonly<Array<string | null>> | null;
+      evidenceFilenames?: Readonly<Array<string | null>> | null;
     }>,
     Sel extends Selection<RemoveEvidenceResult>,
   >(
@@ -8278,13 +8544,13 @@ mutation {
       {
         testRunId: string;
         stepId: string;
-        iterationRank?: string | null | undefined;
-        evidenceIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        evidenceFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
+        iterationRank?: string | null;
+        evidenceIds?: Readonly<Array<string | null>> | null;
+        evidenceFilenames?: Readonly<Array<string | null>> | null;
       }
     >,
     selectorFn: (s: RemoveEvidenceResult) => [...Sel]
-  ): $Field<"removeEvidenceFromTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"removeEvidenceFromTestRunStep", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -8317,17 +8583,17 @@ mutation {
   removeIssuesFromFolder<
     Args extends VariabledInput<{
       projectId: string;
-      issueIds: Readonly<Array<string | null | undefined>>;
+      issueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         projectId: string;
-        issueIds: Readonly<Array<string | null | undefined>>;
+        issueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeIssuesFromFolder", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeIssuesFromFolder", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         projectId: "String!",
@@ -8360,19 +8626,19 @@ mutation {
   removePreconditionsFromTest<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
-      preconditionIssueIds: Readonly<Array<string | null | undefined>>;
+      versionId?: number | null;
+      preconditionIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
-        preconditionIssueIds: Readonly<Array<string | null | undefined>>;
+        versionId?: number | null;
+        preconditionIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removePreconditionsFromTest", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removePreconditionsFromTest", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8401,21 +8667,17 @@ mutation {
   removeTestEnvironmentsFromTestExecution<
     Args extends VariabledInput<{
       issueId: string;
-      testEnvironments: Readonly<Array<string | null | undefined>>;
+      testEnvironments: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testEnvironments: Readonly<Array<string | null | undefined>>;
+        testEnvironments: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<
-    "removeTestEnvironmentsFromTestExecution",
-    string | null | undefined,
-    GetVariables<[], Args>
-  > {
+  ): $Field<"removeTestEnvironmentsFromTestExecution", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8440,17 +8702,17 @@ mutation {
   removeTestExecutionsFromTest<
     Args extends VariabledInput<{
       issueId: string;
-      testExecIssueIds: Readonly<Array<string | null | undefined>>;
+      testExecIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testExecIssueIds: Readonly<Array<string | null | undefined>>;
+        testExecIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeTestExecutionsFromTest", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestExecutionsFromTest", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8475,17 +8737,17 @@ mutation {
   removeTestExecutionsFromTestPlan<
     Args extends VariabledInput<{
       issueId: string;
-      testExecIssueIds: Readonly<Array<string | null | undefined>>;
+      testExecIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testExecIssueIds: Readonly<Array<string | null | undefined>>;
+        testExecIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeTestExecutionsFromTestPlan", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestExecutionsFromTestPlan", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8510,17 +8772,17 @@ mutation {
   removeTestPlansFromTest<
     Args extends VariabledInput<{
       issueId: string;
-      testPlanIssueIds: Readonly<Array<string | null | undefined>>;
+      testPlanIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testPlanIssueIds: Readonly<Array<string | null | undefined>>;
+        testPlanIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeTestPlansFromTest", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestPlansFromTest", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8545,17 +8807,17 @@ mutation {
   removeTestSetsFromTest<
     Args extends VariabledInput<{
       issueId: string;
-      testSetIssueIds: Readonly<Array<string | null | undefined>>;
+      testSetIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testSetIssueIds: Readonly<Array<string | null | undefined>>;
+        testSetIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeTestSetsFromTest", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestSetsFromTest", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8590,7 +8852,7 @@ mutation {
         stepId: string;
       }
     >
-  ): $Field<"removeTestStep", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestStep", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         stepId: "String!",
@@ -8616,20 +8878,20 @@ mutation {
  */
   removeTestsFromFolder<
     Args extends VariabledInput<{
-      projectId?: string | null | undefined;
-      testPlanId?: string | null | undefined;
-      testIssueIds: Readonly<Array<string | null | undefined>>;
+      projectId?: string | null;
+      testPlanId?: string | null;
+      testIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
-        projectId?: string | null | undefined;
-        testPlanId?: string | null | undefined;
-        testIssueIds: Readonly<Array<string | null | undefined>>;
+        projectId?: string | null;
+        testPlanId?: string | null;
+        testIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeTestsFromFolder", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestsFromFolder", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         projectId: "String",
@@ -8666,19 +8928,19 @@ mutation {
   removeTestsFromPrecondition<
     Args extends VariabledInput<{
       issueId: string;
-      testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-      tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+      testIssueIds?: Readonly<Array<string | null>> | null;
+      tests?: Readonly<Array<TestWithVersionInput | null>> | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testIssueIds?: Readonly<Array<string | null | undefined>> | null | undefined;
-        tests?: Readonly<Array<TestWithVersionInput | null | undefined>> | null | undefined;
+        testIssueIds?: Readonly<Array<string | null>> | null;
+        tests?: Readonly<Array<TestWithVersionInput | null>> | null;
       }
     >
-  ): $Field<"removeTestsFromPrecondition", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestsFromPrecondition", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8704,17 +8966,17 @@ mutation {
   removeTestsFromTestExecution<
     Args extends VariabledInput<{
       issueId: string;
-      testIssueIds: Readonly<Array<string | null | undefined>>;
+      testIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testIssueIds: Readonly<Array<string | null | undefined>>;
+        testIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeTestsFromTestExecution", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestsFromTestExecution", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8739,17 +9001,17 @@ mutation {
   removeTestsFromTestPlan<
     Args extends VariabledInput<{
       issueId: string;
-      testIssueIds: Readonly<Array<string | null | undefined>>;
+      testIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testIssueIds: Readonly<Array<string | null | undefined>>;
+        testIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeTestsFromTestPlan", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestsFromTestPlan", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8774,17 +9036,17 @@ mutation {
   removeTestsFromTestSet<
     Args extends VariabledInput<{
       issueId: string;
-      testIssueIds: Readonly<Array<string | null | undefined>>;
+      testIssueIds: Readonly<Array<string | null>>;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         issueId: string;
-        testIssueIds: Readonly<Array<string | null | undefined>>;
+        testIssueIds: Readonly<Array<string | null>>;
       }
     >
-  ): $Field<"removeTestsFromTestSet", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"removeTestsFromTestSet", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -8819,8 +9081,8 @@ mutation {
  */
   renameFolder<
     Args extends VariabledInput<{
-      projectId?: string | null | undefined;
-      testPlanId?: string | null | undefined;
+      projectId?: string | null;
+      testPlanId?: string | null;
       path: string;
       newName: string;
     }>,
@@ -8829,14 +9091,14 @@ mutation {
     args: ExactArgNames<
       Args,
       {
-        projectId?: string | null | undefined;
-        testPlanId?: string | null | undefined;
+        projectId?: string | null;
+        testPlanId?: string | null;
         path: string;
         newName: string;
       }
     >,
     selectorFn: (s: ActionFolderResult) => [...Sel]
-  ): $Field<"renameFolder", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"renameFolder", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         projectId: "String",
@@ -8873,7 +9135,7 @@ mutation {
         id: string;
       }
     >
-  ): $Field<"resetTestRun", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"resetTestRun", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         id: "String!",
@@ -8914,19 +9176,19 @@ mutation {
   setTestRunTimer<
     Args extends VariabledInput<{
       testRunId: string;
-      running?: boolean | null | undefined;
-      reset?: boolean | null | undefined;
+      running?: boolean | null;
+      reset?: boolean | null;
     }>,
   >(
     args: ExactArgNames<
       Args,
       {
         testRunId: string;
-        running?: boolean | null | undefined;
-        reset?: boolean | null | undefined;
+        running?: boolean | null;
+        reset?: boolean | null;
       }
     >
-  ): $Field<"setTestRunTimer", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"setTestRunTimer", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -8966,7 +9228,7 @@ mutation {
   updateGherkinTestDefinition<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
+      versionId?: number | null;
       gherkin: string;
     }>,
     Sel extends Selection<Test>,
@@ -8975,12 +9237,12 @@ mutation {
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
+        versionId?: number | null;
         gherkin: string;
       }
     >,
     selectorFn: (s: Test) => [...Sel]
-  ): $Field<"updateGherkinTestDefinition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updateGherkinTestDefinition", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -9028,7 +9290,7 @@ mutation {
       }
     >,
     selectorFn: (s: UpdateIterationStatusResult) => [...Sel]
-  ): $Field<"updateIterationStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updateIterationStatus", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -9084,7 +9346,7 @@ mutation {
   updatePrecondition<
     Args extends VariabledInput<{
       issueId: string;
-      data?: UpdatePreconditionInput | null | undefined;
+      data?: UpdatePreconditionInput | null;
     }>,
     Sel extends Selection<Precondition>,
   >(
@@ -9092,11 +9354,11 @@ mutation {
       Args,
       {
         issueId: string;
-        data?: UpdatePreconditionInput | null | undefined;
+        data?: UpdatePreconditionInput | null;
       }
     >,
     selectorFn: (s: Precondition) => [...Sel]
-  ): $Field<"updatePrecondition", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updatePrecondition", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -9145,7 +9407,7 @@ mutation {
         folderPath: string;
       }
     >
-  ): $Field<"updatePreconditionFolder", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"updatePreconditionFolder", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -9192,7 +9454,7 @@ mutation {
         folderPath: string;
       }
     >
-  ): $Field<"updateTestFolder", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"updateTestFolder", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -9219,12 +9481,12 @@ mutation {
   updateTestRun<
     Args extends VariabledInput<{
       id: string;
-      comment?: string | null | undefined;
-      startedOn?: string | null | undefined;
-      finishedOn?: string | null | undefined;
-      assigneeId?: string | null | undefined;
-      executedById?: string | null | undefined;
-      customFields?: Readonly<Array<CustomFieldInput | null | undefined>> | null | undefined;
+      comment?: string | null;
+      startedOn?: string | null;
+      finishedOn?: string | null;
+      assigneeId?: string | null;
+      executedById?: string | null;
+      customFields?: Readonly<Array<CustomFieldInput | null>> | null;
     }>,
     Sel extends Selection<UpdateTestRunResult>,
   >(
@@ -9232,16 +9494,16 @@ mutation {
       Args,
       {
         id: string;
-        comment?: string | null | undefined;
-        startedOn?: string | null | undefined;
-        finishedOn?: string | null | undefined;
-        assigneeId?: string | null | undefined;
-        executedById?: string | null | undefined;
-        customFields?: Readonly<Array<CustomFieldInput | null | undefined>> | null | undefined;
+        comment?: string | null;
+        startedOn?: string | null;
+        finishedOn?: string | null;
+        assigneeId?: string | null;
+        executedById?: string | null;
+        customFields?: Readonly<Array<CustomFieldInput | null>> | null;
       }
     >,
     selectorFn: (s: UpdateTestRunResult) => [...Sel]
-  ): $Field<"updateTestRun", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updateTestRun", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         id: "String!",
@@ -9283,7 +9545,7 @@ mutation {
         comment: string;
       }
     >
-  ): $Field<"updateTestRunComment", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"updateTestRunComment", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         id: "String!",
@@ -9325,7 +9587,7 @@ mutation {
       }
     >,
     selectorFn: (s: UpdateTestRunExampleStatusResult) => [...Sel]
-  ): $Field<"updateTestRunExampleStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updateTestRunExampleStatus", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         exampleId: "String!",
@@ -9362,7 +9624,7 @@ mutation {
         status: string;
       }
     >
-  ): $Field<"updateTestRunStatus", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"updateTestRunStatus", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         id: "String!",
@@ -9402,7 +9664,7 @@ mutation {
       testRunId: string;
       stepId: string;
       updateData: UpdateTestRunStepInput;
-      iterationRank?: string | null | undefined;
+      iterationRank?: string | null;
     }>,
     Sel extends Selection<UpdateTestRunStepResult>,
   >(
@@ -9412,11 +9674,11 @@ mutation {
         testRunId: string;
         stepId: string;
         updateData: UpdateTestRunStepInput;
-        iterationRank?: string | null | undefined;
+        iterationRank?: string | null;
       }
     >,
     selectorFn: (s: UpdateTestRunStepResult) => [...Sel]
-  ): $Field<"updateTestRunStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updateTestRunStep", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -9451,7 +9713,7 @@ mutation {
       testRunId: string;
       stepId: string;
       comment: string;
-      iterationRank?: string | null | undefined;
+      iterationRank?: string | null;
     }>,
   >(
     args: ExactArgNames<
@@ -9460,10 +9722,10 @@ mutation {
         testRunId: string;
         stepId: string;
         comment: string;
-        iterationRank?: string | null | undefined;
+        iterationRank?: string | null;
       }
     >
-  ): $Field<"updateTestRunStepComment", string | null | undefined, GetVariables<[], Args>> {
+  ): $Field<"updateTestRunStepComment", string | null, GetVariables<[], Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -9498,7 +9760,7 @@ mutation {
       testRunId: string;
       stepId: string;
       status: string;
-      iterationRank?: string | null | undefined;
+      iterationRank?: string | null;
     }>,
     Sel extends Selection<UpdateTestRunStepStatusResult>,
   >(
@@ -9508,11 +9770,11 @@ mutation {
         testRunId: string;
         stepId: string;
         status: string;
-        iterationRank?: string | null | undefined;
+        iterationRank?: string | null;
       }
     >,
     selectorFn: (s: UpdateTestRunStepStatusResult) => [...Sel]
-  ): $Field<"updateTestRunStepStatus", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updateTestRunStepStatus", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         testRunId: "String!",
@@ -9561,7 +9823,7 @@ mutation {
       }
     >,
     selectorFn: (s: UpdateTestStepResult) => [...Sel]
-  ): $Field<"updateTestStep", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updateTestStep", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         stepId: "String!",
@@ -9608,7 +9870,7 @@ mutation {
   updateTestType<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
+      versionId?: number | null;
       testType: UpdateTestTypeInput;
     }>,
     Sel extends Selection<Test>,
@@ -9617,12 +9879,12 @@ mutation {
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
+        versionId?: number | null;
         testType: UpdateTestTypeInput;
       }
     >,
     selectorFn: (s: Test) => [...Sel]
-  ): $Field<"updateTestType", GetOutput<Sel> | undefined, GetVariables<Sel, Args>> {
+  ): $Field<"updateTestType", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -9664,7 +9926,7 @@ mutation {
   updateUnstructuredTestDefinition<
     Args extends VariabledInput<{
       issueId: string;
-      versionId?: number | null | undefined;
+      versionId?: number | null;
       unstructured: string;
     }>,
     Sel extends Selection<Test>,
@@ -9673,16 +9935,12 @@ mutation {
       Args,
       {
         issueId: string;
-        versionId?: number | null | undefined;
+        versionId?: number | null;
         unstructured: string;
       }
     >,
     selectorFn: (s: Test) => [...Sel]
-  ): $Field<
-    "updateUnstructuredTestDefinition",
-    GetOutput<Sel> | undefined,
-    GetVariables<Sel, Args>
-  > {
+  ): $Field<"updateUnstructuredTestDefinition", GetOutput<Sel> | null, GetVariables<Sel, Args>> {
     const options = {
       argTypes: {
         issueId: "String!",
@@ -9707,7 +9965,7 @@ export class ActionFolderResult extends $Base<"ActionFolderResult"> {
    */
   folder<Sel extends Selection<SimpleFolderResults>>(
     selectorFn: (s: SimpleFolderResults) => [...Sel]
-  ): $Field<"folder", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"folder", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new SimpleFolderResults()),
     };
@@ -9717,10 +9975,7 @@ export class ActionFolderResult extends $Base<"ActionFolderResult"> {
   /**
    * Warning generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -9733,35 +9988,35 @@ export class SimpleFolderResults extends $Base<"SimpleFolderResults"> {
   /**
    * Folder issues count
    */
-  get issuesCount(): $Field<"issuesCount", number | null | undefined> {
+  get issuesCount(): $Field<"issuesCount", number | null> {
     return this.$_select("issuesCount") as any;
   }
 
   /**
    * Folder name
    */
-  get name(): $Field<"name", string | null | undefined> {
+  get name(): $Field<"name", string | null> {
     return this.$_select("name") as any;
   }
 
   /**
    * Folder path
    */
-  get path(): $Field<"path", string | null | undefined> {
+  get path(): $Field<"path", string | null> {
     return this.$_select("path") as any;
   }
 
   /**
    * Folder preconditions count
    */
-  get preconditionsCount(): $Field<"preconditionsCount", number | null | undefined> {
+  get preconditionsCount(): $Field<"preconditionsCount", number | null> {
     return this.$_select("preconditionsCount") as any;
   }
 
   /**
    * Folder tests count
    */
-  get testsCount(): $Field<"testsCount", number | null | undefined> {
+  get testsCount(): $Field<"testsCount", number | null> {
     return this.$_select("testsCount") as any;
   }
 }
@@ -9770,37 +10025,37 @@ export class SimpleFolderResults extends $Base<"SimpleFolderResults"> {
  * Test Type input
  */
 export type UpdateTestTypeInput = {
-  id?: string | null | undefined;
-  name?: string | null | undefined;
+  id?: string | null;
+  name?: string | null;
 };
 
 /**
  * Create Step input
  */
 export type CreateStepInput = {
-  action?: string | null | undefined;
-  attachments?: Readonly<Array<AttachmentInput | null | undefined>> | null | undefined;
-  callTestIssueId?: string | null | undefined;
-  customFields?: Readonly<Array<CustomStepFieldInput | null | undefined>> | null | undefined;
-  data?: string | null | undefined;
-  result?: string | null | undefined;
+  action?: string | null;
+  attachments?: Readonly<Array<AttachmentInput | null>> | null;
+  callTestIssueId?: string | null;
+  customFields?: Readonly<Array<CustomStepFieldInput | null>> | null;
+  data?: string | null;
+  result?: string | null;
 };
 
 /**
  * Attachment input
  */
 export type AttachmentInput = {
-  data?: string | null | undefined;
-  filename?: string | null | undefined;
-  mimeType?: string | null | undefined;
+  data?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
 };
 
 /**
  * Step Custom Field input
  */
 export type CustomStepFieldInput = {
-  id?: string | null | undefined;
-  value?: JSON | null | undefined;
+  id?: string | null;
+  value?: JSON | null;
 };
 
 /**
@@ -9816,7 +10071,7 @@ export class CreateTestResult extends $Base<"CreateTestResult"> {
    */
   test<Sel extends Selection<Test>>(
     selectorFn: (s: Test) => [...Sel]
-  ): $Field<"test", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"test", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Test()),
     };
@@ -9826,10 +10081,7 @@ export class CreateTestResult extends $Base<"CreateTestResult"> {
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -9838,20 +10090,20 @@ export class CreateTestResult extends $Base<"CreateTestResult"> {
  * Update Step input
  */
 export type UpdateStepInput = {
-  action?: string | null | undefined;
-  attachments?: AttachmentOperationsInput | null | undefined;
-  customFields?: Readonly<Array<CustomStepFieldInput | null | undefined>> | null | undefined;
-  data?: string | null | undefined;
-  result?: string | null | undefined;
+  action?: string | null;
+  attachments?: AttachmentOperationsInput | null;
+  customFields?: Readonly<Array<CustomStepFieldInput | null>> | null;
+  data?: string | null;
+  result?: string | null;
 };
 
 /**
  * Attachment Operations Input
  */
 export type AttachmentOperationsInput = {
-  add?: Readonly<Array<AttachmentInput | null | undefined>> | null | undefined;
-  removeFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
-  removeIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+  add?: Readonly<Array<AttachmentInput | null>> | null;
+  removeFilenames?: Readonly<Array<string | null>> | null;
+  removeIds?: Readonly<Array<string | null>> | null;
 };
 
 /**
@@ -9865,30 +10117,21 @@ export class UpdateTestStepResult extends $Base<"UpdateTestStepResult"> {
   /**
    * List of added attachments.
    */
-  get addedAttachments(): $Field<
-    "addedAttachments",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedAttachments(): $Field<"addedAttachments", Readonly<Array<string | null>> | null> {
     return this.$_select("addedAttachments") as any;
   }
 
   /**
    * List of removed attachments.
    */
-  get removedAttachments(): $Field<
-    "removedAttachments",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get removedAttachments(): $Field<"removedAttachments", Readonly<Array<string | null>> | null> {
     return this.$_select("removedAttachments") as any;
   }
 
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -9904,17 +10147,14 @@ export class AddPreconditionsResult extends $Base<"AddPreconditionsResult"> {
   /**
    * Issue ids of the added Preconditions.
    */
-  get addedPreconditions(): $Field<
-    "addedPreconditions",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedPreconditions(): $Field<"addedPreconditions", Readonly<Array<string | null>> | null> {
     return this.$_select("addedPreconditions") as any;
   }
 
   /**
    * Warning generated during the operation.
    */
-  get warning(): $Field<"warning", string | null | undefined> {
+  get warning(): $Field<"warning", string | null> {
     return this.$_select("warning") as any;
   }
 }
@@ -9930,17 +10170,14 @@ export class AddTestSetsResult extends $Base<"AddTestSetsResult"> {
   /**
    * Issue ids of the added Test Set.
    */
-  get addedTestSets(): $Field<
-    "addedTestSets",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedTestSets(): $Field<"addedTestSets", Readonly<Array<string | null>> | null> {
     return this.$_select("addedTestSets") as any;
   }
 
   /**
    * Warning generated during the operation.
    */
-  get warning(): $Field<"warning", string | null | undefined> {
+  get warning(): $Field<"warning", string | null> {
     return this.$_select("warning") as any;
   }
 }
@@ -9956,17 +10193,14 @@ export class AddTestPlansResult extends $Base<"AddTestPlansResult"> {
   /**
    * Issue ids of the added Test Plans.
    */
-  get addedTestPlans(): $Field<
-    "addedTestPlans",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedTestPlans(): $Field<"addedTestPlans", Readonly<Array<string | null>> | null> {
     return this.$_select("addedTestPlans") as any;
   }
 
   /**
    * Warning generated during the operation.
    */
-  get warning(): $Field<"warning", string | null | undefined> {
+  get warning(): $Field<"warning", string | null> {
     return this.$_select("warning") as any;
   }
 }
@@ -9982,17 +10216,14 @@ export class AddTestExecutionsResult extends $Base<"AddTestExecutionsResult"> {
   /**
    * Issue ids of the added Test Executions.
    */
-  get addedTestExecutions(): $Field<
-    "addedTestExecutions",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedTestExecutions(): $Field<"addedTestExecutions", Readonly<Array<string | null>> | null> {
     return this.$_select("addedTestExecutions") as any;
   }
 
   /**
    * Warning generated during the operation.
    */
-  get warning(): $Field<"warning", string | null | undefined> {
+  get warning(): $Field<"warning", string | null> {
     return this.$_select("warning") as any;
   }
 }
@@ -10001,8 +10232,8 @@ export class AddTestExecutionsResult extends $Base<"AddTestExecutionsResult"> {
  * Precondition Type input
  */
 export type UpdatePreconditionTypeInput = {
-  id?: string | null | undefined;
-  name?: string | null | undefined;
+  id?: string | null;
+  name?: string | null;
 };
 
 /**
@@ -10018,7 +10249,7 @@ export class CreatePreconditionResult extends $Base<"CreatePreconditionResult"> 
    */
   precondition<Sel extends Selection<Precondition>>(
     selectorFn: (s: Precondition) => [...Sel]
-  ): $Field<"precondition", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"precondition", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new Precondition()),
     };
@@ -10028,10 +10259,7 @@ export class CreatePreconditionResult extends $Base<"CreatePreconditionResult"> 
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10040,9 +10268,9 @@ export class CreatePreconditionResult extends $Base<"CreatePreconditionResult"> 
  * Update Precondition input
  */
 export type UpdatePreconditionInput = {
-  definition?: string | null | undefined;
-  folderPath?: string | null | undefined;
-  preconditionType?: UpdatePreconditionTypeInput | null | undefined;
+  definition?: string | null;
+  folderPath?: string | null;
+  preconditionType?: UpdatePreconditionTypeInput | null;
 };
 
 /**
@@ -10056,17 +10284,14 @@ export class AddTestsResult extends $Base<"AddTestsResult"> {
   /**
    * Issue Ids of the added Tests.
    */
-  get addedTests(): $Field<
-    "addedTests",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedTests(): $Field<"addedTests", Readonly<Array<string | null>> | null> {
     return this.$_select("addedTests") as any;
   }
 
   /**
    * Warning generated during the operation.
    */
-  get warning(): $Field<"warning", string | null | undefined> {
+  get warning(): $Field<"warning", string | null> {
     return this.$_select("warning") as any;
   }
 }
@@ -10084,7 +10309,7 @@ export class CreateTestSetResult extends $Base<"CreateTestSetResult"> {
    */
   testSet<Sel extends Selection<TestSet>>(
     selectorFn: (s: TestSet) => [...Sel]
-  ): $Field<"testSet", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testSet", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestSet()),
     };
@@ -10094,10 +10319,7 @@ export class CreateTestSetResult extends $Base<"CreateTestSetResult"> {
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10115,7 +10337,7 @@ export class CreateTestPlanResult extends $Base<"CreateTestPlanResult"> {
    */
   testPlan<Sel extends Selection<TestPlan>>(
     selectorFn: (s: TestPlan) => [...Sel]
-  ): $Field<"testPlan", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testPlan", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestPlan()),
     };
@@ -10125,10 +10347,7 @@ export class CreateTestPlanResult extends $Base<"CreateTestPlanResult"> {
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10146,7 +10365,7 @@ export class CreateTestExecutionResult extends $Base<"CreateTestExecutionResult"
    */
   get createdTestEnvironments(): $Field<
     "createdTestEnvironments",
-    Readonly<Array<string | null | undefined>> | null | undefined
+    Readonly<Array<string | null>> | null
   > {
     return this.$_select("createdTestEnvironments") as any;
   }
@@ -10156,7 +10375,7 @@ export class CreateTestExecutionResult extends $Base<"CreateTestExecutionResult"
    */
   testExecution<Sel extends Selection<TestExecution>>(
     selectorFn: (s: TestExecution) => [...Sel]
-  ): $Field<"testExecution", GetOutput<Sel> | undefined, GetVariables<Sel>> {
+  ): $Field<"testExecution", GetOutput<Sel> | null, GetVariables<Sel>> {
     const options = {
       selection: selectorFn(new TestExecution()),
     };
@@ -10166,10 +10385,7 @@ export class CreateTestExecutionResult extends $Base<"CreateTestExecutionResult"
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10187,7 +10403,7 @@ export class AddTestEnvironmentsResult extends $Base<"AddTestEnvironmentsResult"
    */
   get associatedTestEnvironments(): $Field<
     "associatedTestEnvironments",
-    Readonly<Array<string | null | undefined>> | null | undefined
+    Readonly<Array<string | null>> | null
   > {
     return this.$_select("associatedTestEnvironments") as any;
   }
@@ -10197,7 +10413,7 @@ export class AddTestEnvironmentsResult extends $Base<"AddTestEnvironmentsResult"
    */
   get createdTestEnvironments(): $Field<
     "createdTestEnvironments",
-    Readonly<Array<string | null | undefined>> | null | undefined
+    Readonly<Array<string | null>> | null
   > {
     return this.$_select("createdTestEnvironments") as any;
   }
@@ -10205,7 +10421,7 @@ export class AddTestEnvironmentsResult extends $Base<"AddTestEnvironmentsResult"
   /**
    * Warning generated during the operation.
    */
-  get warning(): $Field<"warning", string | null | undefined> {
+  get warning(): $Field<"warning", string | null> {
     return this.$_select("warning") as any;
   }
 }
@@ -10214,8 +10430,8 @@ export class AddTestEnvironmentsResult extends $Base<"AddTestEnvironmentsResult"
  * Custom Field Input
  */
 export type CustomFieldInput = {
-  id?: string | null | undefined;
-  value?: JSON | null | undefined;
+  id?: string | null;
+  value?: JSON | null;
 };
 
 /**
@@ -10229,10 +10445,7 @@ export class UpdateTestRunResult extends $Base<"UpdateTestRunResult"> {
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10248,20 +10461,14 @@ export class AddDefectsResult extends $Base<"AddDefectsResult"> {
   /**
    * Ids of the added Defects.
    */
-  get addedDefects(): $Field<
-    "addedDefects",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedDefects(): $Field<"addedDefects", Readonly<Array<string | null>> | null> {
     return this.$_select("addedDefects") as any;
   }
 
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10270,10 +10477,10 @@ export class AddDefectsResult extends $Base<"AddDefectsResult"> {
  * Attachment Data Input
  */
 export type AttachmentDataInput = {
-  attachmentId?: string | null | undefined;
-  data?: string | null | undefined;
-  filename?: string | null | undefined;
-  mimeType?: string | null | undefined;
+  attachmentId?: string | null;
+  data?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
 };
 
 /**
@@ -10287,20 +10494,14 @@ export class AddEvidenceResult extends $Base<"AddEvidenceResult"> {
   /**
    * Ids of the added Evidence.
    */
-  get addedEvidence(): $Field<
-    "addedEvidence",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedEvidence(): $Field<"addedEvidence", Readonly<Array<string | null>> | null> {
     return this.$_select("addedEvidence") as any;
   }
 
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10316,20 +10517,14 @@ export class RemoveEvidenceResult extends $Base<"RemoveEvidenceResult"> {
   /**
    * Ids of the removed Evidence.
    */
-  get removedEvidence(): $Field<
-    "removedEvidence",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get removedEvidence(): $Field<"removedEvidence", Readonly<Array<string | null>> | null> {
     return this.$_select("removedEvidence") as any;
   }
 
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10338,28 +10533,28 @@ export class RemoveEvidenceResult extends $Base<"RemoveEvidenceResult"> {
  * Update Test Run Step Input
  */
 export type UpdateTestRunStepInput = {
-  actualResult?: string | null | undefined;
-  comment?: string | null | undefined;
-  defects?: TestRunDefectOperationsInput | null | undefined;
-  evidence?: TestRunEvidenceOperationsInput | null | undefined;
-  status?: string | null | undefined;
+  actualResult?: string | null;
+  comment?: string | null;
+  defects?: TestRunDefectOperationsInput | null;
+  evidence?: TestRunEvidenceOperationsInput | null;
+  status?: string | null;
 };
 
 /**
  * Test Run Evidence Operations Input
  */
 export type TestRunEvidenceOperationsInput = {
-  add?: Readonly<Array<AttachmentDataInput | null | undefined>> | null | undefined;
-  removeFilenames?: Readonly<Array<string | null | undefined>> | null | undefined;
-  removeIds?: Readonly<Array<string | null | undefined>> | null | undefined;
+  add?: Readonly<Array<AttachmentDataInput | null>> | null;
+  removeFilenames?: Readonly<Array<string | null>> | null;
+  removeIds?: Readonly<Array<string | null>> | null;
 };
 
 /**
  * Test Run Defect Operations Input
  */
 export type TestRunDefectOperationsInput = {
-  add?: Readonly<Array<string | null | undefined>> | null | undefined;
-  remove?: Readonly<Array<string | null | undefined>> | null | undefined;
+  add?: Readonly<Array<string | null>> | null;
+  remove?: Readonly<Array<string | null>> | null;
 };
 
 /**
@@ -10373,50 +10568,35 @@ export class UpdateTestRunStepResult extends $Base<"UpdateTestRunStepResult"> {
   /**
    * Ids of the added Defects.
    */
-  get addedDefects(): $Field<
-    "addedDefects",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedDefects(): $Field<"addedDefects", Readonly<Array<string | null>> | null> {
     return this.$_select("addedDefects") as any;
   }
 
   /**
    * Ids of the added Evidence.
    */
-  get addedEvidence(): $Field<
-    "addedEvidence",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get addedEvidence(): $Field<"addedEvidence", Readonly<Array<string | null>> | null> {
     return this.$_select("addedEvidence") as any;
   }
 
   /**
    * Ids of the removed Defects.
    */
-  get removedDefects(): $Field<
-    "removedDefects",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get removedDefects(): $Field<"removedDefects", Readonly<Array<string | null>> | null> {
     return this.$_select("removedDefects") as any;
   }
 
   /**
    * Ids of the removed Evidence.
    */
-  get removedEvidence(): $Field<
-    "removedEvidence",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get removedEvidence(): $Field<"removedEvidence", Readonly<Array<string | null>> | null> {
     return this.$_select("removedEvidence") as any;
   }
 
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10432,20 +10612,14 @@ export class RemoveDefectsResult extends $Base<"RemoveDefectsResult"> {
   /**
    * Ids of the removed Defects.
    */
-  get removedDefects(): $Field<
-    "removedDefects",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get removedDefects(): $Field<"removedDefects", Readonly<Array<string | null>> | null> {
     return this.$_select("removedDefects") as any;
   }
 
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10461,10 +10635,7 @@ export class UpdateTestRunStepStatusResult extends $Base<"UpdateTestRunStepStatu
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10480,10 +10651,7 @@ export class UpdateTestRunExampleStatusResult extends $Base<"UpdateTestRunExampl
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
@@ -10499,10 +10667,7 @@ export class UpdateIterationStatusResult extends $Base<"UpdateIterationStatusRes
   /**
    * Warnings generated during the operation.
    */
-  get warnings(): $Field<
-    "warnings",
-    Readonly<Array<string | null | undefined>> | null | undefined
-  > {
+  get warnings(): $Field<"warnings", Readonly<Array<string | null>> | null> {
     return this.$_select("warnings") as any;
   }
 }
