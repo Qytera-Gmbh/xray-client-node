@@ -3,6 +3,9 @@
 // In case of a fork or migration, these are all the information you will need to update/recreate.
 // ============================================================================================== //
 export const DATA_SERVER = {
+  get defects() {
+    return DEFECTS;
+  },
   get preconditions() {
     return PRECONDITIONS;
   },
@@ -97,6 +100,14 @@ const TESTS = {
   },
 } as const;
 // ============================================================================================== //
+// DEFECTS
+// ============================================================================================== //
+const DEFECTS = {
+  immutable: {
+    key: "XCNODE-33",
+  },
+} as const;
+// ============================================================================================== //
 // TEST EXECUTIONS
 // ============================================================================================== //
 const TEST_EXECUTIONS = {
@@ -110,7 +121,32 @@ const TEST_EXECUTIONS = {
   immutable: {
     key: "XCNODE-2",
     testEnvironments: [{ name: "environmentwith,comma" }, { name: "firefox" }],
-    tests: [{ ...TESTS.immutableDatadriven, testRunId: 12466 }, { ...TESTS.immutable }],
+    tests: [
+      {
+        ...TESTS.immutableDatadriven,
+        comment: { raw: "no errors", rendered: "<p>no errors</p>" },
+        status: "PASS",
+        testRunId: 12466,
+      },
+      { ...TESTS.immutable, defects: [DEFECTS.immutable], status: "FAIL", testRunId: 12805 },
+    ],
+  },
+  immutableCucumber: {
+    key: "XCNODE-37",
+    tests: [
+      {
+        ...TESTS.immutableCucumber,
+        examples: [
+          { id: 10043 },
+          { id: 10044, values: ["20", "30", "add", "50"] },
+          { id: 10045, values: ["2", "5", "add", "7"] },
+          { id: 10046, values: ["0", "40", "add", "40"] },
+          { id: 10047, values: ["4", "50", "add", "54"] },
+          { id: 10048, values: ["5", "50", "add", "55"] },
+        ],
+        testRunId: 13255,
+      },
+    ],
   },
   importXray: {
     v1: { key: "XCNODE-11", tests: [{ ...TESTS.immutableDatadriven }] },
@@ -122,6 +158,17 @@ const TEST_EXECUTIONS = {
   },
   removeTests: {
     key: "XCNODE-31",
+  },
+  updateCucumberExamples: {
+    key: "XCNODE-38",
+    tests: [
+      {
+        ...TESTS.immutableCucumber,
+        initialStatuses: ["PASS"],
+        testRunId: 13256,
+        updatedStatuses: ["FAIL"],
+      },
+    ],
   },
   updateTestRun: {
     v1: {
@@ -138,6 +185,40 @@ const TEST_EXECUTIONS = {
         { ...TESTS.immutable, steps: [{ id: "4423" }, { id: "4424" }], testRunId: 12471 },
       ],
     },
+  },
+  updateTestRunComments: {
+    key: "XCNODE-35",
+    tests: [
+      {
+        ...TESTS.immutable,
+        initialComment: { raw: "initial comment", rendered: "<p>initial comment</p>" },
+        testRunId: 13253,
+        updatedComment: { raw: "updated comment", rendered: "<p>updated comment</p>" },
+      },
+    ],
+  },
+  updateTestRunDefects: {
+    key: "XCNODE-34",
+    testRuns: {
+      addDefects: {
+        defects: [DEFECTS.immutable],
+        status: "FAIL",
+        test: TESTS.immutable,
+        testRunId: 13251,
+      },
+      removeDefects: {
+        defects: [DEFECTS.immutable],
+        status: "FAIL",
+        test: TESTS.immutableDatadriven,
+        testRunId: 13252,
+      },
+    },
+  },
+  updateTestRunStatuses: {
+    key: "XCNODE-32",
+    tests: [
+      { ...TESTS.immutable, initialStatus: "TODO", testRunId: 13250, updatedStatus: "EXECUTING" },
+    ],
   },
 } as const;
 // ============================================================================================== //
